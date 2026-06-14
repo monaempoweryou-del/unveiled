@@ -89,12 +89,21 @@
     }
 
     .nav-logo {
-      display: flex; align-items: center; gap: 9px;
+      display: flex; align-items: center; gap: 11px;
     }
 
-    .nav-logo img {
-      height: 76px; width: auto;
-    }
+    /* ── ANIMATED LOGO (animated sphere mark + wordmark) — reusable ── */
+    .unv-mark { position: relative; flex-shrink: 0; }
+    /* compact logo sphere: hide the big orbiting screens, keep the turning sphere + ring + particles */
+    .sphere-sys.as-logo { aspect-ratio: 1 / 1; }
+    .as-logo .orbit-screen { display: none !important; }
+    .as-logo .ss-core-i { width: 84%; }
+    .as-logo .ss-glow { width: 86%; height: 86%; }
+    .as-logo .ss-ring ellipse, .as-logo .ss-ring path { stroke-width: 1.4px; }
+    .unv-word { width: auto; display: block; }
+
+    .nav-logo .unv-mark { width: 62px; }
+    .nav-logo .unv-word { height: 27px; }
 
     .nav-pip {
       width: 7px; height: 7px; border-radius: 50%;
@@ -1167,7 +1176,7 @@
     .foot-banner-sphere { position: relative; width: 150px; margin: 0 auto 26px; }
     .foot-banner-sphere .sg { position: absolute; top: 50%; left: 50%; width: 220px; height: 220px; transform: translate(-50%,-50%); border-radius: 50%; background: radial-gradient(circle, rgba(140,90,245,0.4) 0%, transparent 68%); filter: blur(14px); animation: glowPulse 6s ease-in-out infinite; }
     .foot-banner-sphere img { position: relative; width: 100%; height: auto; animation: sphereFloat 9s ease-in-out infinite; filter: drop-shadow(0 16px 36px rgba(80,40,160,0.5)); }
-    .foot-banner-logo { position: relative; z-index: 2; height: 92px; width: auto; margin-bottom: 22px; }
+    .foot-banner-logo { position: relative; z-index: 2; height: 40px; width: auto; margin-bottom: 22px; }
     .foot-banner-tag { position: relative; z-index: 2; font-family: 'Space Grotesk', sans-serif; font-size: clamp(20px,2.6vw,32px); font-weight: 700; letter-spacing: -0.02em; color: #fff; margin-bottom: 14px; }
     .foot-banner-tag .g { background: var(--grad-v); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .foot-banner-line { position: relative; z-index: 2; font-size: 11px; font-weight: 700; letter-spacing: 0.32em; text-transform: uppercase; color: rgba(167,139,250,0.85); }
@@ -1184,8 +1193,9 @@
 
     .foot-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 44px; }
 
-    .foot-logo { display: flex; align-items: center; margin-bottom: 18px; }
-    .foot-logo img { height: 96px; width: auto; }
+    .foot-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+    .foot-logo .unv-mark { width: 70px; }
+    .foot-logo .unv-word { height: 30px; }
     .foot-pip { display: none; }
 
     .foot-tag { font-size: 14px; color: rgba(255,255,255,0.3); line-height: 1.65; max-width: 220px; margin-bottom: 20px; }
@@ -1238,7 +1248,8 @@
 
     @media (max-width: 768px) {
       nav { padding: 0 18px; height: 74px; }
-      .nav-logo img { height: 56px; }
+      .nav-logo .unv-mark { width: 50px; }
+      .nav-logo .unv-word { height: 23px; }
       .hero-grid { padding-top: 92px; }
       .nav-links { display: none; }
       .outcome-inner { grid-template-columns: 1fr 1fr; }
@@ -1269,7 +1280,8 @@
       .btn-preview { flex: 1 1 100%; }
       .hero-trust { gap: 12px; font-size: 12px; }
       .sphere-sys { max-width: 300px; }
-      .nav-logo img { height: 50px; }
+      .nav-logo .unv-mark { width: 44px; }
+      .nav-logo .unv-word { height: 21px; }
     }
   </style>
 </head>
@@ -1283,7 +1295,14 @@
 
 <!-- ██ NAV ██ -->
 <nav>
-  <div class="nav-logo"><img src="unveiled-logo-dark.png" alt="UNVEILED" /></div>
+  <div class="nav-logo">
+    <div class="unv-mark sphere-sys as-logo">
+      <div class="ss-glow"></div>
+      <div class="ss-orbit"></div>
+      <div class="ss-core"><div class="ss-core-f"><img class="ss-core-i" src="sphere-core.png" alt="" /></div></div>
+    </div>
+    <img class="unv-word" src="wordmark-dark.png" alt="UNVEILED" />
+  </div>
   <ul class="nav-links">
     <li><a href="#showcase">Our Work</a></li>
     <li><a href="#how">How It Works</a></li>
@@ -1735,7 +1754,7 @@
     <div class="ss-orbit"></div>
     <div class="ss-core"><div class="ss-core-f"><img class="ss-core-i" src="sphere-core.png" alt="UNVEILED" /></div></div>
   </div>
-  <img src="unveiled-logo-web.png" alt="UNVEILED" class="foot-banner-logo" />
+  <img src="wordmark-light.png" alt="UNVEILED" class="foot-banner-logo" />
   <div class="foot-banner-tag">We don't pitch. <span class="g">We build first.</span></div>
   <div class="foot-banner-line">Something is about to be unveiled</div>
   <button class="foot-banner-cta" onclick="document.getElementById('hero-url') ? document.getElementById('hero-url').focus() : document.getElementById('cta').scrollIntoView({behavior:'smooth'})">See My Preview &rarr;</button>
@@ -1746,7 +1765,14 @@
   <div class="foot">
     <div class="foot-top">
       <div>
-        <div class="foot-logo"><img src="unveiled-logo-web.png" alt="UNVEILED" /></div>
+        <div class="foot-logo">
+          <div class="unv-mark sphere-sys as-logo">
+            <div class="ss-glow"></div>
+            <div class="ss-orbit"></div>
+            <div class="ss-core"><div class="ss-core-f"><img class="ss-core-i" src="sphere-core.png" alt="" /></div></div>
+          </div>
+          <img class="unv-word" src="wordmark-light.png" alt="UNVEILED" />
+        </div>
         <p class="foot-tag">We build your website before you pay. That's how confident we are in our work.</p>
         <div class="foot-social">
           <a class="foot-soc" href="#" aria-label="X">X</a>
