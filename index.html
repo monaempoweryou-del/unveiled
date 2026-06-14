@@ -2080,38 +2080,60 @@ heroOut.observe(hero);
     else if (s.type==='contact'){ data.name=(document.getElementById('onb-name')||{}).value?.trim()||''; data.email=(document.getElementById('onb-email')||{}).value?.trim()||''; data.phone=(document.getElementById('onb-phone')||{}).value?.trim()||''; }
   }
 
-  // ── Real submission delivery (set SUBMIT.accessKey to go live) ──
-  const SUBMIT = {
-    endpoint: 'https://api.web3forms.com/submit',  // Web3Forms — fastest static-site delivery, supports file attachments + auto-reply
-    accessKey: ''   // ← paste your Web3Forms access key here to deliver leads for real
+  // ── Real submission → Supabase (lead record + file storage); a DB trigger
+  //    enqueues the confirmation email + internal alert into the MONA task worker. ──
+  const SUPA = {
+    url: 'https://eosvftmiwndmctrqprtz.supabase.co',
+    key: 'sb_publishable_BYxqF1ViwTrfaI4RGhciVw_kgbt-pSA',  // publishable key (safe in client) — protected by insert-only RLS
+    bucket: 'lead-uploads',
+    enabled: true   // set false to fully disable real submission
   };
-  async function submitLead(){
-    if (!SUBMIT.accessKey) return false;
+  async function uploadFile(file, leadId, kind, idx){
+    const safe = (file.name||'file').replace(/[^a-zA-Z0-9._-]/g,'_');
+    const path = leadId+'/'+kind+'-'+idx+'-'+safe;
     try {
-      const fd = new FormData();
-      fd.append('access_key', SUBMIT.accessKey);
-      fd.append('subject', 'New UNVEILED lead — ' + (data.biz || 'Unnamed business'));
-      fd.append('from_name', 'UNVEILED Onboarding');
-      if (data.email) fd.append('replyto', data.email);
-      fd.append('Business Name', data.biz || '—');
-      fd.append('Contact Name', data.name || '—');
-      fd.append('Email', data.email || '—');
-      fd.append('Phone', data.phone || '—');
-      fd.append('Website', data.url || '—');
-      fd.append('About', data.about || '—');
-      fd.append('Social Profiles', Object.entries(data.social).map(([k,v])=>k+': '+v).join('\n') || '—');
-      fd.append('Inspiration Links', data.inspoUrls.join('\n') || '—');
-      fd.append('Requirements', data.requirements || '—');
-      fd.append('Anything Else', data.anything || '—');
-      fd.append('Photos Attached', String(data.photos.length));
-      fd.append('Submitted', new Date().toLocaleString());
-      fd.append('Lead Status', 'New');
-      data.photos.forEach((f,i)=>fd.append('photo_'+(i+1), f));
-      data.logo.forEach((f,i)=>fd.append('logo_'+(i+1), f));
-      data.inspoShots.forEach((f,i)=>fd.append('inspiration_'+(i+1), f));
-      const r = await fetch(SUBMIT.endpoint, { method:'POST', body: fd });
+      const r = await fetch(SUPA.url+'/storage/v1/object/'+SUPA.bucket+'/'+encodeURI(path), {
+        method:'POST',
+        headers:{ apikey:SUPA.key, Authorization:'Bearer '+SUPA.key, 'Content-Type': file.type||'application/octet-stream', 'x-upsert':'true' },
+        body: file
+      });
+      if(!r.ok) return null;
+      return { name:file.name, url: SUPA.url+'/storage/v1/object/public/'+SUPA.bucket+'/'+encodeURI(path), size:file.size };
+    } catch(e){ return null; }
+  }
+  async function submitLead(){
+    if (!SUPA.enabled || !SUPA.key) return false;
+    try {
+      const leadId = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : (Date.now()+'-'+Math.random().toString(36).slice(2));
+      const up = async (arr,kind)=>{ const out=[]; for(let i=0;i<arr.length;i++){ const u=await uploadFile(arr[i],leadId,kind,i+1); if(u)out.push(u);} return out; };
+      const photos = await up(data.photos,'photo');
+      const logos  = await up(data.logo,'logo');
+      const shots  = await up(data.inspoShots,'inspiration');
+      const row = {
+        id: leadId,
+        business_name: data.biz||null,
+        contact_name: data.name||null,
+        email: data.email||null,
+        phone: data.phone||null,
+        website: data.url||null,
+        social_profiles: data.social||{},
+        about: data.about||null,
+        requirements: data.requirements||null,
+        additional_notes: data.anything||null,
+        inspiration_links: data.inspoUrls||[],
+        photos: photos,
+        logos: logos,
+        inspiration_screenshots: shots,
+        status: 'NEW LEAD',
+        source: 'website-onboarding'
+      };
+      const r = await fetch(SUPA.url+'/rest/v1/leads', {
+        method:'POST',
+        headers:{ apikey:SUPA.key, Authorization:'Bearer '+SUPA.key, 'Content-Type':'application/json', Prefer:'return=minimal' },
+        body: JSON.stringify(row)
+      });
       return r.ok;
-    } catch(e){ return false; }
+    } catch(e){ console.warn('lead submit failed', e); return false; }
   }
 
   function next(){
@@ -2139,8 +2161,9 @@ heroOut.observe(hero);
       <div class="onb-done-h">Putting it<br/><span class="g">all together…</span></div>
       <div class="onb-done-p">Securing your details and starting your build.</div>
     </div>`;
-    await submitLead();
-    await new Promise(r=>setTimeout(r, 700));
+    // never let the network block the experience — cap the wait
+    await Promise.race([ submitLead().catch(()=>false), new Promise(r=>setTimeout(r, 4500)) ]);
+    await new Promise(r=>setTimeout(r, 400));
 
     const first = (data.name||'').split(' ')[0];
     stage.innerHTML = `<div class="onb-done">
