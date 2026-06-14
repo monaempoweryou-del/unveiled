@@ -147,11 +147,16 @@
         radial-gradient(circle at 78% 40%, rgba(124,70,235,0.10) 0%, transparent 40%);
     }
 
-    /* soft fade from light hero into dark page below */
+    /* soft twilight fade — light hero eases through deep violet into the section below */
     .hero-fade {
-      position: absolute; left: 0; right: 0; bottom: 0; height: 160px;
+      position: absolute; left: 0; right: 0; bottom: 0; height: 240px;
       pointer-events: none; z-index: 3;
-      background: linear-gradient(180deg, transparent 0%, rgba(18,16,14,0.0) 30%, var(--dark) 100%);
+      background: linear-gradient(180deg,
+        transparent 0%,
+        rgba(40,28,72,0.0) 22%,
+        rgba(33,24,58,0.45) 60%,
+        rgba(24,18,40,0.85) 84%,
+        #181228 100%);
     }
 
     .hero-grid {
@@ -498,9 +503,10 @@
     .outcome-band {
       position: relative; overflow: hidden;
       background:
-        radial-gradient(ellipse 70% 120% at 50% 0%, rgba(108,60,224,0.16) 0%, transparent 60%),
+        linear-gradient(180deg, #181228 0%, rgba(24,18,40,0.55) 14%, rgba(24,18,40,0.0) 34%),
+        radial-gradient(ellipse 82% 120% at 50% 0%, rgba(108,60,224,0.22) 0%, transparent 58%),
         var(--dark-2);
-      border-top: 1px solid rgba(124,70,235,0.14);
+      border-top: none;
       border-bottom: 1px solid rgba(124,70,235,0.14);
     }
 
@@ -1234,16 +1240,19 @@
     /* ══════ RESPONSIVE ══════ */
     @media (max-width: 1024px) {
       #hero { min-height: auto; align-items: flex-start; }
-      .hero-grid { grid-template-columns: 1fr; gap: 12px; padding: 88px 28px 30px; text-align: center; }
-      .hero-left { max-width: 600px; margin: 0 auto; order: 1; }
-      .hero-hl { margin-bottom: 16px; }
-      .hero-sub { margin: 0 auto 22px; }
-      .hero-urlbar { margin: 0 auto 14px; }
-      .hero-trust { justify-content: center; }
-      /* MOBILE ORDER: sphere first (emotional impression), then headline + form */
-      .hero-visual { order: 1; width: 100%; min-height: 400px; margin: 0 0 8px; }
-      .hero-left { order: 2; }
-      .sphere-sys { max-width: 400px; }
+      /* MOBILE ORDER: message first → sphere as visual support → rest of content.
+         display:contents lets hero-left's children interleave with the sphere. */
+      .hero-grid { display: flex; flex-direction: column; align-items: stretch;
+                   gap: 10px; padding: 78px 28px 30px; text-align: center; }
+      .hero-left { display: contents; }
+      .hero-eyebrow { order: 1; align-self: center; margin-bottom: 4px; }
+      .hero-hl     { order: 2; margin-bottom: 4px; }
+      .hero-visual { order: 3; width: 100%; min-height: 320px; margin: 4px 0 6px; }
+      .hero-sub    { order: 4; max-width: 560px; margin: 0 auto 18px; }
+      .hero-url-prompt { order: 5; }
+      .hero-urlbar { order: 6; margin: 0 auto 14px; }
+      .hero-trust  { order: 7; justify-content: center; }
+      .sphere-sys { max-width: 360px; }
       .fi-split { grid-template-columns: 1fr; gap: 40px; }
       .sc-preview { grid-template-columns: 1fr; }
       .prob-split { grid-template-columns: 1fr; gap: 40px; }
@@ -1272,18 +1281,19 @@
       .btn-cta-main { width: 100%; border-radius: 10px; padding: 14px; }
       .cta-input { border-radius: 10px; }
       .hero-hl { font-size: 34px; }
-      .hero-visual { min-height: 360px; }
-      .sphere-sys { max-width: 340px; }
+      .hero-visual { min-height: 300px; }
+      .sphere-sys { max-width: 320px; }
     }
 
     @media (max-width: 480px) {
       .hero-hl { font-size: 29px; }
-      .hero-grid { padding: 90px 20px 30px; }
+      .hero-grid { padding: 74px 20px 30px; }
+      .hero-visual { min-height: 270px; }
       .hero-urlbar { flex-wrap: wrap; border-radius: 16px; }
       .hero-url-input { min-width: 0; flex: 1 1 60%; }
       .btn-preview { flex: 1 1 100%; }
       .hero-trust { gap: 12px; font-size: 12px; }
-      .sphere-sys { max-width: 300px; }
+      .sphere-sys { max-width: 280px; }
       .nav-logo .unv-mark { width: 44px; }
       .nav-logo .unv-word { height: 21px; }
     }
@@ -1513,11 +1523,11 @@
     <div class="hero-left">
       <div class="hero-eyebrow">
         <span class="hero-pip"></span>
-        WE DON'T PITCH. WE <span class="he-accent">BUILD</span> FIRST.
+        NOTHING TO BUILD. NOTHING TO <span class="he-accent">RISK</span>.
       </div>
 
       <h1 class="hero-hl">
-        What could your <span class="gv">business look like online</span> in 72 hours?
+        What could your <span class="gv">business look like</span> — if all it took was a link?
       </h1>
 
       <p class="hero-sub">
@@ -1590,8 +1600,8 @@
     <div class="fi-head">
       <div class="fi-eyebrow reveal">The Transformation</div>
       <h2 class="fi-hl reveal d1">
-        We don't just build a webpage.<br />
-        <span class="g">We transform how your whole business shows up.</span>
+        This isn't just a new webpage.<br />
+        <span class="g">It's a whole new way your business shows up.</span>
       </h2>
       <p class="fi-body reveal d2">
         Desktop, mobile, and brand identity — rebuilt into one consistent, professional system your customers instantly trust. The same business, unrecognizably better. And this is only the first proof of what we can do for you.
@@ -1819,28 +1829,28 @@
       <div class="how-card reveal">
         <div class="how-num">01</div>
         <div class="how-icon">🔍</div>
-        <h3>We research your business</h3>
+        <h3>Your business, understood</h3>
         <p>We study what you do, who you serve, and what makes you different — so the site sounds like you, not a template.</p>
         <div class="how-note">Your story, understood first.</div>
       </div>
       <div class="how-card reveal d1">
         <div class="how-num">02</div>
         <div class="how-icon">📊</div>
-        <h3>We analyze your competitors</h3>
+        <h3>Your competition, mapped</h3>
         <p>We see exactly what you're up against online — and design something built to make you the obvious choice.</p>
         <div class="how-note">Positioned to win the click.</div>
       </div>
       <div class="how-card reveal d2">
         <div class="how-num">03</div>
         <div class="how-icon">⚡</div>
-        <h3>We design your new presence</h3>
+        <h3>Your new presence, designed</h3>
         <p>Custom-designed, written, and built into a living, professional presence customers instantly trust. You get the finished thing — never a mockup.</p>
         <div class="how-note">Custom. Mobile-first. Built to be found.</div>
       </div>
       <div class="how-card reveal d3">
         <div class="how-num">04</div>
         <div class="how-icon">✅</div>
-        <h3>We deliver your live preview</h3>
+        <h3>Your live preview, delivered</h3>
         <p>In 72 hours we send you a link. Open it, share it, sleep on it. Love it and we launch — or walk away owing nothing.</p>
         <div class="how-note">Live in 72 hours. $0 to look.</div>
       </div>
@@ -1893,7 +1903,7 @@
 <section id="ecosystem">
   <div class="eco-inner">
     <div class="eco-eyebrow reveal">The website is just the beginning</div>
-    <h2 class="eco-hl reveal d1">We don't stop at a website.<br /><span class="g">We elevate the whole business.</span></h2>
+    <h2 class="eco-hl reveal d1">It doesn't stop at a website.<br /><span class="g">Your whole business gets elevated.</span></h2>
     <p class="eco-sub reveal d2">A great website is the first proof of what's possible. From there, everything that makes a business feel bigger, run smoother, and grow faster is on the table — whenever you're ready.</p>
     <div class="eco-grid">
       <div class="eco-item reveal"><div class="eco-ic">✨</div><div class="t">Look better</div><div class="s">A presence that matches the quality of your work.</div></div>
@@ -1973,7 +1983,7 @@
     <div class="ss-core"><div class="ss-core-f"><img class="ss-core-i" src="sphere-core.png" alt="UNVEILED" /></div></div>
   </div>
   <img src="wordmark-light.png" alt="UNVEILED" class="foot-banner-logo" />
-  <div class="foot-banner-tag">We don't pitch. <span class="g">We build first.</span></div>
+  <div class="foot-banner-tag">You see it first. <span class="g">Then you decide.</span></div>
   <div class="foot-banner-line">Something is about to be unveiled</div>
   <button class="foot-banner-cta onb-launch">See My Preview &rarr;</button>
 </section>
