@@ -935,8 +935,9 @@
     .prob-hl { font-size: clamp(30px, 4.2vw, 56px); font-weight: 700; letter-spacing: -0.03em; color: #fff; margin-bottom: 14px; line-height: 1.08; }
     .prob-hl .g { background: var(--grad-v); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
 
-    .prob-subline { font-size: 12px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 8px; }
+    .prob-subline { font-size: 12px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 16px; }
     .prob-subline .g { color: #A78BFA; }
+    .prob-realize { max-width: 620px; margin: 0 auto; font-size: clamp(15px,1.5vw,18px); line-height: 1.7; color: rgba(255,255,255,0.62); }
 
     /* centered sphere */
     .prob-sphere-wrap { position: relative; max-width: 540px; margin: 24px auto 56px; }
@@ -1402,6 +1403,66 @@
       .onb-next { padding: 13px 22px; font-size: 14px; }
       .onb-skip { padding: 10px 6px; }
     }
+    /* ══════ AI DISCOVERY ══════ */
+    #ai-discovery { background: var(--cream); position: relative; overflow: hidden; }
+    .aid-inner { max-width: 1140px; margin: 0 auto; padding: 100px 24px; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 56px; align-items: center; }
+    .aid-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--violet); margin-bottom: 18px; display: inline-flex; align-items: center; gap: 8px; }
+    .aid-eyebrow::before { content: ''; display: block; width: 20px; height: 2px; background: var(--grad); border-radius: 2px; }
+    .aid-hl { font-family: 'Space Grotesk', sans-serif; font-size: clamp(28px, 3.6vw, 46px); font-weight: 700; letter-spacing: -0.03em; color: var(--text); line-height: 1.08; margin-bottom: 22px; }
+    .aid-hl .g { background: var(--grad-v); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .aid-body { font-size: 17px; color: var(--muted); line-height: 1.7; margin-bottom: 22px; }
+    .aid-out { font-size: clamp(17px,1.8vw,21px); color: var(--text); line-height: 1.45; margin-bottom: 22px; }
+    .aid-out strong { background: var(--grad-v); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700; }
+    .aid-logos { font-size: 13px; font-weight: 600; letter-spacing: 0.04em; color: #9A93A8; }
+    /* chat visual */
+    .aid-visual { position: relative; }
+    .aid-chat { background: #fff; border: 1px solid var(--border); border-radius: 20px; box-shadow: 0 24px 60px rgba(40,20,90,0.12); padding: 22px; }
+    .aid-chat-top { display: flex; align-items: center; gap: 8px; padding-bottom: 14px; margin-bottom: 14px; border-bottom: 1px solid var(--border); font-size: 12px; color: var(--muted); }
+    .aid-chat-top .dot { width: 8px; height: 8px; border-radius: 50%; background: #10B981; }
+    .aid-msg { max-width: 88%; padding: 13px 16px; border-radius: 14px; font-size: 14.5px; line-height: 1.55; margin-bottom: 12px; }
+    .aid-q { margin-left: auto; background: #ECE9F6; color: var(--text); border-bottom-right-radius: 4px; }
+    .aid-a { background: linear-gradient(180deg,#15101f,#1c1430); color: #e8e3f2; border-bottom-left-radius: 4px; border: 1px solid rgba(124,70,235,0.3); }
+    .aid-a strong { color: #fff; background: rgba(124,70,235,0.35); padding: 1px 6px; border-radius: 5px; }
+    .aid-ai { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #A78BFA; margin-bottom: 6px; }
+    .aid-typing { font-size: 12px; color: #9A93A8; padding-left: 4px; }
+    @media (max-width: 900px) { .aid-inner { grid-template-columns: 1fr; gap: 34px; } }
+
+    /* ══════ THE MACHINE (why we can do this) ══════ */
+    #machine { position: relative; overflow: hidden; background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(67,56,202,0.18) 0%, transparent 60%), linear-gradient(180deg,#0C0A14,#100c18); }
+    .mac-inner { max-width: 980px; margin: 0 auto; padding: 100px 24px; text-align: center; position: relative; z-index: 2; }
+    .mac-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #818CF8; margin-bottom: 20px; display: inline-flex; align-items: center; gap: 8px; }
+    .mac-eyebrow::before { content: ''; display: block; width: 20px; height: 2px; background: linear-gradient(90deg,#6366F1,#A78BFA); border-radius: 2px; }
+    .mac-hl { font-family: 'Space Grotesk', sans-serif; font-size: clamp(28px,3.8vw,46px); font-weight: 700; letter-spacing: -0.03em; color: #fff; line-height: 1.1; margin-bottom: 22px; }
+    .mac-hl .g { background: linear-gradient(100deg,#818CF8,#C4B5FD); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .mac-body { font-size: 17px; color: rgba(255,255,255,0.55); line-height: 1.75; max-width: 720px; margin: 0 auto 18px; }
+    .mac-body strong { color: #fff; font-weight: 600; }
+    .mac-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 44px; text-align: left; }
+    .mac-card { background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 24px 22px; }
+    .mac-ic { font-size: 22px; margin-bottom: 14px; }
+    .mac-card h4 { font-family: 'Space Grotesk',sans-serif; font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 8px; }
+    .mac-card p { font-size: 13.5px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+    .mac-close { margin-top: 40px; font-family: 'Space Grotesk',sans-serif; font-size: clamp(17px,1.9vw,22px); font-weight: 600; color: rgba(255,255,255,0.92); line-height: 1.5; }
+    .mac-close .g { background: linear-gradient(100deg,#818CF8,#C4B5FD); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    @media (max-width: 760px) { .mac-grid { grid-template-columns: 1fr; } }
+
+    /* ══════ ECOSYSTEM (where we begin) ══════ */
+    #ecosystem { background: var(--cream-2); }
+    .eco-inner { max-width: 1100px; margin: 0 auto; padding: 104px 24px; text-align: center; }
+    .eco-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--violet); margin-bottom: 18px; display: inline-flex; align-items: center; gap: 8px; }
+    .eco-eyebrow::before { content: ''; display: block; width: 20px; height: 2px; background: var(--grad); border-radius: 2px; }
+    .eco-hl { font-family: 'Space Grotesk', sans-serif; font-size: clamp(28px,3.8vw,48px); font-weight: 700; letter-spacing: -0.03em; color: var(--text); line-height: 1.08; margin-bottom: 16px; }
+    .eco-hl .g { background: var(--grad-v); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .eco-sub { font-size: 17px; color: var(--muted); line-height: 1.65; max-width: 620px; margin: 0 auto 44px; }
+    .eco-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+    .eco-item { background: #fff; border: 1px solid var(--border); border-radius: 13px; padding: 20px 16px; text-align: left; transition: all 0.25s; }
+    .eco-item:hover { border-color: rgba(108,60,224,0.25); transform: translateY(-3px); box-shadow: 0 10px 28px rgba(108,60,224,0.08); }
+    .eco-ic { font-size: 20px; margin-bottom: 10px; }
+    .eco-item .t { font-family: 'Space Grotesk',sans-serif; font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .eco-item .s { font-size: 12px; color: var(--muted); line-height: 1.5; }
+    .eco-first { font-size: 13px; font-weight: 600; letter-spacing: 0.04em; color: var(--violet); margin-top: 22px; }
+    .eco-now { font-size: 11px; font-weight: 700; color: #fff; background: var(--grad-v); border-radius: 100px; padding: 2px 9px; letter-spacing: 0.04em; }
+    @media (max-width: 860px) { .eco-grid { grid-template-columns: 1fr 1fr; } }
+
     /* ══════ MISSION / WHY WE EXIST ══════ */
     #mission { background: var(--cream); }
     .mission-in { max-width: 800px; margin: 0 auto; padding: 112px 24px; text-align: center; }
@@ -1684,7 +1745,8 @@
       Every business has a story.<br />
       <span class="g">Most websites fail to tell it.</span>
     </h2>
-    <div class="prob-subline reveal d2">It's not your business. It's your <span class="g">visibility.</span></div>
+    <div class="prob-subline reveal d2">It's not your business. It's how you're <span class="g">represented.</span></div>
+    <p class="prob-realize reveal d2">Chances are, you're better than your website makes you look — and the customers slipping away never get to find out. The problem usually isn't your work, your prices, or your reputation. It's that your online presence is quietly underselling everything you've built.</p>
 
     <div class="sphere-sys reveal d2" style="margin: 20px auto 56px;">
       <div class="ss-glow"></div>
@@ -1720,6 +1782,27 @@
           <strong>You've been putting it off</strong>
           <span>It sounds expensive, slow, and risky. UNVEILED removes all three — see the finished result first, then decide.</span>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ██ AI DISCOVERY ██ -->
+<section id="ai-discovery">
+  <div class="aid-inner">
+    <div class="aid-text">
+      <div class="aid-eyebrow reveal">The shift most businesses will miss</div>
+      <h2 class="aid-hl reveal d1">Soon, your customers won't Google you.<br /><span class="g">They'll ask AI.</span></h2>
+      <p class="aid-body reveal d2">People are already asking ChatGPT, Gemini, and AI assistants who to hire, who to trust, and who to call. Most businesses are built for the search engines of a decade ago — and stay invisible to the way customers are starting to choose.</p>
+      <p class="aid-out reveal d2">When someone asks AI for a business like yours,<br /><strong>you want to be the answer.</strong></p>
+      <div class="aid-logos reveal d3">ChatGPT &middot; Gemini &middot; Claude &middot; Copilot &middot; AI search</div>
+    </div>
+    <div class="aid-visual reveal d2">
+      <div class="aid-chat">
+        <div class="aid-chat-top"><span class="dot"></span> Asking AI</div>
+        <div class="aid-msg aid-q">Who's the most trusted home remodeler near me?</div>
+        <div class="aid-msg aid-a"><span class="aid-ai">✦ AI Assistant</span>Based on reputation, reviews, and recent work, <strong>your business</strong> stands out — known for quality craftsmanship and happy customers. Want me to pull up their contact info?</div>
+        <div class="aid-typing">Is your business the answer it gives? It should be.</div>
       </div>
     </div>
   </div>
@@ -1765,6 +1848,22 @@
   </div>
 </section>
 
+<!-- ██ THE MACHINE — WHY WE CAN DO THIS ██ -->
+<section id="machine">
+  <div class="mac-inner">
+    <div class="mac-eyebrow reveal">Why we can do this</div>
+    <h2 class="mac-hl reveal d1">This isn't AI magic.<br /><span class="g">It's 12 years of experience, built into a machine.</span></h2>
+    <p class="mac-body reveal d2">For over a decade we've built and improved websites, generated leads, and helped businesses present themselves better — across thousands of real projects. Every lesson, pattern, and best practice from that work is now built directly into the UNVEILED machine.</p>
+    <p class="mac-body reveal d2">That's how we move in 72 hours what used to take months — and why we can build yours first, free, before you ever decide.</p>
+    <div class="mac-grid">
+      <div class="mac-card reveal"><div class="mac-ic">🧠</div><h4>A decade of experience</h4><p>Thousands of businesses, websites, and campaigns — distilled into what actually works.</p></div>
+      <div class="mac-card reveal d1"><div class="mac-ic">⚙️</div><h4>The machine does the heavy lifting</h4><p>Research, design, and build, accelerated — so quality work no longer takes months or costs a fortune.</p></div>
+      <div class="mac-card reveal d2"><div class="mac-ic">🤝</div><h4>Real experts, every step</h4><p>Every build is reviewed, refined, and supervised by people. Nothing ships without human judgment.</p></div>
+    </div>
+    <div class="mac-close reveal d3">The speed of automation. The confidence of human craft.<br /><span class="g">That combination is the reason UNVEILED exists.</span></div>
+  </div>
+</section>
+
 <!-- ██ 7. COMPARISON ██ -->
 <section id="comparison">
   <div class="comp-inner">
@@ -1787,6 +1886,26 @@
       <div class="ctr"><div class="crf">Monthly updates included</div><div class="crv"><span class="cvt">$150–$400/hr</span></div><div class="crv"><span class="icy">✓</span></div></div>
       <div class="ctr"><div class="crf">If you don't love the result</div><div class="crv"><span class="cvt">Deposit gone</span></div><div class="crv"><span class="cvt g">Walk free. $0.</span></div></div>
     </div>
+  </div>
+</section>
+
+<!-- ██ ECOSYSTEM — WHERE WE BEGIN ██ -->
+<section id="ecosystem">
+  <div class="eco-inner">
+    <div class="eco-eyebrow reveal">The website is just the beginning</div>
+    <h2 class="eco-hl reveal d1">We don't stop at a website.<br /><span class="g">We elevate the whole business.</span></h2>
+    <p class="eco-sub reveal d2">A great website is the first proof of what's possible. From there, everything that makes a business feel bigger, run smoother, and grow faster is on the table — whenever you're ready.</p>
+    <div class="eco-grid">
+      <div class="eco-item reveal"><div class="eco-ic">✨</div><div class="t">Look better</div><div class="s">A presence that matches the quality of your work.</div></div>
+      <div class="eco-item reveal d1"><div class="eco-ic">🔍</div><div class="t">Get found</div><div class="s">Google, maps, and AI discovery — wherever customers look.</div></div>
+      <div class="eco-item reveal d1"><div class="eco-ic">🤝</div><div class="t">Earn trust faster</div><div class="s">Reviews and reputation that make you the safe choice.</div></div>
+      <div class="eco-item reveal d2"><div class="eco-ic">💬</div><div class="t">Communicate better</div><div class="s">Email, messaging, and follow-up that never drop the ball.</div></div>
+      <div class="eco-item reveal"><div class="eco-ic">⚡</div><div class="t">Automate the busywork</div><div class="s">Booking, reminders, and workflows that run themselves.</div></div>
+      <div class="eco-item reveal d1"><div class="eco-ic">📈</div><div class="t">Nurture every lead</div><div class="s">Stay top of mind until they're ready to buy.</div></div>
+      <div class="eco-item reveal d1"><div class="eco-ic">📝</div><div class="t">Build authority</div><div class="s">Content that makes you the obvious expert.</div></div>
+      <div class="eco-item reveal d2"><div class="eco-ic">🚀</div><div class="t">Grow on purpose</div><div class="s">Systems that turn a good business into a growing one.</div></div>
+    </div>
+    <div class="eco-first reveal d2"><span class="eco-now">Start free</span> &nbsp; Your website is where we begin — not where we stop.</div>
   </div>
 </section>
 
