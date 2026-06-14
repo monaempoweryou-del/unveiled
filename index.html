@@ -1358,6 +1358,15 @@
     .onb-chip button { background: none; border: none; color: rgba(255,255,255,0.6); cursor: pointer; font-size: 14px; }
     .onb-or { text-align: center; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin: 16px 0; }
 
+    /* social intelligence grid */
+    .onb-socials { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .onb-sfield { display: flex; align-items: center; background: rgba(255,255,255,0.05); border: 1.5px solid rgba(255,255,255,0.12); border-radius: 12px; padding-left: 14px; transition: border-color 0.2s; }
+    .onb-sfield:focus-within { border-color: rgba(124,70,235,0.6); }
+    .onb-sic { width: 22px; text-align: center; font-weight: 800; font-size: 14px; color: rgba(255,255,255,0.55); flex-shrink: 0; }
+    .onb-sinput { flex: 1; min-width: 0; background: transparent; border: none; outline: none; color: #fff; font-family: 'Inter', sans-serif; font-size: 15px; padding: 13px 14px 13px 8px; }
+    .onb-sinput::placeholder { color: rgba(255,255,255,0.3); }
+    @media (max-width: 600px) { .onb-socials { grid-template-columns: 1fr; } }
+
     /* nav */
     .onb-foot { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-shrink: 0; padding-top: 18px; }
     .onb-back { background: none; border: none; color: rgba(255,255,255,0.5); font-size: 14px; cursor: pointer; padding: 10px 4px; }
@@ -1938,18 +1947,29 @@ heroOut.observe(hero);
   const foot = document.getElementById('onb-foot');
   if (!onb) return;
 
-  const data = { url:'', biz:'', about:'', photos:[], logo:[], inspoUrls:[], inspoShots:[], requirements:'', anything:'', name:'', email:'', phone:'' };
+  const data = { url:'', biz:'', about:'', social:{}, photos:[], logo:[], inspoUrls:[], inspoShots:[], requirements:'', anything:'', name:'', email:'', phone:'' };
+
+  const SOCIALS = [
+    { k:'facebook',  ic:'f',  c:'#1877F2', label:'Facebook' },
+    { k:'instagram', ic:'📷', c:'',        label:'Instagram' },
+    { k:'linkedin',  ic:'in', c:'#0A66C2', label:'LinkedIn' },
+    { k:'google',    ic:'📍', c:'',        label:'Google Business' },
+    { k:'yelp',      ic:'y',  c:'#FF1A1A', label:'Yelp' },
+    { k:'tiktok',    ic:'♪',  c:'',        label:'TikTok' },
+    { k:'youtube',   ic:'▶',  c:'#FF0000', label:'YouTube' }
+  ];
 
   // step config — keep it human and effortless
   const steps = [
     { key:'url',  eyebrow:'Step 1', q:"What's your website?", help:"Paste your current site and we'll start from there. No site yet? Just skip — we build from scratch all the time.", type:'url', optional:true, placeholder:'yourbusiness.com' },
     { key:'biz',  eyebrow:'Step 2', q:"What's your business called?", help:"Just the name — we'll take care of the rest.", type:'text', placeholder:'Acme Construction' },
     { key:'about',eyebrow:'Step 3', q:"Tell us about your business", help:"In your own words — what you do, who you help, what makes you different. A sentence or a paragraph, whatever's easy.", type:'textarea', optional:true, placeholder:"We're a family-owned remodeling company in Miami…" },
-    { key:'photos',eyebrow:'Step 4', q:"Got photos?", help:"Team, projects, products, storefront, vehicles, before/afters — anything that represents your business. We'll make them shine.", type:'files', optional:true, accept:'image/*', multiple:true, dropIc:'🖼️', dropT:'Drop photos here or click to upload', dropS:'JPG, PNG · as many as you like' },
-    { key:'logo', eyebrow:'Step 5', q:"Have a logo?", help:"Upload it and we'll build around your brand. No logo? We've got you — skip ahead.", type:'files', optional:true, accept:'image/*,.svg,.pdf', multiple:false, dropIc:'✦', dropT:'Upload your logo', dropS:'PNG, SVG, PDF' },
-    { key:'inspo',eyebrow:'Step 6', q:"Show us what you like", help:"Seen a website you love? Paste a link or drop a screenshot. This tells us more than any design questionnaire ever could.", type:'inspo', optional:true },
-    { key:'requirements',eyebrow:'Step 7', q:"Anything that must be included?", help:"Services, team members, testimonials, booking, locations, contact info, special requests — list whatever matters.", type:'textarea', optional:true, placeholder:"Services we offer, our 3 locations, online booking, customer reviews…" },
-    { key:'anything',eyebrow:'Step 8', q:"Anything else before we start?", help:"Your vision, a vibe, a goal, a worry — anything you'd like us to know. Totally optional.", type:'textarea', optional:true, placeholder:"We want to feel premium but approachable…" },
+    { key:'social',eyebrow:'Step 4', q:"Where does your business live online?", help:"Show us anywhere your business exists — we'll pull your branding, photos, reviews and positioning straight from your profiles. The more you share, the sharper your website.", type:'social', optional:true },
+    { key:'photos',eyebrow:'Step 5', q:"Got photos?", help:"Team, projects, products, storefront, vehicles, before/afters — anything that represents your business. We'll make them shine.", type:'files', optional:true, accept:'image/*', multiple:true, dropIc:'🖼️', dropT:'Drop photos here or click to upload', dropS:'JPG, PNG · as many as you like' },
+    { key:'logo', eyebrow:'Step 6', q:"Have a logo?", help:"Upload it and we'll build around your brand. No logo? We've got you — skip ahead.", type:'files', optional:true, accept:'image/*,.svg,.pdf', multiple:false, dropIc:'✦', dropT:'Upload your logo', dropS:'PNG, SVG, PDF' },
+    { key:'inspo',eyebrow:'Step 7', q:"Show us what you like", help:"Seen a website you love? Paste a link or drop a screenshot. This tells us more than any design questionnaire ever could.", type:'inspo', optional:true },
+    { key:'requirements',eyebrow:'Step 8', q:"Anything that must be included?", help:"Services, team members, testimonials, booking, locations, contact info, special requests — list whatever matters.", type:'textarea', optional:true, placeholder:"Services we offer, our 3 locations, online booking, customer reviews…" },
+    { key:'anything',eyebrow:'Step 9', q:"Anything else before we start?", help:"Your vision, a vibe, a goal, a worry — anything you'd like us to know. Totally optional.", type:'textarea', optional:true, placeholder:"We want to feel premium but approachable…" },
     { key:'contact',eyebrow:'Last step', q:"Where do we send it?", help:"We'll send your finished website here in 72 hours — and keep you posted along the way.", type:'contact' }
   ];
 
@@ -1988,6 +2008,9 @@ heroOut.observe(hero);
         <div class="onb-or">— or —</div>
         <div class="onb-drop" id="onb-drop"><div class="onb-drop-ic">📸</div><div class="onb-drop-t">Upload a screenshot</div><div class="onb-drop-s">Of any site or style you like</div><input type="file" id="onb-file" accept="image/*" multiple hidden/></div>
         <div class="onb-thumbs" id="onb-thumbs"></div>`;
+    }
+    else if (s.type==='social'){
+      body = `<div class="onb-socials">` + SOCIALS.map(p=>`<div class="onb-sfield"><span class="onb-sic" style="${p.c?('color:'+p.c):''}">${p.ic}</span><input class="onb-sinput" data-s="${p.k}" type="text" placeholder="${p.label}" value="${esc(data.social[p.k]||'')}"/></div>`).join('') + `</div>`;
     }
     else if (s.type==='contact'){
       body = `<input class="onb-input" id="onb-name" type="text" placeholder="Your name" value="${esc(data.name)}" style="margin-bottom:12px"/>
@@ -2053,7 +2076,42 @@ heroOut.observe(hero);
     if (s.type==='url' && f) data.url = f.value.trim();
     else if (s.type==='text' && f) data.biz = f.value.trim();
     else if (s.type==='textarea' && f){ if(s.key==='about')data.about=f.value.trim(); else if(s.key==='requirements')data.requirements=f.value.trim(); else data.anything=f.value.trim(); }
+    else if (s.type==='social'){ document.querySelectorAll('.onb-sinput').forEach(el=>{ const v=el.value.trim(); if(v) data.social[el.dataset.s]=v; else delete data.social[el.dataset.s]; }); }
     else if (s.type==='contact'){ data.name=(document.getElementById('onb-name')||{}).value?.trim()||''; data.email=(document.getElementById('onb-email')||{}).value?.trim()||''; data.phone=(document.getElementById('onb-phone')||{}).value?.trim()||''; }
+  }
+
+  // ── Real submission delivery (set SUBMIT.accessKey to go live) ──
+  const SUBMIT = {
+    endpoint: 'https://api.web3forms.com/submit',  // Web3Forms — fastest static-site delivery, supports file attachments + auto-reply
+    accessKey: ''   // ← paste your Web3Forms access key here to deliver leads for real
+  };
+  async function submitLead(){
+    if (!SUBMIT.accessKey) return false;
+    try {
+      const fd = new FormData();
+      fd.append('access_key', SUBMIT.accessKey);
+      fd.append('subject', 'New UNVEILED lead — ' + (data.biz || 'Unnamed business'));
+      fd.append('from_name', 'UNVEILED Onboarding');
+      if (data.email) fd.append('replyto', data.email);
+      fd.append('Business Name', data.biz || '—');
+      fd.append('Contact Name', data.name || '—');
+      fd.append('Email', data.email || '—');
+      fd.append('Phone', data.phone || '—');
+      fd.append('Website', data.url || '—');
+      fd.append('About', data.about || '—');
+      fd.append('Social Profiles', Object.entries(data.social).map(([k,v])=>k+': '+v).join('\n') || '—');
+      fd.append('Inspiration Links', data.inspoUrls.join('\n') || '—');
+      fd.append('Requirements', data.requirements || '—');
+      fd.append('Anything Else', data.anything || '—');
+      fd.append('Photos Attached', String(data.photos.length));
+      fd.append('Submitted', new Date().toLocaleString());
+      fd.append('Lead Status', 'New');
+      data.photos.forEach((f,i)=>fd.append('photo_'+(i+1), f));
+      data.logo.forEach((f,i)=>fd.append('logo_'+(i+1), f));
+      data.inspoShots.forEach((f,i)=>fd.append('inspiration_'+(i+1), f));
+      const r = await fetch(SUBMIT.endpoint, { method:'POST', body: fd });
+      return r.ok;
+    } catch(e){ return false; }
   }
 
   function next(){
@@ -2070,11 +2128,20 @@ heroOut.observe(hero);
   }
   function flash(id,msg){ const el=document.getElementById(id); if(!el)return; el.style.borderColor='rgba(239,68,68,0.7)'; if(el.parentElement.classList.contains('onb-prefix'))el.parentElement.style.borderColor='rgba(239,68,68,0.7)'; el.placeholder=msg; el.focus(); el.addEventListener('input',function c(){el.style.borderColor='';if(el.parentElement.classList.contains('onb-prefix'))el.parentElement.style.borderColor='';el.removeEventListener('input',c);}); }
 
-  function finish(){
+  async function finish(){
     foot.style.display = 'none';
     bar.style.width = '100%'; count.textContent='';
-    // (front-end demonstration — data object ready for backend/email wiring)
     window.UNVEILED_SUBMISSION = { ...data, photos:data.photos.map(f=>f.name), logo:data.logo.map(f=>f.name), inspoShots:data.inspoShots.map(f=>f.name) };
+
+    // premium "we're on it" beat while the lead is delivered
+    stage.innerHTML = `<div class="onb-done">
+      <div class="unv-mark sphere-sys as-logo"><div class="ss-glow"></div><div class="ss-orbit"></div><div class="ss-core"><div class="ss-core-f"><img class="ss-core-i" src="sphere-core.png" alt=""/></div></div></div>
+      <div class="onb-done-h">Putting it<br/><span class="g">all together…</span></div>
+      <div class="onb-done-p">Securing your details and starting your build.</div>
+    </div>`;
+    await submitLead();
+    await new Promise(r=>setTimeout(r, 700));
+
     const first = (data.name||'').split(' ')[0];
     stage.innerHTML = `<div class="onb-done">
       <div class="unv-mark sphere-sys as-logo"><div class="ss-glow"></div><div class="ss-orbit"></div><div class="ss-core"><div class="ss-core-f"><img class="ss-core-i" src="sphere-core.png" alt=""/></div></div></div>
