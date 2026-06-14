@@ -1283,6 +1283,113 @@
       .nav-logo .unv-mark { width: 44px; }
       .nav-logo .unv-word { height: 21px; }
     }
+    /* ══════════ ONBOARDING EXPERIENCE (conversational) ══════════ */
+    .cta-launch-note { font-size: 13px; color: rgba(255,255,255,0.4); }
+
+    .onb { position: fixed; inset: 0; z-index: 1000; display: none; }
+    .onb.open { display: block; }
+    .onb-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 22%, rgba(124,70,235,0.28) 0%, transparent 60%),
+        linear-gradient(180deg, #0E0B16 0%, #12100E 100%);
+    }
+    .onb-bg .prob-stars { opacity: 0.5; }
+    .onb-shell {
+      position: relative; height: 100%; width: 100%;
+      max-width: 720px; margin: 0 auto; display: flex; flex-direction: column;
+      padding: 22px 28px 26px;
+    }
+    .onb-top { display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+    .onb-top .unv-mark { width: 40px; }
+    .onb-top-logo { display: flex; align-items: center; gap: 9px; }
+    .onb-top-logo .unv-word { height: 18px; }
+    .onb-close { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.7);
+      width: 38px; height: 38px; border-radius: 50%; font-size: 20px; cursor: pointer; line-height: 1; transition: all 0.2s; }
+    .onb-close:hover { background: rgba(255,255,255,0.12); color: #fff; }
+
+    .onb-progress { height: 4px; background: rgba(255,255,255,0.08); border-radius: 100px; margin: 18px 0 6px; overflow: hidden; flex-shrink: 0; }
+    .onb-progress-bar { height: 100%; width: 0%; background: var(--grad-v); border-radius: 100px; transition: width 0.45s cubic-bezier(0.22,1,0.36,1); }
+    .onb-count { font-size: 12px; color: rgba(255,255,255,0.4); flex-shrink: 0; }
+
+    .onb-stage { flex: 1; display: flex; flex-direction: column; justify-content: center; overflow-y: auto; padding: 8px 0; }
+    .onb-step { animation: onbIn 0.45s cubic-bezier(0.22,1,0.36,1); }
+    @keyframes onbIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+    .onb-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #A78BFA; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .onb-opt { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.45); background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); padding: 2px 9px; border-radius: 100px; letter-spacing: 0.06em; }
+    .onb-q { font-family: 'Space Grotesk', sans-serif; font-size: clamp(26px, 4vw, 40px); font-weight: 700; letter-spacing: -0.02em; color: #fff; line-height: 1.1; margin-bottom: 10px; }
+    .onb-help { font-size: 15px; color: rgba(255,255,255,0.5); line-height: 1.55; margin-bottom: 26px; max-width: 540px; }
+
+    .onb-input, .onb-textarea {
+      width: 100%; box-sizing: border-box; background: rgba(255,255,255,0.05);
+      border: 1.5px solid rgba(255,255,255,0.12); border-radius: 14px; color: #fff;
+      font-family: 'Inter', sans-serif; font-size: 18px; padding: 18px 20px; outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .onb-input::placeholder, .onb-textarea::placeholder { color: rgba(255,255,255,0.28); }
+    .onb-input:focus, .onb-textarea:focus { border-color: rgba(124,70,235,0.6); background: rgba(124,70,235,0.07); }
+    .onb-textarea { min-height: 140px; resize: vertical; line-height: 1.5; font-size: 16px; }
+    .onb-prefix { display: flex; align-items: center; background: rgba(255,255,255,0.05); border: 1.5px solid rgba(255,255,255,0.12); border-radius: 14px; padding-left: 18px; transition: border-color 0.2s; }
+    .onb-prefix:focus-within { border-color: rgba(124,70,235,0.6); }
+    .onb-prefix span { color: rgba(255,255,255,0.4); font-size: 16px; }
+    .onb-prefix .onb-input { border: none; background: transparent; padding-left: 8px; }
+
+    /* upload zone */
+    .onb-drop {
+      border: 1.5px dashed rgba(255,255,255,0.22); border-radius: 16px; padding: 38px 24px; text-align: center;
+      cursor: pointer; transition: all 0.2s; background: rgba(255,255,255,0.02);
+    }
+    .onb-drop:hover, .onb-drop.drag { border-color: rgba(124,70,235,0.7); background: rgba(124,70,235,0.06); }
+    .onb-drop-ic { font-size: 34px; margin-bottom: 10px; }
+    .onb-drop-t { font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+    .onb-drop-s { font-size: 13px; color: rgba(255,255,255,0.45); }
+    .onb-thumbs { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+    .onb-thumb { position: relative; width: 78px; height: 78px; border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.05); }
+    .onb-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .onb-thumb-doc { display:flex; align-items:center; justify-content:center; font-size: 22px; width:100%; height:100%; color: rgba(255,255,255,0.6); }
+    .onb-thumb-x { position: absolute; top: 3px; right: 3px; width: 20px; height: 20px; border-radius: 50%; background: rgba(0,0,0,0.65); color: #fff; border: none; font-size: 13px; cursor: pointer; line-height: 1; }
+
+    /* inspiration chips */
+    .onb-chip-row { display: flex; gap: 8px; }
+    .onb-chip-add { flex-shrink: 0; background: var(--grad-v); color: #fff; border: none; border-radius: 12px; padding: 0 18px; font-weight: 700; cursor: pointer; font-family: 'Space Grotesk',sans-serif; }
+    .onb-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .onb-chip { display: flex; align-items: center; gap: 8px; background: rgba(124,70,235,0.12); border: 1px solid rgba(124,70,235,0.3); border-radius: 100px; padding: 7px 8px 7px 14px; font-size: 13px; color: #D8C8FF; }
+    .onb-chip button { background: none; border: none; color: rgba(255,255,255,0.6); cursor: pointer; font-size: 14px; }
+    .onb-or { text-align: center; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin: 16px 0; }
+
+    /* nav */
+    .onb-foot { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-shrink: 0; padding-top: 18px; }
+    .onb-back { background: none; border: none; color: rgba(255,255,255,0.5); font-size: 14px; cursor: pointer; padding: 10px 4px; }
+    .onb-back:hover { color: #fff; }
+    .onb-back[disabled] { opacity: 0; pointer-events: none; }
+    .onb-right { display: flex; align-items: center; gap: 12px; }
+    .onb-skip { background: none; border: none; color: rgba(255,255,255,0.45); font-size: 14px; cursor: pointer; padding: 10px; }
+    .onb-skip:hover { color: rgba(255,255,255,0.8); }
+    .onb-next { background: var(--grad-v); color: #fff; border: none; border-radius: 100px; font-family: 'Space Grotesk',sans-serif; font-weight: 700; font-size: 15px; padding: 14px 30px; cursor: pointer; box-shadow: 0 8px 24px rgba(108,60,224,0.35); transition: transform 0.2s, box-shadow 0.2s; }
+    .onb-next:hover { transform: translateY(-1px); box-shadow: 0 12px 30px rgba(108,60,224,0.45); }
+    .onb-hint { font-size: 12px; color: rgba(255,255,255,0.3); text-align: right; margin-top: 8px; }
+
+    /* confirmation */
+    .onb-done { text-align: center; max-width: 540px; margin: 0 auto; animation: onbIn 0.6s ease; }
+    .onb-done .unv-mark { width: 110px; margin: 0 auto 26px; }
+    .onb-done-h { font-family: 'Space Grotesk',sans-serif; font-size: clamp(28px,4.5vw,44px); font-weight: 700; color: #fff; letter-spacing: -0.02em; margin-bottom: 14px; }
+    .onb-done-h .g { background: var(--grad-v); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .onb-done-p { font-size: 16px; color: rgba(255,255,255,0.55); line-height: 1.6; margin-bottom: 30px; }
+    .onb-steps-next { text-align: left; display: inline-block; margin: 0 auto 30px; }
+    .onb-sn { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px; }
+    .onb-sn-n { flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%; background: rgba(124,70,235,0.16); border: 1px solid rgba(124,70,235,0.4); color: #C9B6F5; font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk',sans-serif; }
+    .onb-sn-t { font-size: 14px; font-weight: 600; color: #fff; }
+    .onb-sn-s { font-size: 13px; color: rgba(255,255,255,0.45); }
+
+    @media (max-width: 600px) {
+      .onb-shell { padding: 16px 18px 20px; }
+      .onb-q { font-size: 25px; }
+      .onb-help { font-size: 14px; margin-bottom: 20px; }
+      .onb-input, .onb-textarea { font-size: 16px; padding: 15px 16px; }
+      .onb-next { padding: 13px 22px; font-size: 14px; }
+      .onb-skip { padding: 10px 6px; }
+    }
   </style>
 </head>
 <body>
@@ -1290,7 +1397,7 @@
 <!-- ██ STICKY CTA ██ -->
 <div class="sticky-cta" id="sticky-cta">
   <span class="sticky-cta-text"><strong>See what your business looks like.</strong> Built in 72 hours. Free to preview.</span>
-  <button class="btn-sticky" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">See My Preview &rarr;</button>
+  <button class="btn-sticky onb-launch">See My Preview &rarr;</button>
 </div>
 
 <!-- ██ NAV ██ -->
@@ -1308,7 +1415,7 @@
     <li><a href="#how">How It Works</a></li>
     <li><a href="#comparison">vs. Agencies</a></li>
   </ul>
-  <button class="nav-cta" onclick="document.getElementById('hero-url') ? document.getElementById('hero-url').focus() : document.getElementById('cta').scrollIntoView({behavior:'smooth'})">See My Preview</button>
+  <button class="nav-cta onb-launch">See My Preview</button>
 </nav>
 
 <!-- ██ 1. HERO ██ -->
@@ -1661,59 +1768,15 @@
     </h2>
 
     <p class="cta-sub reveal d2">
-      Just the basics to get started. No website? No problem — give us anything you have, and our machine takes it from there.
+      No forms to dread. Give us whatever you already have — a link, a few photos, a sentence about what you do. We do the heavy lifting.
     </p>
 
-    <div class="cta-box reveal d3">
-      <div class="cta-form" id="cta-form">
-
-        <div class="cta-row">
-          <div class="cta-field">
-            <label class="cta-label" for="cta-biz">Business Name</label>
-            <input type="text" class="cta-input" id="cta-biz" placeholder="Acme Construction" autocomplete="organization" />
-          </div>
-          <div class="cta-field">
-            <label class="cta-label" for="cta-name">Your Name</label>
-            <input type="text" class="cta-input" id="cta-name" placeholder="Jane Smith" autocomplete="name" />
-          </div>
-        </div>
-
-        <div class="cta-row">
-          <div class="cta-field">
-            <label class="cta-label" for="cta-email">Email Address</label>
-            <input type="email" class="cta-input" id="cta-email" placeholder="jane@yourbusiness.com" autocomplete="email" />
-          </div>
-          <div class="cta-field">
-            <label class="cta-label" for="cta-phone">Phone Number</label>
-            <input type="tel" class="cta-input" id="cta-phone" placeholder="(310) 555-0100" autocomplete="tel" />
-          </div>
-        </div>
-
-        <!-- Optional online presence -->
-        <div class="cta-optional">
-          <div class="cta-opt-head">
-            <span class="cta-opt-title">Where can we find you online?</span>
-            <span class="cta-opt-pill">All optional</span>
-            <span class="cta-opt-line"></span>
-          </div>
-          <div class="cta-opt-sub">Website, a social page, a Google listing — anything helps us understand your business. The more you share, the sharper your preview.</div>
-
-          <div class="cta-links">
-            <div class="cta-linkfield"><span class="lf-ic">🌐</span><input type="text" id="cta-site" placeholder="Website" /></div>
-            <div class="cta-linkfield"><span class="lf-ic" style="color:#1877F2">f</span><input type="text" id="cta-fb" placeholder="Facebook" /></div>
-            <div class="cta-linkfield"><span class="lf-ic">📷</span><input type="text" id="cta-ig" placeholder="Instagram" /></div>
-            <div class="cta-linkfield"><span class="lf-ic" style="color:#0A66C2;font-weight:800">in</span><input type="text" id="cta-li" placeholder="LinkedIn" /></div>
-            <div class="cta-linkfield"><span class="lf-ic">📍</span><input type="text" id="cta-gbp" placeholder="Google listing" /></div>
-            <div class="cta-linkfield"><span class="lf-ic" style="color:#FF1A1A;font-weight:800">y</span><input type="text" id="cta-yelp" placeholder="Yelp" /></div>
-          </div>
-        </div>
-
-        <button class="btn-cta-main" id="cta-btn" style="margin-top:20px">Build My Website Free &rarr;</button>
-
-      </div>
+    <div class="cta-box reveal d3" style="align-items:center; gap:18px;">
+      <button class="btn-cta-main onb-launch" style="max-width:440px;">Start My Website &rarr;</button>
+      <div class="cta-launch-note">Takes about 2 minutes · No credit card · See it before you pay</div>
       <div class="cta-guarantees">
-        <div class="cta-g"><span class="cta-g-icon">✓</span> No credit card required</div>
-        <div class="cta-g"><span class="cta-g-icon">✓</span> See it before you pay</div>
+        <div class="cta-g"><span class="cta-g-icon">✓</span> No pitch</div>
+        <div class="cta-g"><span class="cta-g-icon">✓</span> No payment</div>
         <div class="cta-g"><span class="cta-g-icon">✓</span> Walk away free if you don't love it</div>
       </div>
     </div>
@@ -1757,7 +1820,7 @@
   <img src="wordmark-light.png" alt="UNVEILED" class="foot-banner-logo" />
   <div class="foot-banner-tag">We don't pitch. <span class="g">We build first.</span></div>
   <div class="foot-banner-line">Something is about to be unveiled</div>
-  <button class="foot-banner-cta" onclick="document.getElementById('hero-url') ? document.getElementById('hero-url').focus() : document.getElementById('cta').scrollIntoView({behavior:'smooth'})">See My Preview &rarr;</button>
+  <button class="foot-banner-cta onb-launch">See My Preview &rarr;</button>
 </section>
 
 <!-- ██ FOOTER ██ -->
@@ -1812,6 +1875,35 @@
   </div>
 </footer>
 
+<!-- ██ ONBOARDING EXPERIENCE ██ -->
+<div class="onb" id="onb" role="dialog" aria-modal="true" aria-label="Start your website">
+  <div class="onb-bg"><div class="prob-stars"></div></div>
+  <div class="onb-shell">
+    <div class="onb-top">
+      <div class="onb-top-logo">
+        <div class="unv-mark sphere-sys as-logo">
+          <div class="ss-glow"></div><div class="ss-orbit"></div>
+          <div class="ss-core"><div class="ss-core-f"><img class="ss-core-i" src="sphere-core.png" alt="" /></div></div>
+        </div>
+        <img class="unv-word" src="wordmark-light.png" alt="UNVEILED" />
+      </div>
+      <button class="onb-close" id="onb-close" aria-label="Close">&times;</button>
+    </div>
+    <div class="onb-progress"><div class="onb-progress-bar" id="onb-bar"></div></div>
+    <div class="onb-count" id="onb-count"></div>
+
+    <div class="onb-stage" id="onb-stage"></div>
+
+    <div class="onb-foot" id="onb-foot">
+      <button class="onb-back" id="onb-back">&larr; Back</button>
+      <div class="onb-right">
+        <button class="onb-skip" id="onb-skip">Skip</button>
+        <button class="onb-next" id="onb-next">Continue &rarr;</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 // ── Reveal on scroll ───────────────────────────────────────────────────
 const io = new IntersectionObserver(entries => {
@@ -1834,41 +1926,182 @@ heroOut.observe(hero);
 
 // ── Nav stays dark always (all dark sections) ─────────────────────────
 
-// ── CTA submit ────────────────────────────────────────────────────────
-const ctaInput = document.getElementById('cta-email');
-const ctaBtn   = document.getElementById('cta-btn');
+// ── ONBOARDING EXPERIENCE (conversational, one question at a time) ─────
+(function(){
+  const onb = document.getElementById('onb');
+  const stage = document.getElementById('onb-stage');
+  const bar = document.getElementById('onb-bar');
+  const count = document.getElementById('onb-count');
+  const backBtn = document.getElementById('onb-back');
+  const skipBtn = document.getElementById('onb-skip');
+  const nextBtn = document.getElementById('onb-next');
+  const foot = document.getElementById('onb-foot');
+  if (!onb) return;
 
-function flagInvalid(el, msg) {
-  el.style.borderColor = 'rgba(239,68,68,0.6)';
-  if (msg) { el.dataset.ph = el.placeholder; el.placeholder = msg; el.value = ''; }
-  el.focus();
-  el.addEventListener('input', function clr(){ el.style.borderColor=''; if(el.dataset.ph){el.placeholder=el.dataset.ph;} el.removeEventListener('input',clr); });
-}
+  const data = { url:'', biz:'', about:'', photos:[], logo:[], inspoUrls:[], inspoShots:[], requirements:'', anything:'', name:'', email:'', phone:'' };
 
-function submitCTA() {
-  // Required: Business Name, Your Name, Email, Phone — links all optional
-  const biz   = document.getElementById('cta-biz');
-  const name  = document.getElementById('cta-name');
-  const phone = document.getElementById('cta-phone');
-  const email = ctaInput.value.trim();
+  // step config — keep it human and effortless
+  const steps = [
+    { key:'url',  eyebrow:'Step 1', q:"What's your website?", help:"Paste your current site and we'll start from there. No site yet? Just skip — we build from scratch all the time.", type:'url', optional:true, placeholder:'yourbusiness.com' },
+    { key:'biz',  eyebrow:'Step 2', q:"What's your business called?", help:"Just the name — we'll take care of the rest.", type:'text', placeholder:'Acme Construction' },
+    { key:'about',eyebrow:'Step 3', q:"Tell us about your business", help:"In your own words — what you do, who you help, what makes you different. A sentence or a paragraph, whatever's easy.", type:'textarea', optional:true, placeholder:"We're a family-owned remodeling company in Miami…" },
+    { key:'photos',eyebrow:'Step 4', q:"Got photos?", help:"Team, projects, products, storefront, vehicles, before/afters — anything that represents your business. We'll make them shine.", type:'files', optional:true, accept:'image/*', multiple:true, dropIc:'🖼️', dropT:'Drop photos here or click to upload', dropS:'JPG, PNG · as many as you like' },
+    { key:'logo', eyebrow:'Step 5', q:"Have a logo?", help:"Upload it and we'll build around your brand. No logo? We've got you — skip ahead.", type:'files', optional:true, accept:'image/*,.svg,.pdf', multiple:false, dropIc:'✦', dropT:'Upload your logo', dropS:'PNG, SVG, PDF' },
+    { key:'inspo',eyebrow:'Step 6', q:"Show us what you like", help:"Seen a website you love? Paste a link or drop a screenshot. This tells us more than any design questionnaire ever could.", type:'inspo', optional:true },
+    { key:'requirements',eyebrow:'Step 7', q:"Anything that must be included?", help:"Services, team members, testimonials, booking, locations, contact info, special requests — list whatever matters.", type:'textarea', optional:true, placeholder:"Services we offer, our 3 locations, online booking, customer reviews…" },
+    { key:'anything',eyebrow:'Step 8', q:"Anything else before we start?", help:"Your vision, a vibe, a goal, a worry — anything you'd like us to know. Totally optional.", type:'textarea', optional:true, placeholder:"We want to feel premium but approachable…" },
+    { key:'contact',eyebrow:'Last step', q:"Where do we send it?", help:"We'll send your finished website here in 72 hours — and keep you posted along the way.", type:'contact' }
+  ];
 
-  if (!biz.value.trim())   { flagInvalid(biz);   return; }
-  if (!name.value.trim())  { flagInvalid(name);  return; }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { flagInvalid(ctaInput, 'Enter a valid email address'); return; }
-  if (phone.value.replace(/\D/g,'').length < 7)  { flagInvalid(phone, 'Enter a valid phone number'); return; }
+  let i = 0, started = false;
 
-  ctaInput.style.borderColor = 'rgba(52,211,153,0.5)';
-  ctaBtn.textContent = "✓ Got it — building starts now";
-  ctaBtn.style.background = 'linear-gradient(135deg, #059669, #10B981)';
-  ctaBtn.style.color = '#fff';
-  ctaBtn.disabled = true;
-}
+  function open(prefillUrl){
+    if (prefillUrl) data.url = prefillUrl;
+    i = prefillUrl ? 1 : 0;        // if URL came from hero, skip to business name
+    onb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    started = true;
+    render();
+  }
+  function close(){ onb.classList.remove('open'); document.body.style.overflow=''; }
 
-ctaBtn.addEventListener('click', submitCTA);
-['cta-biz','cta-name','cta-email','cta-phone'].forEach(id => {
-  const el = document.getElementById(id);
-  if (el) el.addEventListener('keydown', e => { if (e.key === 'Enter') submitCTA(); });
-});
+  function esc(s){ return (s||'').replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+  function render(){
+    const s = steps[i];
+    foot.style.display = 'flex';
+    backBtn.disabled = (i===0);
+    skipBtn.style.display = s.optional ? 'inline-block' : 'none';
+    nextBtn.textContent = (i===steps.length-1) ? 'Build My Website →' : 'Continue →';
+    bar.style.width = ((i)/(steps.length))*100 + '%';
+    count.textContent = 'Step ' + (i+1) + ' of ' + steps.length;
+
+    let body = '';
+    if (s.type==='url')      body = `<div class="onb-prefix"><span>🌐</span><input class="onb-input" id="onb-f" type="text" placeholder="${s.placeholder}" value="${esc(data.url)}"/></div>`;
+    else if (s.type==='text')body = `<input class="onb-input" id="onb-f" type="text" placeholder="${s.placeholder}" value="${esc(data.biz)}"/>`;
+    else if (s.type==='textarea'){ const v = s.key==='about'?data.about:(s.key==='requirements'?data.requirements:data.anything); body = `<textarea class="onb-textarea" id="onb-f" placeholder="${s.placeholder}">${esc(v)}</textarea>`; }
+    else if (s.type==='files'){ const arr = s.key==='logo'?data.logo:data.photos;
+      body = `<div class="onb-drop" id="onb-drop"><div class="onb-drop-ic">${s.dropIc}</div><div class="onb-drop-t">${s.dropT}</div><div class="onb-drop-s">${s.dropS}</div><input type="file" id="onb-file" accept="${s.accept}" ${s.multiple?'multiple':''} hidden/></div><div class="onb-thumbs" id="onb-thumbs"></div>`; }
+    else if (s.type==='inspo'){
+      body = `<div class="onb-chip-row"><input class="onb-input" id="onb-f" type="text" placeholder="Paste a website you love…"/><button class="onb-chip-add" id="onb-addchip">Add</button></div>
+        <div class="onb-chips" id="onb-chips"></div>
+        <div class="onb-or">— or —</div>
+        <div class="onb-drop" id="onb-drop"><div class="onb-drop-ic">📸</div><div class="onb-drop-t">Upload a screenshot</div><div class="onb-drop-s">Of any site or style you like</div><input type="file" id="onb-file" accept="image/*" multiple hidden/></div>
+        <div class="onb-thumbs" id="onb-thumbs"></div>`;
+    }
+    else if (s.type==='contact'){
+      body = `<input class="onb-input" id="onb-name" type="text" placeholder="Your name" value="${esc(data.name)}" style="margin-bottom:12px"/>
+        <input class="onb-input" id="onb-email" type="email" placeholder="Email — where we send your website" value="${esc(data.email)}" style="margin-bottom:12px"/>
+        <input class="onb-input" id="onb-phone" type="tel" placeholder="Phone (optional, for faster updates)" value="${esc(data.phone)}"/>`;
+    }
+
+    stage.innerHTML = `<div class="onb-step">
+      <div class="onb-eyebrow">${s.eyebrow}${s.optional?'<span class="onb-opt">Optional</span>':''}</div>
+      <div class="onb-q">${s.q}</div>
+      <div class="onb-help">${s.help}</div>
+      ${body}
+      ${(s.type==='text'||s.type==='url')?'<div class="onb-hint">Press Enter to continue</div>':''}
+    </div>`;
+
+    wire(s);
+    const f = document.getElementById('onb-f') || document.getElementById('onb-name');
+    if (f) setTimeout(()=>f.focus(), 120);
+  }
+
+  function renderThumbs(){
+    const s = steps[i]; const wrap = document.getElementById('onb-thumbs'); if(!wrap) return;
+    const arr = s.type==='inspo' ? data.inspoShots : (s.key==='logo'?data.logo:data.photos);
+    wrap.innerHTML = arr.map((f,idx)=>{
+      const isImg = f.type && f.type.startsWith('image/');
+      const inner = isImg ? `<img src="${URL.createObjectURL(f)}"/>` : `<div class="onb-thumb-doc">📄</div>`;
+      return `<div class="onb-thumb">${inner}<button class="onb-thumb-x" data-x="${idx}">&times;</button></div>`;
+    }).join('');
+    wrap.querySelectorAll('.onb-thumb-x').forEach(b=>b.addEventListener('click',()=>{ arr.splice(+b.dataset.x,1); renderThumbs(); }));
+  }
+  function renderChips(){
+    const wrap = document.getElementById('onb-chips'); if(!wrap) return;
+    wrap.innerHTML = data.inspoUrls.map((u,idx)=>`<span class="onb-chip">${esc(u)}<button data-c="${idx}">&times;</button></span>`).join('');
+    wrap.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{ data.inspoUrls.splice(+b.dataset.c,1); renderChips(); }));
+  }
+
+  function wire(s){
+    if (s.type==='files' || s.type==='inspo'){
+      const drop = document.getElementById('onb-drop'); const file = document.getElementById('onb-file');
+      const target = s.type==='inspo' ? data.inspoShots : (s.key==='logo'?data.logo:data.photos);
+      if (drop && file){
+        drop.addEventListener('click', ()=>file.click());
+        file.addEventListener('change', ()=>{ for(const f of file.files){ if(!s.multiple) target.length=0; target.push(f);} renderThumbs(); });
+        ['dragover','dragenter'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('drag');}));
+        ['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('drag');}));
+        drop.addEventListener('drop', e=>{ for(const f of e.dataTransfer.files){ if(!s.multiple) target.length=0; target.push(f);} renderThumbs(); });
+      }
+      renderThumbs();
+    }
+    if (s.type==='inspo'){
+      const add = document.getElementById('onb-addchip'); const inp = document.getElementById('onb-f');
+      const addChip = ()=>{ const v=inp.value.trim(); if(v){ data.inspoUrls.push(v); inp.value=''; renderChips(); inp.focus(); } };
+      if(add) add.addEventListener('click', addChip);
+      if(inp) inp.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); addChip(); } });
+      renderChips();
+    }
+    const single = document.getElementById('onb-f');
+    if (single && (s.type==='text'||s.type==='url')) single.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); next(); } });
+  }
+
+  function collect(){
+    const s = steps[i]; const f = document.getElementById('onb-f');
+    if (s.type==='url' && f) data.url = f.value.trim();
+    else if (s.type==='text' && f) data.biz = f.value.trim();
+    else if (s.type==='textarea' && f){ if(s.key==='about')data.about=f.value.trim(); else if(s.key==='requirements')data.requirements=f.value.trim(); else data.anything=f.value.trim(); }
+    else if (s.type==='contact'){ data.name=(document.getElementById('onb-name')||{}).value?.trim()||''; data.email=(document.getElementById('onb-email')||{}).value?.trim()||''; data.phone=(document.getElementById('onb-phone')||{}).value?.trim()||''; }
+  }
+
+  function next(){
+    const s = steps[i];
+    collect();
+    // gentle required checks
+    if (s.key==='biz' && !data.biz){ flash('onb-f','We just need your business name'); return; }
+    if (s.key==='contact'){
+      const em=document.getElementById('onb-email');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)){ flash('onb-email','Enter a valid email so we can send it'); return; }
+    }
+    if (i < steps.length-1){ i++; render(); }
+    else finish();
+  }
+  function flash(id,msg){ const el=document.getElementById(id); if(!el)return; el.style.borderColor='rgba(239,68,68,0.7)'; if(el.parentElement.classList.contains('onb-prefix'))el.parentElement.style.borderColor='rgba(239,68,68,0.7)'; el.placeholder=msg; el.focus(); el.addEventListener('input',function c(){el.style.borderColor='';if(el.parentElement.classList.contains('onb-prefix'))el.parentElement.style.borderColor='';el.removeEventListener('input',c);}); }
+
+  function finish(){
+    foot.style.display = 'none';
+    bar.style.width = '100%'; count.textContent='';
+    // (front-end demonstration — data object ready for backend/email wiring)
+    window.UNVEILED_SUBMISSION = { ...data, photos:data.photos.map(f=>f.name), logo:data.logo.map(f=>f.name), inspoShots:data.inspoShots.map(f=>f.name) };
+    const first = (data.name||'').split(' ')[0];
+    stage.innerHTML = `<div class="onb-done">
+      <div class="unv-mark sphere-sys as-logo"><div class="ss-glow"></div><div class="ss-orbit"></div><div class="ss-core"><div class="ss-core-f"><img class="ss-core-i" src="sphere-core.png" alt=""/></div></div></div>
+      <div class="onb-done-h">${first?('Thank you, '+esc(first)+'.'):'You\'re all set.'}<br/><span class="g">We're on it.</span></div>
+      <div class="onb-done-p">That's everything we need. From here, <strong>we do the heavy lifting</strong> — you'll have a complete, custom website to review in <strong>72 hours</strong>. Keep an eye on your inbox.</div>
+      <div class="onb-steps-next">
+        <div class="onb-sn"><div class="onb-sn-n">1</div><div><div class="onb-sn-t">A confirmation is on its way</div><div class="onb-sn-s">Sent to ${esc(data.email||'your email')} right now.</div></div></div>
+        <div class="onb-sn"><div class="onb-sn-n">2</div><div><div class="onb-sn-t">We research & design</div><div class="onb-sn-s">We study your business and your competitors, then build.</div></div></div>
+        <div class="onb-sn"><div class="onb-sn-n">3</div><div><div class="onb-sn-t">Your live preview in 72 hours</div><div class="onb-sn-s">See it, love it, then decide. No payment until you do.</div></div></div>
+      </div>
+      <div><button class="onb-next" id="onb-finish">Back to site</button></div>
+    </div>`;
+    if (typeof confetti==='undefined'){}
+    document.getElementById('onb-finish').addEventListener('click', close);
+  }
+
+  // controls
+  nextBtn.addEventListener('click', next);
+  skipBtn.addEventListener('click', ()=>{ collect(); if(i<steps.length-1){i++;render();} else finish(); });
+  backBtn.addEventListener('click', ()=>{ collect(); if(i>0){i--;render();} });
+  document.getElementById('onb-close').addEventListener('click', close);
+  onb.addEventListener('keydown', e=>{ if(e.key==='Escape') close(); });
+
+  // expose opener + wire launch buttons
+  window.openOnboarding = open;
+  document.querySelectorAll('.onb-launch').forEach(b=>b.addEventListener('click', ()=>open()));
+})();
 
 // ── Smooth anchor links ───────────────────────────────────────────────
 document.querySelectorAll('a[href^="#"]').forEach(a => {
@@ -1988,17 +2221,12 @@ function startPreview() {
   const val = heroUrl ? heroUrl.value.trim() : '';
   setAnalyzing(true);
   heroPrevBtn.textContent = 'Analyzing…';
-  // brief "machine analyzing" beat, then hand off to the intake form
+  // brief "machine analyzing" beat, then open the onboarding experience
   setTimeout(() => {
     heroPrevBtn.textContent = 'See My Preview';
-    const target = document.getElementById('cta');
-    if (target) target.scrollIntoView({ behavior: 'smooth' });
-    // prefill the website field in the intake form if provided
-    const siteField = document.getElementById('cta-site');
-    if (siteField && val) siteField.value = val;
-    const nameField = document.getElementById('cta-name');
-    if (nameField) setTimeout(() => nameField.focus(), 700);
-  }, 1400);
+    setAnalyzing(false);
+    if (window.openOnboarding) window.openOnboarding(val);
+  }, 1200);
 }
 
 if (heroPrevBtn) heroPrevBtn.addEventListener('click', startPreview);
