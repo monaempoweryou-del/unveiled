@@ -265,25 +265,44 @@
     }
     @keyframes ssGlow { 0%,100%{opacity:.62; transform:translate(-50%,-50%) scale(.96)} 50%{opacity:1; transform:translate(-50%,-50%) scale(1.04)} }
 
-    /* orbit ring sits BEHIND the sphere so screens never block it */
-    .ss-orbit { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+    /* orbit container — NO stacking context, so screens interleave in front of/behind the sphere */
+    .ss-orbit { position: absolute; inset: 0; pointer-events: none; }
+
+    /* thin purple orbit lines (back + front arc), built by JS */
+    .ss-ring { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+    .ss-ring-back  { z-index: 3; }   /* behind the sphere (sphere z5) */
+    .ss-ring-front { z-index: 7; }   /* in front of the sphere */
+    .ss-ring ellipse, .ss-ring path {
+      fill: none; stroke: rgba(178,138,252,0.42); stroke-width: 1px;
+      vector-effect: non-scaling-stroke; filter: drop-shadow(0 0 3px rgba(150,100,245,0.55));
+    }
+    .ss-ring-front path { stroke: rgba(196,162,255,0.5); }
+
     .orbit-screen {
       position: absolute; top: 50%; left: 50%;
-      width: 25%; max-width: 138px; height: auto;
+      width: 24%; max-width: 130px; height: auto;
       will-change: transform, opacity; pointer-events: none;
       transform: translate(-50%,-50%);
     }
+    .orbit-screen.mini { width: 13.5%; max-width: 76px; }
 
-    /* sphere ON TOP — gentle left/right turn (globe by hand), subtle float, breathing glow */
-    .ss-core { position: absolute; inset: 0; display:flex; align-items:center; justify-content:center; z-index: 3; will-change: transform; transition: transform .45s ease-out; }
-    .ss-core-f { display:flex; align-items:center; justify-content:center; width:100%; height:100%; animation: ssFloat 18s ease-in-out infinite; }
-    .ss-core-i {
-      width: 64%; height: auto; filter: drop-shadow(0 24px 54px rgba(80,40,160,0.42));
-      transform-style: preserve-3d; animation: ssGlobe 18s ease-in-out infinite; will-change: transform;
+    .orbit-dot {
+      position: absolute; top: 50%; left: 50%; width: 7px; height: 7px; border-radius: 50%;
+      pointer-events: none; will-change: transform, opacity; transform: translate(-50%,-50%);
+      background: radial-gradient(circle, rgba(222,200,255,0.95) 0%, rgba(150,100,245,0.5) 70%, transparent 100%);
+      box-shadow: 0 0 8px rgba(150,100,245,0.75);
     }
-    /* turn ONLY left-right on the vertical axis — never full spin, never vertical/diagonal */
-    @keyframes ssGlobe { 0%,100%{ transform: rotateY(-11deg); } 50%{ transform: rotateY(11deg); } }
-    @keyframes ssFloat { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-8px); } }
+
+    /* sphere — gentle left/right turn (globe by hand), slow + opposite to the orbit */
+    .ss-core { position: absolute; inset: 0; display:flex; align-items:center; justify-content:center; z-index: 5; will-change: transform; transition: transform .45s ease-out; }
+    .ss-core-f { display:flex; align-items:center; justify-content:center; width:100%; height:100%; animation: ssFloat 20s ease-in-out infinite; }
+    .ss-core-i {
+      width: 62%; height: auto; filter: drop-shadow(0 24px 54px rgba(80,40,160,0.42));
+      transform-style: preserve-3d; animation: ssGlobe 26s ease-in-out infinite; will-change: transform;
+    }
+    /* turn ONLY left-right on the vertical axis — slow, visible, never full spin/vertical/diagonal */
+    @keyframes ssGlobe { 0%,100%{ transform: rotateY(-17deg); } 50%{ transform: rotateY(17deg); } }
+    @keyframes ssFloat { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-7px); } }
 
     /* size modifiers for reuse */
     .sphere-sys.sm  { max-width: 360px; }
@@ -1315,17 +1334,10 @@
       <div class="sphere-sys" id="sphere-core">
         <div class="ss-glow"></div>
         <div class="scan-ring"></div>
-        <!-- orbit ring: upright screens traveling a flat horizontal path BEHIND the sphere -->
-        <div class="ss-orbit">
-          <img class="orbit-screen" src="orbit-screen-1.png" alt="" />
-          <img class="orbit-screen" src="orbit-screen-2.png" alt="" />
-          <img class="orbit-screen" src="orbit-screen-3.png" alt="" />
-          <img class="orbit-screen" src="orbit-screen-4.png" alt="" />
-          <img class="orbit-screen" src="orbit-screen-5.png" alt="" />
-          <img class="orbit-screen" src="orbit-screen-6.png" alt="" />
-        </div>
-        <!-- sphere (planet) — gentle left/right turn, sits on top -->
-        <div class="ss-core parallax" data-depth="6"><div class="ss-core-f"><img class="ss-core-i" src="sphere-core.png" alt="UNVEILED — a sphere of websites" /></div></div>
+        <!-- orbit system (lines + upright screens + particles) — built by JS, interleaves front/behind -->
+        <div class="ss-orbit"></div>
+        <!-- sphere (planet) — gentle left/right turn -->
+        <div class="ss-core"><div class="ss-core-f"><img class="ss-core-i" src="sphere-core.png" alt="UNVEILED — a sphere of websites" /></div></div>
       </div>
     </div>
 
@@ -1515,14 +1527,7 @@
 
     <div class="sphere-sys reveal d2" style="margin: 20px auto 56px;">
       <div class="ss-glow"></div>
-      <div class="ss-orbit">
-        <img class="orbit-screen" src="orbit-screen-1.png" alt="" />
-        <img class="orbit-screen" src="orbit-screen-2.png" alt="" />
-        <img class="orbit-screen" src="orbit-screen-3.png" alt="" />
-        <img class="orbit-screen" src="orbit-screen-4.png" alt="" />
-        <img class="orbit-screen" src="orbit-screen-5.png" alt="" />
-        <img class="orbit-screen" src="orbit-screen-6.png" alt="" />
-      </div>
+      <div class="ss-orbit"></div>
       <div class="ss-core"><div class="ss-core-f"><img class="ss-core-i" src="sphere-core.png" alt="Thousands of websites, built by UNVEILED" /></div></div>
     </div>
 
@@ -1728,14 +1733,7 @@
   <div class="prob-stars"></div>
   <div class="sphere-sys" style="max-width: 300px; margin: 0 auto 22px;">
     <div class="ss-glow"></div>
-    <div class="ss-orbit">
-      <img class="orbit-screen" src="orbit-screen-1.png" alt="" />
-      <img class="orbit-screen" src="orbit-screen-2.png" alt="" />
-      <img class="orbit-screen" src="orbit-screen-3.png" alt="" />
-      <img class="orbit-screen" src="orbit-screen-4.png" alt="" />
-      <img class="orbit-screen" src="orbit-screen-5.png" alt="" />
-      <img class="orbit-screen" src="orbit-screen-6.png" alt="" />
-    </div>
+    <div class="ss-orbit"></div>
     <div class="ss-core"><div class="ss-core-f"><img class="ss-core-i" src="sphere-core.png" alt="UNVEILED" /></div></div>
   </div>
   <img src="unveiled-logo-web.png" alt="UNVEILED" class="foot-banner-logo" />
@@ -1855,43 +1853,77 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   });
 });
 
-// ── UNVEILED sphere: flat horizontal orbit of upright screens (all instances) ──
+// ── UNVEILED sphere: living horizontal orbit (front/back depth, lines, particles) ──
 (function(){
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const systems = Array.from(document.querySelectorAll('.sphere-sys'))
-    .map(sys => ({ sys, screens: Array.from(sys.querySelectorAll('.orbit-screen')) }))
-    .filter(s => s.screens.length);
+  const TILES = ['orbit-screen-1.png','orbit-screen-2.png','orbit-screen-3.png','orbit-screen-4.png','orbit-screen-5.png','orbit-screen-6.png'];
+  const TAU = Math.PI * 2;
+  const rnd = (a,b) => a + Math.random()*(b-a);
+  const SPHERE_Z = 5;   // matches .ss-core z-index
+
+  const RING_BACK  = '<svg class="ss-ring ss-ring-back" viewBox="0 0 100 100" preserveAspectRatio="none"><ellipse cx="50" cy="50" rx="49" ry="18"/></svg>';
+  const RING_FRONT = '<svg class="ss-ring ss-ring-front" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M1.5,50 A48.5,18 0 0 0 98.5,50"/></svg>';
+
+  const systems = [];
+  document.querySelectorAll('.sphere-sys').forEach(sys => {
+    const orbit = sys.querySelector('.ss-orbit');
+    if (!orbit) return;
+    orbit.innerHTML = '';
+    orbit.insertAdjacentHTML('beforeend', RING_BACK);
+    const els = [];
+
+    // large screens — base speed, stay level
+    for (let i=0;i<6;i++){
+      const im = document.createElement('img');
+      im.className='orbit-screen'; im.src=TILES[i]; im.alt='';
+      orbit.appendChild(im);
+      els.push({ el:im, phase:i/6, spd:1.0, rx:rnd(0.97,1.03), ry:rnd(0.96,1.04), wob:0.006, wf:rnd(0.35,0.6), size:1.0 });
+    }
+    // smaller screens — slightly faster
+    for (let i=0;i<4;i++){
+      const im = document.createElement('img');
+      im.className='orbit-screen mini'; im.src=TILES[(i*2)%6]; im.alt='';
+      orbit.appendChild(im);
+      els.push({ el:im, phase:(i/4)+0.11, spd:1.26, rx:rnd(0.82,0.95), ry:rnd(1.0,1.12), wob:0.012, wf:rnd(0.5,0.85), size:1.0 });
+    }
+    // tiny particles / digital stardust — fastest, organic drift
+    for (let i=0;i<12;i++){
+      const d = document.createElement('span');
+      d.className='orbit-dot';
+      orbit.appendChild(d);
+      els.push({ el:d, phase:Math.random(), spd:rnd(1.4,1.75), rx:rnd(0.78,1.12), ry:rnd(0.85,1.18), wob:rnd(0.02,0.04), wf:rnd(0.6,1.3), size:rnd(0.5,1.1), dot:true });
+    }
+    orbit.insertAdjacentHTML('beforeend', RING_FRONT);
+    systems.push({ sys, els });
+  });
   if (!systems.length) return;
 
-  const TAU = Math.PI * 2;
   const start = performance.now();
-
-  function layout(now){
+  function frame(now){
     const t = (now - start) / 1000;
-    for (const { sys, screens } of systems){
+    for (const { sys, els } of systems){
       const w = sys.clientWidth, h = sys.clientHeight;
       if (!w) continue;
-      const a = w * 0.50;      // horizontal radius — ring is wider than the sphere
-      const b = h * 0.085;     // very flat vertical — a level, edge-on ring (no vertical movement)
-      const n = screens.length;
-      const base = reduce ? 0.7 : t * 0.16;   // slow, calm revolution
-      for (let i = 0; i < n; i++){
-        const ang = base + i * (TAU / n);
-        const x = a * Math.cos(ang);
-        const y = b * Math.sin(ang);
-        const front = (Math.sin(ang) + 1) / 2;       // 0 = far side, 1 = near side
-        const scale = 0.74 + 0.26 * front;            // subtle depth, no perspective tilt
-        const op    = 0.5  + 0.5  * front;
-        const el = screens[i];
-        // screens stay perfectly upright — only translate + uniform scale, never rotate
-        el.style.transform = `translate(-50%,-50%) translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) scale(${scale.toFixed(3)})`;
-        el.style.opacity = op.toFixed(2);
-        el.style.zIndex = String(Math.round(front * 10));
+      const A = w * 0.50;     // horizontal radius (wider than sphere)
+      const B = h * 0.18;     // vertical radius — enough for real front/back, still a flat ring
+      for (const o of els){
+        const ang  = (reduce ? 0.7 : t * 0.14 * o.spd) + o.phase * TAU;
+        const wob  = o.wob * Math.sin(t * o.wf + o.phase * TAU) * h;   // subtle organic drift
+        const x    = A * o.rx * Math.cos(ang);
+        const y    = B * o.ry * Math.sin(ang) + wob;
+        const front = (Math.sin(ang) + 1) / 2;       // 0 far(behind) .. 1 near(in front)
+        const sc   = o.size * (0.72 + 0.28 * front);
+        const op   = (o.dot ? 0.3 : 0.42) + 0.55 * front;
+        const e = o.el;
+        e.style.transform = `translate(-50%,-50%) translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) scale(${sc.toFixed(3)})`;
+        e.style.opacity = op.toFixed(2);
+        // interleave with the sphere: near side in front, far side behind
+        e.style.zIndex = front > 0.5 ? String(SPHERE_Z + 1 + Math.round(front*6)) : String(1 + Math.round(front*6));
       }
     }
-    if (!reduce) requestAnimationFrame(layout);
+    if (!reduce) requestAnimationFrame(frame);
   }
-  requestAnimationFrame(layout);
+  requestAnimationFrame(frame);
 })();
 
 // ── Hero URL bar: "analyze" reaction + scroll to intake form ──────────
