@@ -527,13 +527,16 @@
 
     .outcome-value {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(20px, 2.5vw, 28px); font-weight: 700;
-      line-height: 1.1; margin-bottom: 8px;
-      background: linear-gradient(180deg, #fff 0%, #C9B6F5 140%);
+      font-size: clamp(17px, 1.7vw, 20px); font-weight: 700;
+      line-height: 1.18; margin-bottom: 9px; min-height: 2.36em;
+      display: flex; align-items: flex-end; justify-content: center;
+      background: linear-gradient(180deg, #fff 0%, #C9B6F5 160%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
 
-    .outcome-desc { font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.5; }
+    .outcome-desc { font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.55; }
+    .outcome-proof { position: relative; z-index: 2; text-align: center; padding: 8px 24px 40px; font-size: 14px; color: rgba(255,255,255,0.42); }
+    .outcome-proof strong { color: #A78BFA; font-weight: 600; }
 
     /* ══════ FIRST IMPRESSION SECTION ══════ */
     #firstimpression {
@@ -1420,7 +1423,7 @@
     <img class="unv-word" src="wordmark-dark.png" alt="UNVEILED" />
   </div>
   <ul class="nav-links">
-    <li><a href="#showcase">Our Work</a></li>
+    <li><a href="#showcase">Transformations</a></li>
     <li><a href="#how">How It Works</a></li>
     <li><a href="#comparison">vs. Agencies</a></li>
   </ul>
@@ -1484,26 +1487,27 @@
 <div class="outcome-band">
   <div class="outcome-inner">
     <div class="outcome-stat reveal">
-      <div class="outcome-icon">✨</div>
-      <div class="outcome-value">Look Better</div>
-      <div class="outcome-desc">A digital presence that finally reflects the quality of your business.</div>
+      <div class="outcome-icon">👁️</div>
+      <div class="outcome-value">Make a stronger first impression</div>
+      <div class="outcome-desc">Instantly communicate credibility, professionalism, and trust — before a customer ever calls.</div>
     </div>
     <div class="outcome-stat reveal d1">
       <div class="outcome-icon">🔍</div>
-      <div class="outcome-value">Get Found</div>
-      <div class="outcome-desc">Built for how people search now — Google <em>and</em> AI discovery, not the web of 2010.</div>
+      <div class="outcome-value">Be easier to discover</div>
+      <div class="outcome-desc">Customers aren't only Googling anymore — they use maps, AI tools, social, and referrals. Show up wherever they look.</div>
     </div>
     <div class="outcome-stat reveal d2">
-      <div class="outcome-icon">⚙️</div>
-      <div class="outcome-value">Operate Better</div>
-      <div class="outcome-desc">The first step into systems that run your business — not just a page.</div>
+      <div class="outcome-icon">⚡</div>
+      <div class="outcome-value">Save time, follow up faster</div>
+      <div class="outcome-desc">Better communication and organization. Fewer missed opportunities, less manual work, a smoother customer experience.</div>
     </div>
     <div class="outcome-stat reveal d3">
-      <div class="outcome-icon">⏱️</div>
-      <div class="outcome-value">In 72 Hours</div>
-      <div class="outcome-desc">See the proof live and free — before you ever pay a cent.</div>
+      <div class="outcome-icon">🏆</div>
+      <div class="outcome-value">Win more opportunities</div>
+      <div class="outcome-desc">A stronger presence helps customers choose you over competitors — before the conversation even starts.</div>
     </div>
   </div>
+  <div class="outcome-proof">All of it — built, live, and free to preview in <strong>72 hours</strong>.</div>
 </div>
 
 <!-- ██ 3. FIRST IMPRESSION ██ -->
@@ -1593,9 +1597,9 @@
 <section id="showcase">
   <div class="showcase-in">
     <div class="showcase-header">
-      <div class="eyebrow-light reveal">Completed Builds</div>
+      <div class="eyebrow-light reveal">Real Transformations</div>
       <h2 class="showcase-hl reveal d1">These aren't promises.<br /><span class="gv">These are receipts.</span></h2>
-      <p class="showcase-sub reveal d2">Every site below was built custom, deployed live, and approved by a real business owner before a payment was made.</p>
+      <p class="showcase-sub reveal d2">Real businesses, transformed. Each one now shows up online the way their work deserves — built, live, and approved before a single dollar changed hands.</p>
     </div>
 
     <div class="showcase-cards">
@@ -1703,7 +1707,7 @@
   <div class="how-inner">
     <div class="eyebrow-light reveal">The Process</div>
     <h2 class="showcase-hl reveal d1" style="margin-bottom:12px">You drop your link.<br /><span style="background:var(--grad-v);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">We do the rest.</span></h2>
-    <p class="showcase-sub reveal d2">No proposals. No deposits. No risk. Here's exactly what happens after you enter your website.</p>
+    <p class="showcase-sub reveal d2">No proposals. No deposits. No risk. Here's how your business gets transformed — while you do almost nothing.</p>
 
     <div class="how-grid">
       <div class="how-card reveal">
@@ -1723,9 +1727,9 @@
       <div class="how-card reveal d2">
         <div class="how-num">03</div>
         <div class="how-icon">⚡</div>
-        <h3>We design your new website</h3>
-        <p>Custom-designed, written, and built into a fully functional live site. You get the finished thing — never a mockup.</p>
-        <div class="how-note">Custom. Mobile-first. SEO-ready.</div>
+        <h3>We design your new presence</h3>
+        <p>Custom-designed, written, and built into a living, professional presence customers instantly trust. You get the finished thing — never a mockup.</p>
+        <div class="how-note">Custom. Mobile-first. Built to be found.</div>
       </div>
       <div class="how-card reveal d3">
         <div class="how-num">04</div>
@@ -1772,8 +1776,8 @@
     <div class="cta-eyebrow reveal">Your preview awaits</div>
 
     <h2 class="cta-hl reveal d1">
-      Your business could look<br />
-      <span class="gv">dramatically better.</span>
+      Your business could look, get found,<br />
+      and <span class="gv">operate dramatically better.</span>
     </h2>
 
     <p class="cta-sub reveal d2">
@@ -1845,7 +1849,7 @@
           </div>
           <img class="unv-word" src="wordmark-light.png" alt="UNVEILED" />
         </div>
-        <p class="foot-tag">We build your website before you pay. That's how confident we are in our work.</p>
+        <p class="foot-tag">We help businesses become impossible to ignore — online, on mobile, and everywhere customers look.</p>
         <div class="foot-social">
           <a class="foot-soc" href="#" aria-label="X">X</a>
           <a class="foot-soc" href="#" aria-label="LinkedIn">in</a>
@@ -1855,7 +1859,7 @@
       <div class="foot-col">
         <h4>Work</h4>
         <ul>
-          <li><a href="#showcase">Completed Builds</a></li>
+          <li><a href="#showcase">Real Transformations</a></li>
           <li><a href="#firstimpression">Before &amp; After</a></li>
           <li><a href="#comparison">vs. Agencies</a></li>
         </ul>
