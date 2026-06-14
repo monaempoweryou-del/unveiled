@@ -248,104 +248,64 @@
       display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800;
     }
 
-    /* ══════ HERO SPHERE — LAYERED SYSTEM ══════ */
+    /* ══════ SPHERE SYSTEM — reusable two-layer (planet + orbit) ══════ */
     .hero-visual {
       position: relative; display: flex; align-items: center; justify-content: center;
       min-height: 540px; margin-top: 8px;
-      perspective: 1200px;
     }
 
-    /* LAYER 1 — breathing glow (independent) */
-    .sphere-glow {
-      position: absolute; top: 50%; left: 50%;
-      width: 540px; height: 540px; transform: translate(-50%, -50%);
-      border-radius: 50%; pointer-events: none; z-index: 1;
-      background: radial-gradient(circle, rgba(140,90,245,0.42) 0%, rgba(108,60,224,0.18) 38%, transparent 68%);
-      filter: blur(20px);
-      animation: glowPulse 7s ease-in-out infinite;
-      will-change: transform, opacity;
-    }
-    @keyframes glowPulse {
-      0%,100% { opacity: 0.68; transform: translate(-50%,-50%) scale(0.95); }
-      50%     { opacity: 1;    transform: translate(-50%,-50%) scale(1.05); }
-    }
+    /* the system: glow (L1) + sphere core (L2, below) + orbit layer (L3, above) */
+    .sphere-sys { position: relative; width: 100%; max-width: 540px; aspect-ratio: 1 / 0.9; }
 
-    /* faint rotating orbit rings (independent) */
-    .orbit-ring {
-      position: absolute; top: 50%; left: 50%; border-radius: 50%;
-      border: 1px solid rgba(124,70,235,0.18); pointer-events: none; z-index: 1;
-      transform: translate(-50%,-50%) rotateX(74deg);
+    .ss-glow {
+      position: absolute; top: 50%; left: 50%; width: 74%; height: 74%;
+      transform: translate(-50%,-50%); border-radius: 50%; pointer-events: none; z-index: 1;
+      background: radial-gradient(circle, rgba(140,90,245,0.40) 0%, rgba(108,60,224,0.16) 40%, transparent 70%);
+      filter: blur(22px); animation: ssGlow 7s ease-in-out infinite; will-change: transform, opacity;
     }
-    .orbit-ring.r1 { width: 118%; height: 118%; animation: ringSpin 38s linear infinite; }
-    .orbit-ring.r2 { width: 138%; height: 138%; border-color: rgba(124,70,235,0.10); animation: ringSpin 60s linear infinite reverse; }
-    @keyframes ringSpin { to { transform: translate(-50%,-50%) rotateX(74deg) rotateZ(360deg); } }
+    @keyframes ssGlow { 0%,100%{opacity:.62; transform:translate(-50%,-50%) scale(.95)} 50%{opacity:1; transform:translate(-50%,-50%) scale(1.05)} }
 
-    /* LAYER 2 — the sphere core (very subtle, slow) */
-    .sphere-core {
-      position: relative; z-index: 2; width: 100%; max-width: 460px;
-      will-change: transform; transition: transform 0.6s cubic-bezier(0.22,1,0.36,1);
+    /* each layer: parallax wrapper > float wrapper > spinning image (so transforms never collide) */
+    .ss-core, .ss-orbit {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      will-change: transform; transition: transform .45s ease-out;
     }
-    .sphere-img {
-      display: block; width: 100%; height: auto;
-      filter: drop-shadow(0 30px 60px rgba(80,40,160,0.32));
-      animation: sphereFloat 18s ease-in-out infinite, sphereSpin 90s linear infinite;
-      will-change: transform;
-    }
-    /* gentle float + slow independent rotation (planet) */
-    @keyframes sphereFloat {
-      0%,100% { transform: translateY(0); }
-      50%     { transform: translateY(-12px); }
-    }
-    @keyframes sphereSpin {
-      from { rotate: -2deg; } 50% { rotate: 2deg; } to { rotate: -2deg; }
-    }
+    .ss-core  { z-index: 2; }
+    .ss-orbit { z-index: 3; }
+    .ss-core-f, .ss-orbit-f { display:flex; align-items:center; justify-content:center; width:100%; height:100%; }
+    .ss-core-f  { animation: ssFloat 17s ease-in-out infinite; }
+    .ss-orbit-f { animation: ssOrbitDrift 15s ease-in-out infinite; }
+    /* sphere = STABLE planet: gentle float + extremely subtle tilt (no wheel-spin) */
+    .ss-core-i  { width: 70%;  height: auto; filter: drop-shadow(0 24px 54px rgba(80,40,160,0.42)); animation: ssTilt 26s ease-in-out infinite; will-change: transform; }
+    /* orbit = satellites: slow continuous counter-clockwise revolution (independent) */
+    .ss-orbit-i { width: 122%; height: auto; animation: spinCCW 95s linear infinite; will-change: transform; }
 
-    /* LAYER 3 — independent orbiting fragments (satellites) */
-    .frag { position: absolute; z-index: 4; will-change: transform; transition: transform 0.35s ease-out; }
-    .frag-in {
-      width: 44px; height: 34px; border-radius: 6px;
-      background: linear-gradient(135deg, rgba(150,105,250,0.62), rgba(108,60,224,0.42));
-      border: 1px solid rgba(190,160,255,0.55);
-      box-shadow: 0 10px 24px rgba(108,60,224,0.30), inset 0 1px 0 rgba(255,255,255,0.25);
-      backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
-      position: relative; overflow: hidden; will-change: transform;
-    }
-    .frag-in.small { width: 30px; height: 24px; }
-    /* faint mini-UI lines to echo the website fragments in the sphere art */
-    .frag-in::before { content:''; position:absolute; top:5px; left:5px; right:5px; height:4px; border-radius:2px; background:rgba(255,255,255,0.45); }
-    .frag-in::after  { content:''; position:absolute; top:13px; left:5px; width:60%; height:3px; border-radius:2px; background:rgba(255,255,255,0.28); box-shadow:0 6px 0 rgba(255,255,255,0.22), 0 12px 0 rgba(255,255,255,0.16); }
+    @keyframes ssTilt  { 0%,100%{ transform: rotate(-1.6deg); } 50%{ transform: rotate(1.6deg); } }
+    @keyframes spinCCW { to { transform: rotate(-360deg); } }
+    @keyframes ssFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-13px)} }
+    @keyframes ssOrbitDrift { 0%,100%{transform:translateY(0); opacity:.88} 50%{transform:translateY(9px); opacity:1} }
 
-    .f1 { top: 6%;  left: 4%;  } .f1 .frag-in { animation: frag1 17s ease-in-out infinite; }
-    .f2 { top: 24%; right: 2%; } .f2 .frag-in { animation: frag2 21s ease-in-out infinite; }
-    .f3 { bottom: 10%; left: 8%; } .f3 .frag-in { animation: frag3 19s ease-in-out infinite; }
-    .f4 { bottom: 22%; right: 6%; } .f4 .frag-in { animation: frag4 23s ease-in-out infinite; }
-    .f5 { top: 46%; left: -2%; } .f5 .frag-in { animation: frag5 16s ease-in-out infinite; }
-    .f6 { top: 60%; right: 12%; } .f6 .frag-in { animation: frag2 25s ease-in-out infinite; }
+    /* size modifiers for reuse */
+    .sphere-sys.sm  { max-width: 360px; }
+    .sphere-sys.xs  { max-width: 200px; }
 
-    @keyframes frag1 { 0%,100%{transform:translate(0,0) rotate(-8deg)}  50%{transform:translate(14px,-22px) rotate(4deg)} }
-    @keyframes frag2 { 0%,100%{transform:translate(0,0) rotate(6deg)}   50%{transform:translate(-16px,18px) rotate(-6deg)} }
-    @keyframes frag3 { 0%,100%{transform:translate(0,0) rotate(-4deg)}  50%{transform:translate(12px,-16px) rotate(8deg)} }
-    @keyframes frag4 { 0%,100%{transform:translate(0,0) rotate(10deg)}  50%{transform:translate(-12px,-14px) rotate(-2deg)} }
-    @keyframes frag5 { 0%,100%{transform:translate(0,0) rotate(-6deg)}  50%{transform:translate(10px,20px) rotate(2deg)} }
-
-    /* analyzing state */
-    .hero-visual.analyzing .sphere-glow { animation-duration: 2s; background: radial-gradient(circle, rgba(150,100,255,0.6) 0%, rgba(108,60,224,0.26) 38%, transparent 68%); }
-    .hero-visual.analyzing .sphere-img  { filter: drop-shadow(0 30px 70px rgba(108,60,224,0.5)) brightness(1.06) saturate(1.12); }
-    .hero-visual.analyzing .frag-in     { box-shadow: 0 12px 30px rgba(108,60,224,0.5), inset 0 1px 0 rgba(255,255,255,0.35); border-color: rgba(210,180,255,0.8); }
-    .hero-visual.analyzing .orbit-ring  { border-color: rgba(124,70,235,0.4); }
+    /* analyzing state (hero only) */
+    .hero-visual.analyzing .ss-glow    { animation-duration: 2.4s; background: radial-gradient(circle, rgba(150,100,255,0.58) 0%, rgba(108,60,224,0.24) 40%, transparent 70%); }
+    .hero-visual.analyzing .ss-core-i  { filter: drop-shadow(0 24px 62px rgba(108,60,224,0.55)) brightness(1.05) saturate(1.12); }
+    .hero-visual.analyzing .ss-orbit-i { animation-duration: 38s; }
 
     .scan-ring {
-      position: absolute; top: 50%; left: 50%; width: 60%; height: 60%;
+      position: absolute; top: 50%; left: 50%; width: 52%; height: 52%;
       transform: translate(-50%,-50%); border-radius: 50%;
-      border: 2px solid rgba(124,70,235,0.55); opacity: 0; pointer-events: none; z-index: 3;
+      border: 2px solid rgba(124,70,235,0.5); opacity: 0; pointer-events: none; z-index: 2;
     }
     .hero-visual.analyzing .scan-ring { animation: scanRing 1.8s ease-out infinite; }
     @keyframes scanRing {
       0%   { opacity: 0.8; transform: translate(-50%,-50%) scale(0.5); }
-      100% { opacity: 0;   transform: translate(-50%,-50%) scale(1.7); }
+      100% { opacity: 0;   transform: translate(-50%,-50%) scale(1.8); }
     }
     @media (prefers-reduced-motion: reduce) {
-      .sphere-img, .frag-in, .sphere-glow, .orbit-ring { animation: none !important; }
+      .ss-core-i, .ss-orbit-i, .ss-core-f, .ss-orbit-f, .ss-glow { animation: none !important; }
     }
 
     .site-chrome {
@@ -1249,9 +1209,10 @@
       .hero-sub { margin: 0 auto 22px; }
       .hero-urlbar { margin: 0 auto 14px; }
       .hero-trust { justify-content: center; }
-      .hero-visual { order: 2; min-height: 420px; margin-top: 4px; }
-      .sphere-core { max-width: 380px; }
-      .sphere-glow { width: 380px; height: 380px; }
+      /* MOBILE ORDER: sphere first (emotional impression), then headline + form */
+      .hero-visual { order: 1; width: 100%; min-height: 400px; margin: 0 0 8px; }
+      .hero-left { order: 2; }
+      .sphere-sys { max-width: 400px; }
       .fi-split { grid-template-columns: 1fr; gap: 40px; }
       .sc-preview { grid-template-columns: 1fr; }
       .prob-split { grid-template-columns: 1fr; gap: 40px; }
@@ -1279,10 +1240,8 @@
       .btn-cta-main { width: 100%; border-radius: 10px; padding: 14px; }
       .cta-input { border-radius: 10px; }
       .hero-hl { font-size: 34px; }
-      .hero-visual { min-height: 380px; }
-      .sphere-core { max-width: 320px; }
-      .sphere-glow { width: 320px; height: 320px; }
-      .frag-in { transform: scale(0.85); }
+      .hero-visual { min-height: 360px; }
+      .sphere-sys { max-width: 340px; }
     }
 
     @media (max-width: 480px) {
@@ -1292,7 +1251,7 @@
       .hero-url-input { min-width: 0; flex: 1 1 60%; }
       .btn-preview { flex: 1 1 100%; }
       .hero-trust { gap: 12px; font-size: 12px; }
-      .f5, .f6 { display: none; }
+      .sphere-sys { max-width: 300px; }
       .nav-logo img { height: 50px; }
     }
   </style>
@@ -1352,26 +1311,16 @@
       </div>
     </div>
 
-    <!-- RIGHT: layered 3D website-sphere system -->
+    <!-- RIGHT: two-layer sphere system (planet + independent orbit) -->
     <div class="hero-visual" id="hero-visual">
-      <!-- L1: glow + rings -->
-      <div class="sphere-glow"></div>
-      <div class="orbit-ring r1"></div>
-      <div class="orbit-ring r2"></div>
-      <div class="scan-ring"></div>
-
-      <!-- L2: sphere core (planet — slow float + subtle rotation) -->
-      <div class="sphere-core" id="sphere-core" data-depth="5">
-        <img src="unveiled-sphere.png" alt="UNVEILED — a sphere of websites" class="sphere-img" />
+      <div class="sphere-sys" id="sphere-core">
+        <div class="ss-glow"></div>
+        <div class="scan-ring"></div>
+        <!-- Layer 1: the sphere (planet) -->
+        <div class="ss-core parallax" data-depth="6"><div class="ss-core-f"><img class="ss-core-i" src="sphere-core.png" alt="UNVEILED — a sphere of websites" /></div></div>
+        <!-- Layer 2: the orbit (satellites) — sits above, moves independently -->
+        <div class="ss-orbit parallax" data-depth="26"><div class="ss-orbit-f"><img class="ss-orbit-i" src="sphere-orbit.png" alt="" /></div></div>
       </div>
-
-      <!-- L3: independent orbiting fragments (satellites — abstract, match the art) -->
-      <div class="frag f1 parallax" data-depth="32"><div class="frag-in"></div></div>
-      <div class="frag f2 parallax" data-depth="-26"><div class="frag-in"></div></div>
-      <div class="frag f3 parallax" data-depth="40"><div class="frag-in"></div></div>
-      <div class="frag f4 parallax" data-depth="-34"><div class="frag-in"></div></div>
-      <div class="frag f5 parallax" data-depth="24"><div class="frag-in"></div></div>
-      <div class="frag f6 parallax" data-depth="-20"><div class="frag-in small"></div></div>
     </div>
 
   </div>
@@ -1558,9 +1507,10 @@
     </h2>
     <div class="prob-subline reveal d2">It's not your business. It's your <span class="g">visibility.</span></div>
 
-    <div class="prob-sphere-wrap reveal d2">
-      <div class="prob-sphere-glow"></div>
-      <img src="unveiled-sphere.png" alt="Thousands of websites, built by UNVEILED" class="prob-sphere-img" />
+    <div class="sphere-sys reveal d2" style="margin: 20px auto 56px;">
+      <div class="ss-glow"></div>
+      <div class="ss-core"><div class="ss-core-f"><img class="ss-core-i" src="sphere-core.png" alt="Thousands of websites, built by UNVEILED" /></div></div>
+      <div class="ss-orbit"><div class="ss-orbit-f"><img class="ss-orbit-i" src="sphere-orbit.png" alt="" /></div></div>
     </div>
 
     <div class="prob-cards">
@@ -1763,9 +1713,10 @@
 <!-- ██ FOOTER BRAND BANNER ██ -->
 <section class="foot-banner">
   <div class="prob-stars"></div>
-  <div class="foot-banner-sphere">
-    <div class="sg"></div>
-    <img src="unveiled-sphere.png" alt="UNVEILED" />
+  <div class="sphere-sys" style="max-width: 300px; margin: 0 auto 22px;">
+    <div class="ss-glow"></div>
+    <div class="ss-core"><div class="ss-core-f"><img class="ss-core-i" src="sphere-core.png" alt="UNVEILED" /></div></div>
+    <div class="ss-orbit"><div class="ss-orbit-f"><img class="ss-orbit-i" src="sphere-orbit.png" alt="" /></div></div>
   </div>
   <img src="unveiled-logo-web.png" alt="UNVEILED" class="foot-banner-logo" />
   <div class="foot-banner-tag">We don't pitch. <span class="g">We build first.</span></div>
