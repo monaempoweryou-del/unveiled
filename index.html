@@ -147,16 +147,11 @@
         radial-gradient(circle at 78% 40%, rgba(124,70,235,0.10) 0%, transparent 40%);
     }
 
-    /* soft twilight fade — light hero eases through deep violet into the section below */
+    /* soft fade — hero eases seamlessly into the light outcome environment below */
     .hero-fade {
-      position: absolute; left: 0; right: 0; bottom: 0; height: 240px;
+      position: absolute; left: 0; right: 0; bottom: 0; height: 140px;
       pointer-events: none; z-index: 3;
-      background: linear-gradient(180deg,
-        transparent 0%,
-        rgba(40,28,72,0.0) 22%,
-        rgba(33,24,58,0.45) 60%,
-        rgba(24,18,40,0.85) 84%,
-        #181228 100%);
+      background: linear-gradient(180deg, transparent 0%, rgba(244,240,252,0.5) 60%, #F4F0FC 100%);
     }
 
     .hero-grid {
@@ -499,51 +494,66 @@
     .pl-svc-label { background: #fff; padding: 5px; }
     .pl-svc-lbl { font-size: 7px; font-weight: 600; color: #0A2540; }
 
-    /* ════ OUTCOME STATS ════ */
+    /* ════ OUTCOME — light, airy "relief" environment with floating cards ════ */
     .outcome-band {
       position: relative; overflow: hidden;
       background:
-        linear-gradient(180deg, #1B1538 0%, rgba(27,21,56,0.5) 16%, rgba(22,18,31,0) 42%),
-        radial-gradient(ellipse 95% 135% at 50% -12%, rgba(124,70,235,0.30) 0%, transparent 60%),
-        radial-gradient(ellipse 70% 90% at 50% 118%, rgba(108,60,224,0.14) 0%, transparent 62%),
-        #16121F;
-      border-top: none;
-      border-bottom: 1px solid rgba(124,70,235,0.14);
+        radial-gradient(ellipse 55% 70% at 12% 4%, rgba(124,70,235,0.08) 0%, transparent 55%),
+        radial-gradient(ellipse 55% 70% at 88% 96%, rgba(108,60,224,0.07) 0%, transparent 55%),
+        linear-gradient(180deg, #F4F0FC 0%, #FBFAFF 52%, var(--cream) 100%);
     }
+    /* soft floating light orbs for depth */
+    .outcome-band::before, .outcome-band::after {
+      content: ''; position: absolute; border-radius: 50%; pointer-events: none;
+      filter: blur(60px); opacity: 0.5; z-index: 0;
+    }
+    .outcome-band::before { width: 320px; height: 320px; top: -80px; left: -60px;
+      background: radial-gradient(circle, rgba(150,110,245,0.20), transparent 70%); }
+    .outcome-band::after { width: 360px; height: 360px; bottom: -120px; right: -80px;
+      background: radial-gradient(circle, rgba(124,70,235,0.16), transparent 70%); }
 
     .outcome-inner {
-      max-width: 1100px; margin: 0 auto; position: relative; z-index: 2;
-      display: grid; grid-template-columns: repeat(4,1fr);
+      max-width: 1180px; margin: 0 auto; position: relative; z-index: 2;
+      display: grid; grid-template-columns: repeat(4,1fr); gap: 22px;
+      padding: 88px 24px 14px;
     }
 
     .outcome-stat {
-      padding: 52px 24px; text-align: center;
-      border-right: 1px solid rgba(255,255,255,0.05);
-      transition: background 0.3s;
+      background: rgba(255,255,255,0.72);
+      -webkit-backdrop-filter: blur(14px) saturate(1.15);
+      backdrop-filter: blur(14px) saturate(1.15);
+      border: 1px solid rgba(124,70,235,0.14);
+      border-radius: 22px;
+      padding: 34px 24px 30px; text-align: center;
+      box-shadow: 0 10px 36px rgba(108,60,224,0.09), 0 2px 6px rgba(20,16,40,0.04);
+      transition: transform 0.38s cubic-bezier(.2,.7,.2,1), box-shadow 0.38s ease, border-color 0.38s ease;
     }
-    .outcome-stat:hover { background: rgba(108,60,224,0.05); }
-
-    .outcome-stat:last-child { border-right: none; }
+    .outcome-stat:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 56px rgba(108,60,224,0.17), 0 4px 12px rgba(20,16,40,0.06);
+      border-color: rgba(124,70,235,0.30);
+    }
 
     .outcome-icon {
-      width: 52px; height: 52px; margin: 0 auto 16px;
+      width: 54px; height: 54px; margin: 0 auto 18px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 24px; border-radius: 14px;
-      background: rgba(124,70,235,0.12); border: 1px solid rgba(124,70,235,0.22);
+      font-size: 25px; border-radius: 16px;
+      background: linear-gradient(160deg, rgba(124,70,235,0.13), rgba(168,85,247,0.07));
+      border: 1px solid rgba(124,70,235,0.12);
+      box-shadow: 0 6px 16px rgba(108,60,224,0.10);
     }
 
     .outcome-value {
       font-family: 'Space Grotesk', sans-serif;
       font-size: clamp(17px, 1.7vw, 20px); font-weight: 700;
-      line-height: 1.18; margin-bottom: 9px; min-height: 2.36em;
+      line-height: 1.2; margin-bottom: 10px; min-height: 2.4em;
       display: flex; align-items: flex-end; justify-content: center;
-      background: linear-gradient(180deg, #fff 0%, #C9B6F5 160%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      color: var(--text); letter-spacing: -0.01em;
     }
 
-    .outcome-desc { font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.55; }
-    .outcome-proof { position: relative; z-index: 2; text-align: center; padding: 8px 24px 40px; font-size: 14px; color: rgba(255,255,255,0.42); }
-    .outcome-proof strong { color: #A78BFA; font-weight: 600; }
+    .outcome-desc { font-size: 13.5px; color: var(--muted); line-height: 1.6; }
+    .outcome-proof { position: relative; z-index: 2; text-align: center; padding: 28px 24px 84px; font-size: 14px; color: var(--muted); }
+    .outcome-proof strong { color: var(--violet); font-weight: 700; }
 
     /* ══════ FIRST IMPRESSION SECTION ══════ */
     #firstimpression {
@@ -1266,10 +1276,10 @@
       .nav-logo .unv-word { height: 23px; }
       .hero-grid { padding-top: 92px; }
       .nav-links { display: none; }
-      .outcome-inner { grid-template-columns: 1fr 1fr; }
-      .outcome-stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); padding: 36px 16px; }
-      .outcome-stat:nth-child(odd) { border-right: 1px solid rgba(255,255,255,0.05); }
-      .outcome-stat:nth-child(3), .outcome-stat:nth-child(4) { border-bottom: none; }
+      .outcome-inner { grid-template-columns: 1fr 1fr; gap: 14px; padding: 60px 18px 8px; }
+      .outcome-stat { padding: 26px 18px 24px; border-radius: 18px; }
+      .outcome-value { min-height: 0; margin-bottom: 8px; }
+      .outcome-proof { padding: 22px 24px 60px; }
       .how-grid { grid-template-columns: 1fr; }
       .cth, .ctr { grid-template-columns: 1.5fr 0.7fr 0.7fr; }
       .crf, .crv { padding: 12px 12px; font-size: 12px; }
