@@ -1104,7 +1104,16 @@
     }
     .prob-card:hover { border-color: rgba(108,60,224,0.35); background: rgba(108,60,224,0.06); transform: translateY(-4px); }
 
-    .prob-icon { font-size: 22px; margin-bottom: 14px; display: block; }
+    .prob-icon { margin-bottom: 14px; display: block; color: #B8A0FF; }
+    /* ── custom UNVEILED icon system (no stock icons) ── */
+    .uic { display: block; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; overflow: visible; }
+    .uic .f  { fill: currentColor; stroke: none; }
+    .uic .a  { stroke: var(--uic-acc, #A855F7); }
+    .uic .af { fill: var(--uic-acc, #A855F7); stroke: none; }
+    .prob-icon .uic { width: 30px; height: 30px; }
+    .how-icon .uic  { width: 24px; height: 24px; }
+    .mac-ic  .uic   { width: 30px; height: 30px; }
+    .eco-ic  .uic   { width: 28px; height: 28px; }
 
     .prob-text strong { display: block; font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 7px; font-family: 'Space Grotesk', sans-serif; }
     .prob-text span  { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.6; }
@@ -1137,7 +1146,7 @@
       opacity: 0.14;
     }
 
-    .how-icon { width: 48px; height: 48px; border-radius: 12px; background: rgba(108,60,224,0.1); border: 1px solid rgba(108,60,224,0.18); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 20px; }
+    .how-icon { width: 48px; height: 48px; border-radius: 12px; background: rgba(108,60,224,0.1); border: 1px solid rgba(108,60,224,0.18); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; color: #D8C9FF; }
 
     .how-card h3 { font-size: 20px; font-weight: 600; color: #fff; margin-bottom: 10px; }
     .how-card p  { font-size: 14px; color: rgba(255,255,255,0.4); line-height: 1.65; }
@@ -1307,8 +1316,9 @@
     .tb-ic {
       width: 42px; height: 42px; flex-shrink: 0; border-radius: 50%;
       border: 1px solid rgba(167,139,250,0.4); background: rgba(124,70,235,0.12);
-      display: flex; align-items: center; justify-content: center; font-size: 18px;
+      display: flex; align-items: center; justify-content: center; color: #C9B6FF;
     }
+    .tb-ic .uic { width: 21px; height: 21px; }
     .tb-tx { line-height: 1.25; }
     .tb-t { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; color: #fff; }
     .tb-s { font-size: 11px; color: rgba(255,255,255,0.5); letter-spacing: 0.02em; }
@@ -1594,7 +1604,7 @@
     .mac-body strong { color: #fff; font-weight: 600; }
     .mac-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 44px; text-align: left; }
     .mac-card { background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 24px 22px; }
-    .mac-ic { font-size: 22px; margin-bottom: 14px; }
+    .mac-ic { margin-bottom: 14px; color: #A5B4FC; --uic-acc: #C4B5FD; }
     .mac-card h4 { font-family: 'Space Grotesk',sans-serif; font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 8px; }
     .mac-card p { font-size: 13.5px; color: rgba(255,255,255,0.5); line-height: 1.6; }
     .mac-close { margin-top: 40px; font-family: 'Space Grotesk',sans-serif; font-size: clamp(17px,1.9vw,22px); font-weight: 600; color: rgba(255,255,255,0.92); line-height: 1.5; }
@@ -1612,7 +1622,7 @@
     .eco-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
     .eco-item { background: #fff; border: 1px solid var(--border); border-radius: 13px; padding: 20px 16px; text-align: left; transition: all 0.25s; }
     .eco-item:hover { border-color: rgba(108,60,224,0.25); transform: translateY(-3px); box-shadow: 0 10px 28px rgba(108,60,224,0.08); }
-    .eco-ic { font-size: 20px; margin-bottom: 10px; }
+    .eco-ic { margin-bottom: 10px; color: #6C3CE0; }
     .eco-item .t { font-family: 'Space Grotesk',sans-serif; font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
     .eco-item .s { font-size: 12px; color: var(--muted); line-height: 1.5; }
     .eco-first { font-size: 13px; font-weight: 600; letter-spacing: 0.04em; color: var(--violet); margin-top: 22px; }
@@ -1630,6 +1640,14 @@
     .mission-body strong { color: var(--text); font-weight: 600; }
     .mission-close { font-family: 'Space Grotesk', sans-serif; font-size: clamp(20px, 2.4vw, 28px); font-weight: 700; color: var(--text); letter-spacing: -0.02em; margin-top: 10px; line-height: 1.3; }
     .mission-close .g { background: var(--grad-v); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .mission-stats { display: flex; justify-content: center; gap: 0; margin: 40px auto 34px; max-width: 660px; }
+    .mstat { flex: 1; padding: 0 20px; position: relative; }
+    .mstat + .mstat::before { content: ''; position: absolute; left: 0; top: 8%; height: 84%; width: 1px; background: var(--border); }
+    .mstat-ic { color: #6C3CE0; display: flex; justify-content: center; margin-bottom: 11px; }
+    .mstat-ic .uic { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .mstat-n { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(21px, 2.5vw, 30px); color: var(--text); letter-spacing: -0.02em; line-height: 1; }
+    .mstat-l { font-size: 12.5px; color: var(--muted); margin-top: 6px; line-height: 1.45; }
+    @media (max-width: 560px) { .mission-stats { flex-direction: column; gap: 26px; } .mstat + .mstat::before { display: none; } }
 
   </style>
 </head>
@@ -1885,8 +1903,24 @@
   <div class="mission-in">
     <div class="mission-eyebrow reveal">Why we exist</div>
     <h2 class="mission-hl reveal d1">Most local businesses<br /><span class="g">deserve better.</span></h2>
-    <p class="mission-body reveal d2">We've seen incredible businesses hidden behind outdated websites. Companies that do amazing work but look average online. Businesses customers already love, yet that stay invisible to the people searching for them.</p>
-    <p class="mission-body reveal d2">We built UNVEILED because your presence online should reflect the quality of your work, not hold it back. Great businesses deserve to be seen as great.</p>
+    <p class="mission-body reveal d2">We've seen incredible businesses hidden behind average websites: companies that do brilliant work, yet stay invisible to the people searching for them. We built UNVEILED so your presence finally reflects the quality of your work.</p>
+    <div class="mission-stats reveal d3">
+      <div class="mstat">
+        <div class="mstat-ic"><svg class="uic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v4.7l3.3 1.9"/></svg></div>
+        <div class="mstat-n">12+ yrs</div>
+        <div class="mstat-l">of what wins online</div>
+      </div>
+      <div class="mstat">
+        <div class="mstat-ic"><svg class="uic" viewBox="0 0 24 24"><path d="M4 9.5h16V20H4z"/><path d="M3 9.5 4.6 5h14.8L21 9.5"/><path class="a" d="M9.5 20v-5h5v5"/></svg></div>
+        <div class="mstat-n">1,000s</div>
+        <div class="mstat-l">of businesses studied</div>
+      </div>
+      <div class="mstat">
+        <div class="mstat-ic"><svg class="uic" viewBox="0 0 24 24"><path class="f" d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg></div>
+        <div class="mstat-n">72 hrs</div>
+        <div class="mstat-l">link to live preview</div>
+      </div>
+    </div>
     <div class="mission-close reveal d3">That's why we <span class="g">build first.</span><br />Then we let you decide.</div>
   </div>
 </section>
@@ -1912,28 +1946,28 @@
 
     <div class="prob-cards">
       <div class="prob-card reveal">
-        <span class="prob-icon">👁️</span>
+        <span class="prob-icon"><svg class="uic" viewBox="0 0 24 24"><path d="M2 12s3.6-6 10-6 10 6 10 6-3.6 6-10 6S2 12 2 12z"/><circle class="af" cx="12" cy="12" r="2.6"/></svg></span>
         <div class="prob-text">
           <strong>You're judged in 8 seconds</strong>
           <span>Before anyone calls, they decide whether you look like the quality you actually deliver. An outdated presence loses that battle silently.</span>
         </div>
       </div>
       <div class="prob-card reveal d1">
-        <span class="prob-icon">🔍</span>
+        <span class="prob-icon"><svg class="uic" viewBox="0 0 24 24"><circle cx="10" cy="11" r="6"/><path d="M14.5 15.5 21 22"/><path class="af" d="M19 3l.8 1.9 1.9.8-1.9.8L19 8.4l-.8-1.9L16.3 5.7l1.9-.8z"/></svg></span>
         <div class="prob-text">
           <strong>Invisible to how people search now</strong>
           <span>Your site was built for 2010's Google. Today customers find businesses through maps and AI. There, you barely exist.</span>
         </div>
       </div>
       <div class="prob-card reveal d2">
-        <span class="prob-icon">⚙️</span>
+        <span class="prob-icon"><svg class="uic" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect class="a" x="14" y="5" width="7" height="7" rx="2"/><rect x="7.5" y="14" width="7" height="7" rx="2"/></svg></span>
         <div class="prob-text">
           <strong>A page isn't a presence</strong>
           <span>Website, mobile, follow-up, reviews: disconnected pieces that don't work together. A real business needs a system, not a brochure.</span>
         </div>
       </div>
       <div class="prob-card reveal d3">
-        <span class="prob-icon">⏳</span>
+        <span class="prob-icon"><svg class="uic" viewBox="0 0 24 24"><path d="M6 3h12M6 21h12M7 3c0 5 5 4 5 9s-5 4-5 9M17 3c0 5-5 4-5 9s5 4 5 9"/><path class="af" d="M9 18.6c.7-1.6 1.8-2.3 3-2.3s2.3.7 3 2.3z"/></svg></span>
         <div class="prob-text">
           <strong>You've been putting it off</strong>
           <span>It sounds expensive, slow, and risky. UNVEILED removes all three. See the finished result first, then decide.</span>
@@ -1974,28 +2008,28 @@
     <div class="how-grid">
       <div class="how-card reveal">
         <div class="how-num">01</div>
-        <div class="how-icon">🔍</div>
+        <div class="how-icon"><svg class="uic" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5"/><path d="M14.8 14.8 21 21"/><path class="a" d="M7.6 8.6h4.8M7.6 11h3.2"/></svg></div>
         <h3>Your business, understood</h3>
         <p>We study what you do, who you serve, and what makes you different, so the site sounds like you, not a template.</p>
         <div class="how-note">Your story, understood first.</div>
       </div>
       <div class="how-card reveal d1">
         <div class="how-num">02</div>
-        <div class="how-icon">📊</div>
+        <div class="how-icon"><svg class="uic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.4"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/><circle class="af" cx="12" cy="12" r="1"/></svg></div>
         <h3>Your competition, mapped</h3>
         <p>We see exactly what you're up against online, then design something built to make you the obvious choice.</p>
         <div class="how-note">Positioned to win the click.</div>
       </div>
       <div class="how-card reveal d2">
         <div class="how-num">03</div>
-        <div class="how-icon">⚡</div>
+        <div class="how-icon"><svg class="uic" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18M8 9v11"/><path class="af" d="M16.2 12l.7 1.7 1.7.7-1.7.7-.7 1.7-.7-1.7-1.7-.7 1.7-.7z"/></svg></div>
         <h3>Your new presence, designed</h3>
         <p>Custom-designed, written, and built into a living, professional presence customers instantly trust. You get the finished thing, never a mockup.</p>
         <div class="how-note">Custom. Mobile-first. Built to be found.</div>
       </div>
       <div class="how-card reveal d3">
         <div class="how-num">04</div>
-        <div class="how-icon">✅</div>
+        <div class="how-icon"><svg class="uic" viewBox="0 0 24 24"><path d="M21 3 10.5 13.5"/><path d="M21 3 14.5 21l-4-7.5-7.5-4z"/></svg></div>
         <h3>Your live preview, delivered</h3>
         <p>In 72 hours we send you a link. Open it, share it, sleep on it. Love it and we launch, or walk away owing nothing.</p>
         <div class="how-note">Live in 72 hours. $0 to look.</div>
@@ -2012,9 +2046,9 @@
     <p class="mac-body reveal d2">For over a decade we've learned what actually makes a business look credible, get found, and earn trust online, across thousands of real projects. All of it is now built into the UNVEILED machine, working on your business from the very first minute.</p>
     <p class="mac-body reveal d2">You don't see the machine. You just get the result: a stronger website, built faster, with fewer mistakes, and an experience that feels effortless the whole way through.</p>
     <div class="mac-grid">
-      <div class="mac-card reveal"><div class="mac-ic">🎯</div><h4>A better result from day one</h4><p>You get a stronger first draft and a more complete website, built on a decade of what actually works, not guesswork or a template.</p></div>
-      <div class="mac-card reveal d1"><div class="mac-ic">⚡</div><h4>Faster, with nothing cut</h4><p>You get a polished, finished result in 72 hours, not months of back-and-forth. The heavy lifting happens behind the scenes.</p></div>
-      <div class="mac-card reveal d2"><div class="mac-ic">🤝</div><h4>Fewer mistakes, more trust</h4><p>You get the speed of automation with the judgment of real experts. Every build is reviewed and refined by people before you see it.</p></div>
+      <div class="mac-card reveal"><div class="mac-ic"><svg class="uic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle class="af" cx="12" cy="12" r="1.9"/></svg></div><h4>A better result from day one</h4><p>You get a stronger first draft and a more complete website, built on a decade of what actually works, not guesswork or a template.</p></div>
+      <div class="mac-card reveal d1"><div class="mac-ic"><svg class="uic" viewBox="0 0 24 24"><path class="f" d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg></div><h4>Faster, with nothing cut</h4><p>You get a polished, finished result in 72 hours, not months of back-and-forth. The heavy lifting happens behind the scenes.</p></div>
+      <div class="mac-card reveal d2"><div class="mac-ic"><svg class="uic" viewBox="0 0 24 24"><path d="M12 3 4 6v5c0 5 3.4 8.5 8 10 4.6-1.5 8-5 8-10V6z"/><path class="a" d="M8.5 12l2.5 2.5 4.5-5"/></svg></div><h4>Fewer mistakes, more trust</h4><p>You get the speed of automation with the judgment of real experts. Every build is reviewed and refined by people before you see it.</p></div>
     </div>
     <div class="mac-close reveal d3">It's not about the machine.<br /><span class="g">It's about what you get because of it: a better business, faster than ever.</span></div>
   </div>
@@ -2052,14 +2086,14 @@
     <h2 class="eco-hl reveal d1">It doesn't stop at a website.<br /><span class="g">Your whole business gets elevated.</span></h2>
     <p class="eco-sub reveal d2">A great website is the first proof of what's possible. From there, everything that makes a business feel bigger, run smoother, and grow faster is on the table, whenever you're ready.</p>
     <div class="eco-grid">
-      <div class="eco-item reveal"><div class="eco-ic">✨</div><div class="t">Look better</div><div class="s">A presence that matches the quality of your work.</div></div>
-      <div class="eco-item reveal d1"><div class="eco-ic">🔍</div><div class="t">Get found</div><div class="s">Google, maps, and AI discovery, wherever customers look.</div></div>
-      <div class="eco-item reveal d1"><div class="eco-ic">🤝</div><div class="t">Earn trust faster</div><div class="s">Reviews and reputation that make you the safe choice.</div></div>
-      <div class="eco-item reveal d2"><div class="eco-ic">💬</div><div class="t">Communicate better</div><div class="s">Email, messaging, and follow-up that never drop the ball.</div></div>
-      <div class="eco-item reveal"><div class="eco-ic">⚡</div><div class="t">Automate the busywork</div><div class="s">Booking, reminders, and workflows that run themselves.</div></div>
-      <div class="eco-item reveal d1"><div class="eco-ic">📈</div><div class="t">Nurture every lead</div><div class="s">Stay top of mind until they're ready to buy.</div></div>
-      <div class="eco-item reveal d1"><div class="eco-ic">📝</div><div class="t">Build authority</div><div class="s">Content that makes you the obvious expert.</div></div>
-      <div class="eco-item reveal d2"><div class="eco-ic">🚀</div><div class="t">Grow on purpose</div><div class="s">Systems that turn a good business into a growing one.</div></div>
+      <div class="eco-item reveal"><div class="eco-ic"><svg class="uic" viewBox="0 0 24 24"><path class="f" d="M12 2l1.9 5.3L19 9l-5.1 1.7L12 16l-1.9-5.3L5 9l5.1-1.7z"/><circle class="af" cx="18.5" cy="17.5" r="1.4"/><circle class="af" cx="6" cy="17" r="1"/></svg></div><div class="t">Look better</div><div class="s">A presence that matches the quality of your work.</div></div>
+      <div class="eco-item reveal d1"><div class="eco-ic"><svg class="uic" viewBox="0 0 24 24"><path d="M12 22s7-5.6 7-12a7 7 0 1 0-14 0c0 6.4 7 12 7 12z"/><circle class="af" cx="12" cy="10" r="2.5"/></svg></div><div class="t">Get found</div><div class="s">Google, maps, and AI discovery, wherever customers look.</div></div>
+      <div class="eco-item reveal d1"><div class="eco-ic"><svg class="uic" viewBox="0 0 24 24"><circle cx="12" cy="9.5" r="6.5"/><path class="af" d="M12 6l1.3 2.6 2.9.4-2.1 2 .5 2.9L12 12.6 9.4 14l.5-2.9-2.1-2 2.9-.4z"/><path d="M8.5 15.5 7.5 22l4.5-2.3L16.5 22l-1-6.5"/></svg></div><div class="t">Earn trust faster</div><div class="s">Reviews and reputation that make you the safe choice.</div></div>
+      <div class="eco-item reveal d2"><div class="eco-ic"><svg class="uic" viewBox="0 0 24 24"><path d="M4 5h16v11H8.5L4 20z"/><path class="a" d="M8 9.5h8M8 12.5h5"/></svg></div><div class="t">Communicate better</div><div class="s">Email, messaging, and follow-up that never drop the ball.</div></div>
+      <div class="eco-item reveal"><div class="eco-ic"><svg class="uic" viewBox="0 0 24 24"><path d="M20 9.5a8 8 0 0 0-14.5-3"/><path d="M4 14.5a8 8 0 0 0 14.5 3"/><path d="M5 3v3.6h3.6M19 21v-3.6h-3.6"/></svg></div><div class="t">Automate the busywork</div><div class="s">Booking, reminders, and workflows that run themselves.</div></div>
+      <div class="eco-item reveal d1"><div class="eco-ic"><svg class="uic" viewBox="0 0 24 24"><path d="M12 21v-7.5"/><path class="a" d="M12 14c0-3.2-2.6-5.3-5.8-5.3 0 3.2 2.6 5.3 5.8 5.3z"/><path class="a" d="M12 12c0-3 2.5-5 5.6-5 0 3-2.5 5-5.6 5z"/></svg></div><div class="t">Nurture every lead</div><div class="s">Stay top of mind until they're ready to buy.</div></div>
+      <div class="eco-item reveal d1"><div class="eco-ic"><svg class="uic" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><path class="a" d="M9 12.5h6M9 15.5h4"/></svg></div><div class="t">Build authority</div><div class="s">Content that makes you the obvious expert.</div></div>
+      <div class="eco-item reveal d2"><div class="eco-ic"><svg class="uic" viewBox="0 0 24 24"><path d="M3 17l5.5-5.5 4 3L21 6"/><path d="M16 6h5v5"/><circle class="af" cx="8.5" cy="11.5" r="1.2"/><circle class="af" cx="12.5" cy="14.5" r="1.2"/></svg></div><div class="t">Grow on purpose</div><div class="s">Systems that turn a good business into a growing one.</div></div>
     </div>
     <div class="eco-first reveal d2"><span class="eco-now">Start free</span> &nbsp; Your website is where we begin, not where we stop.</div>
   </div>
@@ -2099,22 +2133,22 @@
 <section class="trustbar">
   <div class="trustbar-in">
     <div class="tb-item">
-      <div class="tb-ic">⏱️</div>
+      <div class="tb-ic"><svg class="uic" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.6 1.6M9 2.5h6"/></svg></div>
       <div class="tb-tx"><div class="tb-t">72-Hour Live Preview</div><div class="tb-s">A real website, fast</div></div>
     </div>
     <div class="tb-div"></div>
     <div class="tb-item">
-      <div class="tb-ic">💳</div>
+      <div class="tb-ic"><svg class="uic" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 10h18"/><path class="a" d="M6.5 15.5h3"/></svg></div>
       <div class="tb-tx"><div class="tb-t">$0 Upfront Payment</div><div class="tb-s">Nothing to start</div></div>
     </div>
     <div class="tb-div"></div>
     <div class="tb-item">
-      <div class="tb-ic">✓</div>
+      <div class="tb-ic"><svg class="uic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path class="a" d="M8 12.2l2.6 2.6L16 9"/></svg></div>
       <div class="tb-tx"><div class="tb-t">Approve Before You Pay</div><div class="tb-s">You decide, after</div></div>
     </div>
     <div class="tb-div"></div>
     <div class="tb-item">
-      <div class="tb-ic">🔒</div>
+      <div class="tb-ic"><svg class="uic" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2.2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><circle class="af" cx="12" cy="15.3" r="1.4"/></svg></div>
       <div class="tb-tx"><div class="tb-t">Risk-Free Guarantee</div><div class="tb-s">Love it or walk away</div></div>
     </div>
   </div>
@@ -2163,25 +2197,24 @@
         </ul>
       </div>
       <div class="foot-col">
-        <h4>Company</h4>
+        <h4>Explore</h4>
         <ul>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Case Studies</a></li>
-          <li><a href="#">Blog</a></li>
-          <li><a href="#">Contact</a></li>
+          <li><a href="#how">How It Works</a></li>
+          <li><a href="#mission">Why We Exist</a></li>
+          <li><a href="#ai-discovery">AI Discovery</a></li>
         </ul>
       </div>
       <div class="foot-col">
-        <h4>Legal</h4>
+        <h4>Get started</h4>
         <ul>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#cta">See what's possible</a></li>
+          <li><a class="onb-launch" href="#cta">Start your preview</a></li>
+          <li><a href="#ecosystem">What comes next</a></li>
         </ul>
       </div>
     </div>
     <div class="foot-bottom">
       <p class="foot-copy">&copy; 2026 UNVEILED. All rights reserved.</p>
-      <div class="foot-legal"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Sitemap</a></div>
     </div>
   </div>
 </footer>
