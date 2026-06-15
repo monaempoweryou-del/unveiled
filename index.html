@@ -355,7 +355,7 @@
       filter: blur(26px);
     }
     .hx-lines { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; overflow: visible; }
-    .hx-line { fill: none; stroke: url(#hxGrad); stroke-width: 1.5; opacity: 0.6; filter: drop-shadow(0 0 4px rgba(150,100,245,0.55)); }
+    .hx-line { fill: none; stroke: url(#hxGrad); stroke-width: 1.3; opacity: 0.4; filter: drop-shadow(0 0 4px rgba(150,100,245,0.5)); }
     .hx-spark { position: absolute; top: 0; left: 0; width: 7px; height: 7px; border-radius: 50%; z-index: 3; opacity: 0;
       background: radial-gradient(circle, #fff 0%, rgba(178,140,255,0.75) 55%, transparent 78%); box-shadow: 0 0 10px rgba(168,130,250,0.95); will-change: transform, opacity; }
     .hx-node { position: absolute; top: 0; left: 0; display: flex; flex-direction: column; align-items: center; gap: 5px;
@@ -2819,7 +2819,8 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     const ang = (-90 + i*(360/N)) * Math.PI/180;
     const line = document.createElementNS(SVGNS,'line'); line.setAttribute('class','hx-line'); svg.appendChild(line);
     const spark = document.createElement('span'); spark.className = 'hx-spark'; wrap.appendChild(spark);
-    return { el, line, spark, ang,
+    const spark2 = document.createElement('span'); spark2.className = 'hx-spark'; wrap.appendChild(spark2);
+    return { el, line, spark, spark2, ang,
       sph: Math.random(), ssp: 0.12+Math.random()*0.08,            // spark flow
       dfx: 0.16+Math.random()*0.20, dfy: 0.14+Math.random()*0.20,  // organic drift freqs
       dpx: Math.random()*6.28, dpy: Math.random()*6.28,            // drift phases
@@ -2860,10 +2861,14 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
       m.line.setAttribute('x1',nx.toFixed(1)); m.line.setAttribute('y1',ny.toFixed(1));
       m.line.setAttribute('x2',ex.toFixed(1)); m.line.setAttribute('y2',ey.toFixed(1));
       if (!reduce){
-        const f = ((t*m.ssp) + m.sph) % 1;          // energy continuously feeding inward
-        const xp = nx + (ex-nx)*f, yp = ny + (ey-ny)*f;
-        m.spark.style.transform = 'translate(-50%,-50%) translate('+xp.toFixed(1)+'px,'+yp.toFixed(1)+'px)';
-        m.spark.style.opacity = (0.30 + 0.55*Math.sin(f*Math.PI)).toFixed(2);
+        const dxl = ex-nx, dyl = ey-ny;
+        for (let s=0; s<2; s++){                     // a continuous stream of light, absorbed into the sphere
+          const sp = s ? m.spark2 : m.spark;
+          const f = ((t*m.ssp) + m.sph + s*0.5) % 1;
+          const xp = nx + dxl*f, yp = ny + dyl*f;
+          sp.style.transform = 'translate(-50%,-50%) translate('+xp.toFixed(1)+'px,'+yp.toFixed(1)+'px)';
+          sp.style.opacity = (0.25 + 0.6*Math.sin(f*Math.PI)).toFixed(2);
+        }
       }
     }
     if (!reduce) requestAnimationFrame(frame);
