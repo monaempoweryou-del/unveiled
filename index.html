@@ -2559,19 +2559,23 @@ heroOut.observe(hero);
     bucket: 'lead-uploads',
     enabled: true   // set false to fully disable real submission
   };
+  function withTimeout(ms){ const c=new AbortController(); const t=setTimeout(()=>c.abort(), ms); return {signal:c.signal, done:()=>clearTimeout(t)}; }
   async function uploadFile(file, leadId, kind, idx){
     const safe = (file.name||'file').replace(/[^a-zA-Z0-9._-]/g,'_');
     const path = leadId+'/'+kind+'-'+idx+'-'+safe;
+    const to = withTimeout(15000);
     try {
       const r = await fetch(SUPA.url+'/storage/v1/object/'+SUPA.bucket+'/'+encodeURI(path), {
         method:'POST',
         headers:{ apikey:SUPA.key, Authorization:'Bearer '+SUPA.key, 'Content-Type': file.type||'application/octet-stream', 'x-upsert':'true' },
-        body: file
+        body: file, signal: to.signal
       });
+      to.done();
       if(!r.ok) return null;
       return { name:file.name, url: SUPA.url+'/storage/v1/object/public/'+SUPA.bucket+'/'+encodeURI(path), size:file.size };
-    } catch(e){ return null; }
+    } catch(e){ to.done(); return null; }
   }
+  // Returns TRUE only when the lead row is actually accepted by the database (201).
   async function submitLead(){
     if (!SUPA.enabled || !SUPA.key) return false;
     try {
@@ -2581,31 +2585,49 @@ heroOut.observe(hero);
       const logos  = await up(data.logo,'logo');
       const shots  = await up(data.inspoShots,'inspiration');
       const row = {
-        id: leadId,
-        business_name: data.biz||null,
-        contact_name: data.name||null,
-        email: data.email||null,
-        phone: data.phone||null,
-        website: data.url||null,
-        social_profiles: data.social||{},
-        about: data.about||null,
-        requirements: data.requirements||null,
-        additional_notes: data.anything||null,
-        inspiration_links: data.inspoUrls||[],
-        photos: photos,
-        logos: logos,
-        inspiration_screenshots: shots,
-        status: 'NEW LEAD',
-        source: 'website-onboarding'
+        id: leadId, business_name: data.biz||null, contact_name: data.name||null, email: data.email||null,
+        phone: data.phone||null, website: data.url||null, social_profiles: data.social||{}, about: data.about||null,
+        requirements: data.requirements||null, additional_notes: data.anything||null, inspiration_links: data.inspoUrls||[],
+        photos: photos, logos: logos, inspiration_screenshots: shots, status: 'NEW LEAD', source: 'website-onboarding'
       };
+      const to = withTimeout(12000);
       const r = await fetch(SUPA.url+'/rest/v1/leads', {
         method:'POST',
         headers:{ apikey:SUPA.key, Authorization:'Bearer '+SUPA.key, 'Content-Type':'application/json', Prefer:'return=minimal' },
-        body: JSON.stringify(row)
+        body: JSON.stringify(row), signal: to.signal
       });
-      return r.ok;
+      to.done();
+      return r.ok;   // 201 = row inserted AND the DB trigger fired. Anything else = NOT captured.
     } catch(e){ console.warn('lead submit failed', e); return false; }
   }
+  // Backup route so a lead is NEVER lost if Supabase is unreachable: emails the full
+  // submission to us. Keyless via Formsubmit — requires a ONE-TIME activation of the
+  // address (a confirm link is emailed on first use). Returns true only if accepted.
+  async function fallbackCapture(){
+    try {
+      const payload = {
+        _subject: 'UNVEILED lead (FALLBACK) — '+(data.biz||'no business name'),
+        business_name: data.biz||'', contact_name: data.name||'', email: data.email||'', phone: data.phone||'',
+        website: data.url||'', socials: JSON.stringify(data.social||{}), about: data.about||'',
+        requirements: data.requirements||'', notes: data.anything||'', inspiration: JSON.stringify(data.inspoUrls||[]),
+        files: 'photos:'+(data.photos||[]).length+' / logos:'+(data.logo||[]).length+' / inspo:'+(data.inspoShots||[]).length,
+        source: 'website-onboarding (FALLBACK — Supabase was unavailable)'
+      };
+      const to = withTimeout(12000);
+      const r = await fetch('https://formsubmit.co/ajax/maor@monadigitalmarketing.com', {
+        method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'},
+        body: JSON.stringify(payload), signal: to.signal
+      });
+      to.done();
+      const j = await r.json().catch(()=>({}));
+      return !!(r.ok && (j.success===true || j.success==='true'));
+    } catch(e){ return false; }
+  }
+  function snapshotPending(){ try { localStorage.setItem('unv_lead_pending', JSON.stringify({
+      at: Date.now(), business_name:data.biz||'', contact_name:data.name||'', email:data.email||'', phone:data.phone||'',
+      website:data.url||'', about:data.about||'', requirements:data.requirements||'', notes:data.anything||'',
+      socials:data.social||{}, inspiration:data.inspoUrls||[] })); } catch(e){} }
+  function clearPending(){ try{ localStorage.removeItem('unv_lead_pending'); }catch(e){} }
 
   function next(){
     const s = steps[i];
@@ -2621,35 +2643,52 @@ heroOut.observe(hero);
   }
   function flash(id,msg){ const el=document.getElementById(id); if(!el)return; el.style.borderColor='rgba(239,68,68,0.7)'; if(el.parentElement.classList.contains('onb-prefix'))el.parentElement.style.borderColor='rgba(239,68,68,0.7)'; el.placeholder=msg; el.focus(); el.addEventListener('input',function c(){el.style.borderColor='';if(el.parentElement.classList.contains('onb-prefix'))el.parentElement.style.borderColor='';el.removeEventListener('input',c);}); }
 
+  function sphereMark(){ return '<div class="unv-mark sphere-sys as-logo"><div class="ss-glow"></div><div class="ss-orbit"></div><div class="ss-core"><div class="ss-core-f"><img class="ss-core-i" src="sphere-core.png" alt=""/></div></div></div>'; }
+
+  function showSuccess(viaFallback){
+    const first = (data.name||'').split(' ')[0];
+    const step1 = viaFallback
+      ? '<div class="onb-sn-t">We\'ve received your details</div><div class="onb-sn-s">We\'ll reach out personally to '+esc(data.email||'you')+' shortly.</div>'
+      : '<div class="onb-sn-t">A confirmation is on its way</div><div class="onb-sn-s">Sent to '+esc(data.email||'your email')+' right now.</div>';
+    stage.innerHTML = '<div class="onb-done">'+sphereMark()+
+      '<div class="onb-done-h">'+(first?('Thank you, '+esc(first)+'.'):'You\'re all set.')+'<br/><span class="g">We\'re on it.</span></div>'+
+      '<div class="onb-done-p">That\'s everything we need. From here, <strong>we do the heavy lifting</strong>, and you\'ll have a complete, custom website to review in <strong>72 hours</strong>. Keep an eye on your inbox.</div>'+
+      '<div class="onb-steps-next">'+
+        '<div class="onb-sn"><div class="onb-sn-n">1</div><div>'+step1+'</div></div>'+
+        '<div class="onb-sn"><div class="onb-sn-n">2</div><div><div class="onb-sn-t">We research &amp; design</div><div class="onb-sn-s">We study your business and your competitors, then build.</div></div></div>'+
+        '<div class="onb-sn"><div class="onb-sn-n">3</div><div><div class="onb-sn-t">Your live preview in 72 hours</div><div class="onb-sn-s">See it, love it, then decide. No payment until you do.</div></div></div>'+
+      '</div>'+
+      '<div><button class="onb-next" id="onb-finish">Back to site</button></div></div>';
+    document.getElementById('onb-finish').addEventListener('click', close);
+  }
+
+  function showRetry(){
+    stage.innerHTML = '<div class="onb-done">'+
+      '<div style="width:74px;height:74px;border-radius:50%;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.4);color:#F87171;display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:700;margin:0 auto 22px">!</div>'+
+      '<div class="onb-done-h">We couldn\'t save it<br/><span class="g">just yet.</span></div>'+
+      '<div class="onb-done-p">Your details are safe and nothing was lost. This is usually a brief connection hiccup. Please try again, or email <a href="mailto:maor@monadigitalmarketing.com" style="color:#A78BFA;font-weight:600">maor@monadigitalmarketing.com</a> and we\'ll take it from here.</div>'+
+      '<div><button class="onb-next" id="onb-retry">Try again</button></div></div>';
+    document.getElementById('onb-retry').addEventListener('click', finish);
+  }
+
   async function finish(){
     foot.style.display = 'none';
     bar.style.width = '100%'; count.textContent='';
     window.UNVEILED_SUBMISSION = { ...data, photos:data.photos.map(f=>f.name), logo:data.logo.map(f=>f.name), inspoShots:data.inspoShots.map(f=>f.name) };
 
-    // premium "we're on it" beat while the lead is delivered
-    stage.innerHTML = `<div class="onb-done">
-      <div class="unv-mark sphere-sys as-logo"><div class="ss-glow"></div><div class="ss-orbit"></div><div class="ss-core"><div class="ss-core-f"><img class="ss-core-i" src="sphere-core.png" alt=""/></div></div></div>
-      <div class="onb-done-h">Putting it<br/><span class="g">all together…</span></div>
-      <div class="onb-done-p">Securing your details and starting your build.</div>
-    </div>`;
-    // never let the network block the experience — cap the wait
-    await Promise.race([ submitLead().catch(()=>false), new Promise(r=>setTimeout(r, 4500)) ]);
-    await new Promise(r=>setTimeout(r, 400));
+    // premium "we're on it" beat while we ACTUALLY save the lead
+    stage.innerHTML = '<div class="onb-done">'+sphereMark()+
+      '<div class="onb-done-h">Putting it<br/><span class="g">all together…</span></div>'+
+      '<div class="onb-done-p">Securing your details and starting your build.</div></div>';
 
-    const first = (data.name||'').split(' ')[0];
-    stage.innerHTML = `<div class="onb-done">
-      <div class="unv-mark sphere-sys as-logo"><div class="ss-glow"></div><div class="ss-orbit"></div><div class="ss-core"><div class="ss-core-f"><img class="ss-core-i" src="sphere-core.png" alt=""/></div></div></div>
-      <div class="onb-done-h">${first?('Thank you, '+esc(first)+'.'):'You\'re all set.'}<br/><span class="g">We're on it.</span></div>
-      <div class="onb-done-p">That's everything we need. From here, <strong>we do the heavy lifting</strong>, and you'll have a complete, custom website to review in <strong>72 hours</strong>. Keep an eye on your inbox.</div>
-      <div class="onb-steps-next">
-        <div class="onb-sn"><div class="onb-sn-n">1</div><div><div class="onb-sn-t">A confirmation is on its way</div><div class="onb-sn-s">Sent to ${esc(data.email||'your email')} right now.</div></div></div>
-        <div class="onb-sn"><div class="onb-sn-n">2</div><div><div class="onb-sn-t">We research & design</div><div class="onb-sn-s">We study your business and your competitors, then build.</div></div></div>
-        <div class="onb-sn"><div class="onb-sn-n">3</div><div><div class="onb-sn-t">Your live preview in 72 hours</div><div class="onb-sn-s">See it, love it, then decide. No payment until you do.</div></div></div>
-      </div>
-      <div><button class="onb-next" id="onb-finish">Back to site</button></div>
-    </div>`;
-    if (typeof confetti==='undefined'){}
-    document.getElementById('onb-finish').addEventListener('click', close);
+    snapshotPending();                       // local safety copy (text fields)
+    let ok = await submitLead();             // TRUE only on a real DB insert (201)
+    let viaFallback = false;
+    if (!ok){ ok = await fallbackCapture(); viaFallback = ok; }   // backup email route
+    await new Promise(r=>setTimeout(r, 350));
+
+    if (ok){ clearPending(); showSuccess(viaFallback); }          // we truly got it
+    else { showRetry(); }                                         // honest failure + retry
   }
 
   // controls
