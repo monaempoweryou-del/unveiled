@@ -48,33 +48,43 @@
     /* ══════ STICKY CTA BAR ══════ */
     .sticky-cta {
       position: fixed; bottom: 0; left: 0; right: 0; z-index: 500;
-      background: var(--dark);
-      border-top: 1px solid rgba(255,255,255,0.06);
+      background: linear-gradient(180deg, rgba(255,255,255,0.90) 0%, rgba(248,245,255,0.92) 100%);
+      -webkit-backdrop-filter: blur(20px) saturate(1.4); backdrop-filter: blur(20px) saturate(1.4);
+      border-top: 1px solid rgba(124,70,235,0.16);
+      box-shadow: 0 -12px 44px rgba(108,60,224,0.12);
       padding: 12px 24px;
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 16px;
+      display: flex; align-items: center; gap: 16px;
       transform: translateY(100%);
       transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
+    }
+    /* soft top glow line so it reads as a premium UI shelf, not an overlay */
+    .sticky-cta::before {
+      content: ''; position: absolute; top: -1px; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(124,70,235,0.45), transparent);
     }
 
     .sticky-cta.visible { transform: translateY(0); }
 
-    .sticky-cta-text {
-      font-size: 14px; color: rgba(255,255,255,0.6);
-      flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
+    .sticky-lead { display: flex; align-items: center; gap: 14px; flex: 1; min-width: 0; }
+    .sticky-wm { height: 17px; width: auto; flex-shrink: 0; }
 
-    .sticky-cta-text strong { color: #fff; font-weight: 600; }
+    .sticky-cta-text {
+      font-size: 14px; color: var(--muted);
+      flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      border-left: 1px solid rgba(124,70,235,0.18); padding-left: 14px;
+    }
+    .sticky-cta-text strong { color: var(--text); font-weight: 700; }
 
     .btn-sticky {
-      background: #fff; color: var(--dark); border: none;
-      padding: 11px 24px; border-radius: 100px;
+      background: var(--grad-v); color: #fff; border: none;
+      padding: 12px 26px; border-radius: 100px;
       font-family: 'Space Grotesk', sans-serif;
       font-size: 13px; font-weight: 700; cursor: pointer;
-      white-space: nowrap; transition: all 0.2s;
+      white-space: nowrap; flex-shrink: 0;
+      box-shadow: 0 8px 22px rgba(108,60,224,0.30);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-
-    .btn-sticky:hover { background: var(--cream); transform: translateY(-1px); }
+    .btn-sticky:hover { transform: translateY(-1px); box-shadow: 0 12px 28px rgba(108,60,224,0.42); }
 
     /* ══════ NAV ══════ */
     nav {
@@ -1419,7 +1429,9 @@
       nav { padding: 0 18px; height: 74px; }
       .nav-logo .unv-mark { width: 50px; }
       .nav-logo .unv-word { height: 23px; }
-      .hero-grid { padding-top: 92px; }
+      /* tighten mobile hero: nav clearance only, no dead whitespace */
+      #hero { padding-top: 0; }
+      .hero-grid { padding-top: 88px; }
       .nav-links { display: none; }
       .outcome-inner { grid-template-columns: 1fr 1fr; gap: 14px; padding: 60px 18px 8px; }
       .outcome-stat { padding: 26px 18px 24px; border-radius: 18px; }
@@ -1430,9 +1442,12 @@
       .crf, .crv { padding: 12px 12px; font-size: 12px; }
       .foot-top { grid-template-columns: 1fr; }
       .foot-col ul { flex-direction: row; flex-wrap: wrap; gap: 6px 14px; }
-      .sticky-cta { flex-direction: column; align-items: stretch; }
-      .sticky-cta-text { white-space: normal; text-align: center; font-size: 13px; }
-      .btn-sticky { text-align: center; }
+      .sticky-cta { flex-direction: column; align-items: stretch; gap: 10px; padding: 11px 18px; }
+      .sticky-lead { justify-content: center; gap: 11px; }
+      .sticky-cta-text { white-space: normal; text-align: left; font-size: 12.5px; }
+      .sc-sub { display: none; }
+      .sticky-wm { height: 15px; }
+      .btn-sticky { text-align: center; width: 100%; }
       .cta-form { flex-direction: column; }
       .btn-cta-main { width: 100%; border-radius: 10px; padding: 14px; }
       .cta-input { border-radius: 10px; }
@@ -1443,7 +1458,7 @@
 
     @media (max-width: 480px) {
       .hero-hl { font-size: 29px; }
-      .hero-grid { padding: 74px 20px 30px; }
+      .hero-grid { padding: 84px 20px 28px; }
       .hero-visual { min-height: 270px; }
       .hero-urlbar { flex-wrap: wrap; border-radius: 16px; }
       .hero-url-input { min-width: 0; flex: 1 1 60%; }
@@ -1655,7 +1670,10 @@
 
 <!-- ██ STICKY CTA ██ -->
 <div class="sticky-cta" id="sticky-cta">
-  <span class="sticky-cta-text"><strong>See what your business could become.</strong> A complete website, free, in 72 hours.</span>
+  <div class="sticky-lead">
+    <img class="sticky-wm" src="wordmark-dark.png" alt="UNVEILED" />
+    <span class="sticky-cta-text"><strong>See what your business could become.</strong> <span class="sc-sub">A complete website, free, in 72 hours.</span></span>
+  </div>
   <button class="btn-sticky onb-launch">Show Me What's Possible &rarr;</button>
 </div>
 
