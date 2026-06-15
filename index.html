@@ -372,21 +372,35 @@
     }
     @media (max-width: 600px) { .hx-l { display: none; } }
 
-    /* ══════ AMBIENT GLOW — slow drifting violet light for dark sections ══════ */
-    .has-amb { position: relative; }
+    /* ══════ ENVIRONMENTAL LIGHTING — layered, scroll-reactive depth for dark sections ══════ */
+    .has-amb { position: relative; isolation: isolate; }
     .has-amb > .amb { position: absolute; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
     .has-amb > *:not(.amb) { position: relative; z-index: 1; }
-    .amb-orb { position: absolute; border-radius: 50%; filter: blur(72px); will-change: transform, opacity;
-      background: radial-gradient(circle, rgba(140,90,245,0.50) 0%, rgba(108,60,224,0.18) 45%, transparent 70%); }
-    .amb-orb.o1 { width: 420px; height: 420px; top: -10%; left: -6%; animation: ambDrift1 24s ease-in-out infinite; }
-    .amb-orb.o2 { width: 340px; height: 340px; bottom: -12%; right: -5%; animation: ambDrift2 30s ease-in-out infinite;
-      background: radial-gradient(circle, rgba(99,102,241,0.42) 0%, rgba(79,70,229,0.16) 45%, transparent 70%); }
-    .amb-orb.o3 { width: 260px; height: 260px; top: 44%; left: 52%; animation: ambDrift3 27s ease-in-out infinite; }
-    @keyframes ambDrift1 { 0%,100% { transform: translate(0,0) scale(1); opacity: 0.45; } 50% { transform: translate(46px,34px) scale(1.12); opacity: 0.72; } }
-    @keyframes ambDrift2 { 0%,100% { transform: translate(0,0) scale(1); opacity: 0.40; } 50% { transform: translate(-40px,-28px) scale(1.1); opacity: 0.66; } }
-    @keyframes ambDrift3 { 0%,100% { transform: translate(0,0) scale(1); opacity: 0.30; } 50% { transform: translate(30px,-36px) scale(1.16); opacity: 0.55; } }
-    @media (max-width: 768px) { .amb-orb { filter: blur(56px); } .amb-orb.o1 { width: 300px; height: 300px; } .amb-orb.o2 { width: 240px; height: 240px; } .amb-orb.o3 { display: none; } }
-    @media (prefers-reduced-motion: reduce) { .amb-orb { animation: none !important; opacity: 0.5; } }
+    /* base violet atmosphere wash (always present, gives the section a lit environment) */
+    .amb-wash { position: absolute; inset: -12%;
+      background:
+        radial-gradient(48% 46% at 16% 8%,  rgba(124,70,235,0.26) 0%, transparent 60%),
+        radial-gradient(50% 48% at 86% 90%, rgba(91,80,235,0.22) 0%, transparent 62%),
+        radial-gradient(70% 60% at 50% 50%, rgba(70,40,150,0.10) 0%, transparent 70%); }
+    /* glow layers at different depths (atmospheric perspective) */
+    .amb-orb { position: absolute; border-radius: 50%; will-change: transform, opacity; }
+    .amb-orb.o1 { width: 620px; height: 620px; top: -14%; left: -10%; filter: blur(100px);
+      background: radial-gradient(circle, rgba(124,70,235,0.60) 0%, rgba(108,60,224,0.14) 48%, transparent 72%); }
+    .amb-orb.o2 { width: 480px; height: 480px; top: 26%; left: 60%; filter: blur(76px);
+      background: radial-gradient(circle, rgba(99,102,241,0.52) 0%, rgba(79,70,229,0.12) 50%, transparent 70%); }
+    .amb-orb.o3 { width: 380px; height: 380px; bottom: -16%; left: 22%; filter: blur(62px);
+      background: radial-gradient(circle, rgba(150,90,250,0.50) 0%, transparent 68%); }
+    .amb-orb.o4 { width: 280px; height: 280px; top: -8%; left: 46%; filter: blur(50px);
+      background: radial-gradient(circle, rgba(178,140,255,0.44) 0%, transparent 70%); }
+    /* vignette for dimensionality (darkens edges, keeps the lit center where content sits) */
+    .amb-vig { position: absolute; inset: 0;
+      background: radial-gradient(125% 105% at 50% 42%, transparent 52%, rgba(8,6,18,0.55) 100%); }
+    @media (max-width: 768px) {
+      .amb-orb.o1 { width: 420px; height: 420px; filter: blur(80px); }
+      .amb-orb.o2 { width: 320px; height: 320px; filter: blur(64px); }
+      .amb-orb.o3 { width: 280px; height: 280px; filter: blur(54px); }
+      .amb-orb.o4 { display: none; }
+    }
 
     /* analyzing state (hero only) */
     .hero-visual.analyzing .ss-glow   { animation-duration: 2.4s; background: radial-gradient(circle, rgba(150,100,255,0.58) 0%, rgba(108,60,224,0.24) 40%, transparent 70%); }
@@ -1931,7 +1945,7 @@
 
 <!-- ██ 4. SHOWCASE ██ -->
 <section id="showcase" class="has-amb">
-  <div class="amb"><span class="amb-orb o1"></span><span class="amb-orb o2"></span><span class="amb-orb o3"></span></div>
+  <div class="amb"><span class="amb-wash"></span><span class="amb-orb o1" data-px="0.04"></span><span class="amb-orb o2" data-px="0.08"></span><span class="amb-orb o3" data-px="0.12"></span><span class="amb-orb o4" data-px="0.16"></span><span class="amb-vig"></span></div>
   <div class="showcase-in">
     <div class="showcase-header">
       <div class="eyebrow-light reveal">Real Transformations</div>
@@ -2097,7 +2111,7 @@
 
 <!-- ██ 6. HOW IT WORKS ██ -->
 <section id="how" class="has-amb">
-  <div class="amb"><span class="amb-orb o1"></span><span class="amb-orb o2"></span><span class="amb-orb o3"></span></div>
+  <div class="amb"><span class="amb-wash"></span><span class="amb-orb o1" data-px="0.04"></span><span class="amb-orb o2" data-px="0.08"></span><span class="amb-orb o3" data-px="0.12"></span><span class="amb-orb o4" data-px="0.16"></span><span class="amb-vig"></span></div>
   <div class="how-inner">
     <div class="eyebrow-light reveal">The Process</div>
     <h2 class="showcase-hl reveal d1" style="margin-bottom:12px">You drop your link.<br /><span style="background:var(--grad-v);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">We do the rest.</span></h2>
@@ -2138,7 +2152,7 @@
 
 <!-- ██ THE MACHINE — WHY WE CAN DO THIS ██ -->
 <section id="machine" class="has-amb">
-  <div class="amb"><span class="amb-orb o1"></span><span class="amb-orb o2"></span></div>
+  <div class="amb"><span class="amb-wash"></span><span class="amb-orb o1" data-px="0.05"></span><span class="amb-orb o2" data-px="0.09"></span><span class="amb-orb o3" data-px="0.13"></span><span class="amb-orb o4" data-px="0.17"></span><span class="amb-vig"></span></div>
   <div class="mac-inner">
     <div class="mac-eyebrow reveal">Why your result is better</div>
     <h2 class="mac-hl reveal d1">This isn't AI magic.<br /><span class="g">It's 12 years of experience, working for you.</span></h2>
@@ -2200,7 +2214,7 @@
 
 <!-- ██ 8. CTA ██ -->
 <section id="cta" class="has-amb">
-  <div class="amb"><span class="amb-orb o1"></span><span class="amb-orb o2"></span></div>
+  <div class="amb"><span class="amb-wash"></span><span class="amb-orb o1" data-px="0.05"></span><span class="amb-orb o2" data-px="0.09"></span><span class="amb-orb o3" data-px="0.13"></span><span class="amb-orb o4" data-px="0.17"></span><span class="amb-vig"></span></div>
   <div class="cta-glow"></div>
   <div class="prob-stars"></div>
   <div class="cta-in">
@@ -2876,6 +2890,40 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   measure(); requestAnimationFrame(frame);
   window.addEventListener('resize', measure);
   window.addEventListener('load', measure);
+})();
+
+// ── ENVIRONMENTAL LIGHTING: slow drift + scroll-reactive parallax (dark sections) ──
+(function(){
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const orbs = Array.prototype.slice.call(document.querySelectorAll('.amb-orb')).map(function(el){
+    return { el, px: parseFloat(el.getAttribute('data-px')||'0.08'),
+      fx: 0.04+Math.random()*0.05, fy: 0.035+Math.random()*0.05,
+      ax: 22+Math.random()*30, ay: 18+Math.random()*26,
+      phx: Math.random()*6.28, phy: Math.random()*6.28, docY: 0 };
+  });
+  if (!orbs.length) return;
+  function cache(){
+    for (const o of orbs){ o.el.style.transform = 'none'; }
+    const sy = window.scrollY;
+    for (const o of orbs){ const r = o.el.getBoundingClientRect(); o.docY = r.top + sy + r.height/2; }
+  }
+  let sy = window.scrollY;
+  window.addEventListener('scroll', function(){ sy = window.scrollY; }, {passive:true});
+  window.addEventListener('resize', cache);
+  window.addEventListener('load', cache);
+  const start = performance.now();
+  function frame(now){
+    const t = (now-start)/1000, mid = sy + window.innerHeight/2;
+    for (const o of orbs){
+      const par = reduce ? 0 : (mid - o.docY) * o.px;          // each depth layer drifts at its own rate
+      const dx  = reduce ? 0 : Math.sin(t*o.fx + o.phx) * o.ax; // slow organic drift
+      const dy  = reduce ? 0 : Math.cos(t*o.fy + o.phy) * o.ay;
+      o.el.style.transform = 'translate3d('+dx.toFixed(1)+'px,'+(dy+par).toFixed(1)+'px,0)';
+      o.el.style.opacity = reduce ? '0.9' : (0.72 + 0.28*Math.sin(t*o.fx*1.4 + o.phx)).toFixed(2);
+    }
+    if (!reduce) requestAnimationFrame(frame);
+  }
+  cache(); requestAnimationFrame(frame);
 })();
 
 // ── Hero URL bar: "analyze" reaction + scroll to intake form ──────────
