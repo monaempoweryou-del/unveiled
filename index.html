@@ -2675,14 +2675,14 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
       // sphere: slow, always-moving horizontal turn (dual sine so it never sits still),
       // capped small so it never flips/goes edge-on, and signed OPPOSITE to the orbit.
       if (core){
-        const sa = reduce ? 0 : -(8 * Math.sin(t * 0.10) + 4 * Math.sin(t * 0.066 + 1.2));
+        const sa = reduce ? 0 : -(9.5 * Math.sin(t * 0.085) + 5 * Math.sin(t * 0.055 + 1.2));
         core.style.transform = `rotateY(${sa.toFixed(2)}deg)`;
       }
 
       const A = w * 0.50;     // horizontal radius (wider than sphere)
       const B = h * 0.18;     // vertical radius — enough for real front/back, still a flat ring
       for (const o of els){
-        const ang  = (reduce ? 0.7 : t * 0.14 * o.spd) + o.phase * TAU;
+        const ang  = (reduce ? 0.7 : t * 0.155 * o.spd) + o.phase * TAU;
         const wob  = o.wob * Math.sin(t * o.wf + o.phase * TAU) * h;   // subtle organic drift
         const x    = A * o.rx * Math.cos(ang);
         const y    = B * o.ry * Math.sin(ang) + wob;
@@ -2820,18 +2820,21 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   const start = performance.now();
   function frame(now){
     const t = (now-start)/1000;
-    // nodes sit just outside the sphere; lines END at the sphere edge (tuck behind it) — never cross the center
-    const nodeRx = SRX*1.18, nodeRy = SRY*1.18;
+    // the whole ecosystem revolves slowly + breathes as one system (synchronized, not floating chaos)
+    const ring = reduce ? 0 : t*0.042;                       // ~1 revolution / 150s — premium, almost ambient
+    const breath = reduce ? 1 : 1 + 0.018*Math.sin(t*0.40);  // gentle shared in/out breath
+    const nodeRx = SRX*1.18*breath, nodeRy = SRY*1.18*breath;
     const edgeRx = SRX*0.86, edgeRy = SRY*0.86;
     for (const m of meta){
-      const fl = reduce ? 0 : Math.sin(t*m.fsp + m.fph)*3.5;
-      const nx = SCX + Math.cos(m.ang)*nodeRx, ny = SCY + Math.sin(m.ang)*nodeRy + fl;
-      const ex = SCX + Math.cos(m.ang)*edgeRx, ey = SCY + Math.sin(m.ang)*edgeRy;
+      const a = m.ang + ring;
+      const ca = Math.cos(a), sa = Math.sin(a);
+      const nx = SCX + ca*nodeRx, ny = SCY + sa*nodeRy;       // nodes orbit the sphere together
+      const ex = SCX + ca*edgeRx, ey = SCY + sa*edgeRy;       // line still ends at the sphere edge (tucks behind)
       m.el.style.transform = 'translate(-50%,-50%) translate('+nx.toFixed(1)+'px,'+ny.toFixed(1)+'px)';
       m.line.setAttribute('x1',nx.toFixed(1)); m.line.setAttribute('y1',ny.toFixed(1));
       m.line.setAttribute('x2',ex.toFixed(1)); m.line.setAttribute('y2',ey.toFixed(1));
       if (!reduce){
-        const f = ((t*m.ssp) + m.sph) % 1;          // platform -> into the sphere
+        const f = ((t*m.ssp) + m.sph) % 1;          // energy continuously feeding inward
         const xp = nx + (ex-nx)*f, yp = ny + (ey-ny)*f;
         m.spark.style.transform = 'translate(-50%,-50%) translate('+xp.toFixed(1)+'px,'+yp.toFixed(1)+'px)';
         m.spark.style.opacity = (0.30 + 0.55*Math.sin(f*Math.PI)).toFixed(2);
