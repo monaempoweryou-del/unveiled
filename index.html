@@ -356,6 +356,22 @@
     }
     @media (max-width: 600px) { .hx-l { display: none; } }
 
+    /* ══════ AMBIENT GLOW — slow drifting violet light for dark sections ══════ */
+    .has-amb { position: relative; }
+    .has-amb > .amb { position: absolute; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
+    .has-amb > *:not(.amb) { position: relative; z-index: 1; }
+    .amb-orb { position: absolute; border-radius: 50%; filter: blur(72px); will-change: transform, opacity;
+      background: radial-gradient(circle, rgba(140,90,245,0.50) 0%, rgba(108,60,224,0.18) 45%, transparent 70%); }
+    .amb-orb.o1 { width: 420px; height: 420px; top: -10%; left: -6%; animation: ambDrift1 24s ease-in-out infinite; }
+    .amb-orb.o2 { width: 340px; height: 340px; bottom: -12%; right: -5%; animation: ambDrift2 30s ease-in-out infinite;
+      background: radial-gradient(circle, rgba(99,102,241,0.42) 0%, rgba(79,70,229,0.16) 45%, transparent 70%); }
+    .amb-orb.o3 { width: 260px; height: 260px; top: 44%; left: 52%; animation: ambDrift3 27s ease-in-out infinite; }
+    @keyframes ambDrift1 { 0%,100% { transform: translate(0,0) scale(1); opacity: 0.45; } 50% { transform: translate(46px,34px) scale(1.12); opacity: 0.72; } }
+    @keyframes ambDrift2 { 0%,100% { transform: translate(0,0) scale(1); opacity: 0.40; } 50% { transform: translate(-40px,-28px) scale(1.1); opacity: 0.66; } }
+    @keyframes ambDrift3 { 0%,100% { transform: translate(0,0) scale(1); opacity: 0.30; } 50% { transform: translate(30px,-36px) scale(1.16); opacity: 0.55; } }
+    @media (max-width: 768px) { .amb-orb { filter: blur(56px); } .amb-orb.o1 { width: 300px; height: 300px; } .amb-orb.o2 { width: 240px; height: 240px; } .amb-orb.o3 { display: none; } }
+    @media (prefers-reduced-motion: reduce) { .amb-orb { animation: none !important; opacity: 0.5; } }
+
     /* analyzing state (hero only) */
     .hero-visual.analyzing .ss-glow   { animation-duration: 2.4s; background: radial-gradient(circle, rgba(150,100,255,0.58) 0%, rgba(108,60,224,0.24) 40%, transparent 70%); }
     .hero-visual.analyzing .ss-core-i { filter: drop-shadow(0 24px 62px rgba(108,60,224,0.55)) brightness(1.05) saturate(1.12); }
@@ -1898,7 +1914,8 @@
 </section>
 
 <!-- ██ 4. SHOWCASE ██ -->
-<section id="showcase">
+<section id="showcase" class="has-amb">
+  <div class="amb"><span class="amb-orb o1"></span><span class="amb-orb o2"></span><span class="amb-orb o3"></span></div>
   <div class="showcase-in">
     <div class="showcase-header">
       <div class="eyebrow-light reveal">Real Transformations</div>
@@ -2063,7 +2080,8 @@
 </section>
 
 <!-- ██ 6. HOW IT WORKS ██ -->
-<section id="how">
+<section id="how" class="has-amb">
+  <div class="amb"><span class="amb-orb o1"></span><span class="amb-orb o2"></span><span class="amb-orb o3"></span></div>
   <div class="how-inner">
     <div class="eyebrow-light reveal">The Process</div>
     <h2 class="showcase-hl reveal d1" style="margin-bottom:12px">You drop your link.<br /><span style="background:var(--grad-v);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">We do the rest.</span></h2>
@@ -2103,7 +2121,8 @@
 </section>
 
 <!-- ██ THE MACHINE — WHY WE CAN DO THIS ██ -->
-<section id="machine">
+<section id="machine" class="has-amb">
+  <div class="amb"><span class="amb-orb o1"></span><span class="amb-orb o2"></span></div>
   <div class="mac-inner">
     <div class="mac-eyebrow reveal">Why your result is better</div>
     <h2 class="mac-hl reveal d1">This isn't AI magic.<br /><span class="g">It's 12 years of experience, working for you.</span></h2>
@@ -2164,7 +2183,8 @@
 </section>
 
 <!-- ██ 8. CTA ██ -->
-<section id="cta">
+<section id="cta" class="has-amb">
+  <div class="amb"><span class="amb-orb o1"></span><span class="amb-orb o2"></span></div>
   <div class="cta-glow"></div>
   <div class="prob-stars"></div>
   <div class="cta-in">
