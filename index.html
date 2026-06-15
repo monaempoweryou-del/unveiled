@@ -323,7 +323,20 @@
       transform-style: preserve-3d; will-change: transform;
       /* rotateY is driven continuously by JS (slow horizontal turn, opposite the orbit) */
     }
-    @keyframes ssFloat { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-7px); } }
+    @keyframes ssFloat { 0%,100%{ transform: translateY(0) scale(1); } 50%{ transform: translateY(-7px) scale(1.018); } }
+
+    /* shifting highlight — light catching the sphere as it works (premium "processing" cue) */
+    .ss-sheen { position: absolute; top: 50%; left: 50%; width: 60%; height: 60%; transform: translate(-50%,-50%);
+      border-radius: 50%; overflow: hidden; z-index: 6; pointer-events: none; mix-blend-mode: screen; opacity: 0.9; }
+    .ss-sheen::before { content: ''; position: absolute; width: 75%; height: 75%; border-radius: 50%;
+      background: radial-gradient(circle, rgba(214,190,255,0.6) 0%, rgba(168,130,250,0.18) 45%, transparent 72%);
+      filter: blur(9px); animation: ssSheen 11s ease-in-out infinite; will-change: transform, opacity; }
+    @keyframes ssSheen {
+      0%   { transform: translate(-18%,-22%) scale(0.92); opacity: 0.45; }
+      50%  { transform: translate(46%,30%)  scale(1.08); opacity: 0.85; }
+      100% { transform: translate(-18%,-22%) scale(0.92); opacity: 0.45; }
+    }
+    @media (prefers-reduced-motion: reduce) { .ss-sheen::before { animation: none !important; } }
 
     /* size modifiers for reuse */
     .sphere-sys.sm  { max-width: 360px; }
@@ -1499,7 +1512,7 @@
       .cta-input { border-radius: 10px; }
       .hero-hl { font-size: 34px; }
       .hero-visual { min-height: 430px; }
-      .hero-visual .sphere-sys { max-width: 230px; }
+      .hero-visual .sphere-sys { max-width: 290px; }
       .sphere-sys { max-width: 320px; }
     }
 
@@ -1507,7 +1520,7 @@
       .hero-hl { font-size: 29px; }
       .hero-grid { padding: 84px 20px 28px; }
       .hero-visual { min-height: 388px; }
-      .hero-visual .sphere-sys { max-width: 206px; }
+      .hero-visual .sphere-sys { max-width: 264px; }
       .hero-urlbar { flex-wrap: wrap; border-radius: 16px; }
       .hero-url-input { min-width: 0; flex: 1 1 60%; }
       .btn-preview { flex: 1 1 100%; }
@@ -1787,7 +1800,7 @@
         <!-- orbit system (lines + upright screens + particles) — built by JS, interleaves front/behind -->
         <div class="ss-orbit"></div>
         <!-- sphere (planet) — gentle left/right turn -->
-        <div class="ss-core"><div class="ss-core-f"><img class="ss-core-i" src="sphere-core.png" alt="UNVEILED, a sphere of websites" /></div></div>
+        <div class="ss-core"><div class="ss-core-f"><img class="ss-core-i" src="sphere-core.png" alt="UNVEILED, a sphere of websites" /></div><div class="ss-sheen"></div></div>
       </div>
 
       <!-- ecosystem ring: every business asset connecting into one system -->
@@ -2803,12 +2816,18 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     const ang = (-90 + i*(360/N)) * Math.PI/180;
     const line = document.createElementNS(SVGNS,'line'); line.setAttribute('class','hx-line'); svg.appendChild(line);
     const spark = document.createElement('span'); spark.className = 'hx-spark'; wrap.appendChild(spark);
-    return { el, line, spark, ang, fph: Math.random()*6.28, fsp: 0.26+Math.random()*0.26, sph: Math.random(), ssp: 0.12+Math.random()*0.08 };
+    return { el, line, spark, ang,
+      sph: Math.random(), ssp: 0.12+Math.random()*0.08,            // spark flow
+      dfx: 0.16+Math.random()*0.20, dfy: 0.14+Math.random()*0.20,  // organic drift freqs
+      dpx: Math.random()*6.28, dpy: Math.random()*6.28,            // drift phases
+      dax: 7+Math.random()*8, day: 6+Math.random()*8,              // drift amplitudes (px)
+      dsf: 0.18+Math.random()*0.18, dsp: Math.random()*6.28 };     // depth-scale freq/phase
   });
   const sphereEl = document.getElementById('sphere-core');
-  let SCX=0, SCY=0, SRX=0, SRY=0;   // sphere center + radii (the hub)
+  let SCX=0, SCY=0, SRX=0, SRY=0, W=0, H=0;   // sphere center + radii (the hub) + container size
   function measure(){
     const wr = wrap.getBoundingClientRect();
+    W = wr.width; H = wr.height;
     svg.setAttribute('width', wr.width); svg.setAttribute('height', wr.height);
     if (sphereEl){
       const sr = sphereEl.getBoundingClientRect();
@@ -2820,17 +2839,21 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   const start = performance.now();
   function frame(now){
     const t = (now-start)/1000;
-    // the whole ecosystem revolves slowly + breathes as one system (synchronized, not floating chaos)
-    const ring = reduce ? 0 : t*0.042;                       // ~1 revolution / 150s — premium, almost ambient
-    const breath = reduce ? 1 : 1 + 0.018*Math.sin(t*0.40);  // gentle shared in/out breath
-    const nodeRx = SRX*1.18*breath, nodeRy = SRY*1.18*breath;
-    const edgeRx = SRX*0.86, edgeRy = SRY*0.86;
+    // ring spreads across the available width; each platform drifts organically (not a perfect circle)
+    const ring   = reduce ? 0 : t*0.03;                       // very slow shared drift; organic motion does the rest
+    const breath = reduce ? 1 : 1 + 0.016*Math.sin(t*0.35);
+    const nodeRx = Math.min(W*0.45, W/2 - 24) * breath;       // use the full screen width
+    const nodeRy = Math.min(H*0.42, H/2 - 24) * breath;
+    const edgeRx = SRX*0.86, edgeRy = SRY*0.86;               // lines still end at the sphere edge (tuck behind)
     for (const m of meta){
       const a = m.ang + ring;
       const ca = Math.cos(a), sa = Math.sin(a);
-      const nx = SCX + ca*nodeRx, ny = SCY + sa*nodeRy;       // nodes orbit the sphere together
-      const ex = SCX + ca*edgeRx, ey = SCY + sa*edgeRy;       // line still ends at the sphere edge (tucks behind)
-      m.el.style.transform = 'translate(-50%,-50%) translate('+nx.toFixed(1)+'px,'+ny.toFixed(1)+'px)';
+      const dx = reduce ? 0 : Math.sin(t*m.dfx + m.dpx)*m.dax;   // organic per-node drift
+      const dy = reduce ? 0 : Math.cos(t*m.dfy + m.dpy)*m.day;
+      const nx = SCX + ca*nodeRx + dx, ny = SCY + sa*nodeRy + dy;
+      const ex = SCX + ca*edgeRx, ey = SCY + sa*edgeRy;
+      const depth = reduce ? 1 : 1 + 0.07*Math.sin(t*m.dsf + m.dsp);   // subtle depth (size) variation
+      m.el.style.transform = 'translate(-50%,-50%) translate('+nx.toFixed(1)+'px,'+ny.toFixed(1)+'px) scale('+depth.toFixed(3)+')';
       m.line.setAttribute('x1',nx.toFixed(1)); m.line.setAttribute('y1',ny.toFixed(1));
       m.line.setAttribute('x2',ex.toFixed(1)); m.line.setAttribute('y2',ey.toFixed(1));
       if (!reduce){
