@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>UNVEILED — Your Business Deserves to Look This Good</title>
+  <title>UNVEILED | Your Business Deserves to Look This Good</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
@@ -838,7 +838,78 @@
     .showcase-hl { font-size: clamp(28px, 3.5vw, 46px); font-weight: 700; letter-spacing: -0.025em; color: #fff; margin-bottom: 14px; }
     .showcase-hl .gv { background: var(--grad-v); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
 
-    .showcase-sub { font-size: 17px; color: rgba(255,255,255,0.4); max-width: 440px; line-height: 1.6; }
+    .showcase-sub { font-size: 17px; color: rgba(255,255,255,0.4); max-width: 480px; line-height: 1.6; }
+
+    /* ══════ BUSINESS-SYSTEM SHOWCASE (a complete branded presence, not just a site) ══════ */
+    .biz { position: relative; border-radius: 22px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08);
+      background: var(--panel, #0E0A06); box-shadow: 0 24px 70px rgba(0,0,0,0.45);
+      transition: transform .35s ease, box-shadow .35s ease; }
+    .biz:hover { transform: translateY(-4px); box-shadow: 0 34px 90px rgba(0,0,0,0.55), 0 0 0 1px rgba(108,60,224,0.18); }
+    .biz + .biz { margin-top: 32px; }
+    .biz-head { display: flex; align-items: center; gap: 11px; padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .biz-mark { width: 32px; height: 32px; border-radius: 9px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 14px; color: var(--ink, #0A0702);
+      background: linear-gradient(150deg, var(--acc), var(--acc2)); }
+    .biz-id { line-height: 1.1; }
+    .biz-name { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 15px; color: #fff; }
+    .biz-ind { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 3px; }
+    .biz-tag { margin-left: auto; font-size: 9.5px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
+      color: var(--acc); background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09); padding: 5px 11px; border-radius: 100px; white-space: nowrap; }
+    .biz-time { font-size: 10px; color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.06); border-radius: 100px; padding: 4px 10px; white-space: nowrap; }
+
+    .biz-board { padding: 24px 22px 8px; background: radial-gradient(ellipse 70% 60% at 82% -10%, rgba(255,255,255,0.05), transparent 60%); }
+    .biz-stage { position: relative; max-width: 720px; margin: 0 auto 34px; }
+    .biz-chrome { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.09); border-bottom: none;
+      border-radius: 11px 11px 0 0; padding: 8px 12px; display: flex; gap: 5px; align-items: center; }
+    .biz-chrome i { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.16); }
+    .biz-url { margin-left: 8px; font-size: 10px; color: rgba(255,255,255,0.34); }
+    .biz-desk { border-radius: 0 0 11px 11px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 18px 44px rgba(0,0,0,0.45); }
+    .biz-desk img { display: block; width: 100%; height: auto; }
+    .biz-phone { position: absolute; right: -8px; bottom: -24px; width: 22%; min-width: 66px; aspect-ratio: 9 / 19; border-radius: 15px;
+      border: 3px solid #100c08; background: #100c08; overflow: hidden; box-shadow: 0 16px 34px rgba(0,0,0,0.55); }
+    .biz-phone::before { content: ''; position: absolute; top: 5px; left: 50%; transform: translateX(-50%); width: 26%; height: 3px; border-radius: 3px; background: rgba(255,255,255,0.22); z-index: 2; }
+    .biz-phone img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+
+    .biz-tiles { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+    .biz-tile { position: relative; background: var(--paper, #FBF9F5); border-radius: 13px; padding: 13px 12px; min-height: 116px;
+      box-shadow: 0 10px 26px rgba(0,0,0,0.3); overflow: hidden; }
+    .biz-tcap { position: absolute; left: 12px; bottom: 9px; font-size: 7.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: #A8A29A; }
+    /* brand identity tile */
+    .bt-wm { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 12px; color: var(--tink); letter-spacing: .04em; }
+    .bt-sw { display: flex; gap: 4px; margin-top: 10px; }
+    .bt-sw i { width: 17px; height: 17px; border-radius: 5px; border: 1px solid rgba(0,0,0,0.06); }
+    .bt-aa { margin-top: 9px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 15px; color: var(--tink); }
+    /* email signature tile */
+    .bt-sig-top { display: flex; align-items: center; gap: 7px; }
+    .bt-av { width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(150deg, var(--acc), var(--acc2)); flex-shrink: 0; }
+    .bt-nm { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 10px; color: var(--tink); line-height: 1.1; }
+    .bt-ti { font-size: 8px; color: #8A8378; margin-top: 2px; }
+    .bt-cn { font-size: 8px; color: #8A8378; margin-top: 8px; line-height: 1.6; border-left: 2px solid var(--acc); padding-left: 7px; }
+    /* proposal tile */
+    .bt-doc { border: 1px solid #E7E1D8; border-radius: 6px; overflow: hidden; margin-bottom: 4px; }
+    .bt-doc-h { height: 20px; background: linear-gradient(90deg, var(--acc), var(--acc2)); display: flex; align-items: center; padding: 0 7px; }
+    .bt-doc-h span { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 7px; color: var(--ink); letter-spacing: .1em; text-transform: uppercase; }
+    .bt-ln { height: 3px; background: #E7E1D8; border-radius: 2px; margin: 5px 9px; }
+    .bt-ln.s { width: 60%; }
+    /* reviews tile */
+    .bt-stars { color: var(--acc); font-size: 12px; letter-spacing: 1.5px; }
+    .bt-score { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 20px; color: var(--tink); margin-top: 4px; line-height: 1; }
+    .bt-rc { font-size: 8px; color: #8A8378; margin-top: 3px; }
+    /* lead capture tile */
+    .bt-alert { display: flex; align-items: center; gap: 6px; }
+    .bt-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--acc); box-shadow: 0 0 0 3px color-mix(in srgb, var(--acc) 22%, transparent); }
+    .bt-lt { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 9.5px; color: var(--tink); }
+    .bt-ls { font-size: 8px; color: #8A8378; margin-top: 7px; line-height: 1.6; }
+    .bt-ls b { color: var(--tink); font-weight: 700; }
+
+    .biz-cap { padding: 4px 24px 24px; font-size: 13.5px; color: rgba(255,255,255,0.52); line-height: 1.6; }
+    .biz-cap b { color: #fff; font-weight: 600; }
+
+    @media (max-width: 768px) {
+      .biz-tiles { grid-template-columns: 1fr 1fr; }
+      .biz-board { padding: 18px 16px 8px; }
+      .biz-phone { width: 26%; bottom: -16px; }
+    }
 
     /* Big full showcase cards */
     .showcase-cards { display: flex; flex-direction: column; gap: 32px; }
@@ -1602,11 +1673,11 @@
       </div>
 
       <h1 class="hero-hl">
-        See your business become the one <span class="gv">customers choose — free, in 72 hours.</span>
+        See your business become the one <span class="gv">customers choose. Free, in 72 hours.</span>
       </h1>
 
       <p class="hero-sub">
-        Tell us a little about your business. You'll get a complete, real website in 72 hours — free to see, with nothing to pay until you love it. It's the first proof of what your business could become.
+        Tell us a little about your business. You'll get a complete, real website in 72 hours, free to see, with nothing to pay until you love it. It's the first proof of what your business could become.
       </p>
 
       <div class="hero-url-prompt">Already have a site? Drop the link to start faster.</div>
@@ -1632,7 +1703,7 @@
         <!-- orbit system (lines + upright screens + particles) — built by JS, interleaves front/behind -->
         <div class="ss-orbit"></div>
         <!-- sphere (planet) — gentle left/right turn -->
-        <div class="ss-core"><div class="ss-core-f"><img class="ss-core-i" src="sphere-core.png" alt="UNVEILED — a sphere of websites" /></div></div>
+        <div class="ss-core"><div class="ss-core-f"><img class="ss-core-i" src="sphere-core.png" alt="UNVEILED, a sphere of websites" /></div></div>
       </div>
     </div>
 
@@ -1679,7 +1750,7 @@
         <path d="M26.2 18.7 l1.8 1.8 3.3-3.5" stroke="#fff" stroke-width="2.1"/>
       </svg></div>
       <div class="outcome-value">Never let a lead slip through the cracks</div>
-      <div class="outcome-desc">Faster follow-up and better organization mean fewer missed opportunities — and far less manual work for you.</div>
+      <div class="outcome-desc">Faster follow-up and better organization mean fewer missed opportunities and far less manual work for you.</div>
     </div>
     <div class="outcome-stat reveal d3">
       <div class="outcome-icon"><svg class="oi oi-choose" viewBox="0 0 40 40" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -1692,10 +1763,10 @@
         </g>
       </svg></div>
       <div class="outcome-value">Become the obvious choice</div>
-      <div class="outcome-desc">A presence that outclasses your competition makes the decision easy — before the conversation even starts.</div>
+      <div class="outcome-desc">A presence that outclasses your competition makes the decision easy, long before the conversation even starts.</div>
     </div>
   </div>
-  <div class="outcome-proof">All of it — built, live, and free to preview in <strong>72 hours</strong>.</div>
+  <div class="outcome-proof">All of it: built, live, and free to preview in <strong>72 hours</strong>.</div>
 </div>
 
 <!-- ██ 3. THE TRANSFORMATION — cinematic scattered→unified ██ -->
@@ -1734,11 +1805,11 @@
         <div class="sphere-sys">
           <div class="ss-glow"></div>
           <div class="ss-orbit"></div>
-          <div class="ss-core"><div class="ss-core-f"><img class="ss-core-i" src="sphere-core.png" alt="UNVEILED — your business as one connected system" /></div></div>
+          <div class="ss-core"><div class="ss-core-f"><img class="ss-core-i" src="sphere-core.png" alt="UNVEILED, your business as one connected system" /></div></div>
         </div>
       </div>
 
-      <div class="xform-sub">Website, search, social, reviews, follow-up — one connected system, working as one.</div>
+      <div class="xform-sub">Website, search, social, reviews, follow-up. One connected system, working as one.</div>
 
     </div>
   </div>
@@ -1750,52 +1821,59 @@
     <div class="showcase-header">
       <div class="eyebrow-light reveal">Real Transformations</div>
       <h2 class="showcase-hl reveal d1">These aren't promises.<br /><span class="gv">These are receipts.</span></h2>
-      <p class="showcase-sub reveal d2">Real businesses, transformed. Each one now shows up online the way their work deserves — built, live, and approved before a single dollar changed hands.</p>
+      <p class="showcase-sub reveal d2">Real businesses, transformed. Not just a website, but a complete, consistent presence everywhere customers look. Desktop, mobile, email, proposals, reviews, and follow-up, all built and approved before a single dollar changed hands.</p>
     </div>
 
     <div class="showcase-cards">
 
-      <!-- Goldsmith — REAL screenshot -->
-      <div class="sc-card reveal">
-        <div class="sc-browser-bar">
-          <div class="sc-bdots"><div class="sc-bdot" style="background:#FF5F57"></div><div class="sc-bdot" style="background:#FEBC2E"></div><div class="sc-bdot" style="background:#28C840"></div></div>
-          <div class="sc-burl">goldsmithfinancial.com</div>
-          <div class="sc-meta"><span class="sc-industry">Wealth Management</span><span class="sc-build-time">61 hours</span></div>
+      <!-- Goldsmith — complete business system -->
+      <div class="biz reveal" style="--acc:#E8B75A;--acc2:#C9933A;--panel:#0E0A04;--ink:#0A0702;--paper:#FBF8F2;--tink:#1A1206;">
+        <div class="biz-head">
+          <div class="biz-mark">G</div>
+          <div class="biz-id"><div class="biz-name">Goldsmith Financial</div><div class="biz-ind">Wealth Management</div></div>
+          <span class="biz-tag">Complete brand system</span>
+          <span class="biz-time">61 hrs</span>
         </div>
-        <img src="assets/site-goldsmith-hero.jpg" alt="Goldsmith Financial — website built by UNVEILED" class="sc-shot" loading="lazy" />
+        <div class="biz-board">
+          <div class="biz-stage">
+            <div class="biz-chrome"><i></i><i></i><i></i><span class="biz-url">goldsmithfinancial.com</span></div>
+            <div class="biz-desk"><img src="assets/site-goldsmith-hero.jpg" alt="Goldsmith Financial desktop presence" loading="lazy" /></div>
+            <div class="biz-phone"><img src="assets/site-goldsmith-mobile.jpg" alt="Goldsmith Financial mobile presence" loading="lazy" /></div>
+          </div>
+          <div class="biz-tiles">
+            <div class="biz-tile"><div class="bt-wm">GOLDSMITH</div><div class="bt-sw"><i style="background:#E8B75A"></i><i style="background:#1A1206"></i><i style="background:#F0E9DA"></i></div><div class="bt-aa">Aa</div><div class="biz-tcap">Brand identity</div></div>
+            <div class="biz-tile"><div class="bt-sig-top"><div class="bt-av"></div><div><div class="bt-nm">A. Goldsmith</div><div class="bt-ti">Managing Partner</div></div></div><div class="bt-cn">goldsmithfinancial.com<br/>(305) 555-0142</div><div class="biz-tcap">Email signature</div></div>
+            <div class="biz-tile"><div class="bt-doc"><div class="bt-doc-h"><span>Goldsmith</span></div><div class="bt-ln"></div><div class="bt-ln"></div><div class="bt-ln s"></div></div><div class="bt-ln"></div><div class="biz-tcap">Proposals</div></div>
+            <div class="biz-tile"><div class="bt-stars">★★★★★</div><div class="bt-score">4.9</div><div class="bt-rc">138 client reviews</div><div class="biz-tcap">Reviews</div></div>
+            <div class="biz-tile"><div class="bt-alert"><span class="bt-dot"></span><span class="bt-lt">New inquiry</span></div><div class="bt-ls"><b>Daniel R.</b><br/>Retirement planning · now</div><div class="biz-tcap">Lead capture</div></div>
+          </div>
+        </div>
+        <div class="biz-cap"><b>One identity, everywhere it counts.</b> The same trusted, established look on their site, their phone, their inbox, their proposals, and every new lead that comes in.</div>
       </div>
 
-      <!-- Renova — real-photo hero site (creative-1 "after" style) -->
-      <div class="sc-card reveal d1">
-        <div class="sc-browser-bar">
-          <div class="sc-bdots"><div class="sc-bdot" style="background:#FF5F57"></div><div class="sc-bdot" style="background:#FEBC2E"></div><div class="sc-bdot" style="background:#28C840"></div></div>
-          <div class="sc-burl">renovabuilders.com</div>
-          <div class="sc-meta"><span class="sc-industry">Home Renovation</span><span class="sc-build-time">58 hours</span></div>
+      <!-- Renova — complete business system -->
+      <div class="biz reveal d1" style="--acc:#34D399;--acc2:#10B981;--panel:#0C1A12;--ink:#06120B;--paper:#FBF9F5;--tink:#10271B;">
+        <div class="biz-head">
+          <div class="biz-mark">R</div>
+          <div class="biz-id"><div class="biz-name">Renova Builders</div><div class="biz-ind">Home Renovation</div></div>
+          <span class="biz-tag">Complete brand system</span>
+          <span class="biz-time">58 hrs</span>
         </div>
-        <div class="rsite">
-          <img src="assets/renova-luxury.jpg" alt="Renova Builders — website built by UNVEILED" class="rsite-bg" loading="lazy" />
-          <div class="rsite-shade"></div>
-          <div class="rsite-nav">
-            <div class="rsite-logo">RENOVA <span>BUILDERS</span></div>
-            <div class="rsite-links">
-              <span class="rsite-link">Projects</span>
-              <span class="rsite-link">Services</span>
-              <span class="rsite-link">About</span>
-              <span class="rsite-navcta">Get a Quote</span>
-            </div>
+        <div class="biz-board">
+          <div class="biz-stage">
+            <div class="biz-chrome"><i></i><i></i><i></i><span class="biz-url">renovabuilders.com</span></div>
+            <div class="biz-desk"><img src="assets/renova-luxury.jpg" alt="Renova Builders desktop presence" loading="lazy" /></div>
+            <div class="biz-phone"><img src="assets/renova-kitchen.jpg" alt="Renova Builders mobile presence" loading="lazy" /></div>
           </div>
-          <div class="rsite-body">
-            <div class="rsite-eyebrow">South Florida's Top-Rated Renovation Company</div>
-            <div class="rsite-h1">Renovations that <em>increase your home's value.</em></div>
-            <div class="rsite-sub">From luxury kitchens to full custom builds — 400+ renovations completed across South Florida since 2011.</div>
-            <div class="rsite-btns"><span class="rsite-btn-p">View Our Projects</span><span class="rsite-btn-s">Free Consultation</span></div>
-          </div>
-          <div class="rsite-stats">
-            <div class="rsite-stat"><div class="rsite-sn">400+</div><div class="rsite-sl">Renovations</div></div>
-            <div class="rsite-stat"><div class="rsite-sn">4.9★</div><div class="rsite-sl">Rating</div></div>
-            <div class="rsite-stat"><div class="rsite-sn">12yr</div><div class="rsite-sl">In business</div></div>
+          <div class="biz-tiles">
+            <div class="biz-tile"><div class="bt-wm">RENOVA</div><div class="bt-sw"><i style="background:#34D399"></i><i style="background:#10271B"></i><i style="background:#EAF3EE"></i></div><div class="bt-aa">Aa</div><div class="biz-tcap">Brand identity</div></div>
+            <div class="biz-tile"><div class="bt-sig-top"><div class="bt-av"></div><div><div class="bt-nm">M. Torres</div><div class="bt-ti">Project Lead</div></div></div><div class="bt-cn">renovabuilders.com<br/>(305) 555-0188</div><div class="biz-tcap">Email signature</div></div>
+            <div class="biz-tile"><div class="bt-doc"><div class="bt-doc-h"><span>Renova</span></div><div class="bt-ln"></div><div class="bt-ln"></div><div class="bt-ln s"></div></div><div class="bt-ln"></div><div class="biz-tcap">Estimates</div></div>
+            <div class="biz-tile"><div class="bt-stars">★★★★★</div><div class="bt-score">4.9</div><div class="bt-rc">212 client reviews</div><div class="biz-tcap">Reviews</div></div>
+            <div class="biz-tile"><div class="bt-alert"><span class="bt-dot"></span><span class="bt-lt">New lead</span></div><div class="bt-ls"><b>Sarah M.</b><br/>Kitchen remodel · now</div><div class="biz-tcap">Lead capture</div></div>
           </div>
         </div>
+        <div class="biz-cap"><b>Organized, professional, established.</b> A business that looks the part everywhere customers meet it, from the first search to the signed estimate.</div>
       </div>
 
     </div>
@@ -1807,8 +1885,8 @@
   <div class="mission-in">
     <div class="mission-eyebrow reveal">Why we exist</div>
     <h2 class="mission-hl reveal d1">Most local businesses<br /><span class="g">deserve better.</span></h2>
-    <p class="mission-body reveal d2">We've seen incredible businesses hidden behind outdated websites — companies that do amazing work but look average online. Businesses customers already love, yet that stay invisible to the people searching for them.</p>
-    <p class="mission-body reveal d2">We built UNVEILED because your presence online should reflect the quality of your work — not hold it back. Great businesses deserve to be seen as great.</p>
+    <p class="mission-body reveal d2">We've seen incredible businesses hidden behind outdated websites. Companies that do amazing work but look average online. Businesses customers already love, yet that stay invisible to the people searching for them.</p>
+    <p class="mission-body reveal d2">We built UNVEILED because your presence online should reflect the quality of your work, not hold it back. Great businesses deserve to be seen as great.</p>
     <div class="mission-close reveal d3">That's why we <span class="g">build first.</span><br />Then we let you decide.</div>
   </div>
 </section>
@@ -1824,7 +1902,7 @@
       <span class="g">Most websites fail to tell it.</span>
     </h2>
     <div class="prob-subline reveal d2">It's not your business. It's how you're <span class="g">represented.</span></div>
-    <p class="prob-realize reveal d2">Chances are, you're better than your website makes you look — and the customers slipping away never get to find out. The problem usually isn't your work, your prices, or your reputation. It's that your online presence is quietly underselling everything you've built.</p>
+    <p class="prob-realize reveal d2">Chances are, you're better than your website makes you look, and the customers slipping away never get to find out. The problem usually isn't your work, your prices, or your reputation. It's that your online presence is quietly underselling everything you've built.</p>
 
     <div class="sphere-sys reveal d2" style="margin: 20px auto 56px;">
       <div class="ss-glow"></div>
@@ -1844,21 +1922,21 @@
         <span class="prob-icon">🔍</span>
         <div class="prob-text">
           <strong>Invisible to how people search now</strong>
-          <span>Your site was built for 2010's Google. Today customers find businesses through maps and AI — and there, you barely exist.</span>
+          <span>Your site was built for 2010's Google. Today customers find businesses through maps and AI. There, you barely exist.</span>
         </div>
       </div>
       <div class="prob-card reveal d2">
         <span class="prob-icon">⚙️</span>
         <div class="prob-text">
           <strong>A page isn't a presence</strong>
-          <span>Website, mobile, follow-up, reviews — disconnected pieces that don't work together. A real business needs a system, not a brochure.</span>
+          <span>Website, mobile, follow-up, reviews: disconnected pieces that don't work together. A real business needs a system, not a brochure.</span>
         </div>
       </div>
       <div class="prob-card reveal d3">
         <span class="prob-icon">⏳</span>
         <div class="prob-text">
           <strong>You've been putting it off</strong>
-          <span>It sounds expensive, slow, and risky. UNVEILED removes all three — see the finished result first, then decide.</span>
+          <span>It sounds expensive, slow, and risky. UNVEILED removes all three. See the finished result first, then decide.</span>
         </div>
       </div>
     </div>
@@ -1871,7 +1949,7 @@
     <div class="aid-text">
       <div class="aid-eyebrow reveal">The shift most businesses will miss</div>
       <h2 class="aid-hl reveal d1">Soon, your customers won't Google you.<br /><span class="g">They'll ask AI.</span></h2>
-      <p class="aid-body reveal d2">People are already asking ChatGPT, Gemini, and AI assistants who to hire, who to trust, and who to call. Most businesses are built for the search engines of a decade ago — and stay invisible to the way customers are starting to choose.</p>
+      <p class="aid-body reveal d2">People are already asking ChatGPT, Gemini, and AI assistants who to hire, who to trust, and who to call. Most businesses are built for the search engines of a decade ago, so they stay invisible to the way customers are starting to choose.</p>
       <p class="aid-out reveal d2">When someone asks AI for a business like yours,<br /><strong>you want to be the answer.</strong></p>
       <div class="aid-logos reveal d3">ChatGPT &middot; Gemini &middot; Claude &middot; Copilot &middot; AI search</div>
     </div>
@@ -1879,7 +1957,7 @@
       <div class="aid-chat">
         <div class="aid-chat-top"><span class="dot"></span> Asking AI</div>
         <div class="aid-msg aid-q">Who's the most trusted home remodeler near me?</div>
-        <div class="aid-msg aid-a"><span class="aid-ai">✦ AI Assistant</span>Based on reputation, reviews, and recent work, <strong>your business</strong> stands out — known for quality craftsmanship and happy customers. Want me to pull up their contact info?</div>
+        <div class="aid-msg aid-a"><span class="aid-ai">✦ AI Assistant</span>Based on reputation, reviews, and recent work, <strong>your business</strong> stands out, known for quality craftsmanship and happy customers. Want me to pull up their contact info?</div>
         <div class="aid-typing">Is your business the answer it gives? It should be.</div>
       </div>
     </div>
@@ -1891,35 +1969,35 @@
   <div class="how-inner">
     <div class="eyebrow-light reveal">The Process</div>
     <h2 class="showcase-hl reveal d1" style="margin-bottom:12px">You drop your link.<br /><span style="background:var(--grad-v);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">We do the rest.</span></h2>
-    <p class="showcase-sub reveal d2">No proposals. No deposits. No risk. Here's how your business gets transformed — while you do almost nothing.</p>
+    <p class="showcase-sub reveal d2">No proposals. No deposits. No risk. Here's how your business gets transformed, while you do almost nothing.</p>
 
     <div class="how-grid">
       <div class="how-card reveal">
         <div class="how-num">01</div>
         <div class="how-icon">🔍</div>
         <h3>Your business, understood</h3>
-        <p>We study what you do, who you serve, and what makes you different — so the site sounds like you, not a template.</p>
+        <p>We study what you do, who you serve, and what makes you different, so the site sounds like you, not a template.</p>
         <div class="how-note">Your story, understood first.</div>
       </div>
       <div class="how-card reveal d1">
         <div class="how-num">02</div>
         <div class="how-icon">📊</div>
         <h3>Your competition, mapped</h3>
-        <p>We see exactly what you're up against online — and design something built to make you the obvious choice.</p>
+        <p>We see exactly what you're up against online, then design something built to make you the obvious choice.</p>
         <div class="how-note">Positioned to win the click.</div>
       </div>
       <div class="how-card reveal d2">
         <div class="how-num">03</div>
         <div class="how-icon">⚡</div>
         <h3>Your new presence, designed</h3>
-        <p>Custom-designed, written, and built into a living, professional presence customers instantly trust. You get the finished thing — never a mockup.</p>
+        <p>Custom-designed, written, and built into a living, professional presence customers instantly trust. You get the finished thing, never a mockup.</p>
         <div class="how-note">Custom. Mobile-first. Built to be found.</div>
       </div>
       <div class="how-card reveal d3">
         <div class="how-num">04</div>
         <div class="how-icon">✅</div>
         <h3>Your live preview, delivered</h3>
-        <p>In 72 hours we send you a link. Open it, share it, sleep on it. Love it and we launch — or walk away owing nothing.</p>
+        <p>In 72 hours we send you a link. Open it, share it, sleep on it. Love it and we launch, or walk away owing nothing.</p>
         <div class="how-note">Live in 72 hours. $0 to look.</div>
       </div>
     </div>
@@ -1931,14 +2009,14 @@
   <div class="mac-inner">
     <div class="mac-eyebrow reveal">Why your result is better</div>
     <h2 class="mac-hl reveal d1">This isn't AI magic.<br /><span class="g">It's 12 years of experience, working for you.</span></h2>
-    <p class="mac-body reveal d2">For over a decade we've learned what actually makes a business look credible, get found, and earn trust online — across thousands of real projects. All of it is now built into the UNVEILED machine, working on your business from the very first minute.</p>
-    <p class="mac-body reveal d2">You don't see the machine. You just get the result: a stronger website, built faster, with fewer mistakes — and an experience that feels effortless the whole way through.</p>
+    <p class="mac-body reveal d2">For over a decade we've learned what actually makes a business look credible, get found, and earn trust online, across thousands of real projects. All of it is now built into the UNVEILED machine, working on your business from the very first minute.</p>
+    <p class="mac-body reveal d2">You don't see the machine. You just get the result: a stronger website, built faster, with fewer mistakes, and an experience that feels effortless the whole way through.</p>
     <div class="mac-grid">
-      <div class="mac-card reveal"><div class="mac-ic">🎯</div><h4>A better result from day one</h4><p>You get a stronger first draft and a more complete website — built on a decade of what actually works, not guesswork or a template.</p></div>
-      <div class="mac-card reveal d1"><div class="mac-ic">⚡</div><h4>Faster, with nothing cut</h4><p>You get a polished, finished result in 72 hours — not months of back-and-forth. The heavy lifting happens behind the scenes.</p></div>
-      <div class="mac-card reveal d2"><div class="mac-ic">🤝</div><h4>Fewer mistakes, more trust</h4><p>You get the speed of automation with the judgment of real experts — every build reviewed and refined by people before you see it.</p></div>
+      <div class="mac-card reveal"><div class="mac-ic">🎯</div><h4>A better result from day one</h4><p>You get a stronger first draft and a more complete website, built on a decade of what actually works, not guesswork or a template.</p></div>
+      <div class="mac-card reveal d1"><div class="mac-ic">⚡</div><h4>Faster, with nothing cut</h4><p>You get a polished, finished result in 72 hours, not months of back-and-forth. The heavy lifting happens behind the scenes.</p></div>
+      <div class="mac-card reveal d2"><div class="mac-ic">🤝</div><h4>Fewer mistakes, more trust</h4><p>You get the speed of automation with the judgment of real experts. Every build is reviewed and refined by people before you see it.</p></div>
     </div>
-    <div class="mac-close reveal d3">It's not about the machine.<br /><span class="g">It's about what you get because of it — a better business, faster than ever.</span></div>
+    <div class="mac-close reveal d3">It's not about the machine.<br /><span class="g">It's about what you get because of it: a better business, faster than ever.</span></div>
   </div>
 </section>
 
@@ -1947,7 +2025,7 @@
   <div class="comp-inner">
     <div class="comp-eyebrow reveal">UNVEILED vs. Agencies</div>
     <h2 class="comp-hl reveal d1">One model protects the agency.<br /><span class="g">The other protects you.</span></h2>
-    <p class="comp-sub reveal d2">This is the actual difference — not marketing.</p>
+    <p class="comp-sub reveal d2">This is the actual difference, not marketing.</p>
 
     <div class="comp-tbl reveal">
       <div class="cth">
@@ -1972,10 +2050,10 @@
   <div class="eco-inner">
     <div class="eco-eyebrow reveal">The website is just the beginning</div>
     <h2 class="eco-hl reveal d1">It doesn't stop at a website.<br /><span class="g">Your whole business gets elevated.</span></h2>
-    <p class="eco-sub reveal d2">A great website is the first proof of what's possible. From there, everything that makes a business feel bigger, run smoother, and grow faster is on the table — whenever you're ready.</p>
+    <p class="eco-sub reveal d2">A great website is the first proof of what's possible. From there, everything that makes a business feel bigger, run smoother, and grow faster is on the table, whenever you're ready.</p>
     <div class="eco-grid">
       <div class="eco-item reveal"><div class="eco-ic">✨</div><div class="t">Look better</div><div class="s">A presence that matches the quality of your work.</div></div>
-      <div class="eco-item reveal d1"><div class="eco-ic">🔍</div><div class="t">Get found</div><div class="s">Google, maps, and AI discovery — wherever customers look.</div></div>
+      <div class="eco-item reveal d1"><div class="eco-ic">🔍</div><div class="t">Get found</div><div class="s">Google, maps, and AI discovery, wherever customers look.</div></div>
       <div class="eco-item reveal d1"><div class="eco-ic">🤝</div><div class="t">Earn trust faster</div><div class="s">Reviews and reputation that make you the safe choice.</div></div>
       <div class="eco-item reveal d2"><div class="eco-ic">💬</div><div class="t">Communicate better</div><div class="s">Email, messaging, and follow-up that never drop the ball.</div></div>
       <div class="eco-item reveal"><div class="eco-ic">⚡</div><div class="t">Automate the busywork</div><div class="s">Booking, reminders, and workflows that run themselves.</div></div>
@@ -1983,7 +2061,7 @@
       <div class="eco-item reveal d1"><div class="eco-ic">📝</div><div class="t">Build authority</div><div class="s">Content that makes you the obvious expert.</div></div>
       <div class="eco-item reveal d2"><div class="eco-ic">🚀</div><div class="t">Grow on purpose</div><div class="s">Systems that turn a good business into a growing one.</div></div>
     </div>
-    <div class="eco-first reveal d2"><span class="eco-now">Start free</span> &nbsp; Your website is where we begin — not where we stop.</div>
+    <div class="eco-first reveal d2"><span class="eco-now">Start free</span> &nbsp; Your website is where we begin, not where we stop.</div>
   </div>
 </section>
 
@@ -2001,7 +2079,7 @@
     </h2>
 
     <p class="cta-sub reveal d2">
-      No forms to dread. Give us whatever you already have — a link, a few photos, a sentence about what you do. We do the heavy lifting.
+      No forms to dread. Give us whatever you already have: a link, a few photos, a sentence about what you do. We do the heavy lifting.
     </p>
 
     <div class="cta-box reveal d3" style="align-items:center; gap:18px;">
@@ -2069,7 +2147,7 @@
           </div>
           <img class="unv-word" src="wordmark-light.png" alt="UNVEILED" />
         </div>
-        <p class="foot-tag">We help businesses become impossible to ignore — online, on mobile, and everywhere customers look.</p>
+        <p class="foot-tag">We help businesses become impossible to ignore, online, on mobile, and everywhere customers look.</p>
         <div class="foot-social">
           <a class="foot-soc" href="#" aria-label="X">X</a>
           <a class="foot-soc" href="#" aria-label="LinkedIn">in</a>
@@ -2185,16 +2263,16 @@ heroOut.observe(hero);
 
   // step config — keep it human and effortless
   const steps = [
-    { key:'url',  eyebrow:'Step 1', q:"What's your website?", help:"Paste your current site and we'll start from there. No site yet? Just skip — we build from scratch all the time.", type:'url', optional:true, placeholder:'yourbusiness.com' },
-    { key:'biz',  eyebrow:'Step 2', q:"What's your business called?", help:"Just the name — we'll take care of the rest.", type:'text', placeholder:'Acme Construction' },
-    { key:'about',eyebrow:'Step 3', q:"Tell us about your business", help:"In your own words — what you do, who you help, what makes you different. A sentence or a paragraph, whatever's easy.", type:'textarea', optional:true, placeholder:"We're a family-owned remodeling company in Miami…" },
-    { key:'social',eyebrow:'Step 4', q:"Where does your business live online?", help:"Show us anywhere your business exists — we'll pull your branding, photos, reviews and positioning straight from your profiles. The more you share, the sharper your website.", type:'social', optional:true },
-    { key:'photos',eyebrow:'Step 5', q:"Got photos?", help:"Team, projects, products, storefront, vehicles, before/afters — anything that represents your business. We'll make them shine.", type:'files', optional:true, accept:'image/*', multiple:true, dropIc:'🖼️', dropT:'Drop photos here or click to upload', dropS:'JPG, PNG · as many as you like' },
-    { key:'logo', eyebrow:'Step 6', q:"Have a logo?", help:"Upload it and we'll build around your brand. No logo? We've got you — skip ahead.", type:'files', optional:true, accept:'image/*,.svg,.pdf', multiple:false, dropIc:'✦', dropT:'Upload your logo', dropS:'PNG, SVG, PDF' },
+    { key:'url',  eyebrow:'Step 1', q:"What's your website?", help:"Paste your current site and we'll start from there. No site yet? Just skip, we build from scratch all the time.", type:'url', optional:true, placeholder:'yourbusiness.com' },
+    { key:'biz',  eyebrow:'Step 2', q:"What's your business called?", help:"Just the name, and we'll take care of the rest.", type:'text', placeholder:'Acme Construction' },
+    { key:'about',eyebrow:'Step 3', q:"Tell us about your business", help:"In your own words: what you do, who you help, what makes you different. A sentence or a paragraph, whatever's easy.", type:'textarea', optional:true, placeholder:"We're a family-owned remodeling company in Miami…" },
+    { key:'social',eyebrow:'Step 4', q:"Where does your business live online?", help:"Show us anywhere your business exists, and we'll pull your branding, photos, reviews and positioning straight from your profiles. The more you share, the sharper your website.", type:'social', optional:true },
+    { key:'photos',eyebrow:'Step 5', q:"Got photos?", help:"Team, projects, products, storefront, vehicles, before/afters, anything that represents your business. We'll make them shine.", type:'files', optional:true, accept:'image/*', multiple:true, dropIc:'🖼️', dropT:'Drop photos here or click to upload', dropS:'JPG, PNG · as many as you like' },
+    { key:'logo', eyebrow:'Step 6', q:"Have a logo?", help:"Upload it and we'll build around your brand. No logo? We've got you. Skip ahead.", type:'files', optional:true, accept:'image/*,.svg,.pdf', multiple:false, dropIc:'✦', dropT:'Upload your logo', dropS:'PNG, SVG, PDF' },
     { key:'inspo',eyebrow:'Step 7', q:"Show us what you like", help:"Seen a website you love? Paste a link or drop a screenshot. This tells us more than any design questionnaire ever could.", type:'inspo', optional:true },
-    { key:'requirements',eyebrow:'Step 8', q:"Anything that must be included?", help:"Services, team members, testimonials, booking, locations, contact info, special requests — list whatever matters.", type:'textarea', optional:true, placeholder:"Services we offer, our 3 locations, online booking, customer reviews…" },
-    { key:'anything',eyebrow:'Step 9', q:"Anything else before we start?", help:"Your vision, a vibe, a goal, a worry — anything you'd like us to know. Totally optional.", type:'textarea', optional:true, placeholder:"We want to feel premium but approachable…" },
-    { key:'contact',eyebrow:'Last step', q:"Where do we send it?", help:"We'll send your finished website here in 72 hours — and keep you posted along the way.", type:'contact' }
+    { key:'requirements',eyebrow:'Step 8', q:"Anything that must be included?", help:"Services, team members, testimonials, booking, locations, contact info, special requests. List whatever matters.", type:'textarea', optional:true, placeholder:"Services we offer, our 3 locations, online booking, customer reviews…" },
+    { key:'anything',eyebrow:'Step 9', q:"Anything else before we start?", help:"Your vision, a vibe, a goal, a worry. Anything you'd like us to know. Totally optional.", type:'textarea', optional:true, placeholder:"We want to feel premium but approachable…" },
+    { key:'contact',eyebrow:'Last step', q:"Where do we send it?", help:"We'll send your finished website here in 72 hours, and keep you posted along the way.", type:'contact' }
   ];
 
   let i = 0, started = false;
@@ -2229,7 +2307,7 @@ heroOut.observe(hero);
     else if (s.type==='inspo'){
       body = `<div class="onb-chip-row"><input class="onb-input" id="onb-f" type="text" placeholder="Paste a website you love…"/><button class="onb-chip-add" id="onb-addchip">Add</button></div>
         <div class="onb-chips" id="onb-chips"></div>
-        <div class="onb-or">— or —</div>
+        <div class="onb-or">or</div>
         <div class="onb-drop" id="onb-drop"><div class="onb-drop-ic">📸</div><div class="onb-drop-t">Upload a screenshot</div><div class="onb-drop-s">Of any site or style you like</div><input type="file" id="onb-file" accept="image/*" multiple hidden/></div>
         <div class="onb-thumbs" id="onb-thumbs"></div>`;
     }
@@ -2238,7 +2316,7 @@ heroOut.observe(hero);
     }
     else if (s.type==='contact'){
       body = `<input class="onb-input" id="onb-name" type="text" placeholder="Your name" value="${esc(data.name)}" style="margin-bottom:12px"/>
-        <input class="onb-input" id="onb-email" type="email" placeholder="Email — where we send your website" value="${esc(data.email)}" style="margin-bottom:12px"/>
+        <input class="onb-input" id="onb-email" type="email" placeholder="Email for your finished website" value="${esc(data.email)}" style="margin-bottom:12px"/>
         <input class="onb-input" id="onb-phone" type="tel" placeholder="Phone (optional, for faster updates)" value="${esc(data.phone)}"/>`;
     }
 
@@ -2393,7 +2471,7 @@ heroOut.observe(hero);
     stage.innerHTML = `<div class="onb-done">
       <div class="unv-mark sphere-sys as-logo"><div class="ss-glow"></div><div class="ss-orbit"></div><div class="ss-core"><div class="ss-core-f"><img class="ss-core-i" src="sphere-core.png" alt=""/></div></div></div>
       <div class="onb-done-h">${first?('Thank you, '+esc(first)+'.'):'You\'re all set.'}<br/><span class="g">We're on it.</span></div>
-      <div class="onb-done-p">That's everything we need. From here, <strong>we do the heavy lifting</strong> — you'll have a complete, custom website to review in <strong>72 hours</strong>. Keep an eye on your inbox.</div>
+      <div class="onb-done-p">That's everything we need. From here, <strong>we do the heavy lifting</strong>, and you'll have a complete, custom website to review in <strong>72 hours</strong>. Keep an eye on your inbox.</div>
       <div class="onb-steps-next">
         <div class="onb-sn"><div class="onb-sn-n">1</div><div><div class="onb-sn-t">A confirmation is on its way</div><div class="onb-sn-s">Sent to ${esc(data.email||'your email')} right now.</div></div></div>
         <div class="onb-sn"><div class="onb-sn-n">2</div><div><div class="onb-sn-t">We research & design</div><div class="onb-sn-s">We study your business and your competitors, then build.</div></div></div>
