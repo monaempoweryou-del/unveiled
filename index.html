@@ -555,10 +555,56 @@
     .outcome-proof { position: relative; z-index: 2; text-align: center; padding: 28px 24px 84px; font-size: 14px; color: var(--muted); }
     .outcome-proof strong { color: var(--violet); font-weight: 700; }
 
-    /* ══════ FIRST IMPRESSION SECTION ══════ */
-    #firstimpression {
-      background: var(--cream);
-      padding: 0;
+    /* ══════ THE TRANSFORMATION — cinematic "scattered pieces → one system" ══════ */
+    .xform { position: relative; height: 240vh;
+      background: radial-gradient(ellipse 88% 55% at 50% 38%, #241B44 0%, #161029 46%, #0B0916 100%); }
+    .xform-top-fade { position: absolute; top: 0; left: 0; right: 0; height: 220px; z-index: 7; pointer-events: none;
+      background: linear-gradient(180deg, var(--cream) 0%, rgba(11,9,22,0) 100%); }
+    .xform-sticky { position: sticky; top: 0; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+    .xform-stage { position: relative; flex: 1 1 auto; }
+
+    .xform-copy { position: absolute; left: 0; right: 0; top: 8.5vh; text-align: center; z-index: 6; pointer-events: none; padding: 0 24px; }
+    .xform-eyebrow { font-family:'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.24em; text-transform: uppercase; color: #B69BF0; margin-bottom: 14px; }
+    .xform-heads { display: grid; }
+    .xh { grid-area: 1 / 1; margin: 0; text-align: center; justify-self: center;
+      font-family:'Space Grotesk', sans-serif; font-weight: 700; letter-spacing: -0.02em; line-height: 1.14;
+      font-size: clamp(25px, 3.9vw, 46px); color: #F4F0FF; max-width: 13ch; }
+    .xh .g { background: linear-gradient(100deg,#B79BFF,#7C3AED); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+    .xh-late { opacity: 0; }
+    .xform-sub { position: absolute; left: 0; right: 0; bottom: 7.5vh; text-align: center; z-index: 6; padding: 0 28px;
+      font-size: 14.5px; line-height: 1.6; color: rgba(232,224,252,0.62); opacity: 0; pointer-events: none; }
+
+    .xcore { position: absolute; top: 50%; left: 50%; width: min(48%, 460px); transform: translate(-50%,-50%); z-index: 4; opacity: .5; will-change: transform, opacity; }
+    .xcore::before { content:''; position:absolute; inset:-10%; border-radius:50%; z-index:-1;
+      background: radial-gradient(circle, rgba(124,70,235,0.36) 0%, rgba(108,60,224,0.10) 42%, transparent 70%);
+      filter: blur(22px); opacity: var(--coreglow, 0); }
+
+    .xlines { position:absolute; inset:0; width:100%; height:100%; z-index:2; overflow:visible; pointer-events:none; }
+    .xline { fill:none; stroke:url(#xgrad); stroke-width:1.4; stroke-linecap:round; opacity:0; filter: drop-shadow(0 0 4px rgba(150,100,245,0.55)); }
+
+    .xnode { position:absolute; top:0; left:0; display:flex; align-items:center; gap:9px; opacity:0;
+      padding:9px 15px 9px 10px; border-radius:100px; white-space:nowrap; z-index:5;
+      background: rgba(34,26,60,0.55); border:1px solid rgba(168,130,250,0.24);
+      -webkit-backdrop-filter: blur(9px); backdrop-filter: blur(9px);
+      box-shadow: 0 10px 32px rgba(70,34,150,0.22); will-change: transform, opacity, filter; }
+    .xn-ic { width:30px; height:30px; border-radius:9px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:16px;
+      background: linear-gradient(160deg, rgba(140,90,245,0.40), rgba(168,85,247,0.16)); }
+    .xn-l { font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:13px; color:#ECE5FB; letter-spacing:.005em; }
+
+    .xspark { position:absolute; top:0; left:0; width:6px; height:6px; border-radius:50%; z-index:3; opacity:0;
+      background: radial-gradient(circle,#fff 0%, rgba(170,130,250,0.7) 55%, transparent 75%);
+      box-shadow: 0 0 9px rgba(170,130,250,0.9); will-change: transform, opacity; }
+
+    @media (max-width: 768px){
+      .xform { height: 220vh; }
+      .xcore { width: 60%; }
+      .xnode { padding:7px 12px 7px 8px; }
+      .xn-ic { width:26px; height:26px; font-size:14px; }
+      .xn-l { font-size:12px; }
+    }
+    @media (prefers-reduced-motion: reduce){
+      .xform { height: auto; }
+      .xform-sticky { position: relative; height: auto; min-height: 92vh; }
     }
 
     .fi-inner {
@@ -1604,84 +1650,47 @@
   <div class="outcome-proof">All of it — built, live, and free to preview in <strong>72 hours</strong>.</div>
 </div>
 
-<!-- ██ 3. FIRST IMPRESSION ██ -->
-<section id="firstimpression">
-  <div class="fi-inner">
+<!-- ██ 3. THE TRANSFORMATION — cinematic scattered→unified ██ -->
+<section id="transformation" class="xform">
+  <div class="xform-top-fade"></div>
+  <div class="xform-sticky">
+    <div class="xform-stage" id="xstage">
 
-    <div class="fi-head">
-      <div class="fi-eyebrow reveal">The Transformation</div>
-      <h2 class="fi-hl reveal d1">
-        This isn't just a new webpage.<br />
-        <span class="g">It's a whole new way your business shows up.</span>
-      </h2>
-      <p class="fi-body reveal d2">
-        Desktop, mobile, and brand identity — rebuilt into one consistent, professional system your customers instantly trust. The same business, unrecognizably better. And this is only the first proof of what your business could become.
-      </p>
-      <div class="fi-pull reveal d3">
-        "We don't sell you a website. We show you a better business."
-      </div>
-    </div>
-
-    <div class="ba-transform reveal d2">
-
-      <!-- BEFORE: old presence (desktop + mobile, disconnected) -->
-      <div class="ba-side ba-old">
-        <span class="ba-badge ba-badge-old">● Old Presence</span>
-        <div class="ba-stage">
-          <div class="ba-desk dark">
-            <div class="ba-desk-bar"><i></i><i></i><i></i></div>
-            <div class="ba-old-site">
-              <div class="ba-old-top">
-                <div class="ba-old-logo">ABC <span>Builders</span></div>
-                <div class="ba-old-links"><span>Home</span><span>About</span><span>Services</span><span>Contact</span></div>
-              </div>
-              <div class="ba-old-h1">Quality Work. Fair Prices.</div>
-              <div class="ba-old-sub">We offer construction and remodeling services for residential and commercial properties in the local area.</div>
-              <span class="ba-old-btn">Contact Us</span>
-              <div class="ba-old-photo"></div>
-            </div>
-          </div>
-          <div class="ba-phone">
-            <div class="ba-old-mob">
-              <div class="ba-old-mob-l">ABC <span>Builders</span></div>
-              <div class="ba-old-mob-h">Quality Work.</div>
-              <div class="ba-old-mob-p" style="width:90%"></div>
-              <div class="ba-old-mob-p" style="width:70%"></div>
-              <div class="ba-old-mob-p" style="width:80%"></div>
-              <div class="ba-old-mob-photo"></div>
-            </div>
-          </div>
+      <div class="xform-copy">
+        <div class="xform-eyebrow">The Transformation</div>
+        <div class="xform-heads">
+          <h2 class="xh xh-early">Right now, your business is <span class="g">scattered.</span></h2>
+          <h2 class="xh xh-late">Now it all moves as <span class="g">one.</span></h2>
         </div>
-        <div class="ba-caption ba-cap-old">Outdated desktop. Broken on mobile. Nothing matches. It looks like a business that hasn't invested in itself — and customers feel it.</div>
       </div>
 
-      <!-- ARROW -->
-      <div class="ba-arrow-mid">
-        <div class="ba-arrow-ic">&rarr;</div>
-        72 Hours
+      <svg class="xlines" id="xlines" aria-hidden="true">
+        <defs>
+          <linearGradient id="xgrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#7C3AED" />
+            <stop offset="1" stop-color="#C4A7FF" />
+          </linearGradient>
+        </defs>
+      </svg>
+
+      <!-- the scattered pieces of a business -->
+      <div class="xnode" data-i="0"><span class="xn-ic">&#127760;</span><span class="xn-l">Website</span></div>
+      <div class="xnode" data-i="1"><span class="xn-ic">&#128205;</span><span class="xn-l">Google</span></div>
+      <div class="xnode" data-i="2"><span class="xn-ic">&#128247;</span><span class="xn-l">Social</span></div>
+      <div class="xnode" data-i="3"><span class="xn-ic">&#11088;</span><span class="xn-l">Reviews</span></div>
+      <div class="xnode" data-i="4"><span class="xn-ic">&#9993;</span><span class="xn-l">New Leads</span></div>
+      <div class="xnode" data-i="5"><span class="xn-ic">&#128172;</span><span class="xn-l">Follow-Up</span></div>
+
+      <!-- unified core: the UNVEILED system -->
+      <div class="xcore">
+        <div class="sphere-sys">
+          <div class="ss-glow"></div>
+          <div class="ss-orbit"></div>
+          <div class="ss-core"><div class="ss-core-f"><img class="ss-core-i" src="sphere-core.png" alt="UNVEILED — your business as one connected system" /></div></div>
+        </div>
       </div>
 
-      <!-- AFTER: professional presence — one unified branded package -->
-      <div class="ba-side ba-new">
-        <span class="ba-badge ba-badge-new">✦ Professional Presence</span>
-        <div class="ba-stage on-stage">
-          <div class="ba-desk">
-            <div class="ba-desk-bar"><i></i><i></i><i></i></div>
-            <img src="assets/site-goldsmith-hero.jpg" alt="New desktop website built by UNVEILED" loading="lazy" />
-          </div>
-          <div class="ba-phone">
-            <img src="assets/site-goldsmith-mobile.jpg" alt="New mobile website built by UNVEILED" loading="lazy" />
-          </div>
-        </div>
-        <div class="ba-brandkit">
-          <span class="bk-label">One brand system</span>
-          <span class="bk-sw" style="background:#0E2148"></span>
-          <span class="bk-sw" style="background:#C9A84C"></span>
-          <span class="bk-sw" style="background:#F5F3EF"></span>
-          <span class="bk-dot">Desktop</span><span class="bk-dot">Mobile</span><span class="bk-dot">Identity</span>
-        </div>
-        <div class="ba-caption ba-cap-new">One unified, branded presence — desktop and mobile in perfect sync. The kind of business customers instantly trust.</div>
-      </div>
+      <div class="xform-sub">Website, search, social, reviews, follow-up — one connected system, working as one.</div>
 
     </div>
   </div>
@@ -2023,7 +2032,7 @@
         <h4>Work</h4>
         <ul>
           <li><a href="#showcase">Real Transformations</a></li>
-          <li><a href="#firstimpression">Before &amp; After</a></li>
+          <li><a href="#transformation">The Transformation</a></li>
           <li><a href="#comparison">vs. Agencies</a></li>
         </ul>
       </div>
@@ -2447,6 +2456,94 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     if (!reduce) requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
+})();
+
+// ── THE TRANSFORMATION: scroll-driven "scattered pieces → one system" ──
+(function(){
+  const sec = document.getElementById('transformation');
+  if (!sec) return;
+  const stage = document.getElementById('xstage');
+  const svg   = document.getElementById('xlines');
+  const nodes = Array.prototype.slice.call(sec.querySelectorAll('.xnode'));
+  const core  = sec.querySelector('.xcore');
+  const early = sec.querySelector('.xh-early');
+  const late  = sec.querySelector('.xh-late');
+  const sub   = sec.querySelector('.xform-sub');
+  if (!stage || !svg || !core || !nodes.length) return;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const SVGNS = 'http://www.w3.org/2000/svg';
+  const clamp = (v,a,b)=> v<a?a:(v>b?b:v);
+  const lerp  = (a,b,t)=> a+(b-a)*t;
+  const easeIO = t => t<0.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2;
+  const N = nodes.length;
+
+  // one light-path + one flowing spark per piece
+  const meta = nodes.map(function(el,i){
+    const ang = (-90 + i*(360/N)) * Math.PI/180;
+    const line = document.createElementNS(SVGNS,'line');
+    line.setAttribute('class','xline');
+    svg.appendChild(line);
+    const spark = document.createElement('span');
+    spark.className = 'xspark';
+    stage.appendChild(spark);
+    return { el, line, spark, ang,
+      sr: 1.5 + Math.random()*0.5,
+      jx: (Math.random()-0.5)*0.9,
+      jy: (Math.random()-0.5)*0.85,
+      rot: (Math.random()-0.5)*26,
+      sphase: Math.random(),
+      sspd: 0.45 + Math.random()*0.4 };
+  });
+
+  let target = reduce?1:0, cur = reduce?1:0, W=0, H=0;
+  function measure(){ const r = stage.getBoundingClientRect(); W=r.width; H=r.height; svg.setAttribute('width',W); svg.setAttribute('height',H); }
+  function onScroll(){
+    if (reduce){ target=1; return; }
+    const total = sec.offsetHeight - window.innerHeight;
+    const top = sec.getBoundingClientRect().top;
+    target = total>0 ? clamp(-top/total,0,1) : (top<0?1:0);
+  }
+  function layout(p, now){
+    const cx=W/2, cy=H/2;
+    const Rx=Math.min(W*0.32, 340), Ry=Math.min(H*0.30, 200);
+    const a = easeIO(p);
+    for (const m of meta){
+      const tx = cx + Math.cos(m.ang)*Rx;
+      const ty = cy + Math.sin(m.ang)*Ry;
+      const sx = cx + Math.cos(m.ang)*Rx*m.sr + m.jx*W*0.22;
+      const sy = cy + Math.sin(m.ang)*Ry*m.sr + m.jy*H*0.16;
+      const x = lerp(sx,tx,a), y = lerp(sy,ty,a);
+      const rot = lerp(m.rot,0,a);
+      m.el.style.transform = 'translate(-50%,-50%) translate('+x.toFixed(1)+'px,'+y.toFixed(1)+'px) rotate('+rot.toFixed(1)+'deg)';
+      m.el.style.opacity = lerp(0.5,1,clamp(p*1.4,0,1)).toFixed(2);
+      m.el.style.filter = 'grayscale('+lerp(0.55,0,a).toFixed(2)+') brightness('+lerp(0.82,1,a).toFixed(2)+')';
+      m.line.setAttribute('x1',x.toFixed(1)); m.line.setAttribute('y1',y.toFixed(1));
+      m.line.setAttribute('x2',cx.toFixed(1)); m.line.setAttribute('y2',cy.toFixed(1));
+      const lp = clamp((p-0.32)/0.5,0,1);
+      m.line.style.opacity = (lp*0.75).toFixed(2);
+      if (lp>0.04 && !reduce){
+        const f = ((now*0.001*m.sspd) + m.sphase) % 1;
+        const xp = lerp(x,cx,f), yp = lerp(y,cy,f);
+        m.spark.style.transform = 'translate(-50%,-50%) translate('+xp.toFixed(1)+'px,'+yp.toFixed(1)+'px)';
+        m.spark.style.opacity = (lp*(0.45+0.55*Math.sin(f*Math.PI))).toFixed(2);
+      } else { m.spark.style.opacity = '0'; }
+    }
+    core.style.transform = 'translate(-50%,-50%) scale('+lerp(0.62,1,a).toFixed(3)+')';
+    core.style.opacity = lerp(0.5,1,clamp(p*1.5,0,1)).toFixed(2);
+    core.style.setProperty('--coreglow', clamp(p*1.2,0,1).toFixed(2));
+    if (early) early.style.opacity = clamp(1-p*2.4,0,1).toFixed(2);
+    if (late)  late.style.opacity  = clamp((p-0.52)/0.32,0,1).toFixed(2);
+    if (sub)   sub.style.opacity   = (clamp((p-0.7)/0.25,0,1)*0.85).toFixed(2);
+  }
+  function tick(now){
+    cur += (target-cur) * (reduce?1:0.1);
+    layout(reduce?1:cur, now||0);
+    requestAnimationFrame(tick);
+  }
+  measure(); onScroll();
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', function(){ measure(); onScroll(); });
+  requestAnimationFrame(tick);
 })();
 
 // ── Hero URL bar: "analyze" reaction + scroll to intake form ──────────
