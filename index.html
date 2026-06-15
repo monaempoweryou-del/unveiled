@@ -503,9 +503,10 @@
     .outcome-band {
       position: relative; overflow: hidden;
       background:
-        linear-gradient(180deg, #181228 0%, rgba(24,18,40,0.55) 14%, rgba(24,18,40,0.0) 34%),
-        radial-gradient(ellipse 82% 120% at 50% 0%, rgba(108,60,224,0.22) 0%, transparent 58%),
-        var(--dark-2);
+        linear-gradient(180deg, #1B1538 0%, rgba(27,21,56,0.5) 16%, rgba(22,18,31,0) 42%),
+        radial-gradient(ellipse 95% 135% at 50% -12%, rgba(124,70,235,0.30) 0%, transparent 60%),
+        radial-gradient(ellipse 70% 90% at 50% 118%, rgba(108,60,224,0.14) 0%, transparent 62%),
+        #16121F;
       border-top: none;
       border-bottom: 1px solid rgba(124,70,235,0.14);
     }
@@ -1492,7 +1493,7 @@
 <!-- ██ STICKY CTA ██ -->
 <div class="sticky-cta" id="sticky-cta">
   <span class="sticky-cta-text"><strong>See what your business could become.</strong> A complete website, free, in 72 hours.</span>
-  <button class="btn-sticky onb-launch">Start My Free Website &rarr;</button>
+  <button class="btn-sticky onb-launch">Show Me What's Possible &rarr;</button>
 </div>
 
 <!-- ██ NAV ██ -->
@@ -1510,7 +1511,7 @@
     <li><a href="#how">How It Works</a></li>
     <li><a href="#comparison">vs. Agencies</a></li>
   </ul>
-  <button class="nav-cta onb-launch">Start My Free Website</button>
+  <button class="nav-cta onb-launch">Show Me What's Possible</button>
 </nav>
 
 <!-- ██ 1. HERO ██ -->
@@ -1527,11 +1528,11 @@
       </div>
 
       <h1 class="hero-hl">
-        Your business deserves to look incredible online. <span class="gv">We'll build the website to prove it — free.</span>
+        See your business become the one <span class="gv">customers choose — free, in 72 hours.</span>
       </h1>
 
       <p class="hero-sub">
-        Tell us a little about your business. We'll have a complete, real website ready for you in 72 hours — yours to see, with nothing to pay until you love it. The website is just where we begin.
+        Tell us a little about your business. You'll get a complete, real website in 72 hours — free to see, with nothing to pay until you love it. It's the first proof of what your business could become.
       </p>
 
       <div class="hero-url-prompt">Already have a site? Drop the link to start faster.</div>
@@ -1539,7 +1540,7 @@
       <div class="hero-urlbar" id="hero-urlbar">
         <div class="hero-url-globe">&#9883;</div>
         <input type="text" class="hero-url-input" id="hero-url" placeholder="Enter your website URL" autocomplete="off" spellcheck="false" />
-        <button class="btn-preview" id="hero-preview-btn">Start My Free Website</button>
+        <button class="btn-preview" id="hero-preview-btn">Show Me What's Possible</button>
       </div>
 
       <div class="hero-trust">
@@ -1604,7 +1605,7 @@
         <span class="g">It's a whole new way your business shows up.</span>
       </h2>
       <p class="fi-body reveal d2">
-        Desktop, mobile, and brand identity — rebuilt into one consistent, professional system your customers instantly trust. The same business, unrecognizably better. And this is only the first proof of what we can do for you.
+        Desktop, mobile, and brand identity — rebuilt into one consistent, professional system your customers instantly trust. The same business, unrecognizably better. And this is only the first proof of what your business could become.
       </p>
       <div class="fi-pull reveal d3">
         "We don't sell you a website. We show you a better business."
@@ -1937,7 +1938,7 @@
     </p>
 
     <div class="cta-box reveal d3" style="align-items:center; gap:18px;">
-      <button class="btn-cta-main onb-launch" style="max-width:440px;">Start My Free Website &rarr;</button>
+      <button class="btn-cta-main onb-launch" style="max-width:440px;">Show Me What's Possible &rarr;</button>
       <div class="cta-launch-note">Takes about 2 minutes · No credit card · See it before you pay</div>
       <div class="cta-guarantees">
         <div class="cta-g"><span class="cta-g-icon">✓</span> No pitch</div>
@@ -1985,7 +1986,7 @@
   <img src="wordmark-light.png" alt="UNVEILED" class="foot-banner-logo" />
   <div class="foot-banner-tag">You see it first. <span class="g">Then you decide.</span></div>
   <div class="foot-banner-line">Something is about to be unveiled</div>
-  <button class="foot-banner-cta onb-launch">Start My Free Website &rarr;</button>
+  <button class="foot-banner-cta onb-launch">Show Me What's Possible &rarr;</button>
 </section>
 
 <!-- ██ FOOTER ██ -->
@@ -2469,7 +2470,7 @@ function startPreview() {
   heroPrevBtn.textContent = 'Analyzing…';
   // brief "machine analyzing" beat, then open the onboarding experience
   setTimeout(() => {
-    heroPrevBtn.textContent = 'Start My Free Website';
+    heroPrevBtn.textContent = 'Show Me What\'s Possible';
     setAnalyzing(false);
     if (window.openOnboarding) window.openOnboarding(val);
   }, 1200);
