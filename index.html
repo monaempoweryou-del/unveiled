@@ -323,18 +323,21 @@
       transform-style: preserve-3d; will-change: transform;
       /* rotateY is driven continuously by JS (slow horizontal turn, opposite the orbit) */
     }
-    @keyframes ssFloat { 0%,100%{ transform: translateY(0) scale(1); } 50%{ transform: translateY(-7px) scale(1.018); } }
+    @keyframes ssFloat { 0%,100%{ transform: translateY(0) scale(1); } 50%{ transform: translateY(-8px) scale(1.028); } }
 
     /* shifting highlight — light catching the sphere as it works (premium "processing" cue) */
     .ss-sheen { position: absolute; top: 50%; left: 50%; width: 60%; height: 60%; transform: translate(-50%,-50%);
-      border-radius: 50%; overflow: hidden; z-index: 6; pointer-events: none; mix-blend-mode: screen; opacity: 0.9; }
-    .ss-sheen::before { content: ''; position: absolute; width: 75%; height: 75%; border-radius: 50%;
-      background: radial-gradient(circle, rgba(214,190,255,0.6) 0%, rgba(168,130,250,0.18) 45%, transparent 72%);
-      filter: blur(9px); animation: ssSheen 11s ease-in-out infinite; will-change: transform, opacity; }
+      border-radius: 50%; overflow: hidden; z-index: 6; pointer-events: none; mix-blend-mode: screen; opacity: 1; }
+    .ss-sheen::before { content: ''; position: absolute; width: 80%; height: 80%; border-radius: 50%;
+      background: radial-gradient(circle, rgba(224,205,255,0.78) 0%, rgba(172,135,255,0.26) 45%, transparent 72%);
+      filter: blur(8px); animation: ssSheen 8s linear infinite; will-change: transform, opacity; }
+    /* highlight continuously travels around the sphere — light on a system that's always working */
     @keyframes ssSheen {
-      0%   { transform: translate(-18%,-22%) scale(0.92); opacity: 0.45; }
-      50%  { transform: translate(46%,30%)  scale(1.08); opacity: 0.85; }
-      100% { transform: translate(-18%,-22%) scale(0.92); opacity: 0.45; }
+      0%   { transform: translate(34%,-28%) scale(1.0); opacity: 0.55; }
+      25%  { transform: translate(40%,24%)  scale(1.08); opacity: 0.9; }
+      50%  { transform: translate(-12%,40%) scale(1.0); opacity: 0.6; }
+      75%  { transform: translate(-38%,2%)  scale(1.08); opacity: 0.9; }
+      100% { transform: translate(34%,-28%) scale(1.0); opacity: 0.55; }
     }
     @media (prefers-reduced-motion: reduce) { .ss-sheen::before { animation: none !important; } }
 
@@ -356,7 +359,7 @@
     .hx-spark { position: absolute; top: 0; left: 0; width: 7px; height: 7px; border-radius: 50%; z-index: 3; opacity: 0;
       background: radial-gradient(circle, #fff 0%, rgba(178,140,255,0.75) 55%, transparent 78%); box-shadow: 0 0 10px rgba(168,130,250,0.95); will-change: transform, opacity; }
     .hx-node { position: absolute; top: 0; left: 0; display: flex; flex-direction: column; align-items: center; gap: 5px;
-      transform: translate(-50%,-50%); z-index: 8; will-change: transform; }
+      transform: translate(-50%,-50%); z-index: 20; will-change: transform; }
     .hx-ic { width: 44px; height: 44px; border-radius: 13px; display: flex; align-items: center; justify-content: center; color: #6C3CE0;
       background: rgba(255,255,255,0.9); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
       border: 1px solid rgba(124,70,235,0.18); box-shadow: 0 10px 26px rgba(108,60,224,0.16); }
@@ -1512,7 +1515,7 @@
       .cta-input { border-radius: 10px; }
       .hero-hl { font-size: 34px; }
       .hero-visual { min-height: 430px; }
-      .hero-visual .sphere-sys { max-width: 290px; }
+      .hero-visual .sphere-sys { max-width: 340px; }
       .sphere-sys { max-width: 320px; }
     }
 
@@ -1520,7 +1523,7 @@
       .hero-hl { font-size: 29px; }
       .hero-grid { padding: 84px 20px 28px; }
       .hero-visual { min-height: 388px; }
-      .hero-visual .sphere-sys { max-width: 264px; }
+      .hero-visual .sphere-sys { max-width: 320px; }
       .hero-urlbar { flex-wrap: wrap; border-radius: 16px; }
       .hero-url-input { min-width: 0; flex: 1 1 60%; }
       .btn-preview { flex: 1 1 100%; }
@@ -2688,14 +2691,14 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
       // sphere: slow, always-moving horizontal turn (dual sine so it never sits still),
       // capped small so it never flips/goes edge-on, and signed OPPOSITE to the orbit.
       if (core){
-        const sa = reduce ? 0 : -(9.5 * Math.sin(t * 0.085) + 5 * Math.sin(t * 0.055 + 1.2));
+        const sa = reduce ? 0 : -(12 * Math.sin(t * 0.10) + 6 * Math.sin(t * 0.063 + 1.2));
         core.style.transform = `rotateY(${sa.toFixed(2)}deg)`;
       }
 
       const A = w * 0.50;     // horizontal radius (wider than sphere)
       const B = h * 0.18;     // vertical radius — enough for real front/back, still a flat ring
       for (const o of els){
-        const ang  = (reduce ? 0.7 : t * 0.155 * o.spd) + o.phase * TAU;
+        const ang  = (reduce ? 0.7 : t * 0.20 * o.spd) + o.phase * TAU;
         const wob  = o.wob * Math.sin(t * o.wf + o.phase * TAU) * h;   // subtle organic drift
         const x    = A * o.rx * Math.cos(ang);
         const y    = B * o.ry * Math.sin(ang) + wob;
