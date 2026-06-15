@@ -42,6 +42,14 @@
 
     /* pricing cards */
     .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:40px 28px 8px;max-width:1140px;margin:0 auto}
+    /* two decision paths: monthly relationship vs. one-time ownership */
+    .paths{max-width:1140px;margin:0 auto;padding:34px 28px 8px;display:flex;flex-direction:column;gap:30px}
+    .pgroup-label{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--violet);margin-bottom:18px;display:flex;align-items:center;gap:12px;white-space:nowrap}
+    .pgroup-label .pl-sub{font-family:'Inter',sans-serif;font-weight:500;font-size:12px;letter-spacing:0;text-transform:none;color:var(--muted)}
+    .pgroup-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(108,60,224,0.22),transparent)}
+    .pgroup-cards.two{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .pgroup-cards.one{display:grid;grid-template-columns:1fr;max-width:540px}
+    @media(max-width:900px){ .pgroup-cards.two{grid-template-columns:1fr} .pgroup-cards.one{max-width:100%} .pgroup-label{white-space:normal} }
     .card{position:relative;background:#fff;border:1px solid var(--border);border-radius:22px;padding:30px 26px;display:flex;flex-direction:column;transition:transform .3s,box-shadow .3s}
     .card:hover{transform:translateY(-4px);box-shadow:0 24px 60px rgba(108,60,224,0.10)}
     .card.rec{border:1.5px solid rgba(108,60,224,0.5);box-shadow:0 30px 70px rgba(108,60,224,0.16);transform:scale(1.03)}
@@ -164,7 +172,10 @@
   </header>
 
   <!-- DRAFT PRICING (numbers anchored to current model, easy to change) -->
-  <section class="cards">
+  <section class="paths">
+    <div class="pgroup">
+    <div class="pgroup-label">Work with us monthly <span class="pl-sub">we host, maintain &amp; run it for you</span></div>
+    <div class="pgroup-cards two">
     <div class="card">
       <div class="tier">Website Launch</div>
       <div class="tline">&ldquo;I want the website, not the machine.&rdquo; Live, hosted, and looked after by us.</div>
@@ -196,7 +207,12 @@
       </ul>
       <button class="btn primary" data-plan="Growth Machine" data-price="$597/mo">Activate the machine</button>
     </div>
+    </div>
+    </div>
 
+    <div class="pgroup">
+    <div class="pgroup-label">Or own it outright <span class="pl-sub">a one-time buyout, no subscription</span></div>
+    <div class="pgroup-cards one">
     <div class="card">
       <div class="tier">Own It Forever</div>
       <div class="tline">&ldquo;I want to own the asset completely.&rdquo; Yours outright, no subscription.</div>
@@ -210,6 +226,8 @@
         <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>Priced by pages, features &amp; complexity</li>
       </ul>
       <button class="btn ghost" data-plan="Own It Forever" data-price="from $2,499 one-time" data-quote="1">Get my ownership quote</button>
+    </div>
+    </div>
     </div>
   </section>
 
