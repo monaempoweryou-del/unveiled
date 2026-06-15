@@ -256,14 +256,16 @@
     .hero-trust {
       display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
       margin-top: 18px;
+      position: relative; z-index: 5;   /* always above the hero fade/glow */
     }
     .hero-trust-item {
       display: flex; align-items: center; gap: 7px;
-      font-size: 13px; font-weight: 500; color: #6B6570;
+      font-size: 13px; font-weight: 600; color: #463F54;
     }
     .hero-trust-item .tk {
       width: 16px; height: 16px; border-radius: 50%;
-      background: rgba(16,185,129,0.12); color: #059669;
+      background: #10B981; color: #fff;
+      box-shadow: 0 2px 6px rgba(16,185,129,0.35);
       display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800;
     }
 
@@ -345,12 +347,12 @@
     .hx-ic { width: 44px; height: 44px; border-radius: 13px; display: flex; align-items: center; justify-content: center; color: #6C3CE0;
       background: rgba(255,255,255,0.9); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
       border: 1px solid rgba(124,70,235,0.18); box-shadow: 0 10px 26px rgba(108,60,224,0.16); }
-    .hx-ic .uic { width: 23px; height: 23px; }
+    .hx-ic svg { width: 23px; height: 23px; }
     .hx-l { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 11px; color: #3A3350; white-space: nowrap;
       background: rgba(255,255,255,0.74); padding: 1px 8px; border-radius: 100px; }
     @media (max-width: 768px) {
       .hx-ic { width: 38px; height: 38px; border-radius: 11px; }
-      .hx-ic .uic { width: 20px; height: 20px; }
+      .hx-ic svg { width: 20px; height: 20px; }
     }
     @media (max-width: 600px) { .hx-l { display: none; } }
 
@@ -1778,12 +1780,12 @@
           <linearGradient id="hxGrad" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0" stop-color="#7C3AED" /><stop offset="1" stop-color="#C4A7FF" />
           </linearGradient></defs></svg>
-        <div class="hx-node"><span class="hx-ic"><svg class="uic" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3 9h18"/><path class="a" d="M6.5 13h7M6.5 15.5h4.5"/></svg></span><span class="hx-l">Website</span></div>
-        <div class="hx-node"><span class="hx-ic"><svg class="uic" viewBox="0 0 24 24"><path d="M12 22s7-5.6 7-12a7 7 0 1 0-14 0c0 6.4 7 12 7 12z"/><circle class="af" cx="12" cy="10" r="2.5"/></svg></span><span class="hx-l">Google</span></div>
-        <div class="hx-node"><span class="hx-ic"><svg class="uic" viewBox="0 0 24 24"><path class="f" d="M12 3l2.4 4.9 5.4.8-3.9 3.8.9 5.3L12 16.6 7.2 18l.9-5.3-3.9-3.8 5.4-.8z"/></svg></span><span class="hx-l">Reviews</span></div>
-        <div class="hx-node"><span class="hx-ic"><svg class="uic" viewBox="0 0 24 24"><path d="M6 9.5a6 6 0 0 1 12 0c0 4.5 2 5.5 2 5.5H4s2-1 2-5.5z"/><path class="a" d="M10 18.5a2 2 0 0 0 4 0"/></svg></span><span class="hx-l">Leads</span></div>
-        <div class="hx-node"><span class="hx-ic"><svg class="uic" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2.5"/><circle cx="12" cy="13.5" r="3.3"/><path d="M8.5 7 10 4.5h4L15.5 7"/></svg></span><span class="hx-l">Social</span></div>
-        <div class="hx-node"><span class="hx-ic"><svg class="uic" viewBox="0 0 24 24"><path class="f" d="M12 2l1.9 5.3L19 9l-5.1 1.7L12 16l-1.9-5.3L5 9l5.1-1.7z"/><circle class="af" cx="18.5" cy="17.5" r="1.3"/></svg></span><span class="hx-l">Brand</span></div>
+        <div class="hx-node"><span class="hx-ic"><svg viewBox="0 0 24 24"><path fill="#4285F4" d="M23 12.27c0-.79-.07-1.54-.2-2.27H12v4.3h6.17c-.27 1.43-1.08 2.64-2.3 3.45v2.87h3.72C21.76 18.6 23 15.7 23 12.27z"/><path fill="#34A853" d="M12 23.5c3.11 0 5.72-1.03 7.62-2.78l-3.72-2.87c-1.03.69-2.35 1.1-3.9 1.1-3 0-5.54-2.02-6.45-4.74H1.7v2.97C3.6 20.96 7.5 23.5 12 23.5z"/><path fill="#FBBC05" d="M5.55 14.21c-.23-.69-.36-1.43-.36-2.21s.13-1.52.36-2.21V6.82H1.7A11.46 11.46 0 0 0 .5 12c0 1.86.45 3.62 1.2 5.18z"/><path fill="#EA4335" d="M12 4.55c1.69 0 3.21.58 4.4 1.72l3.3-3.3C17.72 1.13 15.11 0 12 0 7.5 0 3.6 2.54 1.7 6.82l3.85 2.97C6.46 7.07 9 4.55 12 4.55z"/></svg></span><span class="hx-l">Google</span></div>
+        <div class="hx-node"><span class="hx-ic"><svg viewBox="0 0 24 24"><defs><linearGradient id="igGrad" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#FEDA75"/><stop offset=".25" stop-color="#FA7E1E"/><stop offset=".5" stop-color="#D62976"/><stop offset=".75" stop-color="#962FBF"/><stop offset="1" stop-color="#4F5BD5"/></linearGradient></defs><rect x="2.4" y="2.4" width="19.2" height="19.2" rx="5.6" fill="none" stroke="url(#igGrad)" stroke-width="2.1"/><circle cx="12" cy="12" r="4.3" fill="none" stroke="url(#igGrad)" stroke-width="2.1"/><circle cx="17.2" cy="6.8" r="1.3" fill="url(#igGrad)"/></svg></span><span class="hx-l">Instagram</span></div>
+        <div class="hx-node"><span class="hx-ic"><svg viewBox="0 0 24 24"><rect x="1" y="1" width="22" height="22" rx="5.5" fill="#1877F2"/><path fill="#fff" d="M15.3 12.5l.5-3.1h-3V7.4c0-.85.42-1.68 1.75-1.68H16V3.1s-1.2-.2-2.36-.2c-2.4 0-3.97 1.45-3.97 4.08v2.32H7v3.1h2.67V20h3.13v-7.5z"/></svg></span><span class="hx-l">Facebook</span></div>
+        <div class="hx-node"><span class="hx-ic"><svg viewBox="0 0 24 24"><path fill="#25F4EE" d="M9.3 9.5c-3.1.15-5.6 2.7-5.6 5.85 0 1.8.81 3.4 2.09 4.48A5.86 5.86 0 0 1 4.2 16c0-3.15 2.5-5.7 5.6-5.85z"/><path fill="#000" d="M16.7 2.5c.34 2.36 1.86 3.98 4.1 4.23v2.85c-1.47 0-2.9-.44-4.1-1.22v6.49c0 3.2-2.6 5.8-5.8 5.8s-5.8-2.6-5.8-5.8 2.6-5.8 5.8-5.8c.3 0 .6.02.88.07v2.93a2.86 2.86 0 0 0-.88-.14 2.94 2.94 0 1 0 2.94 2.94V2.5z"/></svg></span><span class="hx-l">TikTok</span></div>
+        <div class="hx-node"><span class="hx-ic"><svg viewBox="0 0 24 24"><path fill="#EA4335" d="M12 2C8.13 2 5 5.13 5 9c0 4.87 7 13 7 13s7-8.13 7-13c0-3.87-3.13-7-7-7z"/><circle fill="#fff" cx="12" cy="9" r="2.6"/></svg></span><span class="hx-l">Maps</span></div>
+        <div class="hx-node"><span class="hx-ic"><svg viewBox="0 0 24 24"><path fill="#FBBC04" d="M12 3l2.5 5.1 5.6.8-4.05 3.95.96 5.55L12 16.8l-5.01 2.6.96-5.55L3.9 8.9l5.6-.8z"/></svg></span><span class="hx-l">Reviews</span></div>
       </div>
     </div>
 
@@ -2783,29 +2785,43 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     const spark = document.createElement('span'); spark.className = 'hx-spark'; wrap.appendChild(spark);
     return { el, line, spark, ang, fph: Math.random()*6.28, fsp: 0.26+Math.random()*0.26, sph: Math.random(), ssp: 0.12+Math.random()*0.08 };
   });
-  let W=0, H=0;
-  function measure(){ const r = wrap.getBoundingClientRect(); W=r.width; H=r.height; svg.setAttribute('width',W); svg.setAttribute('height',H); }
+  const sphereEl = document.getElementById('sphere-core');
+  let SCX=0, SCY=0, SRX=0, SRY=0;   // sphere center + radii (the hub)
+  function measure(){
+    const wr = wrap.getBoundingClientRect();
+    svg.setAttribute('width', wr.width); svg.setAttribute('height', wr.height);
+    if (sphereEl){
+      const sr = sphereEl.getBoundingClientRect();
+      SCX = sr.left - wr.left + sr.width/2;
+      SCY = sr.top  - wr.top  + sr.height/2;
+      SRX = sr.width/2; SRY = sr.height/2;
+    } else { SCX = wr.width/2; SCY = wr.height/2; SRX = SRY = Math.min(wr.width,wr.height)*0.3; }
+  }
   const start = performance.now();
   function frame(now){
-    const t = (now-start)/1000, cx=W/2, cy=H/2;
-    const Rx = Math.min(W*0.43, 232), Ry = Math.min(H*0.40, 232);
+    const t = (now-start)/1000;
+    // nodes sit just outside the sphere; lines END at the sphere edge (tuck behind it) — never cross the center
+    const nodeRx = SRX*1.18, nodeRy = SRY*1.18;
+    const edgeRx = SRX*0.86, edgeRy = SRY*0.86;
     for (const m of meta){
       const fl = reduce ? 0 : Math.sin(t*m.fsp + m.fph)*3.5;
-      const x = cx + Math.cos(m.ang)*Rx, y = cy + Math.sin(m.ang)*Ry + fl;
-      m.el.style.transform = 'translate(-50%,-50%) translate('+x.toFixed(1)+'px,'+y.toFixed(1)+'px)';
-      m.line.setAttribute('x1',x.toFixed(1)); m.line.setAttribute('y1',y.toFixed(1));
-      m.line.setAttribute('x2',cx.toFixed(1)); m.line.setAttribute('y2',cy.toFixed(1));
+      const nx = SCX + Math.cos(m.ang)*nodeRx, ny = SCY + Math.sin(m.ang)*nodeRy + fl;
+      const ex = SCX + Math.cos(m.ang)*edgeRx, ey = SCY + Math.sin(m.ang)*edgeRy;
+      m.el.style.transform = 'translate(-50%,-50%) translate('+nx.toFixed(1)+'px,'+ny.toFixed(1)+'px)';
+      m.line.setAttribute('x1',nx.toFixed(1)); m.line.setAttribute('y1',ny.toFixed(1));
+      m.line.setAttribute('x2',ex.toFixed(1)); m.line.setAttribute('y2',ey.toFixed(1));
       if (!reduce){
-        const f = ((t*m.ssp) + m.sph) % 1;
-        const xp = x + (cx-x)*f, yp = y + (cy-y)*f;
+        const f = ((t*m.ssp) + m.sph) % 1;          // platform -> into the sphere
+        const xp = nx + (ex-nx)*f, yp = ny + (ey-ny)*f;
         m.spark.style.transform = 'translate(-50%,-50%) translate('+xp.toFixed(1)+'px,'+yp.toFixed(1)+'px)';
-        m.spark.style.opacity = (0.35 + 0.55*Math.sin(f*Math.PI)).toFixed(2);
+        m.spark.style.opacity = (0.30 + 0.55*Math.sin(f*Math.PI)).toFixed(2);
       }
     }
     if (!reduce) requestAnimationFrame(frame);
   }
   measure(); requestAnimationFrame(frame);
   window.addEventListener('resize', measure);
+  window.addEventListener('load', measure);
 })();
 
 // ── Hero URL bar: "analyze" reaction + scroll to intake form ──────────
