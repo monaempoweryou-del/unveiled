@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kapara Mio — La Punta's #1 Mediterranean | Falafel, Hummus & Israeli Street Food in Puerto Escondido</title>
+<meta name="description" content="The highest-rated Mediterranean in Puerto Escondido — 4.9★ from 580+ travelers. Authentic Israeli street food: vegan falafel, fluffy pita, hummus & shawarma in La Punta, Zicatela. Order takeout & delivery online." />
+<meta name="theme-color" content="#C65D3B" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="restaurant" />
+<meta property="og:title" content="Kapara Mio — La Punta's #1 Mediterranean Street Food" />
+<meta property="og:description" content="4.9★ from 580+ travelers. Authentic Israeli falafel, fluffy pita & hummus in Puerto Escondido. Order takeout & delivery." />
+<meta property="og:image" content="assets/hero.jpg" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:locale:alternate" content="es_MX" />
+<meta property="og:locale:alternate" content="he_IL" />
+
+<link rel="icon" type="image/png" href="assets/favicon.png" />
+<link rel="apple-touch-icon" href="assets/favicon.png" />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Assistant:wght@300;400;500;600;700;800&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap" rel="stylesheet" />
+
+<!-- Structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "name": "Kapara Mio",
+  "servesCuisine": ["Mediterranean", "Israeli", "Middle Eastern", "Vegan"],
+  "priceRange": "$$",
+  "image": "assets/hero.jpg",
+  "telephone": "+52 954 153 5846",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Av. Justo Salvador Maldonado, esq. Coahuila, Col. Brisas de Zicatela",
+    "addressLocality": "Puerto Escondido",
+    "addressRegion": "Oaxaca",
+    "postalCode": "70934",
+    "addressCountry": "MX"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "reviewCount": "582"
+  },
+  "sameAs": ["https://www.instagram.com/kaparamiopxm/"]
+}
+</script>
+
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --terracotta:#C65D3B;
+  --terracotta-dark:#A8462A;
+  --blue:#1E5F74;
+  --blue-dark:#164A5A;
+  --olive:#7C8C5A;
+  --cream:#F5EFE3;
+  --cream-deep:#EBE2D0;
+  --gold:#E0A436;
+  --gold-dark:#C98A1F;
+  --charcoal:#2B2622;
+  --charcoal-soft:#5A524A;
+  --white:#FFFFFF;
+  --shadow-sm:0 2px 8px rgba(43,38,34,.08);
+  --shadow-md:0 8px 28px rgba(43,38,34,.12);
+  --shadow-lg:0 20px 60px rgba(43,38,34,.20);
+  --radius:16px;
+  --radius-lg:28px;
+  --maxw:1200px;
+  --header-h:74px;
+  --ease:cubic-bezier(.4,0,.2,1);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:var(--header-h)}
+body{
+  font-family:'Assistant',system-ui,-apple-system,sans-serif;
+  background:var(--cream);
+  color:var(--charcoal);
+  font-size:17px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+h1,h2,h3,h4{font-family:'Fraunces',Georgia,serif;line-height:1.08;font-weight:600;letter-spacing:-.01em}
+html[lang="he"] h1,html[lang="he"] h2,html[lang="he"] h3,html[lang="he"] h4{font-family:'Frank Ruhl Libre',serif;font-weight:700}
+html[lang="he"] body,html[lang="he"]{font-family:'Assistant',sans-serif}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+ul{list-style:none}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px;border-radius:4px}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+.eyebrow{font-size:.82rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--terracotta)}
+html[lang="he"] .eyebrow{letter-spacing:.04em}
+.section{padding:88px 0}
+.section-head{text-align:center;max-width:680px;margin:0 auto 56px}
+.section-head h2{font-size:clamp(2rem,5vw,3rem);margin:14px 0 16px;color:var(--charcoal)}
+.section-head p{font-size:1.12rem;color:var(--charcoal-soft)}
+
+/* ============ BUTTONS ============ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  padding:14px 28px;border-radius:50px;font-weight:700;font-size:1rem;
+  transition:transform .2s var(--ease),box-shadow .2s var(--ease),background .2s var(--ease);
+  white-space:nowrap;line-height:1;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:translateY(0)}
+.btn-primary{background:var(--gold);color:var(--charcoal);box-shadow:0 6px 18px rgba(224,164,54,.4)}
+.btn-primary:hover{background:var(--gold-dark);box-shadow:0 10px 26px rgba(224,164,54,.5)}
+.btn-secondary{background:transparent;color:var(--white);border:2px solid rgba(255,255,255,.85)}
+.btn-secondary:hover{background:rgba(255,255,255,.15)}
+.btn-terra{background:var(--terracotta);color:#fff;font-weight:800;box-shadow:0 6px 18px rgba(198,93,59,.35)}
+.btn-terra:hover{background:var(--terracotta-dark)}
+.btn-blue{background:var(--blue);color:#fff;font-weight:700}
+.btn-blue:hover{background:var(--blue-dark)}
+.btn-ghost{background:var(--cream-deep);color:var(--charcoal);font-weight:700}
+.btn-ghost:hover{background:#dfd4bf}
+.btn-lg{padding:17px 38px;font-size:1.08rem}
+
+/* ============ HEADER ============ */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:100;height:var(--header-h);
+  display:flex;align-items:center;
+  background:rgba(245,239,227,.82);backdrop-filter:blur(14px);
+  border-bottom:1px solid transparent;transition:border-color .3s,box-shadow .3s,background .3s;
+}
+header.scrolled{border-bottom-color:var(--cream-deep);box-shadow:var(--shadow-sm)}
+.nav{display:flex;align-items:center;justify-content:space-between;width:100%}
+.brand img{height:40px;width:auto}
+.nav-links{display:flex;align-items:center;gap:30px}
+.nav-links a{font-weight:600;font-size:1rem;color:var(--charcoal);position:relative;transition:color .2s}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:-5px;width:0;height:2px;background:var(--terracotta);transition:width .25s var(--ease)}
+.nav-links a:hover{color:var(--terracotta)}
+.nav-links a:hover::after{width:100%}
+.nav-right{display:flex;align-items:center;gap:14px}
+
+/* language switcher */
+.lang{display:flex;background:var(--cream-deep);border-radius:50px;padding:3px;gap:2px}
+.lang button{padding:6px 12px;border-radius:50px;font-weight:700;font-size:.82rem;color:var(--charcoal-soft);transition:background .2s,color .2s}
+.lang button.active{background:var(--terracotta);color:#fff}
+.lang button:hover:not(.active){color:var(--terracotta)}
+
+.cart-btn{position:relative;display:inline-flex;align-items:center;gap:8px}
+.cart-count{position:absolute;top:-8px;inset-inline-end:-8px;background:var(--terracotta);color:#fff;font-size:.72rem;font-weight:800;min-width:20px;height:20px;border-radius:50px;display:flex;align-items:center;justify-content:center;padding:0 5px;transform:scale(0);transition:transform .25s var(--ease)}
+.cart-count.show{transform:scale(1)}
+
+.hamburger{display:none;flex-direction:column;gap:5px;padding:8px}
+.hamburger span{width:24px;height:2.5px;background:var(--charcoal);border-radius:2px;transition:.3s}
+
+/* mobile drawer nav */
+.mobile-nav{position:fixed;inset:0;z-index:99;background:var(--cream);transform:translateX(100%);transition:transform .35s var(--ease);display:flex;flex-direction:column;padding:calc(var(--header-h) + 30px) 32px 40px;gap:8px}
+html[dir="rtl"] .mobile-nav{transform:translateX(-100%)}
+.mobile-nav.open{transform:translateX(0)}
+.mobile-nav a{font-family:'Fraunces',serif;font-size:1.7rem;font-weight:600;padding:14px 0;border-bottom:1px solid var(--cream-deep);color:var(--charcoal)}
+html[lang="he"] .mobile-nav a{font-family:'Frank Ruhl Libre',serif}
+.mobile-nav .btn{margin-top:24px}
+
+/* ============ HERO ============ */
+.hero{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:center;padding-top:var(--header-h);overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:-2}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center 65%}
+.hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(43,38,34,.55) 0%,rgba(43,38,34,.25) 40%,rgba(43,38,34,.65) 100%)}
+.hero-inner{position:relative;z-index:1;color:#fff;max-width:760px;padding:48px 0}
+.hero .rating-pill{display:inline-flex;align-items:center;gap:10px;background:rgba(245,239,227,.95);color:var(--charcoal);padding:9px 18px;border-radius:50px;font-weight:700;font-size:.95rem;box-shadow:var(--shadow-md);margin-bottom:26px}
+.hero .rating-pill .stars{color:var(--gold);letter-spacing:1px}
+.hero h1{font-size:clamp(2.6rem,7vw,4.6rem);font-weight:600;color:#fff;text-shadow:0 2px 24px rgba(0,0,0,.35);margin-bottom:8px}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero .quote{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(1.25rem,3vw,1.7rem);font-weight:500;margin:22px 0 10px;color:#fff;opacity:.97}
+html[lang="he"] .hero .quote{font-family:'Frank Ruhl Libre',serif}
+.hero .quote-by{font-size:.92rem;opacity:.85;margin-bottom:30px;font-weight:600;letter-spacing:.04em}
+.hero-cta{display:flex;flex-wrap:wrap;gap:14px}
+.scroll-hint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:1;color:#fff;opacity:.8;font-size:1.6rem;animation:bob 2s infinite}
+@keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,8px)}}
+
+/* ============ TRUST BAR ============ */
+.trustbar{background:var(--blue);color:#fff;padding:30px 0}
+.trust-items{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:14px 40px;text-align:center}
+.trust-item{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:120px}
+.trust-item .big{font-family:'Fraunces',serif;font-size:1.9rem;font-weight:700;line-height:1;color:var(--gold)}
+html[lang="he"] .trust-item .big{font-family:'Frank Ruhl Libre',serif}
+.trust-item .lbl{font-size:.86rem;font-weight:600;opacity:.92;letter-spacing:.02em}
+.trust-divider{width:1px;height:42px;background:rgba(255,255,255,.25)}
+
+/* ============ MENU ============ */
+#menu{background:var(--cream)}
+.menu-tabs{display:flex;gap:10px;overflow-x:auto;padding:4px 4px 14px;margin-bottom:34px;scrollbar-width:none;justify-content:center;flex-wrap:wrap}
+.menu-tabs::-webkit-scrollbar{display:none}
+.menu-tab{padding:10px 20px;border-radius:50px;font-weight:700;font-size:.95rem;background:var(--white);color:var(--charcoal-soft);box-shadow:var(--shadow-sm);transition:.2s;white-space:nowrap}
+.menu-tab.active{background:var(--terracotta);color:#fff}
+.menu-tab:hover:not(.active){color:var(--terracotta)}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:26px}
+.menu-card{background:var(--white);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);transition:transform .25s var(--ease),box-shadow .25s var(--ease);display:flex;flex-direction:column}
+.menu-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-md)}
+.menu-card .img-wrap{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--cream-deep)}
+.menu-card .img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease)}
+.menu-card:hover .img-wrap img{transform:scale(1.06)}
+.badge-loved{position:absolute;top:12px;inset-inline-start:12px;background:var(--gold);color:var(--charcoal);font-weight:800;font-size:.74rem;padding:5px 11px;border-radius:50px;display:flex;align-items:center;gap:4px;box-shadow:var(--shadow-sm)}
+.badge-veg{position:absolute;top:12px;inset-inline-end:12px;background:var(--olive);color:#fff;font-weight:700;font-size:.72rem;padding:4px 10px;border-radius:50px}
+/* branded placeholder image */
+.ph{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;background:
+  radial-gradient(circle at 30% 25%,rgba(224,164,54,.18),transparent 55%),
+  linear-gradient(135deg,#d8c9ad,#cdbb98);color:var(--terracotta-dark);text-align:center;padding:18px}
+.ph svg{width:48px;height:48px;opacity:.85;margin-bottom:8px}
+.ph span{font-family:'Fraunces',serif;font-weight:600;font-size:1rem;color:var(--charcoal);opacity:.7}
+.menu-card .body{padding:18px 20px 20px;display:flex;flex-direction:column;flex:1}
+.menu-card .body h3{font-size:1.32rem;margin-bottom:6px;color:var(--charcoal)}
+.menu-card .body .desc{font-size:.96rem;color:var(--charcoal-soft);flex:1;margin-bottom:14px}
+.menu-card .foot{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.price{font-family:'Fraunces',serif;font-weight:700;font-size:1.35rem;color:var(--terracotta)}
+html[lang="he"] .price{font-family:'Frank Ruhl Libre',serif}
+.add-btn{background:var(--gold);color:var(--charcoal);font-weight:800;padding:10px 18px;border-radius:50px;font-size:.92rem;display:inline-flex;align-items:center;gap:6px;transition:background .2s,transform .15s}
+.add-btn:hover{background:var(--gold-dark);transform:translateY(-1px)}
+.menu-note{text-align:center;margin-top:34px;font-size:.95rem;color:var(--charcoal-soft)}
+
+/* ============ STORY ============ */
+#story{background:var(--cream-deep)}
+.story-top{display:grid;grid-template-columns:1.05fr 1fr;gap:54px;align-items:center;margin-bottom:64px}
+.story-text h2{font-size:clamp(2rem,4.6vw,3rem);margin:14px 0 18px}
+.story-text p{color:var(--charcoal-soft);margin-bottom:16px;font-size:1.08rem}
+.story-media{position:relative}
+.story-media .main{border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);aspect-ratio:4/3;object-fit:cover;width:100%}
+.story-media .inset{position:absolute;bottom:-26px;inset-inline-end:-22px;width:42%;border-radius:var(--radius);box-shadow:var(--shadow-md);border:6px solid var(--cream);aspect-ratio:3/4;object-fit:cover}
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.pillar{background:var(--cream);border-radius:var(--radius);padding:30px 26px;text-align:center;box-shadow:var(--shadow-sm)}
+.pillar .ic{width:60px;height:60px;margin:0 auto 16px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--terracotta);color:#fff}
+.pillar:nth-child(2) .ic{background:var(--olive)}
+.pillar:nth-child(3) .ic{background:var(--blue)}
+.pillar h3{font-size:1.3rem;margin-bottom:8px}
+.pillar p{color:var(--charcoal-soft);font-size:.98rem}
+
+/* ============ CATERING ============ */
+#catering{background:var(--cream)}
+.cater-grid{display:grid;grid-template-columns:1fr 1fr;gap:54px;align-items:start}
+.cater-media img{border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);width:100%;aspect-ratio:4/5;object-fit:cover}
+.cater-pkgs{display:grid;gap:14px;margin-top:22px}
+.pkg{background:var(--white);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow-sm);display:flex;gap:14px;align-items:flex-start}
+.pkg .n{font-family:'Fraunces',serif;font-weight:700;color:var(--terracotta);font-size:1.5rem;line-height:1;min-width:38px}
+html[lang="he"] .pkg .n{font-family:'Frank Ruhl Libre',serif}
+.pkg h4{font-size:1.12rem;margin-bottom:2px}
+.pkg p{font-size:.93rem;color:var(--charcoal-soft)}
+.cater-form{background:var(--white);border-radius:var(--radius-lg);padding:36px 34px;box-shadow:var(--shadow-md)}
+.cater-form h3{font-size:1.7rem;margin-bottom:6px}
+.cater-form .sub{color:var(--charcoal-soft);margin-bottom:24px;font-size:.98rem}
+.field{margin-bottom:18px}
+.field label{display:block;font-weight:700;font-size:.9rem;margin-bottom:7px;color:var(--charcoal)}
+.field input,.field select,.field textarea{
+  width:100%;padding:13px 15px;border:1.5px solid var(--cream-deep);border-radius:12px;
+  font-family:inherit;font-size:1rem;background:var(--cream);color:var(--charcoal);transition:border-color .2s,box-shadow .2s;
+}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--terracotta);box-shadow:0 0 0 3px rgba(198,93,59,.15)}
+.field textarea{resize:vertical;min-height:90px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-note{font-size:.86rem;color:var(--charcoal-soft);margin-top:6px}
+
+/* ============ REVIEWS ============ */
+#reviews{position:relative;color:#fff;background:var(--charcoal)}
+.reviews-bg{position:absolute;inset:0;z-index:0}
+.reviews-bg img{width:100%;height:100%;object-fit:cover;opacity:.22}
+.reviews-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(43,38,34,.86),rgba(30,95,116,.82))}
+#reviews .wrap{position:relative;z-index:1}
+#reviews .section-head h2{color:#fff}
+#reviews .section-head p{color:rgba(255,255,255,.85)}
+.review-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:24px}
+.review-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(8px);border-radius:var(--radius);padding:28px 26px;display:flex;flex-direction:column}
+.review-card .stars{color:var(--gold);font-size:1.05rem;letter-spacing:2px;margin-bottom:12px}
+.review-card blockquote{font-family:'Fraunces',serif;font-style:italic;font-size:1.18rem;line-height:1.45;flex:1}
+html[lang="he"] .review-card blockquote{font-family:'Frank Ruhl Libre',serif}
+.review-card .who{margin-top:16px;font-weight:700;font-size:.92rem;opacity:.85;display:flex;align-items:center;gap:8px}
+.reviews-cta{text-align:center;margin-top:42px}
+
+/* ============ VISIT ============ */
+#visit{background:var(--cream-deep)}
+.visit-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:stretch}
+.visit-info{display:flex;flex-direction:column}
+.visit-info h2{font-size:clamp(2rem,4.6vw,3rem);margin:12px 0 22px}
+.info-list{display:flex;flex-direction:column;gap:18px;margin-bottom:26px}
+.info-row{display:flex;gap:14px;align-items:flex-start}
+.info-row .ic{flex:none;width:44px;height:44px;border-radius:12px;background:var(--white);color:var(--terracotta);display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-sm)}
+.info-row .t{font-weight:700;font-size:1.02rem;margin-bottom:1px}
+.info-row .d{color:var(--charcoal-soft);font-size:.97rem}
+.info-row a.d:hover{color:var(--terracotta)}
+.hours-flag{font-size:.82rem;color:var(--blue);font-style:italic}
+.visit-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:auto}
+.map-wrap{border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-md);min-height:420px;position:relative}
+.map-wrap iframe{width:100%;height:100%;min-height:420px;border:0;filter:saturate(1.05)}
+
+/* ============ FOOTER ============ */
+footer{background:var(--charcoal);color:var(--cream);padding:66px 0 30px}
+.foot-cta{text-align:center;padding-bottom:48px;border-bottom:1px solid rgba(245,239,227,.14);margin-bottom:40px}
+.foot-cta h2{font-size:clamp(2rem,5vw,3.2rem);color:#fff;margin-bottom:10px}
+.foot-cta h2 em{font-style:italic;color:var(--gold)}
+.foot-cta p{color:rgba(245,239,227,.8);margin-bottom:24px;font-size:1.1rem}
+.foot-cta .btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.foot-brand img{height:46px;margin-bottom:16px}
+.foot-brand p{color:rgba(245,239,227,.7);font-size:.96rem;max-width:320px}
+.foot-col h4{font-family:'Assistant',sans-serif;font-size:.86rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;font-weight:700}
+.foot-col a,.foot-col p{display:block;color:rgba(245,239,227,.78);margin-bottom:10px;font-size:.97rem;transition:color .2s}
+.foot-col a:hover{color:#fff}
+.foot-bottom{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding-top:26px;border-top:1px solid rgba(245,239,227,.14);font-size:.86rem;color:rgba(245,239,227,.6)}
+.foot-social{display:flex;gap:12px}
+.foot-social a{width:40px;height:40px;border-radius:50%;background:rgba(245,239,227,.1);display:flex;align-items:center;justify-content:center;transition:background .2s}
+.foot-social a:hover{background:var(--terracotta)}
+
+/* ============ MODAL (customize) ============ */
+.modal-overlay{position:fixed;inset:0;z-index:200;background:rgba(43,38,34,.6);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+.modal-overlay.open{opacity:1;visibility:visible}
+.modal{background:var(--cream);border-radius:var(--radius-lg);max-width:480px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);transform:translateY(20px) scale(.98);transition:transform .3s var(--ease)}
+.modal-overlay.open .modal{transform:translateY(0) scale(1)}
+.modal-img{aspect-ratio:16/9;width:100%;object-fit:cover;position:relative}
+.modal-hd{position:relative}
+.modal-close{position:absolute;top:14px;inset-inline-end:14px;width:38px;height:38px;border-radius:50%;background:rgba(245,239,227,.95);color:var(--charcoal);display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:700;box-shadow:var(--shadow-sm);z-index:2}
+.modal-body{padding:24px 28px 28px}
+.modal-body h3{font-size:1.6rem;margin-bottom:4px}
+.modal-body .m-desc{color:var(--charcoal-soft);font-size:.97rem;margin-bottom:18px}
+.modal-body .m-price{font-family:'Fraunces',serif;color:var(--terracotta);font-weight:700;font-size:1.3rem}
+html[lang="he"] .modal-body .m-price{font-family:'Frank Ruhl Libre',serif}
+.cust-title{font-weight:700;font-size:.92rem;margin:18px 0 10px;display:flex;align-items:center;gap:8px}
+.cust-title small{font-weight:500;color:var(--charcoal-soft)}
+.ingredients{display:flex;flex-wrap:wrap;gap:8px}
+.ing{display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border-radius:50px;background:var(--white);border:1.5px solid var(--cream-deep);font-size:.9rem;font-weight:600;cursor:pointer;transition:.18s;user-select:none}
+.ing .chk{width:16px;height:16px;border-radius:4px;background:var(--olive);display:flex;align-items:center;justify-content:center;color:#fff;font-size:.7rem;transition:.18s}
+.ing.removed{background:var(--cream-deep);color:var(--charcoal-soft);text-decoration:line-through;opacity:.7}
+.ing.removed .chk{background:transparent;border:1.5px solid var(--charcoal-soft)}
+.ing.removed .chk svg{display:none}
+.qty-row{display:flex;align-items:center;justify-content:space-between;margin:22px 0 18px}
+.qty{display:flex;align-items:center;gap:14px;background:var(--white);border-radius:50px;padding:5px;box-shadow:var(--shadow-sm)}
+.qty button{width:36px;height:36px;border-radius:50%;background:var(--cream-deep);font-size:1.3rem;font-weight:700;color:var(--charcoal);display:flex;align-items:center;justify-content:center;line-height:1}
+.qty button:hover{background:var(--terracotta);color:#fff}
+.qty .num{font-weight:800;font-size:1.1rem;min-width:24px;text-align:center}
+.modal .add-to-cart{width:100%;justify-content:center}
+
+/* ============ CART DRAWER ============ */
+.cart-drawer{position:fixed;top:0;inset-inline-end:0;height:100%;width:400px;max-width:90vw;background:var(--cream);z-index:210;box-shadow:var(--shadow-lg);transform:translateX(100%);transition:transform .35s var(--ease);display:flex;flex-direction:column}
+html[dir="rtl"] .cart-drawer{transform:translateX(-100%)}
+.cart-drawer.open{transform:translateX(0)}
+.cart-hd{padding:22px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--cream-deep)}
+.cart-hd h3{font-size:1.4rem}
+.cart-hd .x{font-size:1.6rem;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--cream-deep)}
+.order-type{display:flex;gap:6px;padding:14px 24px;background:var(--cream-deep)}
+.order-type button{flex:1;padding:11px;border-radius:10px;font-weight:700;font-size:.95rem;background:transparent;color:var(--charcoal-soft);transition:.2s}
+.order-type button.active{background:var(--terracotta);color:#fff;box-shadow:var(--shadow-sm)}
+.cart-items{flex:1;overflow-y:auto;padding:16px 24px}
+.cart-empty{text-align:center;color:var(--charcoal-soft);padding:50px 20px}
+.cart-empty svg{width:60px;height:60px;opacity:.3;margin:0 auto 14px}
+.ci{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--cream-deep)}
+.ci img,.ci .ci-ph{width:62px;height:62px;border-radius:12px;object-fit:cover;flex:none}
+.ci .ci-ph{background:var(--cream-deep);display:flex;align-items:center;justify-content:center;color:var(--terracotta)}
+.ci .ci-main{flex:1;min-width:0}
+.ci .ci-main h4{font-family:'Assistant',sans-serif;font-size:1rem;font-weight:700;margin-bottom:2px}
+.ci .ci-mods{font-size:.8rem;color:var(--terracotta);font-weight:600;margin-bottom:4px}
+.ci .ci-foot{display:flex;align-items:center;justify-content:space-between;margin-top:4px}
+.ci .ci-qty{display:flex;align-items:center;gap:8px}
+.ci .ci-qty button{width:26px;height:26px;border-radius:50%;background:var(--cream-deep);font-weight:700;font-size:1rem;display:flex;align-items:center;justify-content:center}
+.ci .ci-qty button:hover{background:var(--terracotta);color:#fff}
+.ci .ci-price{font-weight:800;color:var(--charcoal)}
+.ci .ci-remove{font-size:.78rem;color:var(--charcoal-soft);text-decoration:underline;margin-top:4px}
+.cart-deliv{padding:0 24px 8px}
+.cart-deliv .field{margin-bottom:12px}
+.cart-foot{padding:18px 24px 24px;border-top:1px solid var(--cream-deep);background:var(--cream)}
+.cart-total{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
+.cart-total .l{font-weight:700}
+.cart-total .v{font-family:'Fraunces',serif;font-weight:700;font-size:1.6rem;color:var(--terracotta)}
+html[lang="he"] .cart-total .v{font-family:'Frank Ruhl Libre',serif}
+.checkout-btn{width:100%;justify-content:center}
+.cart-disclaim{font-size:.78rem;color:var(--charcoal-soft);text-align:center;margin-top:10px}
+
+.scrim{position:fixed;inset:0;background:rgba(43,38,34,.5);z-index:205;opacity:0;visibility:hidden;transition:.3s}
+.scrim.open{opacity:1;visibility:visible}
+
+/* floating mobile order btn */
+.float-order{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(120px);z-index:90;box-shadow:var(--shadow-lg);transition:transform .35s var(--ease);display:none}
+.float-order.show{transform:translateX(-50%) translateY(0)}
+
+/* toast */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(140px);z-index:300;background:var(--charcoal);color:#fff;padding:14px 24px;border-radius:50px;font-weight:700;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:10px;transition:transform .35s var(--ease)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast svg{color:var(--gold)}
+
+/* reveal animation */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+
+/* ============ RESPONSIVE ============ */
+@media(max-width:980px){
+  .story-top,.cater-grid,.visit-grid{grid-template-columns:1fr;gap:36px}
+  .story-media{max-width:520px;margin:0 auto}
+  .pillars{grid-template-columns:1fr;max-width:460px;margin:0 auto}
+  .foot-grid{grid-template-columns:1fr;gap:30px}
+  .cater-media{max-width:460px;margin:0 auto}
+}
+@media(max-width:760px){
+  body{font-size:16px}
+  .section{padding:64px 0}
+  .nav-links,.nav-right .lang,.nav-right .nav-order{display:none}
+  .hamburger{display:flex}
+  header.menu-open .hamburger span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
+  header.menu-open .hamburger span:nth-child(2){opacity:0}
+  header.menu-open .hamburger span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
+  .trust-divider{display:none}
+  .trust-items{gap:18px 28px}
+  .trust-item{min-width:90px}
+  .trust-item .big{font-size:1.5rem}
+  .story-media .inset{width:38%}
+  .field-row{grid-template-columns:1fr}
+  .float-order{display:inline-flex}
+  .foot-bottom{flex-direction:column;text-align:center}
+  .hero-cta{flex-direction:column;align-items:stretch}
+  .hero-cta .btn{width:100%}
+  .foot-cta .btns{flex-direction:column;align-items:stretch}
+  .foot-cta .btns .btn{width:100%}
+}
+@media(max-width:420px){
+  .wrap{padding:0 18px}
+  .menu-grid{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;scroll-behavior:auto!important}
+  .reveal{opacity:1;transform:none;transition:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header id="header">
+  <div class="wrap nav">
+    <a href="#top" class="brand" aria-label="Kapara Mio home">
+      <img src="assets/logo.png" alt="Kapara Mio" />
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#menu" data-i18n="nav.menu">Menu</a>
+      <a href="#story" data-i18n="nav.story">Our Story</a>
+      <a href="#catering" data-i18n="nav.catering">Catering</a>
+      <a href="#reviews" data-i18n="nav.reviews">Reviews</a>
+      <a href="#visit" data-i18n="nav.visit">Visit</a>
+    </nav>
+    <div class="nav-right">
+      <div class="lang" role="group" aria-label="Language">
+        <button data-lang="en" class="active">EN</button>
+        <button data-lang="es">ES</button>
+        <button data-lang="he">עב</button>
+      </div>
+      <button class="btn btn-terra nav-order" data-open-cart data-i18n="nav.order">Order Now</button>
+      <button class="cart-btn btn btn-ghost" data-open-cart aria-label="Open cart" style="padding:11px 16px">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+      <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- mobile nav -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="#menu" data-i18n="nav.menu">Menu</a>
+  <a href="#story" data-i18n="nav.story">Our Story</a>
+  <a href="#catering" data-i18n="nav.catering">Catering</a>
+  <a href="#reviews" data-i18n="nav.reviews">Reviews</a>
+  <a href="#visit" data-i18n="nav.visit">Visit</a>
+  <div class="lang" style="align-self:flex-start;margin-top:18px" role="group" aria-label="Language">
+    <button data-lang="en" class="active">EN</button>
+    <button data-lang="es">ES</button>
+    <button data-lang="he">עברית</button>
+  </div>
+  <button class="btn btn-terra btn-lg" data-open-cart data-i18n="nav.order">Order Now</button>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="hero-bg">
+    <img src="assets/hero.jpg" alt="Fresh vegan falafel in a clay bowl with tahini, cradled in hands at Kapara Mio" fetchpriority="high" />
+  </div>
+  <div class="wrap">
+    <div class="hero-inner">
+      <div class="rating-pill">
+        <span class="stars">★★★★★</span>
+        <span><strong>4.9</strong> · <span data-i18n="hero.reviews">580+ Google reviews</span></span>
+      </div>
+      <h1><span data-i18n="hero.h1a">La Punta's #1</span><br><em data-i18n="hero.h1b">Mediterranean.</em></h1>
+      <p class="quote" data-i18n="hero.quote">"Forget the Michelin star restaurant — eat at Kapara Mio!"</p>
+      <p class="quote-by" data-i18n="hero.quoteby">— Verified Google review</p>
+      <div class="hero-cta">
+        <button class="btn btn-primary btn-lg" data-open-cart data-i18n="hero.cta1">Order Takeout / Delivery</button>
+        <a href="#menu" class="btn btn-secondary btn-lg" data-i18n="hero.cta2">View Menu</a>
+      </div>
+    </div>
+  </div>
+  <a href="#trust" class="scroll-hint" aria-label="Scroll down">↓</a>
+</section>
+
+<!-- ============ TRUST BAR ============ -->
+<section class="trustbar" id="trust">
+  <div class="wrap">
+    <div class="trust-items">
+      <div class="trust-item"><span class="big">4.9★</span><span class="lbl" data-i18n="trust.rating">Google rating</span></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><span class="big">580+</span><span class="lbl" data-i18n="trust.reviews">Google reviews</span></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><span class="big">#1</span><span class="lbl" data-i18n="trust.rank">Mediterranean in Puerto</span></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><span class="big">100%</span><span class="lbl" data-i18n="trust.veg">Vegan-friendly</span></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><span class="big">🇮🇱</span><span class="lbl" data-i18n="trust.auth">Authentic Israeli recipes</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MENU ============ -->
+<section class="section" id="menu">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow" data-i18n="menu.eyebrow">The Menu</span>
+      <h2 data-i18n="menu.h2">Order fresh, in seconds</h2>
+      <p data-i18n="menu.sub">Real Israeli street food, made to order. Tap any dish to customize it — remove what you don't like, and we'll have it ready for pickup or delivery.</p>
+    </div>
+    <div class="menu-tabs" id="menuTabs" role="tablist"></div>
+    <div class="menu-grid" id="menuGrid"></div>
+    <p class="menu-note" data-i18n="menu.note">Prices in Mexican pesos (MXN). Menu reflects our signature favorites — final pricing & full selection confirmed at checkout.</p>
+  </div>
+</section>
+
+<!-- ============ STORY ============ -->
+<section class="section" id="story">
+  <div class="wrap">
+    <div class="story-top">
+      <div class="story-text reveal">
+        <span class="eyebrow" data-i18n="story.eyebrow">Our Story</span>
+        <h2 data-i18n="story.h2">Two worlds on one plate</h2>
+        <p data-i18n="story.p1">Kapara Mio was born from family recipes passed down through generations — the same falafel, hummus and fluffy pita our grandparents made, now served steps from the Pacific.</p>
+        <p data-i18n="story.p2">We blend fine spices brought from Israel with the rich flavors of Oaxaca, and build every plate from fresh, locally-sourced ingredients. It's where the desert meets the sea — honest food, made fresh, every single day.</p>
+        <a href="#menu" class="btn btn-terra" data-i18n="story.cta">See the menu</a>
+      </div>
+      <div class="story-media reveal">
+        <img class="main" src="assets/section-story.jpg" alt="Mural of a hand holding pita over a desert-to-ocean horizon at Kapara Mio" loading="lazy" />
+        <img class="inset" src="assets/section-fresh.jpg" alt="Fresh pita baking in the wood-fired oven" loading="lazy" />
+      </div>
+    </div>
+    <div class="pillars">
+      <div class="pillar reveal">
+        <div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7.4L12 17l-6.3 4.4L8 14 2 9.4h7.6z"/></svg></div>
+        <h3 data-i18n="story.pill1t">Authentic</h3>
+        <p data-i18n="story.pill1p">Real Israeli family recipes and imported spices — the genuine taste of the Mediterranean.</p>
+      </div>
+      <div class="pillar reveal">
+        <div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8 6 6 9 6 13a6 6 0 0 0 12 0c0-4-2-7-6-11z"/></svg></div>
+        <h3 data-i18n="story.pill2t">Always Fresh</h3>
+        <p data-i18n="story.pill2p">Made to order with locally-sourced ingredients. Nothing sits — everything is prepared the moment you order.</p>
+      </div>
+      <div class="pillar reveal">
+        <div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+        <h3 data-i18n="story.pill3t">Honest Pricing</h3>
+        <p data-i18n="story.pill3p">The price you see is the price you pay. No surprise service charges — ever.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CATERING ============ -->
+<section class="section" id="catering">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow" data-i18n="cater.eyebrow">Catering</span>
+      <h2 data-i18n="cater.h2">A Mediterranean feast for your crew</h2>
+      <p data-i18n="cater.sub">Surf retreat, beach party, birthday or wedding — we'll bring the falafel, hummus, shawarma and mezze to you. Tell us your headcount and budget, we'll build the perfect spread.</p>
+    </div>
+    <div class="cater-grid">
+      <div class="cater-media reveal">
+        <img src="assets/section-catering.jpg" alt="Full mezze feast spread with hummus, baba ganoush, shawarma, skewers and salads" loading="lazy" />
+        <div class="cater-pkgs">
+          <div class="pkg"><span class="n">1</span><div><h4 data-i18n="cater.pkg1t">Mezze Grazing Table</h4><p data-i18n="cater.pkg1p">Hummus, baba ganoush, falafel, fresh pita & salads. Perfect for mingling.</p></div></div>
+          <div class="pkg"><span class="n">2</span><div><h4 data-i18n="cater.pkg2t">The Full Feast</h4><p data-i18n="cater.pkg2p">Everything in the grazing table plus shawarma, skewers, schnitzel & sides.</p></div></div>
+          <div class="pkg"><span class="n">3</span><div><h4 data-i18n="cater.pkg3t">Build Your Own</h4><p data-i18n="cater.pkg3p">Custom menu shaped entirely around your headcount, budget & dietary needs.</p></div></div>
+        </div>
+      </div>
+      <form class="cater-form reveal" id="caterForm" action="#" method="post" novalidate>
+        <h3 data-i18n="cater.formt">Request a catering quote</h3>
+        <p class="sub" data-i18n="cater.forms">Tell us about your event — we typically reply within 24 hours.</p>
+        <div class="field-row">
+          <div class="field"><label data-i18n="cater.fname">Your name</label><input type="text" name="name" required /></div>
+          <div class="field"><label data-i18n="cater.fphone">Phone / WhatsApp</label><input type="tel" name="phone" required /></div>
+        </div>
+        <div class="field"><label data-i18n="cater.femail">Email</label><input type="email" name="email" required /></div>
+        <div class="field-row">
+          <div class="field"><label data-i18n="cater.fpeople">Number of people</label><input type="number" name="people" min="1" placeholder="e.g. 25" required /></div>
+          <div class="field"><label data-i18n="cater.fbudget">Budget (MXN)</label><input type="text" name="budget" placeholder="e.g. $6,000" required /></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label data-i18n="cater.fdate">Event date</label><input type="date" name="date" required /></div>
+          <div class="field"><label data-i18n="cater.fpkg">Package</label>
+            <select name="package">
+              <option data-i18n="cater.opt1">Mezze Grazing Table</option>
+              <option data-i18n="cater.opt2">The Full Feast</option>
+              <option data-i18n="cater.opt3">Build Your Own</option>
+              <option data-i18n="cater.opt4">Not sure yet — help me choose</option>
+            </select>
+          </div>
+        </div>
+        <div class="field"><label data-i18n="cater.fnotes">Anything else? (dietary needs, location, time)</label><textarea name="notes"></textarea></div>
+        <button type="submit" class="btn btn-primary btn-lg" style="width:100%;justify-content:center" data-i18n="cater.fsubmit">Request Catering Quote</button>
+        <p class="form-note" data-i18n="cater.fnote">No payment required to request a quote. We'll confirm availability & a custom menu by email or WhatsApp.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REVIEWS ============ -->
+<section class="section" id="reviews">
+  <div class="reviews-bg"><img src="assets/section-vibe.jpg" alt="" aria-hidden="true" loading="lazy" /></div>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow" style="color:var(--gold)" data-i18n="rev.eyebrow">Reviews</span>
+      <h2 data-i18n="rev.h2">Travelers can't stop raving</h2>
+      <p data-i18n="rev.sub">4.9★ from over 580 reviews — the highest-rated Mediterranean in Puerto Escondido. Don't take our word for it:</p>
+    </div>
+    <div class="review-grid">
+      <div class="review-card reveal">
+        <div class="stars">★★★★★</div>
+        <blockquote data-i18n="rev.q1">"Forget the Michelin star restaurant in Puerto Escondido — eat at Kapara Mio!"</blockquote>
+        <div class="who">★ <span data-i18n="rev.via">Google review</span></div>
+      </div>
+      <div class="review-card reveal">
+        <div class="stars">★★★★★</div>
+        <blockquote data-i18n="rev.q2">"The best falafel and hummus inside Mexico. 10/10 for food, service and vibes."</blockquote>
+        <div class="who">★ <span data-i18n="rev.via">Google review</span></div>
+      </div>
+      <div class="review-card reveal">
+        <div class="stars">★★★★★</div>
+        <blockquote data-i18n="rev.q3">"The most amazing fluffy pita I've ever had. We came back three nights in a row."</blockquote>
+        <div class="who">★ <span data-i18n="rev.via">Google review</span></div>
+      </div>
+    </div>
+    <div class="reviews-cta">
+      <a href="https://maps.app.goo.gl/g6sPDQPpgXZFGvCa8?g_st=iw" target="_blank" rel="noopener" class="btn btn-primary btn-lg" data-i18n="rev.cta">Read all 580+ reviews on Google</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VISIT ============ -->
+<section class="section" id="visit">
+  <div class="wrap">
+    <div class="visit-grid">
+      <div class="visit-info reveal">
+        <span class="eyebrow" data-i18n="visit.eyebrow">Find Us</span>
+        <h2 data-i18n="visit.h2">Right here in La Punta</h2>
+        <div class="info-list">
+          <div class="info-row">
+            <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+            <div><div class="t" data-i18n="visit.addrt">Our location</div><div class="d" data-i18n="visit.addrd">Av. Justo Salvador Maldonado, esq. Coahuila, Col. Brisas de Zicatela — steps from Punta Zicatela beach, Puerto Escondido, Oaxaca 70934</div></div>
+          </div>
+          <div class="info-row">
+            <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+            <div><div class="t" data-i18n="visit.phonet">Call or WhatsApp</div><a class="d" href="tel:+529541535846">+52 954 153 5846</a></div>
+          </div>
+          <div class="info-row">
+            <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+            <div><div class="t" data-i18n="visit.hourst">Hours</div><div class="d" data-i18n="visit.hoursd">Open daily for lunch & dinner</div><div class="hours-flag" data-i18n="visit.hoursflag">Call ahead to confirm tonight's hours</div></div>
+          </div>
+          <div class="info-row">
+            <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M16 8h.01"/><rect x="2" y="2" width="20" height="20" rx="5"/></svg></div>
+            <div><div class="t" data-i18n="visit.igt">Follow us</div><a class="d" href="https://www.instagram.com/kaparamiopxm/" target="_blank" rel="noopener">@kaparamiopxm</a></div>
+          </div>
+        </div>
+        <p style="color:var(--charcoal-soft);font-size:.95rem;margin-bottom:18px" data-i18n="visit.deliv">We deliver to nearby hostels, Airbnbs & beach spots in La Punta.</p>
+        <div class="visit-cta">
+          <a href="https://maps.app.goo.gl/g6sPDQPpgXZFGvCa8?g_st=iw" target="_blank" rel="noopener" class="btn btn-terra" data-i18n="visit.cta1">Get Directions</a>
+          <a href="tel:+529541535846" class="btn btn-blue" data-i18n="visit.cta2">Call Us</a>
+        </div>
+      </div>
+      <div class="map-wrap reveal">
+        <iframe
+          title="Map to Kapara Mio in Puerto Escondido"
+          src="https://www.google.com/maps?q=Kapara+Mio+Brisas+de+Zicatela+Puerto+Escondido+Oaxaca&output=embed"
+          loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-cta reveal">
+      <h2 data-i18n="foot.h2">Hungry? <em>We're a tap away.</em></h2>
+      <p data-i18n="foot.p">4.9★ from 580+ travelers. Order your falafel, hummus & fresh pita right now.</p>
+      <div class="btns">
+        <button class="btn btn-primary btn-lg" data-open-cart data-i18n="foot.cta1">Order Now</button>
+        <a href="https://www.instagram.com/kaparamiopxm/" target="_blank" rel="noopener" class="btn btn-secondary btn-lg" data-i18n="foot.cta2">Follow on Instagram</a>
+      </div>
+    </div>
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="assets/logo-light.png" alt="Kapara Mio" />
+        <p data-i18n="foot.about">La Punta's #1-rated Mediterranean. Authentic Israeli street food, made fresh where the desert meets the Pacific.</p>
+      </div>
+      <div class="foot-col">
+        <h4 data-i18n="foot.explore">Explore</h4>
+        <a href="#menu" data-i18n="nav.menu">Menu</a>
+        <a href="#story" data-i18n="nav.story">Our Story</a>
+        <a href="#catering" data-i18n="nav.catering">Catering</a>
+        <a href="#reviews" data-i18n="nav.reviews">Reviews</a>
+        <a href="#visit" data-i18n="nav.visit">Visit Us</a>
+      </div>
+      <div class="foot-col">
+        <h4 data-i18n="foot.contact">Contact</h4>
+        <a href="tel:+529541535846">+52 954 153 5846</a>
+        <a href="mailto:atiasnataly86@gmail.com">atiasnataly86@gmail.com</a>
+        <p data-i18n="foot.addr">Brisas de Zicatela, La Punta<br>Puerto Escondido, Oaxaca</p>
+        <div class="foot-social">
+          <a href="https://www.instagram.com/kaparamiopxm/" target="_blank" rel="noopener" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></a>
+          <a href="https://maps.app.goo.gl/g6sPDQPpgXZFGvCa8?g_st=iw" target="_blank" rel="noopener" aria-label="Google Maps"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span data-i18n="foot.copy">© 2026 Kapara Mio · Mediterranean street food, La Punta · Puerto Escondido</span>
+      <span data-i18n="foot.made">Made fresh, served with love · עשוי באהבה</span>
+    </div>
+  </div>
+</footer>
+
+<!-- floating mobile order -->
+<button class="btn btn-terra btn-lg float-order" id="floatOrder" data-open-cart>
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+  <span data-i18n="nav.order">Order Now</span>
+</button>
+
+<!-- ============ CUSTOMIZE MODAL ============ -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-hd">
+      <div id="modalImg"></div>
+      <button class="modal-close" id="modalClose" aria-label="Close">×</button>
+    </div>
+    <div class="modal-body">
+      <h3 id="modalTitle"></h3>
+      <p class="m-desc" id="modalDesc"></p>
+      <div class="m-price" id="modalPrice"></div>
+      <div class="cust-title" data-i18n="modal.custt">Make it yours <small data-i18n="modal.custs">— tap to remove anything</small></div>
+      <div class="ingredients" id="modalIngredients"></div>
+      <div class="field" style="margin-top:18px">
+        <label data-i18n="modal.notes">Special requests</label>
+        <input type="text" id="modalNotes" data-i18n-ph="modal.notesph" placeholder="e.g. extra spicy, allergy note…" />
+      </div>
+      <div class="qty-row">
+        <span style="font-weight:700" data-i18n="modal.qty">Quantity</span>
+        <div class="qty">
+          <button id="qtyMinus" aria-label="Decrease">−</button>
+          <span class="num" id="qtyNum">1</span>
+          <button id="qtyPlus" aria-label="Increase">+</button>
+        </div>
+      </div>
+      <button class="btn btn-primary add-to-cart" id="modalAdd">
+        <span data-i18n="modal.add">Add to Order</span> · <span id="modalAddPrice"></span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CART DRAWER ============ -->
+<div class="scrim" id="scrim"></div>
+<aside class="cart-drawer" id="cartDrawer" aria-label="Your order">
+  <div class="cart-hd">
+    <h3 data-i18n="cart.title">Your Order</h3>
+    <button class="x" id="cartClose" aria-label="Close cart">×</button>
+  </div>
+  <div class="order-type" id="orderType">
+    <button data-type="takeout" class="active" data-i18n="cart.takeout">🥡 Takeout</button>
+    <button data-type="delivery" data-i18n="cart.delivery">🛵 Delivery</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-deliv" id="cartDeliv" style="display:none">
+    <div class="field"><label data-i18n="cart.addr">Delivery address (hostel / Airbnb / beach spot)</label><input type="text" id="delivAddr" data-i18n-ph="cart.addrph" placeholder="Where in La Punta should we bring it?" /></div>
+  </div>
+  <div class="cart-foot">
+    <div class="cart-total">
+      <span class="l" data-i18n="cart.total">Total</span>
+      <span class="v" id="cartTotal">$0</span>
+    </div>
+    <button class="btn btn-primary checkout-btn" id="checkoutBtn" data-i18n="cart.checkout">Place Order</button>
+    <p class="cart-disclaim" data-i18n="cart.disclaim">You'll confirm details & payment with our team — no card charged online yet.</p>
+  </div>
+</aside>
+
+<!-- toast -->
+<div class="toast" id="toast"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span id="toastMsg"></span></div>
+
+<script>
+/* ====================== I18N ====================== */
+const I18N = {
+  en:{
+    "nav.menu":"Menu","nav.story":"Our Story","nav.catering":"Catering","nav.reviews":"Reviews","nav.visit":"Visit","nav.order":"Order Now",
+    "hero.reviews":"580+ Google reviews","hero.h1a":"La Punta's #1","hero.h1b":"Mediterranean.","hero.quote":"“Forget the Michelin star restaurant — eat at Kapara Mio!”","hero.quoteby":"— Verified Google review","hero.cta1":"Order Takeout / Delivery","hero.cta2":"View Menu",
+    "trust.rating":"Google rating","trust.reviews":"Google reviews","trust.rank":"Mediterranean in Puerto","trust.veg":"Vegan-friendly","trust.auth":"Authentic Israeli recipes",
+    "menu.eyebrow":"The Menu","menu.h2":"Order fresh, in seconds","menu.sub":"Real Israeli street food, made to order. Tap any dish to customize it — remove what you don't like, and we'll have it ready for pickup or delivery.","menu.note":"Prices in Mexican pesos (MXN). Menu reflects our signature favorites — final pricing & full selection confirmed at checkout.",
+    "story.eyebrow":"Our Story","story.h2":"Two worlds on one plate","story.p1":"Kapara Mio was born from family recipes passed down through generations — the same falafel, hummus and fluffy pita our grandparents made, now served steps from the Pacific.","story.p2":"We blend fine spices brought from Israel with the rich flavors of Oaxaca, and build every plate from fresh, locally-sourced ingredients. It's where the desert meets the sea — honest food, made fresh, every single day.","story.cta":"See the menu",
+    "story.pill1t":"Authentic","story.pill1p":"Real Israeli family recipes and imported spices — the genuine taste of the Mediterranean.","story.pill2t":"Always Fresh","story.pill2p":"Made to order with locally-sourced ingredients. Nothing sits — everything is prepared the moment you order.","story.pill3t":"Honest Pricing","story.pill3p":"The price you see is the price you pay. No surprise service charges — ever.",
+    "cater.eyebrow":"Catering","cater.h2":"A Mediterranean feast for your crew","cater.sub":"Surf retreat, beach party, birthday or wedding — we'll bring the falafel, hummus, shawarma and mezze to you. Tell us your headcount and budget, we'll build the perfect spread.","cater.pkg1t":"Mezze Grazing Table","cater.pkg1p":"Hummus, baba ganoush, falafel, fresh pita & salads. Perfect for mingling.","cater.pkg2t":"The Full Feast","cater.pkg2p":"Everything in the grazing table plus shawarma, skewers, schnitzel & sides.","cater.pkg3t":"Build Your Own","cater.pkg3p":"Custom menu shaped entirely around your headcount, budget & dietary needs.",
+    "cater.formt":"Request a catering quote","cater.forms":"Tell us about your event — we typically reply within 24 hours.","cater.fname":"Your name","cater.fphone":"Phone / WhatsApp","cater.femail":"Email","cater.fpeople":"Number of people","cater.fbudget":"Budget (MXN)","cater.fdate":"Event date","cater.fpkg":"Package","cater.opt1":"Mezze Grazing Table","cater.opt2":"The Full Feast","cater.opt3":"Build Your Own","cater.opt4":"Not sure yet — help me choose","cater.fnotes":"Anything else? (dietary needs, location, time)","cater.fsubmit":"Request Catering Quote","cater.fnote":"No payment required to request a quote. We'll confirm availability & a custom menu by email or WhatsApp.","cater.success":"Thanks! Your catering request is in — we'll reply within 24 hours. 🌿",
+    "rev.eyebrow":"Reviews","rev.h2":"Travelers can't stop raving","rev.sub":"4.9★ from over 580 reviews — the highest-rated Mediterranean in Puerto Escondido. Don't take our word for it:","rev.q1":"“Forget the Michelin star restaurant in Puerto Escondido — eat at Kapara Mio!”","rev.q2":"“The best falafel and hummus inside Mexico. 10/10 for food, service and vibes.”","rev.q3":"“The most amazing fluffy pita I've ever had. We came back three nights in a row.”","rev.via":"Google review","rev.cta":"Read all 580+ reviews on Google",
+    "visit.eyebrow":"Find Us","visit.h2":"Right here in La Punta","visit.addrt":"Our location","visit.addrd":"Av. Justo Salvador Maldonado, esq. Coahuila, Col. Brisas de Zicatela — steps from Punta Zicatela beach, Puerto Escondido, Oaxaca 70934","visit.phonet":"Call or WhatsApp","visit.hourst":"Hours","visit.hoursd":"Open daily for lunch & dinner","visit.hoursflag":"Call ahead to confirm tonight's hours","visit.igt":"Follow us","visit.deliv":"We deliver to nearby hostels, Airbnbs & beach spots in La Punta.","visit.cta1":"Get Directions","visit.cta2":"Call Us",
+    "foot.h2":"Hungry? <em>We're a tap away.</em>","foot.p":"4.9★ from 580+ travelers. Order your falafel, hummus & fresh pita right now.","foot.cta1":"Order Now","foot.cta2":"Follow on Instagram","foot.about":"La Punta's #1-rated Mediterranean. Authentic Israeli street food, made fresh where the desert meets the Pacific.","foot.explore":"Explore","foot.contact":"Contact","foot.addr":"Brisas de Zicatela, La Punta<br>Puerto Escondido, Oaxaca","foot.copy":"© 2026 Kapara Mio · Mediterranean street food, La Punta · Puerto Escondido","foot.made":"Made fresh, served with love · עשוי באהבה",
+    "modal.custt":"Make it yours","modal.custs":"— tap to remove anything","modal.notes":"Special requests","modal.notesph":"e.g. extra spicy, allergy note…","modal.qty":"Quantity","modal.add":"Add to Order",
+    "cart.title":"Your Order","cart.takeout":"🥡 Takeout","cart.delivery":"🛵 Delivery","cart.addr":"Delivery address (hostel / Airbnb / beach spot)","cart.addrph":"Where in La Punta should we bring it?","cart.total":"Total","cart.checkout":"Place Order","cart.disclaim":"You'll confirm details & payment with our team — no card charged online yet.","cart.empty":"Your order is empty.","cart.emptysub":"Add some falafel to get started!","cart.no":"No","cart.placed":"Order received! We'll confirm your order shortly. Beteavon! 🧆","cart.added":"Added to your order!","cart.needaddr":"Please add a delivery address.","cart.browse":"Browse the menu"
+  },
+  es:{
+    "nav.menu":"Menú","nav.story":"Nuestra Historia","nav.catering":"Banquetes","nav.reviews":"Reseñas","nav.visit":"Visítanos","nav.order":"Ordenar",
+    "hero.reviews":"580+ reseñas en Google","hero.h1a":"El #1 Mediterráneo","hero.h1b":"de La Punta.","hero.quote":"“Olvida el restaurante con estrella Michelin — ¡come en Kapara Mio!”","hero.quoteby":"— Reseña verificada de Google","hero.cta1":"Ordenar para llevar / a domicilio","hero.cta2":"Ver el menú",
+    "trust.rating":"Calificación Google","trust.reviews":"reseñas en Google","trust.rank":"Mediterráneo en Puerto","trust.veg":"Apto para veganos","trust.auth":"Recetas israelíes auténticas",
+    "menu.eyebrow":"El Menú","menu.h2":"Ordena fresco, en segundos","menu.sub":"Auténtica comida callejera israelí, hecha al momento. Toca cualquier platillo para personalizarlo — quita lo que no te guste y lo tendremos listo para recoger o entregar.","menu.note":"Precios en pesos mexicanos (MXN). El menú muestra nuestros favoritos — precios y selección final se confirman al ordenar.",
+    "story.eyebrow":"Nuestra Historia","story.h2":"Dos mundos en un plato","story.p1":"Kapara Mio nació de recetas familiares transmitidas por generaciones — el mismo falafel, hummus y pita esponjosa que hacían nuestros abuelos, ahora a unos pasos del Pacífico.","story.p2":"Mezclamos finas especias traídas de Israel con los ricos sabores de Oaxaca, y armamos cada plato con ingredientes frescos y locales. Donde el desierto se encuentra con el mar — comida honesta, hecha fresca, todos los días.","story.cta":"Ver el menú",
+    "story.pill1t":"Auténtico","story.pill1p":"Recetas familiares israelíes reales y especias importadas — el sabor genuino del Mediterráneo.","story.pill2t":"Siempre Fresco","story.pill2p":"Hecho al momento con ingredientes locales. Nada espera — todo se prepara cuando ordenas.","story.pill3t":"Precios Honestos","story.pill3p":"El precio que ves es el que pagas. Sin cargos sorpresa por servicio — nunca.",
+    "cater.eyebrow":"Banquetes","cater.h2":"Un festín mediterráneo para tu gente","cater.sub":"Retiro de surf, fiesta en la playa, cumpleaños o boda — llevamos el falafel, hummus, shawarma y mezze a ti. Dinos cuántos son y tu presupuesto, armamos el banquete perfecto.","cater.pkg1t":"Mesa de Mezze","cater.pkg1p":"Hummus, baba ganoush, falafel, pita fresca y ensaladas. Perfecto para convivir.","cater.pkg2t":"El Festín Completo","cater.pkg2p":"Todo lo de la mesa de mezze más shawarma, brochetas, schnitzel y guarniciones.","cater.pkg3t":"Arma el Tuyo","cater.pkg3p":"Menú personalizado según tu número de personas, presupuesto y necesidades.",
+    "cater.formt":"Solicita una cotización","cater.forms":"Cuéntanos sobre tu evento — normalmente respondemos en 24 horas.","cater.fname":"Tu nombre","cater.fphone":"Teléfono / WhatsApp","cater.femail":"Correo","cater.fpeople":"Número de personas","cater.fbudget":"Presupuesto (MXN)","cater.fdate":"Fecha del evento","cater.fpkg":"Paquete","cater.opt1":"Mesa de Mezze","cater.opt2":"El Festín Completo","cater.opt3":"Arma el Tuyo","cater.opt4":"Aún no sé — ayúdenme a elegir","cater.fnotes":"¿Algo más? (dieta, ubicación, hora)","cater.fsubmit":"Solicitar Cotización","cater.fnote":"No se requiere pago para cotizar. Confirmaremos disponibilidad y menú por correo o WhatsApp.","cater.success":"¡Gracias! Recibimos tu solicitud — responderemos en 24 horas. 🌿",
+    "rev.eyebrow":"Reseñas","rev.h2":"Los viajeros no paran de hablar","rev.sub":"4.9★ de más de 580 reseñas — el mediterráneo mejor calificado de Puerto Escondido. No solo lo decimos nosotros:","rev.q1":"“Olvida el restaurante con estrella Michelin en Puerto Escondido — ¡come en Kapara Mio!”","rev.q2":"“El mejor falafel y hummus de México. 10/10 en comida, servicio y ambiente.”","rev.q3":"“La pita más esponjosa que he probado. Regresamos tres noches seguidas.”","rev.via":"Reseña de Google","rev.cta":"Lee las 580+ reseñas en Google",
+    "visit.eyebrow":"Encuéntranos","visit.h2":"Aquí mismo en La Punta","visit.addrt":"Nuestra ubicación","visit.addrd":"Av. Justo Salvador Maldonado, esq. Coahuila, Col. Brisas de Zicatela — a unos pasos de la playa Punta Zicatela, Puerto Escondido, Oaxaca 70934","visit.phonet":"Llama o WhatsApp","visit.hourst":"Horario","visit.hoursd":"Abierto a diario para comida y cena","visit.hoursflag":"Llama para confirmar el horario de hoy","visit.igt":"Síguenos","visit.deliv":"Entregamos a hostales, Airbnbs y la playa cercanos en La Punta.","visit.cta1":"Cómo llegar","visit.cta2":"Llámanos",
+    "foot.h2":"¿Con hambre? <em>Estamos a un toque.</em>","foot.p":"4.9★ de 580+ viajeros. Ordena tu falafel, hummus y pita fresca ahora mismo.","foot.cta1":"Ordenar","foot.cta2":"Síguenos en Instagram","foot.about":"El mediterráneo mejor calificado de La Punta. Auténtica comida callejera israelí, hecha fresca donde el desierto se encuentra con el Pacífico.","foot.explore":"Explora","foot.contact":"Contacto","foot.addr":"Brisas de Zicatela, La Punta<br>Puerto Escondido, Oaxaca","foot.copy":"© 2026 Kapara Mio · Comida callejera mediterránea, La Punta · Puerto Escondido","foot.made":"Hecho fresco, servido con amor · עשוי באהבה",
+    "modal.custt":"Hazlo a tu gusto","modal.custs":"— toca para quitar algo","modal.notes":"Peticiones especiales","modal.notesph":"ej. extra picante, alergia…","modal.qty":"Cantidad","modal.add":"Agregar al pedido",
+    "cart.title":"Tu Pedido","cart.takeout":"🥡 Para llevar","cart.delivery":"🛵 A domicilio","cart.addr":"Dirección de entrega (hostal / Airbnb / playa)","cart.addrph":"¿A dónde en La Punta lo llevamos?","cart.total":"Total","cart.checkout":"Realizar Pedido","cart.disclaim":"Confirmarás detalles y pago con nuestro equipo — aún no se cobra en línea.","cart.empty":"Tu pedido está vacío.","cart.emptysub":"¡Agrega algo de falafel para empezar!","cart.no":"Sin","cart.placed":"¡Pedido recibido! Lo confirmaremos en breve. ¡Beteavón! 🧆","cart.added":"¡Agregado a tu pedido!","cart.needaddr":"Por favor agrega una dirección de entrega.","cart.browse":"Ver el menú"
+  },
+  he:{
+    "nav.menu":"תפריט","nav.story":"הסיפור שלנו","nav.catering":"קייטרינג","nav.reviews":"ביקורות","nav.visit":"בקרו אותנו","nav.order":"להזמין",
+    "hero.reviews":"+580 ביקורות בגוגל","hero.h1a":"המסעדה הים-תיכונית","hero.h1b":"מספר 1 בלָה פּונטה.","hero.quote":"“תשכחו ממסעדת הכוכב מישלן — תאכלו בכפרה מיו!”","hero.quoteby":"— ביקורת מאומתת בגוגל","hero.cta1":"הזמנת טייק אווי / משלוח","hero.cta2":"לתפריט",
+    "trust.rating":"דירוג גוגל","trust.reviews":"ביקורות בגוגל","trust.rank":"ים-תיכונית בפוארטו","trust.veg":"ידידותי לטבעונים","trust.auth":"מתכונים ישראליים אותנטיים",
+    "menu.eyebrow":"התפריט","menu.h2":"מזמינים טרי, תוך שניות","menu.sub":"אוכל רחוב ישראלי אמיתי, מוכן במקום. הקליקו על כל מנה כדי להתאים אותה — הסירו מה שלא בא לכם, ונכין אותה לאיסוף או למשלוח.","menu.note":"המחירים בפזו מקסיקני (MXN). התפריט מציג את המנות האהובות שלנו — מחיר ובחירה סופית מאושרים בהזמנה.",
+    "story.eyebrow":"הסיפור שלנו","story.h2":"שני עולמות בצלחת אחת","story.p1":"כפרה מיו נולדה ממתכונים משפחתיים שעברו מדור לדור — אותו פלאפל, חומוס ופיתה אוורירית שסבא וסבתא הכינו, עכשיו צעדים מהאוקיינוס השקט.","story.p2":"אנחנו משלבים תבלינים משובחים מישראל עם הטעמים העשירים של אואחקה, ובונים כל צלחת ממרכיבים טריים ומקומיים. כאן המדבר פוגש את הים — אוכל כן, מוכן טרי, כל יום.","story.cta":"לתפריט",
+    "story.pill1t":"אותנטי","story.pill1p":"מתכונים משפחתיים ישראליים אמיתיים ותבלינים מיובאים — הטעם האמיתי של הים התיכון.","story.pill2t":"תמיד טרי","story.pill2p":"מוכן במקום ממרכיבים מקומיים. שום דבר לא עומד — הכל מוכן ברגע שאתם מזמינים.","story.pill3t":"מחירים הוגנים","story.pill3p":"המחיר שאתם רואים הוא המחיר שאתם משלמים. בלי דמי שירות מפתיעים — אף פעם.",
+    "cater.eyebrow":"קייטרינג","cater.h2":"חגיגה ים-תיכונית לכל החבר'ה","cater.sub":"ריטריט גלישה, מסיבת חוף, יום הולדת או חתונה — נביא אליכם את הפלאפל, החומוס, השווארמה והמזה. ספרו לנו כמה אתם והתקציב, ונבנה את המפגש המושלם.","cater.pkg1t":"שולחן מזטים","cater.pkg1p":"חומוס, בבא גנוש, פלאפל, פיתה טרייה וסלטים. מושלם למפגש.","cater.pkg2t":"החגיגה המלאה","cater.pkg2p":"כל מה שבשולחן המזטים בתוספת שווארמה, שיפודים, שניצל ותוספות.","cater.pkg3t":"בנו בעצמכם","cater.pkg3p":"תפריט מותאם לחלוטין למספר האנשים, התקציב והצרכים שלכם.",
+    "cater.formt":"בקשת הצעת מחיר לקייטרינג","cater.forms":"ספרו לנו על האירוע — בדרך כלל נחזור תוך 24 שעות.","cater.fname":"השם שלכם","cater.fphone":"טלפון / וואטסאפ","cater.femail":"אימייל","cater.fpeople":"מספר אנשים","cater.fbudget":"תקציב (MXN)","cater.fdate":"תאריך האירוע","cater.fpkg":"חבילה","cater.opt1":"שולחן מזטים","cater.opt2":"החגיגה המלאה","cater.opt3":"בנו בעצמכם","cater.opt4":"עדיין לא בטוחים — עזרו לי לבחור","cater.fnotes":"עוד משהו? (צרכים תזונתיים, מיקום, שעה)","cater.fsubmit":"שליחת בקשה","cater.fnote":"אין צורך בתשלום לבקשת הצעת מחיר. נאשר זמינות ותפריט מותאם באימייל או וואטסאפ.","cater.success":"תודה! קיבלנו את הבקשה — נחזור אליכם תוך 24 שעות. 🌿",
+    "rev.eyebrow":"ביקורות","rev.h2":"המטיילים לא מפסיקים להלל","rev.sub":"4.9★ מתוך יותר מ-580 ביקורות — הים-תיכונית המדורגת ביותר בפוארטו אסקונדידו. אל תאמינו רק לנו:","rev.q1":"“תשכחו ממסעדת הכוכב מישלן בפוארטו אסקונדידו — תאכלו בכפרה מיו!”","rev.q2":"“הפלאפל והחומוס הכי טובים במקסיקו. 10/10 על האוכל, השירות והאווירה.”","rev.q3":"“הפיתה הכי אוורירית שאכלתי אי פעם. חזרנו שלושה ערבים ברצף.”","rev.via":"ביקורת גוגל","rev.cta":"קראו את כל 580+ הביקורות בגוגל",
+    "visit.eyebrow":"מצאו אותנו","visit.h2":"כאן בלָה פּונטה","visit.addrt":"המיקום שלנו","visit.addrd":"Av. Justo Salvador Maldonado, פינת Coahuila, Col. Brisas de Zicatela — צעדים מחוף פונטה זיקטלה, פוארטו אסקונדידו, אואחקה 70934","visit.phonet":"חייגו או וואטסאפ","visit.hourst":"שעות פתיחה","visit.hoursd":"פתוח כל יום לצהריים וערב","visit.hoursflag":"חייגו מראש לאישור שעות הערב","visit.igt":"עקבו אחרינו","visit.deliv":"אנחנו מספקים למקומות אירוח, Airbnb וחופים סמוכים בלָה פּונטה.","visit.cta1":"הוראות הגעה","visit.cta2":"התקשרו","foot.h2":"רעבים? <em>אנחנו במרחק נגיעה.</em>",
+    "foot.p":"4.9★ מ-580+ מטיילים. הזמינו את הפלאפל, החומוס והפיתה הטרייה עכשיו.","foot.cta1":"להזמין","foot.cta2":"עקבו באינסטגרם","foot.about":"הים-תיכונית המדורגת מספר 1 בלָה פּונטה. אוכל רחוב ישראלי אותנטי, מוכן טרי במקום שבו המדבר פוגש את האוקיינוס.","foot.explore":"ניווט","foot.contact":"צרו קשר","foot.addr":"Brisas de Zicatela, La Punta<br>פוארטו אסקונדידו, אואחקה","foot.copy":"© 2026 כפרה מיו · אוכל רחוב ים-תיכוני, לָה פּונטה · פוארטו אסקונדידו","foot.made":"מוכן טרי, מוגש באהבה",
+    "modal.custt":"התאימו לעצמכם","modal.custs":"— הקליקו כדי להסיר","modal.notes":"בקשות מיוחדות","modal.notesph":"לדוגמה: חריף במיוחד, אלרגיה…","modal.qty":"כמות","modal.add":"הוספה להזמנה",
+    "cart.title":"ההזמנה שלך","cart.takeout":"🥡 איסוף","cart.delivery":"🛵 משלוח","cart.addr":"כתובת למשלוח (הוסטל / Airbnb / חוף)","cart.addrph":"לאן בלָה פּונטה להביא?","cart.total":"סה\"כ","cart.checkout":"לבצע הזמנה","cart.disclaim":"תאשרו פרטים ותשלום מול הצוות שלנו — עדיין לא מחויב כרטיס אונליין.","cart.empty":"ההזמנה ריקה.","cart.emptysub":"הוסיפו קצת פלאפל כדי להתחיל!","cart.no":"בלי","cart.placed":"ההזמנה התקבלה! נאשר אותה בקרוב. בתאבון! 🧆","cart.added":"נוסף להזמנה!","cart.needaddr":"אנא הוסיפו כתובת למשלוח.","cart.browse":"לתפריט"
+  }
+};
+
+/* ====================== MENU DATA ====================== */
+// img:null => branded placeholder. ingredients have removable defaults.
+const CATS = [
+  {id:"falafel", name:{en:"Falafel & Pita",es:"Falafel y Pita",he:"פלאפל ופיתה"}},
+  {id:"mezze", name:{en:"Plates & Mezze",es:"Platos y Mezze",he:"מנות ומזטים"}},
+  {id:"shawarma", name:{en:"Shawarma & Skewers",es:"Shawarma y Brochetas",he:"שווארמה ושיפודים"}},
+  {id:"schnitzel", name:{en:"Schnitzel",es:"Schnitzel",he:"שניצל"}},
+  {id:"salads", name:{en:"Salads",es:"Ensaladas",he:"סלטים"}},
+  {id:"drinks", name:{en:"Mezcalitas & Drinks",es:"Mezcalitas y Bebidas",he:"מסקליטות ומשקאות"}}
+];
+const ING = {
+  tahini:{en:"Tahini",es:"Tahini",he:"טחינה"},
+  pickles:{en:"Pickles",es:"Pepinillos",he:"חמוצים"},
+  onion:{en:"Onion",es:"Cebolla",he:"בצל"},
+  parsley:{en:"Parsley",es:"Perejil",he:"פטרוזיליה"},
+  hotsauce:{en:"Hot sauce",es:"Salsa picante",he:"רוטב חריף"},
+  hummus:{en:"Hummus",es:"Hummus",he:"חומוס"},
+  salad:{en:"Fresh salad",es:"Ensalada fresca",he:"סלט טרי"},
+  cabbage:{en:"Cabbage",es:"Col",he:"כרוב"},
+  amba:{en:"Amba",es:"Amba",he:"עמבה"},
+  garlic:{en:"Garlic",es:"Ajo",he:"שום"},
+  lemon:{en:"Lemon",es:"Limón",he:"לימון"},
+  oliveoil:{en:"Olive oil",es:"Aceite de oliva",he:"שמן זית"},
+  paprika:{en:"Paprika",es:"Paprika",he:"פפריקה"},
+  chickpeas:{en:"Chickpeas",es:"Garbanzos",he:"גרגרי חומוס"},
+  fries:{en:"Fries",es:"Papas",he:"צ'יפס"},
+  tomato:{en:"Tomato",es:"Tomate",he:"עגבנייה"},
+  cucumber:{en:"Cucumber",es:"Pepino",he:"מלפפון"},
+  herbs:{en:"Herbs",es:"Hierbas",he:"עשבי תיבול"},
+  chili:{en:"Chili salt",es:"Sal de chile",he:"מלח צ'ילי"},
+  mint:{en:"Mint",es:"Menta",he:"נענע"}
+};
+const ITEMS = [
+  // FALAFEL & PITA
+  {cat:"falafel",img:"assets/section-menu-falafel.jpg",loved:true,veg:true,price:120,
+   name:{en:"Vegan Falafel Plate",es:"Plato de Falafel Vegano",he:"מנת פלאפל טבעוני"},
+   desc:{en:"Our signature — crispy, herb-green falafel drizzled with tahini. The dish everyone raves about.",es:"Nuestro favorito — falafel crujiente y verde con tahini. El platillo del que todos hablan.",he:"המנה שלנו — פלאפל פריך וירוק עם טחינה. המנה שכולם מדברים עליה."},
+   ing:["tahini","pickles","onion","parsley","hotsauce"]},
+  {cat:"falafel",img:"assets/section-menu-pita.jpg",loved:true,veg:true,price:150,
+   name:{en:"Falafel Pita Wrap",es:"Pita de Falafel",he:"פיתה פלאפל"},
+   desc:{en:"Fresh fluffy pita stuffed with falafel, hummus, fresh salad & pickles. Made to order.",es:"Pita fresca y esponjosa con falafel, hummus, ensalada fresca y pepinillos. Hecha al momento.",he:"פיתה טרייה ואוורירית עם פלאפל, חומוס, סלט טרי וחמוצים. מוכנה במקום."},
+   ing:["hummus","tahini","salad","pickles","onion","cabbage","amba","hotsauce"]},
+  {cat:"falafel",img:"assets/section-menu-pita.jpg",veg:true,price:45,
+   name:{en:"Fresh Fluffy Pita",es:"Pita Fresca",he:"פיתה טרייה"},
+   desc:{en:"“The most amazing fluffy pita I've ever had” — baked fresh in our wood-fired oven.",es:"“La pita más esponjosa que he probado” — horneada fresca en horno de leña.",he:"“הפיתה הכי אוורירית שאכלתי” — נאפית טרייה בטאבון."},
+   ing:[]},
+  // PLATES & MEZZE
+  {cat:"mezze",img:"assets/section-menu-hummus.jpg",loved:true,veg:true,price:110,
+   name:{en:"Hummus & Pita",es:"Hummus y Pita",he:"חומוס ופיתה"},
+   desc:{en:"Silky-smooth hummus topped with olive oil, paprika & chickpeas. Served with warm pita.",es:"Hummus suave y cremoso con aceite de oliva, paprika y garbanzos. Con pita caliente.",he:"חומוס חלק וקטיפתי עם שמן זית, פפריקה וגרגרי חומוס. מוגש עם פיתה חמה."},
+   ing:["oliveoil","paprika","chickpeas","parsley"]},
+  {cat:"mezze",img:"assets/section-menu-mezze.jpg",veg:true,price:110,
+   name:{en:"Baba Ganoush",es:"Baba Ganoush",he:"בבא גנוש"},
+   desc:{en:"Smoky fire-roasted eggplant whipped with tahini, garlic & lemon. Served with pita.",es:"Berenjena ahumada al fuego batida con tahini, ajo y limón. Con pita.",he:"חציל אפוי על אש מוקצף עם טחינה, שום ולימון. מוגש עם פיתה."},
+   ing:["tahini","garlic","lemon","oliveoil","parsley"]},
+  {cat:"mezze",img:"assets/section-menu-mezze.jpg",loved:true,veg:true,price:260,
+   name:{en:"Mezze Platter for Two",es:"Tabla de Mezze para Dos",he:"מגש מזטים לשניים"},
+   desc:{en:"Hummus, baba ganoush, falafel, fresh salad & a basket of warm pita. The full spread.",es:"Hummus, baba ganoush, falafel, ensalada fresca y canasta de pita caliente. El festín completo.",he:"חומוס, בבא גנוש, פלאפל, סלט טרי וסל פיתות חמות. המפגש המלא."},
+   ing:["hummus","tahini","salad","onion","pickles","hotsauce"]},
+  // SHAWARMA & SKEWERS
+  {cat:"shawarma",img:null,price:190,
+   name:{en:"Chicken Shawarma Plate",es:"Plato de Shawarma de Pollo",he:"מנת שווארמה עוף"},
+   desc:{en:"Marinated chicken shawarma with tahini, fresh salad, pickles & fries. Spiced just right.",es:"Shawarma de pollo marinado con tahini, ensalada fresca, pepinillos y papas. Bien condimentado.",he:"שווארמה עוף מתובלת עם טחינה, סלט טרי, חמוצים וצ'יפס. מתובלת בדיוק נכון."},
+   ing:["tahini","onion","parsley","pickles","fries","amba","hotsauce"]},
+  {cat:"shawarma",img:null,price:200,
+   name:{en:"Grilled Chicken Skewers",es:"Brochetas de Pollo a la Parrilla",he:"שיפודי עוף בגריל"},
+   desc:{en:"Tender chicken skewers grilled over open flame with garlic, lemon & Mediterranean herbs.",es:"Brochetas de pollo a la parrilla con ajo, limón y hierbas mediterráneas.",he:"שיפודי עוף עסיסיים על האש עם שום, לימון ועשבי תיבול ים-תיכוניים."},
+   ing:["garlic","lemon","herbs","oliveoil","salad","fries"]},
+  {cat:"shawarma",img:null,veg:true,price:160,
+   name:{en:"Vegetable Skewers",es:"Brochetas de Verduras",he:"שיפודי ירקות"},
+   desc:{en:"Charred seasonal vegetables on the grill, brushed with olive oil & herbs. Vegan.",es:"Verduras de temporada a la parrilla con aceite de oliva y hierbas. Vegano.",he:"ירקות עונתיים על הגריל עם שמן זית ועשבי תיבול. טבעוני."},
+   ing:["oliveoil","herbs","garlic","salad"]},
+  // SCHNITZEL
+  {cat:"schnitzel",img:null,price:185,
+   name:{en:"Chicken Schnitzel Plate",es:"Plato de Schnitzel de Pollo",he:"מנת שניצל עוף"},
+   desc:{en:"Golden, crispy chicken schnitzel with fresh salad, fries, tahini & pickles. A crowd favorite.",es:"Schnitzel de pollo dorado y crujiente con ensalada, papas, tahini y pepinillos. Favorito de todos.",he:"שניצל עוף זהוב ופריך עם סלט טרי, צ'יפס, טחינה וחמוצים. אהוב על כולם."},
+   ing:["salad","fries","tahini","pickles","hotsauce"]},
+  {cat:"schnitzel",img:null,price:175,
+   name:{en:"Schnitzel in Pita",es:"Schnitzel en Pita",he:"שניצל בפיתה"},
+   desc:{en:"Crispy schnitzel tucked into fresh pita with hummus, salad & your choice of toppings.",es:"Schnitzel crujiente en pita fresca con hummus, ensalada y los toppings que elijas.",he:"שניצל פריך בפיתה טרייה עם חומוס, סלט והתוספות שתבחרו."},
+   ing:["hummus","tahini","salad","pickles","onion","amba","hotsauce"]},
+  // SALADS
+  {cat:"salads",img:null,veg:true,price:90,
+   name:{en:"Israeli Salad",es:"Ensalada Israelí",he:"סלט ישראלי"},
+   desc:{en:"Finely chopped tomato, cucumber & onion with parsley, lemon & olive oil. Bright & fresh.",es:"Tomate, pepino y cebolla finamente picados con perejil, limón y aceite de oliva. Fresco y vibrante.",he:"עגבנייה, מלפפון ובצל קצוצים דק עם פטרוזיליה, לימון ושמן זית. רענן ובהיר."},
+   ing:["tomato","cucumber","onion","parsley","lemon","oliveoil"]},
+  {cat:"salads",img:null,veg:true,price:120,
+   name:{en:"Tahini Green Salad",es:"Ensalada Verde con Tahini",he:"סלט ירוק בטחינה"},
+   desc:{en:"Crisp greens & vegetables tossed in our house tahini-lemon dressing. Light & satisfying.",es:"Verduras frescas con nuestro aderezo de tahini y limón. Ligero y satisfactorio.",he:"ירקות עלים וירקות טריים ברוטב טחינה-לימון של הבית. קליל ומשביע."},
+   ing:["tahini","lemon","oliveoil","herbs"]},
+  // DRINKS
+  {cat:"drinks",img:"assets/section-menu-mezcal.jpg",loved:true,price:130,
+   name:{en:"Passion Fruit Mezcalita",es:"Mezcalita de Maracuyá",he:"מסקליטה פסיפלורה"},
+   desc:{en:"Local Oaxacan mezcal shaken with fresh passion fruit, lime & a chili-salt rim. Pure La Punta.",es:"Mezcal oaxaqueño con maracuyá fresca, limón y borde de sal de chile. Puro La Punta.",he:"מסקל מקומי מאואחקה עם פסיפלורה טרייה, ליים ומלח צ'ילי על השפה. לָה פּונטה במיטבה."},
+   ing:["chili","lemon"]},
+  {cat:"drinks",img:null,veg:true,price:60,
+   name:{en:"Fresh Lemonade",es:"Limonada Fresca",he:"לימונדה טרייה"},
+   desc:{en:"House-made lemonade with mint, squeezed fresh. The perfect cool-down after the beach.",es:"Limonada de la casa con menta, recién exprimida. Perfecta después de la playa.",he:"לימונדה של הבית עם נענע, סחוטה טרי. מושלמת אחרי החוף."},
+   ing:["mint","lemon"]},
+  {cat:"drinks",img:null,price:65,
+   name:{en:"Mint Limeade",es:"Limonada con Menta",he:"ליימדה נענע"},
+   desc:{en:"Cold-pressed lime with fresh mint & a touch of sweetness. Refreshing & light.",es:"Limón prensado con menta fresca y un toque dulce. Refrescante y ligera.",he:"ליים סחוט קר עם נענע טרייה ונגיעת מתיקות. מרענן וקליל."},
+   ing:["mint","lemon"]}
+];
+
+/* ====================== STATE ====================== */
+let lang = "en";
+let cart = [];
+let orderType = "takeout";
+let activeCat = CATS[0].id;
+let modalItem = null, modalQty = 1, modalRemoved = new Set();
+
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+const t = k => (I18N[lang][k] ?? I18N.en[k] ?? k);
+const money = n => "$" + n.toLocaleString("en-US");
+const ingName = id => (ING[id] ? ING[id][lang] : id);
+
+/* ====================== I18N APPLY ====================== */
+function applyLang(l){
+  lang = l;
+  const rtl = l === "he";
+  document.documentElement.lang = l;
+  document.documentElement.dir = rtl ? "rtl" : "ltr";
+  $$("[data-i18n]").forEach(el=>{
+    const k = el.getAttribute("data-i18n");
+    const v = t(k);
+    if(v.includes("<")) el.innerHTML = v; else el.textContent = v;
+  });
+  $$("[data-i18n-ph]").forEach(el=>{ el.placeholder = t(el.getAttribute("data-i18n-ph")); });
+  $$(".lang button").forEach(b=> b.classList.toggle("active", b.dataset.lang===l));
+  document.title = l==="es" ? "Kapara Mio — El #1 Mediterráneo de La Punta | Falafel, Hummus y Comida Israelí en Puerto Escondido"
+    : l==="he" ? "כפרה מיו — הים-תיכונית מספר 1 בלָה פּונטה | פלאפל, חומוס ואוכל רחוב ישראלי בפוארטו אסקונדידו"
+    : "Kapara Mio — La Punta's #1 Mediterranean | Falafel, Hummus & Israeli Street Food in Puerto Escondido";
+  try{ localStorage.setItem("km_lang", l); }catch(e){}
+  renderTabs(); renderMenu(); renderCart();
+}
+
+/* ====================== MENU RENDER ====================== */
+function renderTabs(){
+  const wrap = $("#menuTabs");
+  wrap.innerHTML = "";
+  CATS.forEach(c=>{
+    const b = document.createElement("button");
+    b.className = "menu-tab" + (c.id===activeCat?" active":"");
+    b.textContent = c.name[lang];
+    b.setAttribute("role","tab");
+    b.onclick = ()=>{ activeCat=c.id; renderTabs(); renderMenu(); };
+    wrap.appendChild(b);
+  });
+}
+function phSVG(){
+  return '<div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h18M5 11a7 7 0 0 1 14 0M3 11v1a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-1M8 5l.5-2M12 5V3M16 5l-.5-2M6 18h12"/></svg><span>'+ (lang==="es"?"Foto en camino":lang==="he"?"תמונה בקרוב":"Photo coming soon") +'</span></div>';
+}
+function renderMenu(){
+  const grid = $("#menuGrid");
+  grid.innerHTML = "";
+  ITEMS.filter(i=>i.cat===activeCat).forEach((item,idx)=>{
+    const globalIdx = ITEMS.indexOf(item);
+    const card = document.createElement("article");
+    card.className = "menu-card reveal in";
+    const lovedTxt = lang==="es"?"Lo más pedido":lang==="he"?"הכי אהוב":"Most loved";
+    const vegTxt = lang==="es"?"Vegano":lang==="he"?"טבעוני":"Vegan";
+    const addTxt = lang==="es"?"Agregar":lang==="he"?"הוספה":"Add";
+    card.innerHTML =
+      '<div class="img-wrap">'+
+        (item.img ? '<img src="'+item.img+'" alt="'+item.name[lang]+'" loading="lazy" />' : phSVG())+
+        (item.loved ? '<span class="badge-loved">★ '+lovedTxt+'</span>' : '')+
+        (item.veg ? '<span class="badge-veg">🌱 '+vegTxt+'</span>' : '')+
+      '</div>'+
+      '<div class="body">'+
+        '<h3>'+item.name[lang]+'</h3>'+
+        '<p class="desc">'+item.desc[lang]+'</p>'+
+        '<div class="foot">'+
+          '<span class="price">'+money(item.price)+'</span>'+
+          '<button class="add-btn">+ '+addTxt+'</button>'+
+        '</div>'+
+      '</div>';
+    card.querySelector(".add-btn").onclick = ()=> openModal(globalIdx);
+    grid.appendChild(card);
+  });
+}
+
+/* ====================== MODAL ====================== */
+function openModal(idx){
+  modalItem = ITEMS[idx];
+  modalQty = 1;
+  modalRemoved = new Set();
+  $("#modalImg").innerHTML = modalItem.img
+    ? '<img class="modal-img" src="'+modalItem.img+'" alt="'+modalItem.name[lang]+'" />'
+    : '<div class="modal-img">'+phSVG()+'</div>';
+  $("#modalTitle").textContent = modalItem.name[lang];
+  $("#modalDesc").textContent = modalItem.desc[lang];
+  $("#modalPrice").textContent = money(modalItem.price);
+  $("#modalNotes").value = "";
+  // ingredients
+  const ingWrap = $("#modalIngredients");
+  ingWrap.innerHTML = "";
+  const custTitle = $(".cust-title");
+  if(!modalItem.ing.length){
+    custTitle.style.display = "none";
+    ingWrap.style.display = "none";
+  } else {
+    custTitle.style.display = "flex";
+    ingWrap.style.display = "flex";
+    modalItem.ing.forEach(id=>{
+      const chip = document.createElement("button");
+      chip.type="button";
+      chip.className = "ing";
+      chip.innerHTML = '<span class="chk"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>'+ingName(id);
+      chip.onclick = ()=>{
+        if(modalRemoved.has(id)){ modalRemoved.delete(id); chip.classList.remove("removed"); }
+        else { modalRemoved.add(id); chip.classList.add("removed"); }
+      };
+      ingWrap.appendChild(chip);
+    });
+  }
+  updateModalQty();
+  $("#modalOverlay").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function closeModal(){
+  $("#modalOverlay").classList.remove("open");
+  if(!$("#cartDrawer").classList.contains("open")) document.body.style.overflow = "";
+}
+function updateModalQty(){
+  $("#qtyNum").textContent = modalQty;
+  $("#modalAddPrice").textContent = money(modalItem.price * modalQty);
+}
+function addModalToCart(){
+  const removed = [...modalRemoved].map(id=>ingName(id));
+  const notes = $("#modalNotes").value.trim();
+  cart.push({
+    name: modalItem.name[lang],
+    img: modalItem.img,
+    price: modalItem.price,
+    qty: modalQty,
+    removed: removed,
+    notes: notes
+  });
+  saveCart();
+  renderCart();
+  closeModal();
+  toast(t("cart.added"));
+  bumpCount();
+}
+
+/* ====================== CART ====================== */
+function saveCart(){ try{ localStorage.setItem("km_cart", JSON.stringify(cart)); }catch(e){} }
+function cartTotal(){ return cart.reduce((s,i)=> s + i.price*i.qty, 0); }
+function cartQty(){ return cart.reduce((s,i)=> s + i.qty, 0); }
+function bumpCount(){
+  const c = $("#cartCount");
+  const q = cartQty();
+  c.textContent = q;
+  c.classList.toggle("show", q>0);
+}
+function renderCart(){
+  const wrap = $("#cartItems");
+  bumpCount();
+  if(!cart.length){
+    wrap.innerHTML = '<div class="cart-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><p style="font-weight:700">'+t("cart.empty")+'</p><p>'+t("cart.emptysub")+'</p></div>';
+  } else {
+    wrap.innerHTML = "";
+    cart.forEach((it,i)=>{
+      const row = document.createElement("div");
+      row.className = "ci";
+      const mods = it.removed && it.removed.length ? '<div class="ci-mods">'+t("cart.no")+' '+it.removed.join(", ")+'</div>' : '';
+      const note = it.notes ? '<div class="ci-mods" style="color:var(--charcoal-soft);font-weight:500">“'+it.notes+'”</div>' : '';
+      row.innerHTML =
+        (it.img ? '<img src="'+it.img+'" alt="" />' : '<div class="ci-ph"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 11h18M5 11a7 7 0 0 1 14 0"/></svg></div>')+
+        '<div class="ci-main">'+
+          '<h4>'+it.name+'</h4>'+ mods + note +
+          '<div class="ci-foot">'+
+            '<div class="ci-qty"><button data-act="dec">−</button><span>'+it.qty+'</span><button data-act="inc">+</button></div>'+
+            '<span class="ci-price">'+money(it.price*it.qty)+'</span>'+
+          '</div>'+
+          '<button class="ci-remove" data-act="rm">'+ (lang==="es"?"Quitar":lang==="he"?"הסרה":"Remove") +'</button>'+
+        '</div>';
+      row.querySelector('[data-act="inc"]').onclick=()=>{ it.qty++; saveCart(); renderCart(); };
+      row.querySelector('[data-act="dec"]').onclick=()=>{ it.qty--; if(it.qty<1)cart.splice(i,1); saveCart(); renderCart(); };
+      row.querySelector('[data-act="rm"]').onclick=()=>{ cart.splice(i,1); saveCart(); renderCart(); };
+      wrap.appendChild(row);
+    });
+  }
+  $("#cartTotal").textContent = money(cartTotal());
+}
+function openCart(){
+  $("#cartDrawer").classList.add("open");
+  $("#scrim").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function closeCart(){
+  $("#cartDrawer").classList.remove("open");
+  $("#scrim").classList.remove("open");
+  if(!$("#modalOverlay").classList.contains("open")) document.body.style.overflow = "";
+}
+
+/* ====================== TOAST ====================== */
+let toastTimer;
+function toast(msg){
+  $("#toastMsg").textContent = msg;
+  $("#toast").classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=> $("#toast").classList.remove("show"), 3000);
+}
+
+/* ====================== EVENTS ====================== */
+document.addEventListener("DOMContentLoaded",()=>{
+  // restore lang & cart
+  let saved="en";
+  try{ saved = localStorage.getItem("km_lang") || "en"; }catch(e){}
+  try{ const c = JSON.parse(localStorage.getItem("km_cart")||"[]"); if(Array.isArray(c)) cart=c; }catch(e){}
+  applyLang(saved);
+
+  // lang buttons
+  $$(".lang button").forEach(b=> b.onclick = ()=>{ applyLang(b.dataset.lang); closeMobile(); });
+
+  // open cart triggers
+  $$("[data-open-cart]").forEach(b=> b.onclick = ()=>{ openCart(); closeMobile(); });
+  $("#cartClose").onclick = closeCart;
+  $("#scrim").onclick = closeCart;
+
+  // order type
+  $$("#orderType button").forEach(b=> b.onclick = ()=>{
+    orderType = b.dataset.type;
+    $$("#orderType button").forEach(x=>x.classList.toggle("active",x===b));
+    $("#cartDeliv").style.display = orderType==="delivery" ? "block" : "none";
+  });
+
+  // checkout
+  $("#checkoutBtn").onclick = ()=>{
+    if(!cart.length){ toast(t("cart.empty")); return; }
+    if(orderType==="delivery" && !$("#delivAddr").value.trim()){
+      toast(t("cart.needaddr")); $("#delivAddr").focus(); return;
+    }
+    cart = []; saveCart(); renderCart();
+    closeCart();
+    toast(t("cart.placed"));
+  };
+
+  // modal
+  $("#modalClose").onclick = closeModal;
+  $("#modalOverlay").onclick = e=>{ if(e.target===$("#modalOverlay")) closeModal(); };
+  $("#qtyPlus").onclick = ()=>{ modalQty++; updateModalQty(); };
+  $("#qtyMinus").onclick = ()=>{ if(modalQty>1){ modalQty--; updateModalQty(); } };
+  $("#modalAdd").onclick = addModalToCart;
+
+  // catering form
+  $("#caterForm").onsubmit = e=>{
+    e.preventDefault();
+    if(!e.target.checkValidity()){ e.target.reportValidity(); return; }
+    e.target.reset();
+    toast(t("cater.success"));
+  };
+
+  // esc key
+  document.addEventListener("keydown",e=>{
+    if(e.key==="Escape"){ closeModal(); closeCart(); closeMobile(); }
+  });
+
+  // hamburger
+  $("#hamburger").onclick = toggleMobile;
+  $$("#mobileNav a").forEach(a=> a.onclick = closeMobile);
+
+  // header scroll + float btn
+  const header = $("#header");
+  const floatBtn = $("#floatOrder");
+  const onScroll = ()=>{
+    header.classList.toggle("scrolled", window.scrollY>20);
+    floatBtn.classList.toggle("show", window.scrollY>700);
+  };
+  window.addEventListener("scroll", onScroll, {passive:true});
+  onScroll();
+
+  // reveal on scroll
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); } });
+  },{threshold:0.12});
+  $$(".reveal").forEach(el=> io.observe(el));
+});
+
+function toggleMobile(){
+  const nav = $("#mobileNav"), h = $("#hamburger"), header=$("#header");
+  const open = nav.classList.toggle("open");
+  header.classList.toggle("menu-open", open);
+  h.setAttribute("aria-expanded", open);
+  document.body.style.overflow = open ? "hidden" : "";
+}
+function closeMobile(){
+  $("#mobileNav").classList.remove("open");
+  $("#header").classList.remove("menu-open");
+  $("#hamburger").setAttribute("aria-expanded","false");
+  if(!$("#cartDrawer").classList.contains("open") && !$("#modalOverlay").classList.contains("open")) document.body.style.overflow="";
+}
+</script>
+</body>
+</html>
