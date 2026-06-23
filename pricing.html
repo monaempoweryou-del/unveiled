@@ -496,9 +496,19 @@
       show('v1'); ov.classList.add('open');
     }); }
 
+    var SQUARE_LINKS = {
+      'Website Launch': 'https://square.link/u/ACOQpBZU',
+      'Visibility':     'https://square.link/u/GpvjokMO',
+      'Growth Machine': 'https://square.link/u/EZAcHdP6',
+      'Own It Forever': 'https://square.link/u/4qeNl1Wp'
+    };
+
     document.getElementById('toPay').addEventListener('click',function(){ show('v2'); });
-    // payNow: in production this redirects to the hosted checkout (Stripe/Square).
-    document.getElementById('payNow').addEventListener('click',function(){ setConfirm(); show('v3'); });
+    document.getElementById('payNow').addEventListener('click',function(){
+      var plan = document.getElementById('o-plan').textContent.replace(/ \+.*/, '').trim();
+      var url = SQUARE_LINKS[plan];
+      if(url){ window.location.href = url; } else { setConfirm(); show('v3'); }
+    });
     function close(){ov.classList.remove('open');}
     document.getElementById('ovx').addEventListener('click',close);
     document.getElementById('ovDone').addEventListener('click',close);
