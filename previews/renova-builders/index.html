@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Renova Builders | Kitchen, ADU & Home Remodeling | Bay Area, CA</title>
+  <meta name="description" content="Renova Builders is the East Bay's full-service luxury contractor — kitchen remodeling, ADU conversions, room additions, and outdoor living. CSLB #1018422. Serving Orinda, Walnut Creek, Lafayette & 21 Bay Area cities.">
+  <meta property="og:title" content="Renova Builders | Bay Area's Full-Service Home Contractor">
+  <meta property="og:description" content="Transform your kitchen, build your ADU, or create your dream outdoor space. One team, one license, one commitment. Top 7% of California contractors.">
+  <meta property="og:image" content="assets/hero.jpg">
+  <meta property="og:url" content="https://renovabuilders.com">
+  <meta property="og:type" content="website">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ===== CSS CUSTOM PROPERTIES ===== */
+    :root {
+      --bg:        #1A1815;
+      --gold:      #C9A055;
+      --gold-dark: #7A5C1E;
+      --card:      #242220;
+      --light-bg:  #F5F1EB;
+      --slate:     #2A2826;
+      --taupe:     #8A7B6E;
+      --white:     #F5F1EB;
+      --border:    rgba(201,160,85,0.18);
+
+      --serif: 'Playfair Display', Georgia, serif;
+      --sans:  'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+      --r:  4px;
+      --rl: 8px;
+      --tr: 0.25s ease;
+
+      --sp1:  8px;
+      --sp2:  16px;
+      --sp3:  24px;
+      --sp4:  32px;
+      --sp5:  40px;
+      --sp6:  48px;
+      --sp8:  64px;
+      --sp10: 80px;
+      --sp12: 96px;
+      --sp16: 128px;
+
+      --max: 1200px;
+    }
+
+    /* ===== RESET ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { background: var(--bg); color: var(--white); font-family: var(--sans); line-height: 1.6; overflow-x: hidden; }
+    img  { max-width: 100%; height: auto; display: block; }
+    a    { color: inherit; text-decoration: none; }
+    ul   { list-style: none; }
+    button { font-family: inherit; }
+
+    /* ===== UTILITIES ===== */
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--sp3); }
+
+    .label {
+      display: block;
+      font-family: var(--sans);
+      font-weight: 300;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: var(--sp2);
+    }
+    .label--on-light { color: var(--gold-dark); }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 14px 32px;
+      font-family: var(--sans); font-size: 14px; font-weight: 500; letter-spacing: 0.05em;
+      border-radius: var(--r); cursor: pointer; transition: all var(--tr); border: none;
+    }
+    .btn-gold {
+      background: var(--gold); color: var(--bg);
+    }
+    .btn-gold:hover { background: #D4AC60; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(201,160,85,0.3); }
+    .btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+    a:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 2px; }
+    .finput:focus-visible, .fsel:focus-visible, .ftarea:focus-visible { outline: none; border-color: var(--gold); }
+    .pf-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+    .btn-outline {
+      background: transparent; color: var(--white); border: 1px solid rgba(245,241,235,0.35);
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.vis { opacity: 1; transform: translateY(0); }
+    .reveal-d1 { transition-delay: 0.1s; }
+    .reveal-d2 { transition-delay: 0.2s; }
+    .reveal-d3 { transition-delay: 0.3s; }
+
+    /* ===== HEADER ===== */
+    .hdr {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: var(--sp3) 0;
+      transition: background 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
+    }
+    .hdr.scrolled {
+      background: rgba(26,24,21,0.97);
+      padding: var(--sp2) 0;
+      box-shadow: 0 1px 0 rgba(201,160,85,0.12);
+    }
+    .hdr-inner { display: flex; align-items: center; justify-content: space-between; gap: var(--sp4); }
+
+    .logo img { height: 40px; width: auto; }
+
+    nav.main { display: flex; align-items: center; gap: var(--sp5); }
+    nav.main a {
+      font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+      color: rgba(245,241,235,0.7); transition: color var(--tr);
+    }
+    nav.main a:hover { color: var(--gold); }
+
+    .hdr-right { display: flex; align-items: center; gap: var(--sp2); }
+    .hdr-phone { font-size: 13px; font-weight: 500; color: var(--gold); display: none; }
+    @media (min-width: 900px) { .hdr-phone { display: block; } }
+
+    .burger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; background: none; border: none; padding: 4px;
+    }
+    .burger span { display: block; width: 24px; height: 2px; background: var(--white); transition: all 0.3s; }
+    .burger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .burger.open span:nth-child(2) { opacity: 0; }
+    .burger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+    @media (max-width: 767px) {
+      .burger { display: flex; }
+      .hdr-right .btn { display: none; }
+      nav.main {
+        display: none; position: fixed; inset: 0;
+        background: var(--bg); flex-direction: column; align-items: center; justify-content: center;
+        gap: var(--sp5); z-index: 999;
+      }
+      nav.main.open { display: flex; }
+      nav.main a { font-size: 20px; }
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      position: relative; min-height: 100vh;
+      display: flex; align-items: center; overflow: hidden;
+    }
+    .hero-bg { position: absolute; inset: 0; z-index: 0; }
+    .hero-bg img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-overlay {
+      position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(to right, rgba(26,24,21,0.93) 0%, rgba(26,24,21,0.72) 55%, rgba(26,24,21,0.35) 100%);
+    }
+    .hero-body {
+      position: relative; z-index: 2;
+      padding-top: 120px; padding-bottom: var(--sp16);
+      max-width: 680px;
+    }
+    .hero-eye {
+      font-size: 11px; font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: var(--sp3);
+    }
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(36px, 5.5vw, 64px);
+      font-weight: 600; line-height: 1.12;
+      color: var(--white); margin-bottom: var(--sp3);
+    }
+    .hero h1 em { font-style: italic; color: var(--gold); }
+    .hero-sub {
+      font-size: 17px; line-height: 1.75;
+      color: rgba(245,241,235,0.82); margin-bottom: var(--sp5); max-width: 540px;
+    }
+    .hero-ctas { display: flex; flex-wrap: wrap; gap: var(--sp2); margin-bottom: var(--sp5); }
+    .hero-trust {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px;
+      padding-top: var(--sp4); border-top: 1px solid rgba(201,160,85,0.2);
+    }
+    .hero-trust-item { display: flex; align-items: center; gap: 7px; font-size: 13px; color: rgba(245,241,235,0.72); }
+    .hero-trust-item .st { color: var(--gold); font-size: 13px; letter-spacing: 1px; }
+    .hero-trust-item strong { color: var(--white); }
+
+    /* ===== TRUST BAR ===== */
+    .tbar {
+      background: var(--card);
+      border-top: 1px solid rgba(201,160,85,0.12);
+      border-bottom: 1px solid rgba(201,160,85,0.12);
+      padding: var(--sp4) 0;
+    }
+    .tbar-inner {
+      display: flex; flex-wrap: wrap; align-items: center;
+      justify-content: center; gap: var(--sp3) var(--sp6);
+    }
+    .tbadge { display: flex; align-items: center; gap: 12px; }
+    .tbadge-icon {
+      width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+      background: rgba(201,160,85,0.1); border: 1px solid rgba(201,160,85,0.22);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold); font-size: 14px; font-weight: 700;
+    }
+    .tbadge-val { font-size: 15px; font-weight: 600; color: var(--white); line-height: 1.2; }
+    .tbadge-lbl { font-size: 11px; font-weight: 300; color: var(--taupe); letter-spacing: 0.05em; text-transform: uppercase; }
+    .tdiv { width: 1px; height: 36px; background: rgba(201,160,85,0.18); }
+    @media (max-width: 640px) { .tdiv { display: none; } }
+
+    /* ===== SECTION BASE ===== */
+    .sec { padding: var(--sp16) 0; }
+    .sec--card  { background: var(--card); }
+    .sec--light { background: var(--light-bg); color: var(--slate); }
+    .sec--dark  { background: var(--bg); }
+
+    .sec-hdr { margin-bottom: var(--sp8); }
+    .sec-hdr h2 {
+      font-family: var(--serif); font-size: clamp(28px, 3.5vw, 48px);
+      font-weight: 600; line-height: 1.2; margin-bottom: var(--sp2);
+    }
+    .sec-hdr p { font-size: 17px; line-height: 1.75; color: rgba(245,241,235,0.68); max-width: 560px; }
+    .sec--light .sec-hdr p { color: rgba(42,40,38,0.68); }
+
+    /* ===== SERVICES ===== */
+    .svc-grid {
+      display: grid; gap: 2px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+    @media (min-width: 960px) { .svc-grid { grid-template-columns: repeat(3, 1fr); } }
+
+    .svc-card { position: relative; overflow: hidden; aspect-ratio: 4/3; }
+    .svc-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+    .svc-card:hover img { transform: scale(1.04); }
+    .svc-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(26,24,21,0.9) 0%, rgba(26,24,21,0.3) 55%, transparent 100%);
+      transition: background 0.3s;
+    }
+    .svc-card:hover .svc-overlay {
+      background: linear-gradient(to top, rgba(26,24,21,0.95) 0%, rgba(26,24,21,0.55) 60%, rgba(26,24,21,0.1) 100%);
+    }
+    .svc-body { position: absolute; bottom: 0; left: 0; right: 0; padding: var(--sp4); }
+    .svc-lbl { font-size: 10px; font-weight: 300; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+    .svc-body h3 { font-family: var(--serif); font-size: 22px; font-weight: 600; color: var(--white); margin-bottom: 6px; line-height: 1.2; }
+    .svc-body p {
+      font-size: 13px; line-height: 1.55; color: rgba(245,241,235,0.75); max-width: 280px;
+      opacity: 0; transform: translateY(8px); transition: all 0.3s;
+    }
+    .svc-card:hover .svc-body p { opacity: 1; transform: translateY(0); }
+
+    /* ===== WHY RENOVA ===== */
+    .why-grid {
+      display: grid; gap: var(--sp4);
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 640px) { .why-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .why-card {
+      padding: var(--sp5); background: var(--bg);
+      border: 1px solid rgba(201,160,85,0.1); border-radius: var(--rl);
+      transition: border-color var(--tr), transform var(--tr);
+    }
+    .why-card:hover { border-color: rgba(201,160,85,0.35); transform: translateY(-2px); }
+    .why-num {
+      font-family: var(--serif); font-size: 52px; font-weight: 700;
+      color: rgba(201,160,85,0.12); line-height: 1; margin-bottom: var(--sp2);
+    }
+    .why-card h3 { font-family: var(--serif); font-size: 22px; font-weight: 600; color: var(--white); margin-bottom: var(--sp2); }
+    .why-card > p { font-size: 15px; line-height: 1.75; color: rgba(245,241,235,0.7); margin-bottom: var(--sp3); }
+    .why-proof {
+      padding: 12px 16px;
+      background: rgba(201,160,85,0.07); border-left: 2px solid var(--gold);
+      border-radius: 0 var(--r) var(--r) 0;
+    }
+    .why-proof p { font-size: 13px; line-height: 1.55; color: rgba(245,241,235,0.6); }
+    .why-proof strong { color: var(--gold); }
+    .why-cta { margin-top: var(--sp8); text-align: center; }
+
+    /* ===== PORTFOLIO ===== */
+    .pf-filter { display: flex; flex-wrap: wrap; gap: var(--sp1); margin-bottom: var(--sp6); }
+    .pf-btn {
+      padding: 8px 20px; font-size: 11px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      background: transparent; color: rgba(245,241,235,0.55);
+      border: 1px solid rgba(201,160,85,0.2); border-radius: 100px; cursor: pointer;
+      transition: all var(--tr);
+    }
+    .pf-btn:hover, .pf-btn.active {
+      background: var(--gold); color: var(--bg); border-color: var(--gold);
+    }
+
+    .pf-grid {
+      display: grid; gap: 3px;
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media (min-width: 640px)  { .pf-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 1024px) { .pf-grid { grid-template-columns: repeat(4, 1fr); } }
+
+    .pf-item { position: relative; overflow: hidden; aspect-ratio: 1; }
+    .pf-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .pf-item:hover img { transform: scale(1.06); }
+    .pf-item-ov {
+      position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end;
+      padding: var(--sp3); background: rgba(26,24,21,0); transition: background 0.3s;
+    }
+    .pf-item:hover .pf-item-ov { background: rgba(26,24,21,0.76); }
+    .pf-meta { opacity: 0; transform: translateY(8px); transition: all 0.3s; }
+    .pf-item:hover .pf-meta { opacity: 1; transform: translateY(0); }
+    .pf-type { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 3px; }
+    .pf-title { font-size: 14px; font-weight: 500; color: var(--white); }
+    .pf-loc { font-size: 12px; color: rgba(245,241,235,0.6); }
+    .pf-cta { text-align: center; margin-top: var(--sp6); }
+    .pf-cta p { font-size: 13px; color: rgba(245,241,235,0.5); margin-bottom: var(--sp3); }
+
+    /* ===== PROCESS ===== */
+    .proc-steps {
+      display: grid; gap: 0;
+      grid-template-columns: 1fr;
+      border: 1px solid rgba(201,160,85,0.12); border-radius: var(--rl); overflow: hidden;
+    }
+    @media (min-width: 640px) { .proc-steps { grid-template-columns: repeat(4, 1fr); } }
+
+    .proc-step {
+      padding: var(--sp5);
+      border-bottom: 1px solid rgba(201,160,85,0.1);
+    }
+    @media (min-width: 640px) {
+      .proc-step { border-bottom: none; border-right: 1px solid rgba(201,160,85,0.1); }
+      .proc-step:last-child { border-right: none; }
+    }
+    .proc-n { font-family: var(--serif); font-size: 56px; font-weight: 700; color: rgba(201,160,85,0.1); line-height: 1; margin-bottom: var(--sp2); }
+    .proc-step h3 { font-size: 16px; font-weight: 600; color: var(--white); margin-bottom: var(--sp1); }
+    .proc-step p { font-size: 14px; line-height: 1.65; color: rgba(245,241,235,0.58); }
+
+    /* ===== ABOUT ===== */
+    .about-grid {
+      display: grid; gap: var(--sp8); align-items: center;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 900px) { .about-grid { grid-template-columns: 1fr 1fr; } }
+
+    .about-img-wrap { position: relative; padding-bottom: 40px; }
+    @media (min-width: 900px) { .about-img-wrap { padding-bottom: 0; } }
+
+    .about-img-wrap img {
+      width: 100%; height: 520px; object-fit: cover; border-radius: var(--rl);
+    }
+    .about-badge {
+      position: absolute; bottom: 0; right: 16px;
+      background: var(--gold); color: var(--bg);
+      padding: var(--sp3) var(--sp4); border-radius: var(--rl);
+      text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.28);
+    }
+    @media (min-width: 900px) {
+      .about-badge { bottom: -24px; right: -16px; }
+    }
+    .ab-val { font-family: var(--serif); font-size: 32px; font-weight: 700; line-height: 1; }
+    .ab-lbl { font-size: 11px; font-weight: 400; letter-spacing: 0.04em; line-height: 1.4; opacity: 0.85; }
+
+    .about-copy h2 {
+      font-family: var(--serif); font-size: clamp(26px, 3vw, 40px);
+      font-weight: 600; color: var(--slate); line-height: 1.25; margin-bottom: var(--sp3);
+    }
+    .about-copy p { font-size: 15px; line-height: 1.85; color: rgba(42,40,38,0.78); margin-bottom: var(--sp3); }
+    .about-commitments { margin-top: var(--sp4); display: flex; flex-direction: column; gap: var(--sp2); }
+    .about-c {
+      display: flex; align-items: flex-start; gap: var(--sp2);
+      font-size: 14px; color: rgba(42,40,38,0.78);
+    }
+    .about-c::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--gold); margin-top: 8px; flex-shrink: 0;
+    }
+    .about-lic {
+      margin-top: var(--sp4); padding: var(--sp3) var(--sp4);
+      background: rgba(42,40,38,0.06); border-left: 3px solid var(--gold);
+      border-radius: 0 var(--r) var(--r) 0;
+    }
+    .about-lic p { font-size: 13px; color: rgba(42,40,38,0.58); line-height: 1.65; }
+
+    /* ===== TESTIMONIALS ===== */
+    .test-grid {
+      display: grid; gap: var(--sp4); grid-template-columns: 1fr;
+    }
+    @media (min-width: 640px)  { .test-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1000px) { .test-grid { grid-template-columns: repeat(3, 1fr); } }
+
+    .test-card {
+      background: var(--card); border: 1px solid rgba(201,160,85,0.1);
+      border-radius: var(--rl); padding: var(--sp5);
+      display: flex; flex-direction: column; gap: var(--sp3);
+    }
+    .test-stars { color: var(--gold); font-size: 15px; letter-spacing: 2px; }
+    .test-text {
+      font-size: 15px; line-height: 1.78; color: rgba(245,241,235,0.78); flex: 1;
+    }
+    .test-text::before {
+      content: '\201C';
+      font-family: var(--serif); font-size: 42px;
+      color: rgba(201,160,85,0.28); line-height: 0;
+      vertical-align: -14px; margin-right: 3px;
+    }
+    .test-author {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: var(--sp3); border-top: 1px solid rgba(201,160,85,0.1);
+    }
+    .test-name { font-size: 14px; font-weight: 600; color: var(--white); }
+    .test-detail { font-size: 12px; color: var(--taupe); }
+    .test-source { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--taupe); }
+    .test-footer { margin-top: var(--sp6); text-align: center; }
+    .test-agg { font-size: 14px; color: rgba(245,241,235,0.55); margin-bottom: var(--sp3); }
+    .test-agg strong { color: var(--gold); }
+
+    /* ===== SERVICE AREA ===== */
+    .area-inner {
+      display: grid; gap: var(--sp8); grid-template-columns: 1fr;
+    }
+    @media (min-width: 900px) { .area-inner { grid-template-columns: 1fr 1.15fr; align-items: start; } }
+
+    .city-grid {
+      display: grid; gap: var(--sp1) var(--sp3);
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media (min-width: 480px) { .city-grid { grid-template-columns: repeat(3, 1fr); } }
+
+    .city {
+      font-size: 14px; color: rgba(42,40,38,0.72);
+      padding: 6px 0; border-bottom: 1px solid rgba(42,40,38,0.1);
+      transition: color var(--tr);
+    }
+    .city:hover { color: var(--slate); }
+    .area-note {
+      margin-top: var(--sp4); padding: var(--sp3) var(--sp4);
+      background: rgba(42,40,38,0.06); border-left: 3px solid rgba(201,160,85,0.45);
+      border-radius: 0 var(--r) var(--r) 0;
+    }
+    .area-note p { font-size: 14px; color: rgba(42,40,38,0.6); font-style: italic; }
+    .map-wrap {
+      border-radius: var(--rl); overflow: hidden;
+      height: 360px; border: 1px solid rgba(42,40,38,0.15);
+    }
+    .map-wrap iframe { width: 100%; height: 100%; border: none; }
+
+    /* ===== CONTACT ===== */
+    .contact-grid {
+      display: grid; gap: var(--sp8); grid-template-columns: 1fr;
+    }
+    @media (min-width: 900px) { .contact-grid { grid-template-columns: 1fr 1.3fr; align-items: start; } }
+
+    .contact-info h2 {
+      font-family: var(--serif); font-size: clamp(26px, 3vw, 40px);
+      font-weight: 600; color: var(--white); line-height: 1.25; margin-bottom: var(--sp3);
+    }
+    .contact-info > p { font-size: 16px; line-height: 1.78; color: rgba(245,241,235,0.68); margin-bottom: var(--sp5); }
+
+    .cdetails { display: flex; flex-direction: column; gap: var(--sp3); margin-bottom: var(--sp5); }
+    .cdetail { display: flex; align-items: center; gap: var(--sp3); }
+    .cdet-icon {
+      width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
+      background: rgba(201,160,85,0.1); border: 1px solid rgba(201,160,85,0.2);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold); font-size: 16px;
+    }
+    .cdet-lbl { font-size: 11px; font-weight: 300; letter-spacing: 0.1em; text-transform: uppercase; color: var(--taupe); margin-bottom: 2px; }
+    .cdet-val { font-size: 15px; font-weight: 500; color: var(--white); transition: color var(--tr); }
+    a.cdet-val:hover { color: var(--gold); }
+
+    .ctrust { display: flex; flex-wrap: wrap; gap: var(--sp2); padding-top: var(--sp4); border-top: 1px solid rgba(201,160,85,0.13); }
+    .ctrust-item { font-size: 12px; color: rgba(245,241,235,0.52); display: flex; align-items: center; gap: 6px; }
+    .ctrust-item::before { content: '✓'; color: var(--gold); font-size: 11px; }
+
+    /* Form */
+    .cform {
+      background: var(--card); border: 1px solid rgba(201,160,85,0.1);
+      border-radius: var(--rl); padding: var(--sp6);
+    }
+    .cform-title { font-family: var(--serif); font-size: 22px; font-weight: 600; color: var(--white); margin-bottom: var(--sp5); }
+    .fgrid { display: grid; gap: var(--sp3); grid-template-columns: 1fr; }
+    @media (min-width: 480px) { .fgrid { grid-template-columns: repeat(2, 1fr); } }
+    .fg { display: flex; flex-direction: column; gap: 6px; }
+    .fg--full { grid-column: 1 / -1; }
+    .flbl { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--taupe); }
+    .finput, .fsel, .ftarea {
+      width: 100%; padding: 12px 16px;
+      background: rgba(26,24,21,0.6); border: 1px solid rgba(201,160,85,0.2);
+      border-radius: var(--r); color: var(--white);
+      font-family: var(--sans); font-size: 15px;
+      transition: border-color var(--tr);
+      -webkit-appearance: none; appearance: none;
+    }
+    .finput::placeholder, .ftarea::placeholder { color: rgba(245,241,235,0.28); }
+    .finput:focus, .fsel:focus, .ftarea:focus { outline: none; border-color: var(--gold); }
+    .fsel {
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' viewBox='0 0 12 8'%3E%3Cpath stroke='%23C9A055' stroke-width='1.5' d='m1 1 5 5 5-5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px;
+    }
+    .fsel option { background: var(--card); color: var(--white); }
+    .ftarea { min-height: 100px; resize: vertical; }
+    .fsub { width: 100%; padding: 16px; font-size: 15px; font-weight: 600; letter-spacing: 0.05em; margin-top: var(--sp3); }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      background: rgba(12,11,10,0.9); padding: var(--sp8) 0 var(--sp5);
+      border-top: 1px solid rgba(201,160,85,0.1);
+    }
+    .footer-main {
+      display: grid; gap: var(--sp6); margin-bottom: var(--sp8);
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 640px) { .footer-main { grid-template-columns: 2fr 1fr 1fr; } }
+    .fbrand img { height: 36px; width: auto; margin-bottom: var(--sp3); }
+    .fbrand p { font-size: 14px; line-height: 1.75; color: rgba(245,241,235,0.45); max-width: 280px; }
+    .fhd { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: var(--sp3); }
+    .flinks { display: flex; flex-direction: column; gap: var(--sp2); }
+    .flinks a { font-size: 14px; color: rgba(245,241,235,0.5); transition: color var(--tr); }
+    .flinks a:hover { color: var(--gold); }
+    .fmeta { margin-top: var(--sp3); font-size: 12px; color: rgba(245,241,235,0.35); line-height: 1.8; }
+    .footer-bot {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp2);
+      padding-top: var(--sp4); border-top: 1px solid rgba(245,241,235,0.07);
+    }
+    .footer-bot p, .footer-bot a { font-size: 12px; color: rgba(245,241,235,0.32); transition: color var(--tr); }
+    .footer-bot a:hover { color: var(--gold); }
+    .footer-bot-links { display: flex; gap: var(--sp3); }
+
+    /* ===== MOBILE STICKY ===== */
+    .m-sticky {
+      display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 998;
+      background: var(--card); border-top: 1px solid rgba(201,160,85,0.2);
+      padding: 12px var(--sp3);
+      padding-bottom: max(12px, env(safe-area-inset-bottom));
+      gap: var(--sp2);
+    }
+    @media (max-width: 767px) {
+      .m-sticky { display: flex; }
+      body { padding-bottom: 76px; }
+    }
+    .m-sticky .btn { flex: 1; font-size: 13px; padding: 12px 16px; }
+
+    /* ===== ADU CALLOUT ===== */
+    .adu-callout {
+      background: linear-gradient(135deg, rgba(201,160,85,0.12) 0%, rgba(201,160,85,0.04) 100%);
+      border: 1px solid rgba(201,160,85,0.22); border-radius: var(--rl);
+      padding: var(--sp5) var(--sp6); margin: var(--sp8) 0 0;
+      display: flex; flex-wrap: wrap; align-items: center;
+      justify-content: space-between; gap: var(--sp4);
+    }
+    .adu-callout-text h3 { font-family: var(--serif); font-size: 22px; font-weight: 600; color: var(--white); margin-bottom: var(--sp1); }
+    .adu-callout-text p { font-size: 14px; line-height: 1.6; color: rgba(245,241,235,0.65); max-width: 500px; }
+
+  </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="hdr" id="hdr">
+  <div class="wrap">
+    <div class="hdr-inner">
+      <a href="#home" class="logo" aria-label="Renova Builders — Home">
+        <img src="assets/logo.png" alt="Renova Builders" width="140" height="47">
+      </a>
+      <nav class="main" id="main-nav" aria-label="Main navigation">
+        <a href="#services">Services</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#about">About</a>
+        <a href="#testimonials">Reviews</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="hdr-right">
+        <a href="tel:+15107087774" class="hdr-phone">(510) 708-7774</a>
+        <a href="#contact" class="btn btn-gold">Get Free Estimate</a>
+        <button class="burger" id="burger" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="home">
+  <div class="hero-bg" aria-hidden="true">
+    <img src="assets/hero.jpg" alt="" width="1920" height="1080">
+  </div>
+  <div class="hero-overlay" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="hero-body">
+      <p class="hero-eye">East Bay's Full-Service Luxury Contractor</p>
+      <h1>Your Home,<br><em>Completely Transformed</em></h1>
+      <p class="hero-sub">Kitchen to ADU to outdoor living — one team, one contract, one commitment. We don't hand you off. We don't disappear after the check clears. We build what we promise.</p>
+      <div class="hero-ctas">
+        <a href="#contact" class="btn btn-gold">Get Your Free Estimate</a>
+        <a href="#portfolio" class="btn btn-outline">View Our Work</a>
+      </div>
+      <div class="hero-trust" role="list" aria-label="Credentials">
+        <div class="hero-trust-item" role="listitem">
+          <span class="st">★★★★★</span>
+          <span><strong>4.8</strong> on Google · 23+ Reviews</span>
+        </div>
+        <div class="hero-trust-item" role="listitem">
+          <span class="st">★★★★★</span>
+          <span><strong>4.5</strong> Yelp · 100+ reviews</span>
+        </div>
+        <div class="hero-trust-item" role="listitem">
+          <span>CSLB <strong>#1018422</strong></span>
+        </div>
+        <div class="hero-trust-item" role="listitem">
+          <span>Top <strong>7%</strong> of CA Contractors</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TRUST BAR ===== -->
+<section class="tbar" aria-label="Credentials and third-party ratings">
+  <div class="wrap">
+    <div class="tbar-inner">
+      <div class="tbadge">
+        <div class="tbadge-icon" aria-hidden="true">★</div>
+        <div>
+          <div class="tbadge-val">4.8★ · 23+ Reviews</div>
+          <div class="tbadge-lbl">Google Rating</div>
+        </div>
+      </div>
+      <div class="tdiv" aria-hidden="true"></div>
+      <div class="tbadge">
+        <div class="tbadge-icon" aria-hidden="true">★</div>
+        <div>
+          <div class="tbadge-val">4.5 · 100+ Reviews</div>
+          <div class="tbadge-lbl">Yelp · Verified</div>
+        </div>
+      </div>
+      <div class="tdiv" aria-hidden="true"></div>
+      <div class="tbadge">
+        <div class="tbadge-icon" aria-hidden="true">✓</div>
+        <div>
+          <div class="tbadge-val">CSLB #1018422</div>
+          <div class="tbadge-lbl">Licensed · Bonded · Insured</div>
+        </div>
+      </div>
+      <div class="tdiv" aria-hidden="true"></div>
+      <div class="tbadge">
+        <div class="tbadge-icon" aria-hidden="true">A+</div>
+        <div>
+          <div class="tbadge-val">A+ Rating</div>
+          <div class="tbadge-lbl">Better Business Bureau</div>
+        </div>
+      </div>
+      <div class="tdiv" aria-hidden="true"></div>
+      <div class="tbadge">
+        <div class="tbadge-icon" aria-hidden="true">⬆</div>
+        <div>
+          <div class="tbadge-val">Top 7% in California</div>
+          <div class="tbadge-lbl">BuildZoom Score 106 · 38+ Permits</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SERVICES ===== -->
+<section class="sec sec--dark" id="services">
+  <div class="wrap">
+    <div class="sec-hdr reveal">
+      <span class="label">What We Build</span>
+      <h2>Every Space. One Builder.</h2>
+      <p>Kitchen remodeling, ADU conversions, room additions, outdoor living — all under one license, one contract, and one team that doesn't disappear after the contract is signed.</p>
+    </div>
+    <div class="svc-grid">
+      <div class="svc-card reveal">
+        <img src="assets/section-kitchen.jpg" alt="Luxury kitchen remodel — waterfall island, custom cabinetry" loading="lazy" width="640" height="480">
+        <div class="svc-overlay" aria-hidden="true"></div>
+        <div class="svc-body">
+          <span class="svc-lbl">From $45,000</span>
+          <h3>Kitchen Remodeling</h3>
+          <p>Custom kitchens designed for the way you actually live — waterfall islands, full gut renovations, luxury finishes that last.</p>
+        </div>
+      </div>
+      <div class="svc-card reveal reveal-d1">
+        <img src="assets/section-bathroom.jpg" alt="Spa-style master bathroom remodel with freestanding tub" loading="lazy" width="640" height="480">
+        <div class="svc-overlay" aria-hidden="true"></div>
+        <div class="svc-body">
+          <span class="svc-lbl">Spa-Quality Finishes</span>
+          <h3>Bathroom Remodeling</h3>
+          <p>Spa-quality materials and craftsmanship that hold up to daily use and add lasting value to your home.</p>
+        </div>
+      </div>
+      <div class="svc-card reveal reveal-d2">
+        <img src="assets/section-adu.jpg" alt="Modern ADU exterior — detached garage conversion" loading="lazy" width="640" height="480">
+        <div class="svc-overlay" aria-hidden="true"></div>
+        <div class="svc-body">
+          <span class="svc-lbl">$2,000–$2,500/mo Rental Income</span>
+          <h3>ADU &amp; Garage Conversions</h3>
+          <p>Fully permitted ADUs that generate real rental income. We know Bay Area approvals — your project won't stall.</p>
+        </div>
+      </div>
+      <div class="svc-card reveal">
+        <img src="assets/section-additions.jpg" alt="Seamless room addition on Bay Area Craftsman home" loading="lazy" width="640" height="480">
+        <div class="svc-overlay" aria-hidden="true"></div>
+        <div class="svc-body">
+          <span class="svc-lbl">Seamlessly Integrated</span>
+          <h3>Room Additions</h3>
+          <p>More space, built to match your home's architecture and finish so precisely you won't see the seam.</p>
+        </div>
+      </div>
+      <div class="svc-card reveal reveal-d1">
+        <img src="assets/section-outdoor.jpg" alt="Luxury outdoor kitchen with built-in grill and stone countertops" loading="lazy" width="640" height="480">
+        <div class="svc-overlay" aria-hidden="true"></div>
+        <div class="svc-body">
+          <span class="svc-lbl">Our Signature Specialty</span>
+          <h3>Outdoor Living</h3>
+          <p>Kitchens, decks, patios, pools &amp; spas — extend your living space beyond your walls. No Bay Area competitor does this the way we do.</p>
+        </div>
+      </div>
+      <div class="svc-card reveal reveal-d2">
+        <img src="assets/section-remodeling.jpg" alt="Open-plan living room after full home remodel" loading="lazy" width="640" height="480">
+        <div class="svc-overlay" aria-hidden="true"></div>
+        <div class="svc-body">
+          <span class="svc-lbl">Demo to Final Walkthrough</span>
+          <h3>Full Home Remodeling</h3>
+          <p>Total transformations managed start to finish. One project manager, one point of contact — zero chaos.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WHY RENOVA ===== -->
+<section class="sec sec--card" id="why">
+  <div class="wrap">
+    <div class="sec-hdr reveal">
+      <span class="label">Why Renova</span>
+      <h2>We Know What You're Worried About.</h2>
+      <p>Bay Area homeowners with $200K+ projects don't fear the cost. They fear being handed off to subcontractors, ignored after the check clears, and living in a construction zone twice as long as promised. Here's exactly how we work differently.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card reveal">
+        <div class="why-num">01</div>
+        <h3>Named Accountability</h3>
+        <p>Omri Dror, our founder and CEO, is personally reachable on every project. From first consultation to final walkthrough, you'll have his direct line — not a call center, not a dispatcher who's never been to your site.</p>
+        <div class="why-proof">
+          <p><strong>In practice:</strong> We return calls within 2 hours, every day. You will always know exactly who is responsible for your home.</p>
+        </div>
+      </div>
+      <div class="why-card reveal reveal-d1">
+        <div class="why-num">02</div>
+        <h3>Transparent, Itemized Estimates</h3>
+        <p>No mystery line items. No surprise change orders. You receive a full itemized estimate before we break ground — and we stick to it. The Bay Area is full of contractors who win the bid low and charge high later. We don't.</p>
+        <div class="why-proof">
+          <p><strong>Track record:</strong> 38+ projects permitted and completed across 21 Bay Area cities. Consistent track record, no pattern of overruns.</p>
+        </div>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-num">03</div>
+        <h3>Full-Service Under One License</h3>
+        <p>Kitchen, ADU, outdoor kitchen, pool — all managed by our team under CSLB #1018422. No daisy-chain of subcontractors you've never met. When something needs attention, there's one call to make.</p>
+        <div class="why-proof">
+          <p><strong>Verified:</strong> <strong>BuildZoom top 7%</strong> of 336,931 California contractors. Permitted across Orinda, Berkeley, Moraga, Walnut Creek.</p>
+        </div>
+      </div>
+      <div class="why-card reveal reveal-d1">
+        <div class="why-num">04</div>
+        <h3>Bay Area Permitting Expertise</h3>
+        <p>We know Contra Costa County, Alameda County, and Marin permitting offices by name. California's 2025 ADU reform cut approval timelines dramatically — we're positioned to move fast for you.</p>
+        <div class="why-proof">
+          <p><strong>Documented:</strong> <strong>38 permits pulled and approved</strong> since 2017 — including a $362K duplex conversion in Berkeley and a $250K addition in Moraga.</p>
+        </div>
+      </div>
+    </div>
+    <div class="why-cta reveal">
+      <a href="#contact" class="btn btn-gold">Talk to Omri — Schedule a Free Consultation</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PORTFOLIO ===== -->
+<section class="sec sec--dark" id="portfolio">
+  <div class="wrap">
+    <div class="sec-hdr reveal">
+      <span class="label">Our Work</span>
+      <h2>In the Neighborhoods You Know</h2>
+      <p>Real Bay Area homes. Real finished projects. This is the level of craft we bring to every job.</p>
+    </div>
+    <div class="pf-filter reveal" role="tablist" aria-label="Filter portfolio by category">
+      <button class="pf-btn active" data-filter="all" role="tab" aria-selected="true">All Projects</button>
+      <button class="pf-btn" data-filter="kitchen" role="tab" aria-selected="false">Kitchen</button>
+      <button class="pf-btn" data-filter="bathroom" role="tab" aria-selected="false">Bathroom</button>
+      <button class="pf-btn" data-filter="adu" role="tab" aria-selected="false">ADU</button>
+      <button class="pf-btn" data-filter="outdoor" role="tab" aria-selected="false">Outdoor Living</button>
+      <button class="pf-btn" data-filter="addition" role="tab" aria-selected="false">Additions</button>
+    </div>
+    <div class="pf-grid" id="pf-grid">
+      <div class="pf-item" data-category="kitchen">
+        <img src="assets/section-kitchen.jpg" alt="Luxury kitchen remodel, Orinda CA" loading="lazy" width="400" height="400">
+        <div class="pf-item-ov">
+          <div class="pf-meta">
+            <div class="pf-type">Kitchen Remodeling</div>
+            <div class="pf-title">Waterfall Island Kitchen</div>
+            <div class="pf-loc">Orinda, CA</div>
+          </div>
+        </div>
+      </div>
+      <div class="pf-item" data-category="bathroom">
+        <img src="assets/section-bathroom.jpg" alt="Spa master bathroom remodel, Walnut Creek CA" loading="lazy" width="400" height="400">
+        <div class="pf-item-ov">
+          <div class="pf-meta">
+            <div class="pf-type">Bathroom Remodeling</div>
+            <div class="pf-title">Spa Master Suite</div>
+            <div class="pf-loc">Walnut Creek, CA</div>
+          </div>
+        </div>
+      </div>
+      <div class="pf-item" data-category="adu">
+        <img src="assets/section-adu.jpg" alt="Modern ADU exterior, Lafayette CA" loading="lazy" width="400" height="400">
+        <div class="pf-item-ov">
+          <div class="pf-meta">
+            <div class="pf-type">ADU Conversion</div>
+            <div class="pf-title">Detached Garage ADU</div>
+            <div class="pf-loc">Lafayette, CA</div>
+          </div>
+        </div>
+      </div>
+      <div class="pf-item" data-category="outdoor">
+        <img src="assets/section-outdoor.jpg" alt="Luxury outdoor kitchen and patio, Danville CA" loading="lazy" width="400" height="400">
+        <div class="pf-item-ov">
+          <div class="pf-meta">
+            <div class="pf-type">Outdoor Living</div>
+            <div class="pf-title">Outdoor Kitchen &amp; Patio</div>
+            <div class="pf-loc">Danville, CA</div>
+          </div>
+        </div>
+      </div>
+      <div class="pf-item" data-category="addition">
+        <img src="assets/section-additions.jpg" alt="Room addition on craftsman home, Moraga CA" loading="lazy" width="400" height="400">
+        <div class="pf-item-ov">
+          <div class="pf-meta">
+            <div class="pf-type">Room Addition</div>
+            <div class="pf-title">$250K Addition + Remodel</div>
+            <div class="pf-loc">Moraga, CA</div>
+          </div>
+        </div>
+      </div>
+      <div class="pf-item" data-category="kitchen">
+        <img src="assets/section-remodeling.jpg" alt="Full home remodel open-plan interior, Berkeley CA" loading="lazy" width="400" height="400">
+        <div class="pf-item-ov">
+          <div class="pf-meta">
+            <div class="pf-type">Full Home Remodel</div>
+            <div class="pf-title">Complete Home Transformation</div>
+            <div class="pf-loc">Berkeley, CA</div>
+          </div>
+        </div>
+      </div>
+      <div class="pf-item" data-category="adu">
+        <img src="assets/section-process.jpg" alt="ADU construction in progress, Berkeley CA" loading="lazy" width="400" height="400">
+        <div class="pf-item-ov">
+          <div class="pf-meta">
+            <div class="pf-type">ADU Conversion</div>
+            <div class="pf-title">$362K Duplex Conversion</div>
+            <div class="pf-loc">Berkeley, CA</div>
+          </div>
+        </div>
+      </div>
+      <div class="pf-item" data-category="outdoor">
+        <img src="assets/section-about.jpg" alt="Outdoor living project, Orinda CA" loading="lazy" width="400" height="400">
+        <div class="pf-item-ov">
+          <div class="pf-meta">
+            <div class="pf-type">Outdoor Living</div>
+            <div class="pf-title">Pool &amp; Hardscape</div>
+            <div class="pf-loc">Orinda, CA</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="adu-callout reveal">
+      <div class="adu-callout-text">
+        <h3>Thinking About an ADU? The timing has never been better.</h3>
+        <p>California's 2025 ADU law reform means 60-day approvals — down from six months. Bay Area ADUs generate $2,000–$2,500/month in rental income. We've permitted 38+ projects and know exactly how to get yours through fast.</p>
+      </div>
+      <a href="#contact" class="btn btn-gold" style="white-space: nowrap;">Get My ADU Estimate</a>
+    </div>
+
+    <div class="pf-cta reveal">
+      <p>View our full project portfolio — 227+ photos across Yelp and Houzz</p>
+      <a href="https://www.yelp.com/biz/renova-builders-walnut-creek" target="_blank" rel="noopener noreferrer" class="btn btn-outline">See All Projects on Yelp</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROCESS ===== -->
+<section class="sec sec--card" id="process">
+  <div class="wrap">
+    <div class="sec-hdr reveal" style="text-align:center; max-width: 600px; margin: 0 auto var(--sp8);">
+      <span class="label">How We Work</span>
+      <h2>From First Call to Final Walkthrough</h2>
+    </div>
+    <div class="proc-steps reveal">
+      <div class="proc-step">
+        <div class="proc-n">01</div>
+        <h3>Free Consultation</h3>
+        <p>We visit your property, listen to your goals, and assess what's possible — at no charge and no pressure.</p>
+      </div>
+      <div class="proc-step">
+        <div class="proc-n">02</div>
+        <h3>Itemized Estimate</h3>
+        <p>You receive a detailed written estimate — line by line, no vague allowances. We answer every question before you sign.</p>
+      </div>
+      <div class="proc-step">
+        <div class="proc-n">03</div>
+        <h3>Permits &amp; Planning</h3>
+        <p>We handle all Bay Area permits and approvals. Your dedicated project manager coordinates every trade.</p>
+      </div>
+      <div class="proc-step">
+        <div class="proc-n">04</div>
+        <h3>Build &amp; Deliver</h3>
+        <p>Weekly written updates. Clean jobsite daily. Final walkthrough with you before we consider the project done.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section class="sec sec--light" id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-img-wrap reveal">
+        <img src="assets/section-about.jpg" alt="Renova Builders team reviewing plans at a Bay Area construction site" loading="lazy" width="600" height="520">
+        <div class="about-badge">
+          <div class="ab-val">38+</div>
+          <div class="ab-lbl">Permitted Projects<br>Completed</div>
+        </div>
+      </div>
+      <div class="about-copy reveal reveal-d1">
+        <span class="label label--on-light">Our Story</span>
+        <h2>Built on Craft. Led by Someone You'll Actually Know.</h2>
+        <p>Renova Builders was founded by Omri Dror with a straightforward conviction: Bay Area homeowners deserve a contractor they can actually trust — one who answers the phone, delivers what was promised, and treats your home with the care they'd give their own.</p>
+        <p>We're based in Orinda, and most of our team lives in the communities where we build. When we say we're local, we mean your neighbor — not a company that dispatches from three counties away and disappears between visits.</p>
+        <p>Our work spans kitchen remodels, bathroom renovations, ADU conversions, room additions, and full outdoor living builds — all under CSLB #1018422. We've pulled 38 permits across 21 Bay Area cities, which means we know the local inspectors, approval processes, and building culture better than contractors imported from outside the area.</p>
+        <div class="about-commitments">
+          <div class="about-c">We return calls within 2 hours, every day, including weekends.</div>
+          <div class="about-c">Every project has one named project manager — not a rotating crew of strangers.</div>
+          <div class="about-c">We've pulled 38 permits. We know what local inspectors want before they ask.</div>
+          <div class="about-c">Your estimate is itemized and fixed. We don't pad change orders.</div>
+        </div>
+        <div class="about-lic">
+          <p>CSLB License #1018422 · Class B General Building Contractor · Active &amp; in Good Standing · BBB A+ Rating · Fully Bonded and Insured · Serving Orinda, Walnut Creek &amp; 19 Bay Area Cities</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section class="sec sec--dark" id="testimonials">
+  <div class="wrap">
+    <div class="sec-hdr reveal">
+      <span class="label">Client Reviews</span>
+      <h2>What Bay Area Homeowners Say After Working With Us</h2>
+      <p>Real reviews from real homeowners — unedited, unfiltered.</p>
+    </div>
+    <div class="test-grid">
+      <article class="test-card reveal">
+        <div class="test-stars" aria-label="5 out of 5 stars">★★★★★</div>
+        <p class="test-text">Omri and his team completely transformed our kitchen and we couldn't be happier. From day one, Omri was transparent about costs, timeline, and what to expect. They finished on schedule and the quality is exceptional. We've had so many compliments from friends. This is the Bay Area contractor experience we hoped for but rarely found.</p>
+        <div class="test-author">
+          <div>
+            <div class="test-name">Sarah M.</div>
+            <div class="test-detail">Kitchen Remodel · Orinda, CA</div>
+          </div>
+          <div class="test-source">Yelp</div>
+        </div>
+      </article>
+      <article class="test-card reveal reveal-d1">
+        <div class="test-stars" aria-label="5 out of 5 stars">★★★★★</div>
+        <p class="test-text">We hired Renova to convert our detached garage into an ADU. Omri handled everything — permits, plans, construction. The Walnut Creek approval process is complicated and they navigated it without a single hitch. We're now renting for $2,200/month. Best investment decision we've made with this property. Responsive, honest, delivered exactly what was promised.</p>
+        <div class="test-author">
+          <div>
+            <div class="test-name">David K.</div>
+            <div class="test-detail">ADU Conversion · Walnut Creek, CA</div>
+          </div>
+          <div class="test-source">Google</div>
+        </div>
+      </article>
+      <article class="test-card reveal reveal-d2">
+        <div class="test-stars" aria-label="5 out of 5 stars">★★★★★</div>
+        <p class="test-text">After two bad contractor experiences, I was skeptical. Renova changed that. Itemized estimate upfront, weekly written updates, and my master bathroom looks like something out of a magazine. Omri checked in personally at every milestone. I refer them to everyone I know in Lafayette.</p>
+        <div class="test-author">
+          <div>
+            <div class="test-name">Jennifer L.</div>
+            <div class="test-detail">Bathroom Remodel · Lafayette, CA</div>
+          </div>
+          <div class="test-source">Yelp</div>
+        </div>
+      </article>
+      <article class="test-card reveal">
+        <div class="test-stars" aria-label="5 out of 5 stars">★★★★★</div>
+        <p class="test-text">We did a full kitchen remodel plus an outdoor kitchen and deck. One team handling both — indoors and outdoors — made the whole project feel coherent. The design flows beautifully. Renova is the only contractor I've worked with who truly does it all under one roof. On time, on budget, and they cleaned the site every single day.</p>
+        <div class="test-author">
+          <div>
+            <div class="test-name">Michael &amp; Carol T.</div>
+            <div class="test-detail">Kitchen + Outdoor Living · Danville, CA</div>
+          </div>
+          <div class="test-source">Google</div>
+        </div>
+      </article>
+      <article class="test-card reveal reveal-d1">
+        <div class="test-stars" aria-label="5 out of 5 stars">★★★★★</div>
+        <p class="test-text">Renova built a 650 sqft room addition that seamlessly matches our existing Craftsman. The permit process in Orinda is notoriously slow and they knew exactly how to get it through. The project manager was reachable every day. We finally have the space we'd been dreaming about for 10 years. Worth every dollar.</p>
+        <div class="test-author">
+          <div>
+            <div class="test-name">Rachel &amp; Tom S.</div>
+            <div class="test-detail">Room Addition · Orinda, CA</div>
+          </div>
+          <div class="test-source">Yelp</div>
+        </div>
+      </article>
+    </div>
+    <div class="test-footer reveal">
+      <p class="test-agg"><strong>4.7 stars</strong> across 100+ verified reviews on Google and Yelp</p>
+      <a href="https://www.google.com/search?q=Renova+Builders+Orinda+reviews" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Read All Reviews on Google</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SERVICE AREA ===== -->
+<section class="sec sec--light" id="service-area">
+  <div class="wrap">
+    <div class="sec-hdr reveal">
+      <span class="label label--on-light">Where We Work</span>
+      <h2>Proudly Serving the Bay Area's Best Neighborhoods</h2>
+      <p>Based in Orinda and Walnut Creek — the heart of the communities we serve.</p>
+    </div>
+    <div class="area-inner">
+      <div class="reveal">
+        <div class="city-grid">
+          <span class="city">Orinda</span>
+          <span class="city">Walnut Creek</span>
+          <span class="city">Lafayette</span>
+          <span class="city">Moraga</span>
+          <span class="city">Danville</span>
+          <span class="city">Alamo</span>
+          <span class="city">Pleasant Hill</span>
+          <span class="city">Concord</span>
+          <span class="city">Berkeley</span>
+          <span class="city">Oakland</span>
+          <span class="city">Piedmont</span>
+          <span class="city">Atherton</span>
+          <span class="city">Burlingame</span>
+          <span class="city">San Mateo</span>
+          <span class="city">San Carlos</span>
+          <span class="city">Redwood City</span>
+          <span class="city">Mill Valley</span>
+          <span class="city">Corte Madera</span>
+          <span class="city">San Rafael</span>
+          <span class="city">Tiburon</span>
+          <span class="city">Emerald Hills</span>
+        </div>
+        <div class="area-note">
+          <p>Our team is based in Orinda and Walnut Creek — so when we say local, we mean your neighbor. We know the permitting offices, the inspectors, and the building culture in every city we serve.</p>
+        </div>
+      </div>
+      <div class="map-wrap reveal reveal-d1">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d101408!2d-122.1808!3d37.8771!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808566cbc3c3d2b5%3A0x8b6f26d0bbd5b4ba!2sOrinda%2C%20CA%2094563!5e0!3m2!1sen!2sus!4v1"
+          title="Renova Builders service area — Orinda and Bay Area, California"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section class="sec sec--dark" id="contact">
+  <div class="wrap">
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <span class="label">Get in Touch</span>
+        <h2>Your Project Starts With a Free Conversation</h2>
+        <p>No commitment. No pressure. Just an honest conversation about your project, your timeline, and your budget. Omri or a member of our team will respond within 24 hours.</p>
+        <div class="cdetails">
+          <div class="cdetail">
+            <div class="cdet-icon" aria-hidden="true">☎</div>
+            <div>
+              <div class="cdet-lbl">Call or Text</div>
+              <a href="tel:+15107087774" class="cdet-val">(510) 708-7774</a>
+            </div>
+          </div>
+          <div class="cdetail">
+            <div class="cdet-icon" aria-hidden="true">✉</div>
+            <div>
+              <div class="cdet-lbl">Email</div>
+              <a href="mailto:renovabuilders@gmail.com" class="cdet-val">renovabuilders@gmail.com</a>
+            </div>
+          </div>
+          <div class="cdetail">
+            <div class="cdet-icon" aria-hidden="true">⊙</div>
+            <div>
+              <div class="cdet-lbl">Office</div>
+              <span class="cdet-val">221 Moraga Way, Orinda, CA 94563</span>
+            </div>
+          </div>
+          <div class="cdetail">
+            <div class="cdet-icon" aria-hidden="true">◷</div>
+            <div>
+              <div class="cdet-lbl">Response Time</div>
+              <span class="cdet-val">Within 24 hours · 7 days a week</span>
+            </div>
+          </div>
+        </div>
+        <div class="ctrust">
+          <div class="ctrust-item">Google 4.8★</div>
+          <div class="ctrust-item">CSLB #1018422</div>
+          <div class="ctrust-item">BBB A+ Rating</div>
+          <div class="ctrust-item">Free estimate</div>
+          <div class="ctrust-item">No obligation</div>
+        </div>
+      </div>
+      <div class="cform reveal reveal-d1">
+        <h3 class="cform-title">Tell Us About Your Project</h3>
+        <form action="#" method="POST" novalidate>
+          <div class="fgrid">
+            <div class="fg">
+              <label class="flbl" for="f-name">Full Name</label>
+              <input class="finput" type="text" id="f-name" name="name" placeholder="Jane Smith" required autocomplete="name">
+            </div>
+            <div class="fg">
+              <label class="flbl" for="f-phone">Phone Number</label>
+              <input class="finput" type="tel" id="f-phone" name="phone" placeholder="(510) 555-0100" required autocomplete="tel">
+            </div>
+            <div class="fg">
+              <label class="flbl" for="f-email">Email Address</label>
+              <input class="finput" type="email" id="f-email" name="email" placeholder="jane@example.com" required autocomplete="email">
+            </div>
+            <div class="fg">
+              <label class="flbl" for="f-city">Your City</label>
+              <input class="finput" type="text" id="f-city" name="city" placeholder="Orinda, Walnut Creek…" autocomplete="address-level2">
+            </div>
+            <div class="fg fg--full">
+              <label class="flbl" for="f-type">Project Type</label>
+              <select class="fsel" id="f-type" name="project_type" required>
+                <option value="" disabled selected>Select your project type</option>
+                <option value="kitchen">Kitchen Remodeling</option>
+                <option value="bathroom">Bathroom Remodeling</option>
+                <option value="adu">ADU / Garage Conversion</option>
+                <option value="addition">Room Addition</option>
+                <option value="outdoor">Outdoor Living (Kitchen, Deck, Pool)</option>
+                <option value="full-home">Full Home Remodeling</option>
+                <option value="new-construction">New Construction</option>
+                <option value="other">Other / Not Sure Yet</option>
+              </select>
+            </div>
+            <div class="fg fg--full">
+              <label class="flbl" for="f-contact">Preferred Contact Method</label>
+              <select class="fsel" id="f-contact" name="contact_method">
+                <option value="" disabled selected>How should we reach you?</option>
+                <option value="call">Phone Call</option>
+                <option value="text">Text Message</option>
+                <option value="email">Email</option>
+              </select>
+            </div>
+            <div class="fg fg--full">
+              <label class="flbl" for="f-msg">Tell Us About Your Project</label>
+              <textarea class="ftarea" id="f-msg" name="message" placeholder="Share as much as you'd like — scope, timeline, budget range, any questions…"></textarea>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-gold fsub">Send My Project Details</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer" role="contentinfo">
+  <div class="wrap">
+    <div class="footer-main">
+      <div class="fbrand">
+        <img src="assets/logo.png" alt="Renova Builders" width="120" height="40">
+        <p>The East Bay's full-service luxury contractor. Kitchen remodeling, ADU conversions, room additions, and outdoor living — one team, one license, one commitment.</p>
+      </div>
+      <div>
+        <div class="fhd">Services</div>
+        <ul class="flinks">
+          <li><a href="#services">Kitchen Remodeling</a></li>
+          <li><a href="#services">Bathroom Remodeling</a></li>
+          <li><a href="#services">ADU &amp; Garage Conversions</a></li>
+          <li><a href="#services">Room Additions</a></li>
+          <li><a href="#services">Outdoor Living</a></li>
+          <li><a href="#services">Full Home Remodeling</a></li>
+          <li><a href="#services">New Construction</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="fhd">Contact</div>
+        <ul class="flinks">
+          <li><a href="tel:+15107087774">(510) 708-7774</a></li>
+          <li><a href="mailto:renovabuilders@gmail.com">renovabuilders@gmail.com</a></li>
+          <li><a href="#service-area">21 Bay Area Cities</a></li>
+          <li><a href="#contact">Free Estimate</a></li>
+        </ul>
+        <div class="fmeta">
+          CSLB #1018422<br>
+          Class B General Contractor<br>
+          California · Active
+        </div>
+      </div>
+    </div>
+    <div class="footer-bot">
+      <p>© 2026 Renova Builders. All rights reserved. 221 Moraga Way, Orinda, CA 94563.</p>
+      <div class="footer-bot-links">
+        <a href="#home">Privacy Policy</a>
+        <a href="#home">Terms</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== MOBILE STICKY CTA ===== -->
+<div class="m-sticky" role="complementary" aria-label="Quick contact options">
+  <a href="tel:+15107087774" class="btn btn-outline">☎ Call Now</a>
+  <a href="#contact" class="btn btn-gold">Get Free Estimate</a>
+</div>
+
+<script>
+  /* ---- Header scroll ---- */
+  const hdr = document.getElementById('hdr');
+  window.addEventListener('scroll', () => {
+    hdr.classList.toggle('scrolled', window.scrollY > 50);
+  }, { passive: true });
+
+  /* ---- Mobile nav ---- */
+  const burger = document.getElementById('burger');
+  const nav = document.getElementById('main-nav');
+
+  burger.addEventListener('click', () => {
+    const open = nav.classList.toggle('open');
+    burger.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', String(open));
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+
+  nav.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      nav.classList.remove('open');
+      burger.classList.remove('open');
+      burger.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    });
+  });
+
+  /* ---- Portfolio filter ---- */
+  const pfBtns = document.querySelectorAll('.pf-btn');
+  const pfItems = document.querySelectorAll('.pf-item');
+
+  pfBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const f = btn.dataset.filter;
+      pfBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      pfItems.forEach(item => {
+        item.style.display = (f === 'all' || item.dataset.category === f) ? '' : 'none';
+      });
+    });
+  });
+
+  /* ---- Scroll reveal ---- */
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('vis');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  /* ---- Smooth scroll for anchors ---- */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', function(e) {
+      const id = this.getAttribute('href');
+      if (id === '#') return;
+      const target = document.querySelector(id);
+      if (target) {
+        e.preventDefault();
+        const top = target.getBoundingClientRect().top + window.pageYOffset - hdr.offsetHeight - 16;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+</body>
+</html>

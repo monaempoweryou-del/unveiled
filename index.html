@@ -5,17 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>UNVEILED | Your Business Deserves to Look This Good</title>
   <meta name="description" content="Your business deserves to look incredible online. We build you a complete, real website in 72 hours, free to see, with nothing to pay until you love it." />
-  <link rel="canonical" href="https://monaempoweryou-del.github.io/unveiled/" />
+  <link rel="canonical" href="https://unveiled.pro/" />
   <meta name="theme-color" content="#0A0816" />
 
   <!-- Open Graph (WhatsApp, Facebook, LinkedIn, iMessage) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="UNVEILED" />
-  <meta property="og:url" content="https://monaempoweryou-del.github.io/unveiled/" />
+  <meta property="og:url" content="https://unveiled.pro/" />
   <meta property="og:title" content="See your business become the one customers choose | UNVEILED" />
   <meta property="og:description" content="A complete website, built free, in 72 hours. Nothing to build, nothing to risk. See it before you ever pay." />
-  <meta property="og:image" content="https://monaempoweryou-del.github.io/unveiled/og-image.jpg" />
-  <meta property="og:image:secure_url" content="https://monaempoweryou-del.github.io/unveiled/og-image.jpg" />
+  <meta property="og:image" content="https://unveiled.pro/og-image.jpg" />
+  <meta property="og:image:secure_url" content="https://unveiled.pro/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -25,7 +25,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="See your business become the one customers choose | UNVEILED" />
   <meta name="twitter:description" content="A complete website, built free, in 72 hours. Nothing to build, nothing to risk. See it before you ever pay." />
-  <meta name="twitter:image" content="https://monaempoweryou-del.github.io/unveiled/og-image.jpg" />
+  <meta name="twitter:image" content="https://unveiled.pro/og-image.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
@@ -2575,7 +2575,12 @@ heroOut.observe(hero);
       return { name:file.name, url: SUPA.url+'/storage/v1/object/public/'+SUPA.bucket+'/'+encodeURI(path), size:file.size };
     } catch(e){ to.done(); return null; }
   }
-  // Returns TRUE only when the lead row is actually accepted by the database (201).
+  async function insertTask(prompt){ try {
+      const to=withTimeout(8000);
+      const r=await fetch(SUPA.url+'/rest/v1/tasks',{method:'POST',headers:{apikey:SUPA.key,Authorization:'Bearer '+SUPA.key,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({prompt:JSON.stringify(prompt),status:'pending'}),signal:to.signal});
+      to.done(); return r.ok;
+    } catch(e){ return false; } }
+
   async function submitLead(){
     if (!SUPA.enabled || !SUPA.key) return false;
     try {
@@ -2584,7 +2589,7 @@ heroOut.observe(hero);
       const photos = await up(data.photos,'photo');
       const logos  = await up(data.logo,'logo');
       const shots  = await up(data.inspoShots,'inspiration');
-      const row = {
+      const leadRow = {
         id: leadId, business_name: data.biz||null, contact_name: data.name||null, email: data.email||null,
         phone: data.phone||null, website: data.url||null, social_profiles: data.social||{}, about: data.about||null,
         requirements: data.requirements||null, additional_notes: data.anything||null, inspiration_links: data.inspoUrls||[],
@@ -2594,10 +2599,20 @@ heroOut.observe(hero);
       const r = await fetch(SUPA.url+'/rest/v1/leads', {
         method:'POST',
         headers:{ apikey:SUPA.key, Authorization:'Bearer '+SUPA.key, 'Content-Type':'application/json', Prefer:'return=minimal' },
-        body: JSON.stringify(row), signal: to.signal
+        body: JSON.stringify(leadRow), signal: to.signal
       });
       to.done();
-      return r.ok;   // 201 = row inserted AND the DB trigger fired. Anything else = NOT captured.
+      const leadSaved = r.ok;
+
+      // Always enqueue tasks via the tasks table (anon-insert allowed)
+      const ld = {id:leadId,business_name:data.biz||'',contact_name:data.name||'',email:data.email||'',phone:data.phone||'',website:data.url||'',social_profiles:data.social||{},about:data.about||'',requirements:data.requirements||'',additional_notes:data.anything||'',inspiration_links:data.inspoUrls||[],photos:photos,logos:logos,inspiration_screenshots:shots,source:'website-onboarding'};
+      const tasks = [
+        {type:'email',to:'monaempoweryou@gmail.com',subject:'New UNVEILED lead: '+(data.biz||'unknown'),body:'New lead submitted via website.\n\nBusiness: '+(data.biz||'N/A')+'\nContact: '+(data.name||'N/A')+'\nEmail: '+(data.email||'N/A')+'\nPhone: '+(data.phone||'N/A')+'\nWebsite: '+(data.url||'N/A')+'\n\nProduction will begin automatically.'},
+        {type:'sms',to:'+19164733131',message:'New UNVEILED lead: '+(data.biz||'?')+' — '+(data.email||'no email')},
+        {type:'production',phase:'research',lead_id:leadId,lead_data:ld}
+      ];
+      const taskResults = await Promise.all(tasks.map(t=>insertTask(t)));
+      return taskResults.some(Boolean);
     } catch(e){ console.warn('lead submit failed', e); return false; }
   }
   // Backup route so a lead is NEVER lost if Supabase is unreachable: emails the full

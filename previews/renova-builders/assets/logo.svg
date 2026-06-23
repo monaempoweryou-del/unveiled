@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 120" width="480" height="120">
+  <defs>
+    <style>
+      .logo-mark { fill: #B8934A; }
+      .logo-text-main { fill: #1C1C1E; font-family: 'Playfair Display', Georgia, serif; font-weight: 700; letter-spacing: 0.08em; }
+      .logo-text-sub { fill: #B8934A; font-family: 'DM Sans', 'Helvetica Neue', Arial, sans-serif; font-weight: 500; letter-spacing: 0.28em; font-size: 13px; }
+      .logo-divider { stroke: #B8934A; stroke-width: 1; }
+    </style>
+  </defs>
+
+  <!-- Icon mark: abstract roof/architectural gable shape -->
+  <g transform="translate(20, 18)">
+    <!-- Outer gable / roof line -->
+    <polyline points="0,52 40,8 80,52" fill="none" stroke="#B8934A" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
+    <!-- Inner gable / layered depth -->
+    <polyline points="10,52 40,18 70,52" fill="none" stroke="#1C1C1E" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    <!-- Keystone / apex dot -->
+    <circle cx="40" cy="8" r="4" fill="#B8934A"/>
+    <!-- Base line -->
+    <line x1="0" y1="52" x2="80" y2="52" stroke="#B8934A" stroke-width="3.5" stroke-linecap="round"/>
+  </g>
+
+  <!-- Vertical divider -->
+  <line x1="124" y1="22" x2="124" y2="98" stroke="#D4CFC8" stroke-width="1"/>
+
+  <!-- Wordmark -->
+  <text x="142" y="62" class="logo-text-main" font-size="38">RENOVA</text>
+  <text x="142" y="88" class="logo-text-sub">BUILDERS</text>
+</svg>
