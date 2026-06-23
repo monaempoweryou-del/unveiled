@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>הפעילו את העסק שלכם | UNVEILED</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root{
+      --cream:#FAF8F5; --cream2:#F2EEE8; --ink:#1C1917; --muted:#78716C; --border:#E5E0D8;
+      --violet:#6C3CE0; --violet2:#A855F7; --grad:linear-gradient(135deg,#6C3CE0,#8B5CF6);
+      --gradv:linear-gradient(120deg,#7C3AED,#A855F7); --dark:#0B0916;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Heebo','Inter',sans-serif;color:var(--ink);background:var(--cream);-webkit-font-smoothing:antialiased;direction:rtl;}
+    .wrap{max-width:1140px;margin:0 auto;padding:0 28px;}
+    h1,h2,h3,h4,.dn{font-family:'Heebo','Space Grotesk',sans-serif;}
+    .g{background:var(--gradv);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+    a{color:inherit;text-decoration:none;}
+
+    /* nav */
+    nav{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+      padding:16px 28px;background:rgba(250,248,245,0.82);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);}
+    nav .wm{height:26px}
+    nav .back{font-size:14px;color:var(--muted);font-weight:500}
+    nav .back:hover{color:var(--ink)}
+
+    /* hero */
+    .hero{position:relative;text-align:center;padding:74px 28px 30px;overflow:hidden;
+      background:radial-gradient(ellipse 60% 60% at 50% 0%, #F2EBFF 0%, transparent 60%), var(--cream);}
+    .pre{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.04em;
+      color:var(--violet);background:rgba(108,60,224,0.08);border:1px solid rgba(108,60,224,0.16);padding:7px 15px;border-radius:100px;margin-bottom:22px}
+    .pre .dot{width:7px;height:7px;border-radius:50%;background:var(--violet)}
+    .hero h1{font-size:clamp(32px,5vw,54px);font-weight:700;letter-spacing:-0.01em;line-height:1.2;margin-bottom:18px}
+    .hero p{font-size:clamp(16px,1.6vw,19px);color:var(--muted);max-width:620px;margin:0 auto;line-height:1.7}
+    .billing{display:inline-flex;margin-top:26px;background:#fff;border:1px solid var(--border);border-radius:100px;padding:5px;gap:4px}
+    .billing button{font-family:'Heebo','Space Grotesk';font-size:13px;font-weight:600;color:var(--muted);background:none;border:none;padding:9px 18px;border-radius:100px;cursor:pointer}
+    .billing button.on{background:var(--gradv);color:#fff}
+
+    /* pricing cards */
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:40px 28px 8px;max-width:1140px;margin:0 auto}
+    .paths{max-width:1140px;margin:0 auto;padding:34px 28px 8px;display:flex;flex-direction:column;gap:30px}
+    .pgroup-label{font-family:'Heebo','Space Grotesk',sans-serif;font-weight:700;font-size:13px;letter-spacing:.06em;color:var(--violet);margin-bottom:18px;display:flex;align-items:center;gap:12px;white-space:nowrap}
+    .pgroup-label .pl-sub{font-family:'Heebo','Inter',sans-serif;font-weight:500;font-size:12px;letter-spacing:0;color:var(--muted)}
+    .pgroup-label::after{content:'';flex:1;height:1px;background:linear-gradient(270deg,rgba(108,60,224,0.22),transparent)}
+    .pgroup-cards.two{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .pgroup-cards.three{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .pgroup-cards.one{display:grid;grid-template-columns:1fr;max-width:540px}
+    @media(max-width:900px){ .pgroup-cards.two,.pgroup-cards.three{grid-template-columns:1fr} .pgroup-cards.one{max-width:100%} .pgroup-label{white-space:normal} }
+    /* buyout add-ons */
+    .addons{display:none;margin-top:22px;background:#fff;border:1px solid var(--border);border-radius:22px;padding:28px 26px;max-width:620px}
+    .addons.open{display:block;animation:addfade .35s ease}
+    @keyframes addfade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+    .addons .ah{font-family:'Heebo','Space Grotesk';font-size:19px;font-weight:700;margin-bottom:6px}
+    .addons .asub{font-size:13.5px;color:var(--muted);line-height:1.7;margin-bottom:20px}
+    .aopt{position:relative;display:flex;align-items:flex-start;gap:14px;border:1.5px solid var(--border);border-radius:16px;padding:16px 18px;margin-bottom:12px;cursor:pointer;transition:border-color .2s,background .2s}
+    .aopt:hover{border-color:rgba(108,60,224,0.4)}
+    .aopt.sel{border-color:var(--violet);background:rgba(108,60,224,0.04)}
+    .aopt input{position:absolute;opacity:0;pointer-events:none}
+    .aopt .box{flex-shrink:0;width:22px;height:22px;border-radius:7px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;margin-top:1px;transition:background .2s,border-color .2s}
+    .aopt.sel .box{background:var(--gradv);border-color:transparent}
+    .aopt .box svg{width:12px;height:12px;stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:opacity .2s}
+    .aopt.sel .box svg{opacity:1}
+    .aopt .atext{flex:1}
+    .aopt .aname{font-family:'Heebo','Space Grotesk';font-weight:600;font-size:15px;display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+    .aopt .aprice{color:var(--violet);font-weight:700;white-space:nowrap;direction:ltr;unicode-bidi:embed}
+    .aopt .adesc{font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:4px}
+    .asum{display:flex;justify-content:space-between;align-items:baseline;border-top:1px dashed var(--border);margin-top:8px;padding-top:18px}
+    .asum .al{font-size:13px;color:var(--muted)}
+    .asum .av{font-family:'Heebo','Space Grotesk';font-size:17px;font-weight:700;direction:ltr;unicode-bidi:embed}
+    .asum .av small{font-size:13px;color:var(--muted);font-weight:500}
+    .addons .acta{margin-top:18px}
+    .card{position:relative;background:#fff;border:1px solid var(--border);border-radius:22px;padding:30px 26px;display:flex;flex-direction:column;transition:transform .3s,box-shadow .3s}
+    .card:hover{transform:translateY(-4px);box-shadow:0 24px 60px rgba(108,60,224,0.10)}
+    .card.rec{border:1.5px solid rgba(108,60,224,0.5);box-shadow:0 30px 70px rgba(108,60,224,0.16);transform:scale(1.03)}
+    .card.rec:hover{transform:scale(1.03) translateY(-4px)}
+    .badge{position:absolute;top:-13px;right:50%;transform:translateX(50%);font-family:'Heebo','Space Grotesk';font-size:11px;font-weight:700;letter-spacing:.08em;color:#fff;background:var(--gradv);padding:6px 16px;border-radius:100px;box-shadow:0 8px 20px rgba(108,60,224,0.35)}
+    .tier{font-family:'Heebo','Space Grotesk';font-size:14px;font-weight:700;letter-spacing:.05em;color:var(--violet);margin-bottom:6px}
+    .tline{font-size:13.5px;color:var(--muted);min-height:38px;margin-bottom:18px}
+    .price{display:flex;align-items:baseline;gap:6px;margin-bottom:4px}
+    .price .amt{font-family:'Space Grotesk';font-size:42px;font-weight:700;letter-spacing:-0.02em;direction:ltr;unicode-bidi:embed}
+    .price .per{font-size:14px;color:var(--muted)}
+    .setup{font-size:13px;color:var(--muted);margin-bottom:20px}
+    .setup b{color:var(--ink);font-weight:600}
+    .feat{list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:24px;flex:1}
+    .feat li{display:flex;gap:10px;font-size:14px;color:#3f3a44;line-height:1.5}
+    .feat .ic{flex-shrink:0;width:19px;height:19px;border-radius:50%;background:rgba(108,60,224,0.10);display:flex;align-items:center;justify-content:center;margin-top:1px}
+    .feat .ic svg{width:11px;height:11px;stroke:var(--violet);stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
+    .feat li.head{font-weight:600;color:var(--ink);gap:0;margin-top:2px}
+    .btn{font-family:'Heebo','Space Grotesk';font-weight:700;font-size:15px;text-align:center;padding:15px;border-radius:13px;cursor:pointer;border:none;transition:transform .2s,box-shadow .2s;width:100%}
+    .btn.primary{background:var(--gradv);color:#fff;box-shadow:0 10px 26px rgba(108,60,224,0.32)}
+    .btn.primary:hover{transform:translateY(-1px);box-shadow:0 14px 32px rgba(108,60,224,0.42)}
+    .btn.ghost{background:#fff;color:var(--ink);border:1.5px solid var(--border)}
+    .btn.ghost:hover{border-color:var(--violet);color:var(--violet)}
+    .note{text-align:center;font-size:13px;color:var(--muted);margin-top:12px}
+
+    /* trust strip */
+    .strip{display:flex;flex-wrap:wrap;justify-content:center;gap:26px;padding:30px 28px 6px;font-size:13.5px;color:var(--muted)}
+    .strip span{display:flex;align-items:center;gap:8px}
+    .strip .ck{width:18px;height:18px;border-radius:50%;background:#10B981;color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800}
+
+    /* machine framing */
+    .machine{margin:64px 0;padding:60px 0;background:radial-gradient(ellipse 70% 80% at 50% 30%, #241B46 0%, #160F2E 55%, #0B0916 100%);color:#fff;position:relative;overflow:hidden}
+    .machine h2{text-align:center;font-size:clamp(26px,3.4vw,40px);font-weight:700;letter-spacing:-0.01em;margin-bottom:14px}
+    .machine .sub{text-align:center;color:rgba(232,224,252,0.62);max-width:580px;margin:0 auto 40px;font-size:16px;line-height:1.7}
+    .mgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    .mcell{background:rgba(255,255,255,0.04);border:1px solid rgba(168,130,250,0.16);border-radius:16px;padding:22px 18px}
+    .mcell .mi{width:40px;height:40px;border-radius:11px;background:linear-gradient(160deg,rgba(124,70,235,0.4),rgba(168,85,247,0.16));display:flex;align-items:center;justify-content:center;margin-bottom:13px}
+    .mcell .mi svg{width:21px;height:21px;stroke:#D8C9FF;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+    .mcell h4{font-size:15px;font-weight:600;margin-bottom:6px}
+    .mcell p{font-size:12.5px;color:rgba(255,255,255,0.5);line-height:1.6}
+
+    /* comparison */
+    .cmp{padding:8px 0 10px}
+    .cmp h2{text-align:center;font-size:clamp(26px,3.2vw,38px);font-weight:700;letter-spacing:-0.01em;margin-bottom:8px}
+    .cmp .csub{text-align:center;color:var(--muted);margin-bottom:34px;font-size:16px}
+    .tbl{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--border);border-radius:18px;overflow:hidden}
+    .tbl th,.tbl td{padding:15px 18px;text-align:center;font-size:14px;border-bottom:1px solid var(--border)}
+    .tbl th{font-family:'Heebo','Space Grotesk';font-weight:700;font-size:13px}
+    .tbl thead th{background:var(--cream2)}
+    .tbl thead th.rec{background:linear-gradient(180deg,rgba(108,60,224,0.10),transparent);color:var(--violet)}
+    .tbl td:first-child,.tbl th:first-child{text-align:right;color:var(--ink);font-weight:500;font-family:'Heebo','Inter'}
+    .tbl tr:last-child td{border-bottom:none}
+    .tbl .ckc{color:var(--violet);font-weight:800}
+    .tbl .dash{color:#C8C2BC}
+    .tbl .lab{font-size:12px;font-weight:600;color:var(--violet)}
+    .tbl .grp td{background:var(--cream);font-family:'Heebo','Space Grotesk';font-weight:700;font-size:12px;letter-spacing:.04em;color:var(--muted);text-align:right}
+
+    /* upgrade + faq */
+    .band{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:56px 0}
+    .bcard{background:#fff;border:1px solid var(--border);border-radius:18px;padding:30px}
+    .bcard h3{font-size:20px;font-weight:700;margin-bottom:10px}
+    .bcard p{font-size:14.5px;color:var(--muted);line-height:1.7}
+    .faq{margin:48px 0 60px}
+    .faq h2{text-align:center;font-size:clamp(26px,3.2vw,38px);font-weight:700;margin-bottom:34px}
+    .q{background:#fff;border:1px solid var(--border);border-radius:14px;margin-bottom:12px;overflow:hidden}
+    .q summary{list-style:none;cursor:pointer;padding:20px 24px;font-family:'Heebo','Space Grotesk';font-weight:600;font-size:16px;display:flex;justify-content:space-between;align-items:center}
+    .q summary::-webkit-details-marker{display:none}
+    .q summary .pm{color:var(--violet);font-size:22px;font-weight:400;transition:transform .2s}
+    .q[open] summary .pm{transform:rotate(45deg)}
+    .q .a{padding:0 24px 22px;font-size:14.5px;color:var(--muted);line-height:1.7}
+
+    /* final cta */
+    .fin{text-align:center;padding:70px 28px;background:radial-gradient(ellipse 60% 80% at 50% 0%, #F2EBFF, transparent 60%), var(--cream)}
+    .fin h2{font-size:clamp(28px,3.6vw,44px);font-weight:700;letter-spacing:-0.01em;margin-bottom:14px}
+    .fin p{color:var(--muted);max-width:520px;margin:0 auto 28px;font-size:16px;line-height:1.7}
+    .foot{text-align:center;padding:30px;color:var(--muted);font-size:13px;border-top:1px solid var(--border)}
+
+    /* activation overlay */
+    .ov{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(11,9,22,0.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+    .ov.open{display:flex}
+    .sheet{width:100%;max-width:460px;background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,0.4)}
+    .sheet-top{padding:22px 26px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+    .sheet-top .wm{height:20px}
+    .sheet-top .x{cursor:pointer;color:var(--muted);font-size:22px;line-height:1;background:none;border:none}
+    .sheet-bd{padding:26px}
+    .view{display:none}.view.on{display:block}
+    .ordr{background:var(--cream);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin-bottom:20px}
+    .ordr .r{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;margin-bottom:8px}
+    .ordr .r:last-child{margin-bottom:0;padding-top:10px;border-top:1px dashed var(--border);font-weight:700;font-family:'Heebo','Space Grotesk'}
+    .ordr .r .mut{color:var(--muted)}
+    .step-h{font-family:'Heebo','Space Grotesk';font-size:21px;font-weight:700;margin-bottom:6px}
+    .step-p{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px}
+    .secure{display:flex;align-items:center;gap:8px;justify-content:center;font-size:12px;color:var(--muted);margin-top:14px}
+    .conf-ic{width:74px;height:74px;border-radius:50%;background:linear-gradient(150deg,#10B981,#0EA372);display:flex;align-items:center;justify-content:center;margin:6px auto 18px}
+    .conf-ic svg{width:38px;height:38px;stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
+    .next{list-style:none;text-align:right;margin:18px 0 4px;display:flex;flex-direction:column;gap:14px}
+    .next li{display:flex;gap:12px;font-size:14px;color:#3f3a44;line-height:1.5}
+    .next .n{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:rgba(108,60,224,0.10);color:var(--violet);font-family:'Space Grotesk';font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+
+    /* LTR for prices and numbers */
+    .price-ltr{direction:ltr;unicode-bidi:embed;display:inline-block}
+
+    @media(max-width:900px){
+      .cards{grid-template-columns:1fr;max-width:440px}
+      .card.rec{transform:none;order:-1}.card.rec:hover{transform:translateY(-4px)}
+      .mgrid{grid-template-columns:1fr 1fr}
+      .band{grid-template-columns:1fr}
+      .tbl{font-size:12px}.tbl th,.tbl td{padding:12px 10px}
+      .cmp{overflow-x:auto}
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <img class="wm" src="../wordmark-dark.png" alt="UNVEILED" />
+    <a class="back" href="index.html">חזרה ל-UNVEILED &rarr;</a>
+  </nav>
+
+  <!-- POSITIONING -->
+  <header class="hero">
+    <div class="pre"><span class="dot"></span> האתר שלכם כבר מוכן</div>
+    <h1>עכשיו תבחרו איך אתם רוצים<br /><span class="g">לעבוד עם UNVEILED.</span></h1>
+    <p>החלק הקשה מאחוריכם. כבר ראיתם את האתר שלכם. אין כאן קנייה בעיניים עצומות. נשארה רק החלטה אחת: כמה מהמערכת אתם רוצים שתעבוד בשבילכם, ואם אנחנו מפעילים אותה או שאתם לוקחים בעלות מלאה.</p>
+  </header>
+
+  <!-- PRICING -->
+  <section class="paths">
+    <div class="pgroup">
+    <div class="pgroup-label">עבודה חודשית <span class="pl-sub">אנחנו מארחים, מתחזקים ומפעילים בשבילכם</span></div>
+    <div class="pgroup-cards three">
+    <div class="card">
+      <div class="tier">השקת אתר</div>
+      <div class="tline">״אני רוצה את האתר, לא את כל המערכת.״ חי, מאוחסן ומטופל על ידינו.</div>
+      <div class="price"><span class="amt" dir="ltr">$297</span><span class="per">/לחודש</span></div>
+      <div class="setup">האתר שכבר ראיתם, רץ ומתוחזק. ביטול בכל עת.</div>
+      <ul class="feat">
+        <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>האתר שבנינו לכם, באוויר</li>
+        <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>אחסון ואבטחת SSL</li>
+        <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>תחזוקה ועדכונים שוטפים</li>
+        <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>ניהול דומיין</li>
+        <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>תמיכה שוטפת באתר</li>
+      </ul>
+      <button class="btn ghost" data-plan="השקת אתר" data-price="$297/לחודש">השיקו את האתר שלי</button>
+    </div>
+
+    <div class="card">
+      <div class="tier">נראות</div>
+      <div class="tline">״אני רוצה שימצאו אותי ושאהיה מול הלקוחות.״ האתר שלכם, עובד כדי לזכות בתשומת לב.</div>
+      <div class="price"><span class="amt" dir="ltr">$597</span><span class="per">/לחודש</span></div>
+      <div class="setup">הכל מה שב-השקת אתר, בתוספת נראות חודשית. ביטול בכל עת.</div>
+      <ul class="feat">
+        <li class="head">הכל מה שב-השקת אתר, ובנוסף:</li>
+        <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>שירותי SEO חודשיים</li>
+        <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>פרסום בלוג חודשי</li>
+        <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>אופטימיזציה לפרופיל העסק בגוגל</li>
+      </ul>
+      <button class="btn ghost" data-plan="נראות" data-price="$597/לחודש">שיימצאו אתכם</button>
+    </div>
+
+    <div class="card rec">
+      <div class="badge">מומלץ</div>
+      <div class="tier">מכונת צמיחה</div>
+      <div class="tline">״אני רוצה את האתר ואת המערכת המלאה שעובדת בשבילי.״ פה זה מתחיל לעבוד באמת.</div>
+      <div class="price"><span class="amt" dir="ltr">$1,297</span><span class="per">/לחודש</span></div>
+      <div class="setup">הכל מה שב-נראות, באוטומציה מלאה. ביטול בכל עת.</div>
+      <ul class="feat">
+        <li class="head">הכל מה שב-נראות, ובנוסף:</li>
+        <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>עוזר AI שעובד בשביל העסק שלכם</li>
+        <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>אוטומציית SMS וזימון תורים אונליין</li>
+        <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>מעקב אוטומטי אחרי כל ליד</li>
+        <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>CRM וניהול לידים</li>
+        <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>אוטומציה עסקית, 24/7</li>
+      </ul>
+      <button class="btn primary" data-plan="מכונת צמיחה" data-price="$1,297/לחודש">הפעילו את המכונה</button>
+    </div>
+    </div>
+    </div>
+
+    <div class="pgroup">
+    <div class="pgroup-label">או בעלות מלאה <span class="pl-sub">רכישה חד-פעמית, בלי מנוי</span></div>
+    <div class="pgroup-cards one">
+    <div class="card">
+      <div class="tier">בעלות לצמיתות</div>
+      <div class="tline">״אני רוצה להיות הבעלים המלא של האתר.״ שלכם לגמרי, בלי מנוי.</div>
+      <div class="price"><span class="amt" dir="ltr">$2,997</span><span class="per">חד-פעמי</span></div>
+      <div class="setup">קנו את האתר שלכם בבעלות מלאה. הוסיפו שירותים אופציונליים למטה &mdash; או בכלל לא.</div>
+      <ul class="feat">
+        <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>בעלות מלאה על האתר</li>
+        <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>העברת אחסון &mdash; קחו אותו לאן שתרצו</li>
+        <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>העברת דומיין</li>
+        <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>שליטה מלאה, בלי תשלום חודשי</li>
+        <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>שירותים אופציונליים שתוכלו להוסיף, במחיר לבעלים</li>
+      </ul>
+      <button class="btn ghost" id="buyoutBtn">קנו את האתר שלי</button>
+    </div>
+    </div>
+
+    <!-- post-buyout optional add-ons (revealed only after choosing the buyout) -->
+    <div class="addons" id="addons">
+      <div class="ah">הוסיפו שירותים שוטפים לאתר שבבעלותכם</div>
+      <div class="asub">אופציונלי. האתר כבר בבעלותכם, ולכן השירותים האלה במחיר לבעלים ומחויבים חודש-חודש. בחרו כמה שתרצו, את כולם או אף אחד &mdash; וביטול בכל עת.</div>
+      <label class="aopt" data-addon="תחזוקה" data-mo="97">
+        <input type="checkbox" />
+        <span class="box"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>
+        <span class="atext">
+          <span class="aname">תוכנית תחזוקה <span class="aprice">+$97/חודש</span></span>
+          <span class="adesc">אחסון, אבטחת SSL, תחזוקה, עדכונים שוטפים ותמיכה. אנחנו דואגים שהאתר שלכם ימשיך לרוץ.</span>
+        </span>
+      </label>
+      <label class="aopt" data-addon="נראות" data-mo="397">
+        <input type="checkbox" />
+        <span class="box"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>
+        <span class="atext">
+          <span class="aname">נראות <span class="aprice">+$397/חודש</span></span>
+          <span class="adesc">SEO חודשי, פרסום בלוג חודשי ואופטימיזציה לפרופיל העסק בגוגל. שימצאו אתכם בכל מקום.</span>
+        </span>
+      </label>
+      <label class="aopt" data-addon="מכונת צמיחה" data-mo="897">
+        <input type="checkbox" />
+        <span class="box"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>
+        <span class="atext">
+          <span class="aname">מכונת צמיחה <span class="aprice">+$897/חודש</span></span>
+          <span class="adesc">עוזר AI, אוטומציית SMS וזימון תורים אונליין, מעקב אוטומטי, CRM וניהול לידים, ואוטומציה עסקית 24/7.</span>
+        </span>
+      </label>
+      <div class="asum">
+        <span class="al">לתשלום היום<span id="aMoLabel"></span></span>
+        <span class="av">$2,997 <small id="aMo"></small></span>
+      </div>
+      <button class="btn primary acta" id="addonContinue">המשיכו לתשלום מאובטח</button>
+    </div>
+    </div>
+  </section>
+
+  <div class="strip">
+    <span><span class="ck">&#10003;</span> כבר ראיתם את האתר שלכם</span>
+    <span><span class="ck">&#10003;</span> מנויים חודשיים: ביטול בכל עת</span>
+    <span><span class="ck">&#10003;</span> שום עבודה לא מתחילה עד שתבחרו</span>
+  </div>
+
+  <!-- MACHINE FRAMING -->
+  <section class="machine">
+    <div class="wrap">
+      <h2>אתם לא קונים אתר. <span class="g">אתם מפעילים מערכת.</span></h2>
+      <p class="sub">האתר הוא מה שרואים מבחוץ. מתחת לפני השטח, המערכת ממשיכה לעבוד: דואגת שימצאו אתכם, בונה אמון, ולא נותנת לאף ליד ליפול.</p>
+      <div class="mgrid">
+        <div class="mcell"><div class="mi"><svg viewBox="0 0 24 24"><path d="M12 22s7-5.6 7-12a7 7 0 1 0-14 0c0 6.4 7 12 7 12z"/><circle cx="12" cy="10" r="2.5" fill="#D8C9FF" stroke="none"/></svg></div><h4>שימצאו אתכם</h4><p>חיפוש, מפות ותוצאות AI &mdash; בכל מקום שהלקוחות מחפשים.</p></div>
+        <div class="mcell"><div class="mi"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8.5L4 20z"/><path d="M8 9.5h8M8 12.5h5"/></svg></div><h4>תקשורת</h4><p>אימייל, לכידת לידים ומעקב שלא מפספס אף אחד.</p></div>
+        <div class="mcell"><div class="mi"><svg viewBox="0 0 24 24"><path d="M20 9.5a8 8 0 0 0-14.5-3"/><path d="M4 14.5a8 8 0 0 0 14.5 3"/><path d="M5 3v3.6h3.6M19 21v-3.6h-3.6"/></svg></div><h4>אוטומציה</h4><p>זימון תורים, תזכורות ותהליכים שרצים לבד.</p></div>
+        <div class="mcell"><div class="mi"><svg viewBox="0 0 24 24"><path d="M3 17l5.5-5.5 4 3L21 6"/><path d="M16 6h5v5"/></svg></div><h4>צמיחה</h4><p>מוניטין ואופטימיזציה שצוברים תאוצה חודש אחרי חודש.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARISON -->
+  <section class="cmp wrap">
+    <h2>השוו מה כלול בכל מסלול</h2>
+    <p class="csub">התחילו מאיפה שנוח לכם. תוסיפו עוד מהמערכת מתי שתרצו.</p>
+    <table class="tbl">
+      <thead><tr><th>&nbsp;</th><th>השקת אתר</th><th>נראות</th><th class="rec">מכונת צמיחה</th><th>בעלות לצמיתות</th></tr></thead>
+      <tbody>
+        <tr><td>איך זה עובד</td><td class="lab">אנחנו מפעילים</td><td class="lab">מפעילים ומצמיחים</td><td class="lab">מפעילים את המערכת המלאה</td><td class="lab">בבעלותכם</td></tr>
+        <tr><td>מחיר</td><td><span dir="ltr">$297</span>/חודש</td><td><span dir="ltr">$597</span>/חודש</td><td><span dir="ltr">$1,297</span>/חודש</td><td><span dir="ltr">$2,997</span> חד-פעמי</td></tr>
+        <tr class="grp"><td colspan="5">האתר</td></tr>
+        <tr><td>האתר שבנינו לכם</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td></tr>
+        <tr><td>אחסון ואבטחת SSL</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="lab">מועבר אליכם</td></tr>
+        <tr><td>תחזוקה ועדכונים</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="lab">תוספת</td></tr>
+        <tr><td>ניהול דומיין</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="lab">מועבר אליכם</td></tr>
+        <tr><td>תמיכה שוטפת באתר</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="lab">תוספת</td></tr>
+        <tr class="grp"><td colspan="5">נראות ותוכן</td></tr>
+        <tr><td>שירותי SEO חודשיים</td><td class="dash">&ndash;</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="lab">תוספת</td></tr>
+        <tr><td>פרסום בלוג חודשי</td><td class="dash">&ndash;</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="lab">תוספת</td></tr>
+        <tr><td>אופטימיזציה לפרופיל העסק בגוגל</td><td class="dash">&ndash;</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="lab">תוספת</td></tr>
+        <tr class="grp"><td colspan="5">המערכת</td></tr>
+        <tr><td>עוזר AI</td><td class="dash">&ndash;</td><td class="dash">&ndash;</td><td class="ckc">&#10003;</td><td class="lab">תוספת</td></tr>
+        <tr><td>אוטומציית SMS וזימון תורים</td><td class="dash">&ndash;</td><td class="dash">&ndash;</td><td class="ckc">&#10003;</td><td class="lab">תוספת</td></tr>
+        <tr><td>מעקב אוטומטי אחרי לידים</td><td class="dash">&ndash;</td><td class="dash">&ndash;</td><td class="ckc">&#10003;</td><td class="lab">תוספת</td></tr>
+        <tr><td>CRM וניהול לידים</td><td class="dash">&ndash;</td><td class="dash">&ndash;</td><td class="ckc">&#10003;</td><td class="lab">תוספת</td></tr>
+        <tr><td>אוטומציה עסקית 24/7</td><td class="dash">&ndash;</td><td class="dash">&ndash;</td><td class="ckc">&#10003;</td><td class="lab">תוספת</td></tr>
+        <tr class="grp"><td colspan="5">בעלות</td></tr>
+        <tr><td>מנוי חודשי</td><td><span dir="ltr">$297</span>/חודש</td><td><span dir="ltr">$597</span>/חודש</td><td><span dir="ltr">$1,297</span>/חודש</td><td class="lab">אין</td></tr>
+        <tr><td>בעלות מלאה על האתר</td><td class="dash">&ndash;</td><td class="dash">&ndash;</td><td class="dash">&ndash;</td><td class="ckc">&#10003;</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- UPGRADE PATH + RISK REVERSAL -->
+  <section class="wrap band">
+    <div class="bcard">
+      <h3>התחילו מאיפה שנוח. גדלו מתי שתרצו.</h3>
+      <p>התחילו עם השקת אתר כדי לעלות לאוויר, ותוסיפו את המערכת כשתהיו מוכנים. שדרוג בלחיצה אחת &mdash; האתר, התוכן וכל המידע על הלקוחות שלכם עוברים איתכם. לא בונים מחדש, פשוט מדליקים עוד.</p>
+    </div>
+    <div class="bcard">
+      <h3>אפס סיכון. ככה זה מתוכנן.</h3>
+      <p>כבר ראיתם את האתר שלכם לפני ששילמתם שקל. המנויים החודשיים הם חודש-חודש בלי חוזה, וביטול בכל רגע. אם משהו לא בסדר, אנחנו מתקנים.</p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="wrap faq">
+    <h2>שאלות ותשובות</h2>
+    <details class="q"><summary>צריך לשלם רק כדי לראות את האתר?<span class="pm">+</span></summary><div class="a">לא. כבר ראיתם את האתר האמיתי שלכם, בחינם. אתם בוחרים מסלול רק כשרוצים להעלות אותו לאוויר.</div></details>
+    <details class="q"><summary>מה ההבדל בין ארבע האפשרויות?<span class="pm">+</span></summary><div class="a">שלוש חודשיות, שבהן אנחנו מפעילים לכם את האתר: <b>השקת אתר</b> שומר את האתר חי ומתוחזק, <b>נראות</b> מוסיפה SEO חודשי, פרסום בלוג ואופטימיזציה לפרופיל העסק בגוגל כדי שימצאו אתכם, ו<b>מכונת צמיחה</b> מוסיפה את האוטומציה המלאה: עוזר AI, SMS וזימון תורים, מעקב אוטומטי ו-CRM שפעילים מביאים ועוקבים אחרי לקוחות. <b>בעלות לצמיתות</b> היא רכישה חד-פעמית: אתם קונים את האתר ואנחנו מעבירים אליכם הכל, בלי מנוי &mdash; ועדיין אפשר להוסיף כל אחד מהשירותים האלה כתוספת.</div></details>
+    <details class="q"><summary>למה שלוש אפשרויות חודשיות ואחת חד-פעמית?<span class="pm">+</span></summary><div class="a">המסלולים החודשיים הם מערכת יחסים שוטפת: אנחנו מארחים, מתחזקים, ובנראות ובמכונת צמיחה גם מצמיחים את העסק בשבילכם כל חודש. בעלות לצמיתות היא רכישה, לא מערכת יחסים: אתם הבעלים של הנכס ומפעילים אותו לבד, עם שירותים אופציונליים שזמינים מתי שתרצו.</div></details>
+    <details class="q"><summary>קניתי את האתר בבעלות מלאה. עדיין אפשר להוסיף שירותים?<span class="pm">+</span></summary><div class="a">כן. אחרי שהאתר בבעלותכם, אפשר להוסיף כל אחד משלושה שירותים חודש-חודש, במחיר לבעלים כי הבנייה כבר שלכם: <b>תוכנית תחזוקה</b> (<span dir="ltr">$97</span>/חודש) לאחסון, תחזוקה ותמיכה; <b>נראות</b> (<span dir="ltr">$397</span>/חודש) ל-SEO, פרסום בלוג ופרופיל העסק בגוגל; ו<b>מכונת צמיחה</b> (<span dir="ltr">$897</span>/חודש) לאוטומציה המלאה, ה-CRM והמעקב. בחרו כמה שתרצו, את כולם או אף אחד, וביטול בכל עת.</div></details>
+    <details class="q"><summary>מה קורה אחרי שלוחצים על הפעלה?<span class="pm">+</span></summary><div class="a">אתם מאשרים את המסלול ומשלימים תשלום מאובטח, ואז אנחנו מחברים את הדומיין ומעלים את האתר לאוויר, בדרך כלל תוך 24 עד 48 שעות. לבעלות לצמיתות, אתם משלימים תשלום חד-פעמי (בתוספת כל שירות שבחרתם) ואנחנו מעבירים אליכם את הבעלות על האתר, האחסון והדומיין.</div></details>
+    <details class="q"><summary>אפשר לשנות אחר כך?<span class="pm">+</span></summary><div class="a">כן. תתחילו עם השקת אתר ותוסיפו את המערכת מתי שתרצו. שום דבר לא נבנה מחדש, האתר והמידע עוברים איתכם.</div></details>
+    <details class="q"><summary>יש חוזה?<span class="pm">+</span></summary><div class="a">לא. המנויים החודשיים הם חודש-חודש. ביטול בכל עת.</div></details>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="fin">
+    <h2>מוכנים להפוך את זה <span class="g">לשלכם?</span></h2>
+    <p>כבר ראיתם איך העסק שלכם יכול להיראות. בחרו את המסלול שמתאים לכם, ואנחנו ניקח מפה.</p>
+    <button class="btn primary" style="max-width:320px;margin:0 auto" data-plan="מכונת צמיחה" data-price="$1,297/לחודש">הפעילו את המכונה &larr;</button>
+  </section>
+
+  <div class="foot">&copy; 2026 UNVEILED &middot; תשלום מאובטח &middot; ביטול בכל עת</div>
+
+  <!-- ACTIVATION / PAYMENT / CONFIRMATION FLOW -->
+  <div class="ov" id="ov">
+    <div class="sheet">
+      <div class="sheet-top"><img class="wm" src="../wordmark-dark.png" alt="UNVEILED" /><button class="x" id="ovx">&times;</button></div>
+      <div class="sheet-bd">
+        <!-- 1. order summary -->
+        <div class="view on" id="v1">
+          <div class="step-h">הפעילו את העסק שלכם</div>
+          <div class="step-p">אתם צעד אחד מלהפעיל את האתר והמערכת לטובת העסק שלכם.</div>
+          <div class="ordr">
+            <div class="r"><span class="mut">מסלול</span><span id="o-plan">מכונת צמיחה</span></div>
+            <div class="r"><span class="mut">חיוב</span><span id="o-price">$1,297/לחודש</span></div>
+            <div class="r" id="o-mo-row" style="display:none"><span class="mut">ואז חודשי</span><span id="o-mo">&mdash;</span></div>
+            <div class="r"><span>לתשלום היום</span><span id="o-due">$1,297</span></div>
+          </div>
+          <button class="btn primary" id="toPay">המשיכו לתשלום מאובטח</button>
+          <div class="secure"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#78716C" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> תשלום מאובטח 256-bit</div>
+        </div>
+        <!-- 2. payment handoff -->
+        <div class="view" id="v2">
+          <div class="step-h">תשלום מאובטח</div>
+          <div class="step-p">לאבטחתכם, התשלום מתבצע דרך מערכת הסליקה המאובטחת שלנו. תאשרו את הפרטים ותשלימו את ההפעלה שם.</div>
+          <button class="btn primary" id="payNow">שלמו והפעילו &larr;</button>
+          <div class="secure">מופעל על ידי Stripe או Square &middot; תקן PCI</div>
+        </div>
+        <!-- 3. confirmation -->
+        <div class="view" id="v3">
+          <div class="conf-ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></div>
+          <div class="step-h" id="cf-h" style="text-align:center">הופעלתם.</div>
+          <div class="step-p" id="cf-p" style="text-align:center">ברוכים הבאים ל-UNVEILED. העסק שלכם רשמית בתנועה.</div>
+          <ul class="next">
+            <li><span class="n">1</span><span id="cf-n1"><b>בדקו את המייל.</b> אישור וקבלה בדרך אליכם.</span></li>
+            <li><span class="n">2</span><span id="cf-n2"><b>אנחנו מעלים לאוויר.</b> מחברים את הדומיין ומשיקים את האתר תוך 24&ndash;48 שעות.</span></li>
+            <li><span class="n">3</span><span id="cf-n3"><b>המערכת נדלקת.</b> נראות, לכידת לידים ומעקב מתחילים לעבוד בשבילכם.</span></li>
+            <li id="cf-l4"><span class="n">4</span><span id="cf-n4"><b>תשמעו מאיתנו.</b> העדכון הראשון מגיע בקרוב, בלי שתצטרכו לרדוף.</span></li>
+          </ul>
+          <button class="btn ghost" id="ovDone" style="margin-top:18px">סיום</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var ov=document.getElementById('ov');
+    var isQuote=false, buyoutMode=false;
+    function show(id){['v1','v2','v3'].forEach(function(v){document.getElementById(v).classList.toggle('on',v===id);});}
+    function due(price){ if(/החל מ/.test(price)) return 'הצעת מחיר'; var mo=(price.match(/\$(\d[\d,]*)/)||[])[1]; return mo?('$'+mo):'—'; }
+    function setConfirm(){
+      var n1=document.getElementById('cf-n1'), n2=document.getElementById('cf-n2'), n3=document.getElementById('cf-n3');
+      if(buyoutMode){
+        document.getElementById('cf-h').textContent='האתר שלכם.';
+        document.getElementById('cf-p').textContent='ברוכים הבאים ל-UNVEILED. האתר רשמית בבעלותכם.';
+        n1.innerHTML='<b>בדקו את המייל.</b> הקבלה ופרטי הבעלות בדרך אליכם.';
+        n2.innerHTML='<b>אנחנו מעבירים הכל.</b> אחסון ודומיין עוברים אליכם תוך 24–48 שעות.';
+        n3.innerHTML='<b>התוספות נדלקות.</b> כל שירות שבחרתם מתחיל לעבוד מיד.';
+        document.getElementById('cf-l4').style.display='none';
+      } else {
+        document.getElementById('cf-h').textContent='הופעלתם.';
+        document.getElementById('cf-p').textContent='ברוכים הבאים ל-UNVEILED. העסק שלכם רשמית בתנועה.';
+        n1.innerHTML='<b>בדקו את המייל.</b> אישור וקבלה בדרך אליכם.';
+        n2.innerHTML='<b>אנחנו מעלים לאוויר.</b> מחברים את הדומיין ומשיקים תוך 24–48 שעות.';
+        n3.innerHTML='<b>המערכת נדלקת.</b> נראות, לכידת לידים ומעקב מתחילים לעבוד.';
+        document.getElementById('cf-l4').style.display='';
+      }
+    }
+    document.querySelectorAll('[data-plan]').forEach(function(b){
+      b.addEventListener('click',function(){
+        isQuote=false; buyoutMode=false;
+        document.getElementById('o-plan').textContent=b.dataset.plan;
+        document.getElementById('o-price').textContent=b.dataset.price;
+        document.getElementById('o-mo-row').style.display='none';
+        document.getElementById('o-due').textContent=due(b.dataset.price);
+        document.getElementById('toPay').textContent='המשיכו לתשלום מאובטח';
+        show('v1'); ov.classList.add('open');
+      });
+    });
+
+    /* buyout add-ons: reveal after choosing the buyout, then compose the order */
+    var buyoutBtn=document.getElementById('buyoutBtn');
+    var addons=document.getElementById('addons');
+    if(buyoutBtn){ buyoutBtn.addEventListener('click',function(){ addons.classList.add('open'); addons.scrollIntoView({behavior:'smooth',block:'center'}); }); }
+    function recalcAddons(){
+      var mo=0, names=[];
+      document.querySelectorAll('.aopt').forEach(function(o){
+        var cb=o.querySelector('input');
+        if(cb.checked){ o.classList.add('sel'); mo+=parseInt(o.dataset.mo,10); names.push(o.dataset.addon); }
+        else o.classList.remove('sel');
+      });
+      document.getElementById('aMo').textContent = mo>0 ? ('+ $'+mo.toLocaleString()+'/חודש') : '';
+      document.getElementById('aMoLabel').textContent = mo>0 ? ' · ואז חודשי' : '';
+      return {mo:mo,names:names};
+    }
+    document.querySelectorAll('.aopt input').forEach(function(cb){ cb.addEventListener('change',recalcAddons); });
+    var addonContinue=document.getElementById('addonContinue');
+    if(addonContinue){ addonContinue.addEventListener('click',function(){
+      var a=recalcAddons();
+      isQuote=false; buyoutMode=true;
+      document.getElementById('o-plan').textContent='בעלות לצמיתות'+(a.names.length?(' + '+a.names.join(' + ')):'');
+      document.getElementById('o-price').textContent='$2,997 חד-פעמי'+(a.mo>0?(' + $'+a.mo.toLocaleString()+'/חודש'):'');
+      var moRow=document.getElementById('o-mo-row');
+      if(a.mo>0){ moRow.style.display='flex'; document.getElementById('o-mo').textContent='$'+a.mo.toLocaleString()+'/חודש'; }
+      else moRow.style.display='none';
+      document.getElementById('o-due').textContent='$2,997';
+      document.getElementById('toPay').textContent='המשיכו לתשלום מאובטח';
+      show('v1'); ov.classList.add('open');
+    }); }
+
+    document.getElementById('toPay').addEventListener('click',function(){ show('v2'); });
+    document.getElementById('payNow').addEventListener('click',function(){ setConfirm(); show('v3'); });
+    function close(){ov.classList.remove('open');}
+    document.getElementById('ovx').addEventListener('click',close);
+    document.getElementById('ovDone').addEventListener('click',close);
+    ov.addEventListener('click',function(e){if(e.target===ov)close();});
+    document.querySelectorAll('.q').forEach(function(q){q.addEventListener('toggle',function(){if(q.open){document.querySelectorAll('.q').forEach(function(o){if(o!==q)o.open=false;});}});});
+  </script>
+</body>
+</html>

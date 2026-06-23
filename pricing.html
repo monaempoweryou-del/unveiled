@@ -48,8 +48,32 @@
     .pgroup-label .pl-sub{font-family:'Inter',sans-serif;font-weight:500;font-size:12px;letter-spacing:0;text-transform:none;color:var(--muted)}
     .pgroup-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(108,60,224,0.22),transparent)}
     .pgroup-cards.two{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .pgroup-cards.three{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
     .pgroup-cards.one{display:grid;grid-template-columns:1fr;max-width:540px}
-    @media(max-width:900px){ .pgroup-cards.two{grid-template-columns:1fr} .pgroup-cards.one{max-width:100%} .pgroup-label{white-space:normal} }
+    @media(max-width:900px){ .pgroup-cards.two,.pgroup-cards.three{grid-template-columns:1fr} .pgroup-cards.one{max-width:100%} .pgroup-label{white-space:normal} }
+    /* buyout add-ons */
+    .addons{display:none;margin-top:22px;background:#fff;border:1px solid var(--border);border-radius:22px;padding:28px 26px;max-width:620px}
+    .addons.open{display:block;animation:addfade .35s ease}
+    @keyframes addfade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+    .addons .ah{font-family:'Space Grotesk';font-size:19px;font-weight:700;margin-bottom:6px}
+    .addons .asub{font-size:13.5px;color:var(--muted);line-height:1.55;margin-bottom:20px}
+    .aopt{position:relative;display:flex;align-items:flex-start;gap:14px;border:1.5px solid var(--border);border-radius:16px;padding:16px 18px;margin-bottom:12px;cursor:pointer;transition:border-color .2s,background .2s}
+    .aopt:hover{border-color:rgba(108,60,224,0.4)}
+    .aopt.sel{border-color:var(--violet);background:rgba(108,60,224,0.04)}
+    .aopt input{position:absolute;opacity:0;pointer-events:none}
+    .aopt .box{flex-shrink:0;width:22px;height:22px;border-radius:7px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;margin-top:1px;transition:background .2s,border-color .2s}
+    .aopt.sel .box{background:var(--gradv);border-color:transparent}
+    .aopt .box svg{width:12px;height:12px;stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:opacity .2s}
+    .aopt.sel .box svg{opacity:1}
+    .aopt .atext{flex:1}
+    .aopt .aname{font-family:'Space Grotesk';font-weight:600;font-size:15px;display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+    .aopt .aprice{color:var(--violet);font-weight:700;white-space:nowrap}
+    .aopt .adesc{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:4px}
+    .asum{display:flex;justify-content:space-between;align-items:baseline;border-top:1px dashed var(--border);margin-top:8px;padding-top:18px}
+    .asum .al{font-size:13px;color:var(--muted)}
+    .asum .av{font-family:'Space Grotesk';font-size:17px;font-weight:700}
+    .asum .av small{font-size:13px;color:var(--muted);font-weight:500}
+    .addons .acta{margin-top:18px}
     .card{position:relative;background:#fff;border:1px solid var(--border);border-radius:22px;padding:30px 26px;display:flex;flex-direction:column;transition:transform .3s,box-shadow .3s}
     .card:hover{transform:translateY(-4px);box-shadow:0 24px 60px rgba(108,60,224,0.10)}
     .card.rec{border:1.5px solid rgba(108,60,224,0.5);box-shadow:0 30px 70px rgba(108,60,224,0.16);transform:scale(1.03)}
@@ -175,7 +199,7 @@
   <section class="paths">
     <div class="pgroup">
     <div class="pgroup-label">Work with us monthly <span class="pl-sub">we host, maintain &amp; run it for you</span></div>
-    <div class="pgroup-cards two">
+    <div class="pgroup-cards three">
     <div class="card">
       <div class="tier">Website Launch</div>
       <div class="tline">&ldquo;I want the website, not the machine.&rdquo; Live, hosted, and looked after by us.</div>
@@ -191,21 +215,35 @@
       <button class="btn ghost" data-plan="Website Launch" data-price="$297/mo">Launch my website</button>
     </div>
 
+    <div class="card">
+      <div class="tier">Visibility</div>
+      <div class="tline">&ldquo;I want to be found and stay in front of customers.&rdquo; Your site, working to win attention.</div>
+      <div class="price"><span class="amt">$597</span><span class="per">/month</span></div>
+      <div class="setup">Everything in Launch, plus monthly visibility. Cancel anytime.</div>
+      <ul class="feat">
+        <li class="head">Everything in Website Launch, plus:</li>
+        <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>Monthly SEO services</li>
+        <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>Monthly blog posting</li>
+        <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>Google Business Profile optimization</li>
+      </ul>
+      <button class="btn ghost" data-plan="Visibility" data-price="$597/mo">Get found</button>
+    </div>
+
     <div class="card rec">
       <div class="badge">Recommended</div>
       <div class="tier">Growth Machine</div>
-      <div class="tline">&ldquo;I want the website and the machine working for me.&rdquo; This is where it starts working.</div>
-      <div class="price"><span class="amt">$597</span><span class="per">/month</span></div>
-      <div class="setup">Everything in Launch, fully automated. Cancel anytime.</div>
+      <div class="tline">&ldquo;I want the website and the full machine working for me.&rdquo; This is where it really starts working.</div>
+      <div class="price"><span class="amt">$1,297</span><span class="per">/month</span></div>
+      <div class="setup">Everything in Visibility, fully automated. Cancel anytime.</div>
       <ul class="feat">
-        <li class="head">Everything in Website Launch, plus:</li>
+        <li class="head">Everything in Visibility, plus:</li>
         <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>AI assistant working for your business</li>
         <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>SMS automation &amp; online booking</li>
         <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>Automated follow-up so no lead slips</li>
         <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>CRM &amp; lead management</li>
         <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>Business automation, running 24/7</li>
       </ul>
-      <button class="btn primary" data-plan="Growth Machine" data-price="$597/mo">Activate the machine</button>
+      <button class="btn primary" data-plan="Growth Machine" data-price="$1,297/mo">Activate the machine</button>
     </div>
     </div>
     </div>
@@ -216,17 +254,52 @@
     <div class="card">
       <div class="tier">Own It Forever</div>
       <div class="tline">&ldquo;I want to own the asset completely.&rdquo; Yours outright, no subscription.</div>
-      <div class="price"><span class="amt">$2,499</span><span class="per">+ one-time</span></div>
-      <div class="setup">A different way to work with us. Final price depends on scope.</div>
+      <div class="price"><span class="amt">$2,997</span><span class="per">one-time</span></div>
+      <div class="setup">Buy your website outright. Add optional services below &mdash; or none at all.</div>
       <ul class="feat">
         <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>Full ownership of your website</li>
         <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>Hosting transfer &mdash; take it anywhere</li>
         <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>Domain transfer</li>
         <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>Complete control, no recurring fee</li>
-        <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>Priced by pages, features &amp; complexity</li>
+        <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>Optional services you can add on, priced for owners</li>
       </ul>
-      <button class="btn ghost" data-plan="Own It Forever" data-price="from $2,499 one-time" data-quote="1">Get my ownership quote</button>
+      <button class="btn ghost" id="buyoutBtn">Own my website</button>
     </div>
+    </div>
+
+    <!-- post-buyout optional add-ons (revealed only after choosing the buyout) -->
+    <div class="addons" id="addons">
+      <div class="ah">Add ongoing services to your owned site</div>
+      <div class="asub">Optional. You own the website outright, so these are priced for owners and billed month-to-month. Pick any, all, or none &mdash; and cancel anytime.</div>
+      <label class="aopt" data-addon="Care Plan" data-mo="97">
+        <input type="checkbox" />
+        <span class="box"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>
+        <span class="atext">
+          <span class="aname">Care Plan <span class="aprice">+$97/mo</span></span>
+          <span class="adesc">Hosting, SSL, maintenance, ongoing updates &amp; website support. We keep your site running so you don't have to.</span>
+        </span>
+      </label>
+      <label class="aopt" data-addon="Visibility" data-mo="397">
+        <input type="checkbox" />
+        <span class="box"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>
+        <span class="atext">
+          <span class="aname">Visibility <span class="aprice">+$397/mo</span></span>
+          <span class="adesc">Monthly SEO, monthly blog posting &amp; Google Business Profile optimization. Get found wherever customers look.</span>
+        </span>
+      </label>
+      <label class="aopt" data-addon="Growth Machine" data-mo="897">
+        <input type="checkbox" />
+        <span class="box"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>
+        <span class="atext">
+          <span class="aname">Growth Machine <span class="aprice">+$897/mo</span></span>
+          <span class="adesc">AI assistant, SMS automation &amp; online booking, automated follow-up, CRM &amp; lead management, and 24/7 business automation.</span>
+        </span>
+      </label>
+      <div class="asum">
+        <span class="al">Due today<span id="aMoLabel"></span></span>
+        <span class="av">$2,997 <small id="aMo"></small></span>
+      </div>
+      <button class="btn primary acta" id="addonContinue">Continue to secure checkout</button>
     </div>
     </div>
   </section>
@@ -256,25 +329,29 @@
     <h2>Compare what's included</h2>
     <p class="csub">Start anywhere. Add more of the machine whenever you're ready.</p>
     <table class="tbl">
-      <thead><tr><th>&nbsp;</th><th>Website Launch</th><th class="rec">Growth Machine</th><th>Own It Forever</th></tr></thead>
+      <thead><tr><th>&nbsp;</th><th>Website Launch</th><th>Visibility</th><th class="rec">Growth Machine</th><th>Own It Forever</th></tr></thead>
       <tbody>
-        <tr><td>How it works</td><td class="lab">We run it</td><td class="lab">We run it &amp; grow you</td><td class="lab">You own it</td></tr>
-        <tr><td>Price</td><td>$297/mo</td><td>$597/mo</td><td>from $2,499 once</td></tr>
-        <tr class="grp"><td colspan="4">The website</td></tr>
-        <tr><td>The website we built you</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td></tr>
-        <tr><td>Hosting &amp; SSL</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="lab">Transferred</td></tr>
-        <tr><td>Maintenance &amp; updates</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="dash">&ndash;</td></tr>
-        <tr><td>Domain management</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="lab">Transferred</td></tr>
-        <tr><td>Ongoing website support</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="dash">&ndash;</td></tr>
-        <tr class="grp"><td colspan="4">The machine</td></tr>
-        <tr><td>AI assistant</td><td class="dash">&ndash;</td><td class="ckc">&#10003;</td><td class="dash">&ndash;</td></tr>
-        <tr><td>SMS automation &amp; online booking</td><td class="dash">&ndash;</td><td class="ckc">&#10003;</td><td class="dash">&ndash;</td></tr>
-        <tr><td>Automated follow-up</td><td class="dash">&ndash;</td><td class="ckc">&#10003;</td><td class="dash">&ndash;</td></tr>
-        <tr><td>CRM &amp; lead management</td><td class="dash">&ndash;</td><td class="ckc">&#10003;</td><td class="dash">&ndash;</td></tr>
-        <tr><td>Business automation 24/7</td><td class="dash">&ndash;</td><td class="ckc">&#10003;</td><td class="dash">&ndash;</td></tr>
-        <tr class="grp"><td colspan="4">Ownership</td></tr>
-        <tr><td>Monthly subscription</td><td>$297/mo</td><td>$597/mo</td><td class="lab">None</td></tr>
-        <tr><td>You own the website outright</td><td class="dash">&ndash;</td><td class="dash">&ndash;</td><td class="ckc">&#10003;</td></tr>
+        <tr><td>How it works</td><td class="lab">We run it</td><td class="lab">We run &amp; grow you</td><td class="lab">We run the full machine</td><td class="lab">You own it</td></tr>
+        <tr><td>Price</td><td>$297/mo</td><td>$597/mo</td><td>$1,297/mo</td><td>$2,997 once</td></tr>
+        <tr class="grp"><td colspan="5">The website</td></tr>
+        <tr><td>The website we built you</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td></tr>
+        <tr><td>Hosting &amp; SSL</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="lab">Transferred</td></tr>
+        <tr><td>Maintenance &amp; updates</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="lab">Add-on</td></tr>
+        <tr><td>Domain management</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="lab">Transferred</td></tr>
+        <tr><td>Ongoing website support</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="lab">Add-on</td></tr>
+        <tr class="grp"><td colspan="5">Visibility &amp; content</td></tr>
+        <tr><td>Monthly SEO services</td><td class="dash">&ndash;</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="lab">Add-on</td></tr>
+        <tr><td>Monthly blog posting</td><td class="dash">&ndash;</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="lab">Add-on</td></tr>
+        <tr><td>Google Business Profile optimization</td><td class="dash">&ndash;</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="lab">Add-on</td></tr>
+        <tr class="grp"><td colspan="5">The machine</td></tr>
+        <tr><td>AI assistant</td><td class="dash">&ndash;</td><td class="dash">&ndash;</td><td class="ckc">&#10003;</td><td class="lab">Add-on</td></tr>
+        <tr><td>SMS automation &amp; online booking</td><td class="dash">&ndash;</td><td class="dash">&ndash;</td><td class="ckc">&#10003;</td><td class="lab">Add-on</td></tr>
+        <tr><td>Automated follow-up</td><td class="dash">&ndash;</td><td class="dash">&ndash;</td><td class="ckc">&#10003;</td><td class="lab">Add-on</td></tr>
+        <tr><td>CRM &amp; lead management</td><td class="dash">&ndash;</td><td class="dash">&ndash;</td><td class="ckc">&#10003;</td><td class="lab">Add-on</td></tr>
+        <tr><td>Business automation 24/7</td><td class="dash">&ndash;</td><td class="dash">&ndash;</td><td class="ckc">&#10003;</td><td class="lab">Add-on</td></tr>
+        <tr class="grp"><td colspan="5">Ownership</td></tr>
+        <tr><td>Monthly subscription</td><td>$297/mo</td><td>$597/mo</td><td>$1,297/mo</td><td class="lab">None</td></tr>
+        <tr><td>You own the website outright</td><td class="dash">&ndash;</td><td class="dash">&ndash;</td><td class="dash">&ndash;</td><td class="ckc">&#10003;</td></tr>
       </tbody>
     </table>
   </section>
@@ -295,9 +372,10 @@
   <section class="wrap faq">
     <h2>Questions, answered</h2>
     <details class="q"><summary>Do I have to pay just to see my website?<span class="pm">+</span></summary><div class="a">No. You already saw your real website, free. You only choose a plan when you want to put it to work.</div></details>
-    <details class="q"><summary>What's the difference between the three options?<span class="pm">+</span></summary><div class="a">Two are monthly, where we run your website for you: <b>Website Launch</b> keeps your site live and supported, and <b>Growth Machine</b> adds the automation, AI assistant, and CRM that actively bring in and follow up with customers. <b>Own It Forever</b> is a one-time purchase: you buy the website outright and we transfer everything to you, with no subscription.</div></details>
-    <details class="q"><summary>Why are two plans monthly and one is one-time?<span class="pm">+</span></summary><div class="a">The monthly plans are an ongoing relationship: we host, maintain, and (on Growth Machine) run the machine for you every month. Own It Forever is a purchase, not a relationship: you own the asset and run it yourself.</div></details>
-    <details class="q"><summary>What happens after I click Activate?<span class="pm">+</span></summary><div class="a">You confirm your plan and complete a secure checkout, then we connect your domain and take your site live, usually within 24 to 48 hours. For Own It Forever, we first scope your build and send a fixed quote, then transfer ownership once it's set.</div></details>
+    <details class="q"><summary>What's the difference between the four options?<span class="pm">+</span></summary><div class="a">Three are monthly, where we run your website for you: <b>Website Launch</b> keeps your site live and supported, <b>Visibility</b> adds monthly SEO, blog posting, and Google Business Profile optimization to get you found, and <b>Growth Machine</b> adds the full automation: AI assistant, SMS &amp; booking, automated follow-up, and CRM that actively bring in and follow up with customers. <b>Own It Forever</b> is a one-time purchase: you buy the website outright and we transfer everything to you, with no subscription &mdash; and you can still bolt on any of those services as add-ons.</div></details>
+    <details class="q"><summary>Why are three plans monthly and one is one-time?<span class="pm">+</span></summary><div class="a">The monthly plans are an ongoing relationship: we host, maintain, and (on Visibility and Growth Machine) actively grow your business every month. Own It Forever is a purchase, not a relationship: you own the asset and run it yourself, with optional services available whenever you want them.</div></details>
+    <details class="q"><summary>I bought my site outright. Can I still add services?<span class="pm">+</span></summary><div class="a">Yes. After you own your website, you can add any of three month-to-month services, priced for owners since the build is already yours: <b>Care Plan</b> ($97/mo) for hosting, maintenance, and support; <b>Visibility</b> ($397/mo) for SEO, blog posting, and Google Business Profile; and <b>Growth Machine</b> ($897/mo) for the full AI automation, CRM, and follow-up. Pick any, all, or none, and cancel anytime.</div></details>
+    <details class="q"><summary>What happens after I click Activate?<span class="pm">+</span></summary><div class="a">You confirm your plan and complete a secure checkout, then we connect your domain and take your site live, usually within 24 to 48 hours. For Own It Forever, you complete the one-time checkout (plus any add-ons you chose) and we transfer ownership of your website, hosting, and domain to you.</div></details>
     <details class="q"><summary>Can I change later?<span class="pm">+</span></summary><div class="a">Yes. Start on Website Launch and add the machine whenever you're ready. Nothing rebuilds, your site and data come with you.</div></details>
     <details class="q"><summary>Is there a contract?<span class="pm">+</span></summary><div class="a">No. The monthly plans are month-to-month. Cancel anytime.</div></details>
   </section>
@@ -306,7 +384,7 @@
   <section class="fin">
     <h2>Ready to make it <span class="g">yours?</span></h2>
     <p>You've already seen what your business could look like. Pick the plan that fits where you are, and we'll take it from here.</p>
-    <button class="btn primary" style="max-width:320px;margin:0 auto" data-plan="Growth Machine" data-price="$597/mo">Activate the machine &rarr;</button>
+    <button class="btn primary" style="max-width:320px;margin:0 auto" data-plan="Growth Machine" data-price="$1,297/mo">Activate the machine &rarr;</button>
   </section>
 
   <div class="foot">&copy; 2026 UNVEILED &middot; Secure checkout &middot; Cancel anytime</div>
@@ -322,8 +400,9 @@
           <div class="step-p">You're one step from putting your website and the machine to work.</div>
           <div class="ordr">
             <div class="r"><span class="mut">Plan</span><span id="o-plan">Growth Machine</span></div>
-            <div class="r"><span class="mut">Billing</span><span id="o-price">$597/mo</span></div>
-            <div class="r"><span>Due today</span><span id="o-due">$597</span></div>
+            <div class="r"><span class="mut">Billing</span><span id="o-price">$1,297/mo</span></div>
+            <div class="r" id="o-mo-row" style="display:none"><span class="mut">Then monthly</span><span id="o-mo">&mdash;</span></div>
+            <div class="r"><span>Due today</span><span id="o-due">$1,297</span></div>
           </div>
           <button class="btn primary" id="toPay">Continue to secure payment</button>
           <div class="secure"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#78716C" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> 256-bit secure checkout</div>
@@ -354,30 +433,72 @@
 
   <script>
     var ov=document.getElementById('ov');
-    var isQuote=false;
+    var isQuote=false, buyoutMode=false;
     function show(id){['v1','v2','v3'].forEach(function(v){document.getElementById(v).classList.toggle('on',v===id);});}
-    function due(price){ if(/from \$/.test(price)) return 'Custom quote'; var mo=(price.match(/\$(\d+)\/mo/)||[])[1]; return mo?('$'+parseInt(mo).toLocaleString()):'—'; }
-    function setConfirm(quote){
-      document.getElementById('cf-h').textContent = quote ? 'Request received.' : "You're activated.";
-      document.getElementById('cf-p').textContent = quote ? "We'll get you your fixed ownership quote." : 'Welcome to UNVEILED. Your business is officially in motion.';
-      document.getElementById('cf-n1').innerHTML = quote ? '<b>We scope your build.</b> Pages, features, and complexity.' : '<b>Check your inbox.</b> A confirmation and receipt are on the way.';
-      document.getElementById('cf-n2').innerHTML = quote ? '<b>You get a fixed quote.</b> Sent within 24 hours, no surprises.' : '<b>We go live.</b> We connect your domain and launch within 24\u201348 hours.';
-      document.getElementById('cf-n3').innerHTML = quote ? '<b>You approve &amp; own it.</b> We transfer hosting and domain to you.' : '<b>The machine turns on.</b> Visibility, lead capture, and follow-up start working.';
-      document.getElementById('cf-l4').style.display = quote ? 'none' : '';
+    function due(price){ if(/from \$/.test(price)) return 'Custom quote'; var m=price.match(/\$([\d,]+)\/mo/); if(m) return '$'+m[1]; var o=price.match(/\$([\d,]+)\s*one-time/); return o?('$'+o[1]):'—'; }
+    function setConfirm(){
+      var n1=document.getElementById('cf-n1'), n2=document.getElementById('cf-n2'), n3=document.getElementById('cf-n3');
+      if(buyoutMode){
+        document.getElementById('cf-h').textContent="It's yours.";
+        document.getElementById('cf-p').textContent='Welcome to UNVEILED. Your website is officially your own.';
+        n1.innerHTML='<b>Check your inbox.</b> Your receipt and ownership details are on the way.';
+        n2.innerHTML='<b>We transfer everything.</b> Hosting and domain handed over to you within 24\u201348 hours.';
+        n3.innerHTML='<b>Any add-ons turn on.</b> Services you selected start working right away.';
+        document.getElementById('cf-l4').style.display='none';
+      } else {
+        document.getElementById('cf-h').textContent="You're activated.";
+        document.getElementById('cf-p').textContent='Welcome to UNVEILED. Your business is officially in motion.';
+        n1.innerHTML='<b>Check your inbox.</b> A confirmation and receipt are on the way.';
+        n2.innerHTML='<b>We go live.</b> We connect your domain and launch within 24\u201348 hours.';
+        n3.innerHTML='<b>The machine turns on.</b> Visibility, lead capture, and follow-up start working.';
+        document.getElementById('cf-l4').style.display='';
+      }
     }
     document.querySelectorAll('[data-plan]').forEach(function(b){
       b.addEventListener('click',function(){
-        isQuote = b.dataset.quote==='1';
+        isQuote=false; buyoutMode=false;
         document.getElementById('o-plan').textContent=b.dataset.plan;
         document.getElementById('o-price').textContent=b.dataset.price;
+        document.getElementById('o-mo-row').style.display='none';
         document.getElementById('o-due').textContent=due(b.dataset.price);
-        document.getElementById('toPay').textContent = isQuote ? 'Request my quote' : 'Continue to secure payment';
+        document.getElementById('toPay').textContent='Continue to secure payment';
         show('v1'); ov.classList.add('open');
       });
     });
-    document.getElementById('toPay').addEventListener('click',function(){ if(isQuote){ setConfirm(true); show('v3'); } else { show('v2'); } });
+
+    /* buyout add-ons: reveal after choosing the buyout, then compose the order */
+    var buyoutBtn=document.getElementById('buyoutBtn');
+    var addons=document.getElementById('addons');
+    if(buyoutBtn){ buyoutBtn.addEventListener('click',function(){ addons.classList.add('open'); addons.scrollIntoView({behavior:'smooth',block:'center'}); }); }
+    function recalcAddons(){
+      var mo=0, names=[];
+      document.querySelectorAll('.aopt').forEach(function(o){
+        var cb=o.querySelector('input');
+        if(cb.checked){ o.classList.add('sel'); mo+=parseInt(o.dataset.mo,10); names.push(o.dataset.addon); }
+        else o.classList.remove('sel');
+      });
+      document.getElementById('aMo').textContent = mo>0 ? ('+ $'+mo.toLocaleString()+'/mo') : '';
+      document.getElementById('aMoLabel').textContent = mo>0 ? ' \u00b7 then monthly' : '';
+      return {mo:mo,names:names};
+    }
+    document.querySelectorAll('.aopt input').forEach(function(cb){ cb.addEventListener('change',recalcAddons); });
+    var addonContinue=document.getElementById('addonContinue');
+    if(addonContinue){ addonContinue.addEventListener('click',function(){
+      var a=recalcAddons();
+      isQuote=false; buyoutMode=true;
+      document.getElementById('o-plan').textContent='Own It Forever'+(a.names.length?(' + '+a.names.join(' + ')):'');
+      document.getElementById('o-price').textContent='$2,997 one-time'+(a.mo>0?(' + $'+a.mo.toLocaleString()+'/mo'):'');
+      var moRow=document.getElementById('o-mo-row');
+      if(a.mo>0){ moRow.style.display='flex'; document.getElementById('o-mo').textContent='$'+a.mo.toLocaleString()+'/mo'; }
+      else moRow.style.display='none';
+      document.getElementById('o-due').textContent='$2,997';
+      document.getElementById('toPay').textContent='Continue to secure payment';
+      show('v1'); ov.classList.add('open');
+    }); }
+
+    document.getElementById('toPay').addEventListener('click',function(){ show('v2'); });
     // payNow: in production this redirects to the hosted checkout (Stripe/Square).
-    document.getElementById('payNow').addEventListener('click',function(){ setConfirm(false); show('v3'); });
+    document.getElementById('payNow').addEventListener('click',function(){ setConfirm(); show('v3'); });
     function close(){ov.classList.remove('open');}
     document.getElementById('ovx').addEventListener('click',close);
     document.getElementById('ovDone').addEventListener('click',close);
