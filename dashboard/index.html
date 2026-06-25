@@ -203,16 +203,87 @@
   .sf-8 { background: var(--green); }
   .sf-7 { background: var(--yellow); }
   .tag { font-size: 11px; background: var(--dark-4); color: var(--text-dim); padding: 2px 8px; border-radius: 20px; }
-  .reach-tag { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; color: var(--violet-light); background: var(--violet-dim); padding: 3px 9px; border-radius: 20px; }
-  .execute-btn {
+  /* OUTREACH STATUS BADGES */
+  .os-badge {
     display: inline-flex; align-items: center; gap: 4px;
-    font-size: 11px; font-weight: 700; color: #fff;
-    background: var(--green); border: none; padding: 4px 10px;
-    border-radius: 20px; cursor: pointer; font-family: inherit;
-    transition: opacity .15s; white-space: nowrap;
+    font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 20px; white-space: nowrap;
   }
-  .execute-btn:hover { opacity: .8; }
-  .execute-btn:disabled { opacity: .5; cursor: default; }
+  .os-none         { background: rgba(255,255,255,.06); color: var(--text-dim); }
+  .os-called       { background: rgba(59,130,246,.15);  color: #60a5fa; }
+  .os-texted       { background: rgba(139,92,246,.15);  color: var(--violet-light); }
+  .os-emailed      { background: rgba(16,185,129,.15);  color: var(--green); }
+  .os-no-answer    { background: rgba(245,158,11,.15);  color: var(--yellow); }
+  .os-voicemail    { background: rgba(245,158,11,.12);  color: #fbbf24; }
+  .os-callback     { background: rgba(249,115,22,.15);  color: var(--orange); }
+  .os-interested   { background: rgba(16,185,129,.25);  color: #34d399; font-weight: 800; }
+  .os-not-interested { background: rgba(239,68,68,.12); color: var(--red); }
+
+  /* ACTIONS DROPDOWN */
+  .action-select {
+    background: var(--dark-4); border: 1px solid var(--border);
+    color: var(--text-mid); border-radius: 7px; padding: 5px 10px;
+    font-size: 11px; font-weight: 600; font-family: inherit;
+    cursor: pointer; outline: none; transition: border-color .15s;
+    appearance: none; -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 8px center;
+    padding-right: 26px; min-width: 110px;
+  }
+  .action-select:hover, .action-select:focus { border-color: var(--violet-light); }
+  .action-select option { background: #1A1A22; color: #fff; }
+
+  /* ACTION MODAL */
+  #action-modal {
+    position: fixed; inset: 0; background: rgba(0,0,0,.7);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 500; backdrop-filter: blur(4px);
+  }
+  .modal-box {
+    background: var(--dark-3); border: 1px solid var(--border);
+    border-radius: 16px; padding: 28px; width: 420px; max-width: 95vw;
+  }
+  .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+  .modal-title { font-size: 15px; font-weight: 700; }
+  .modal-biz { font-size: 12px; color: var(--violet-light); margin-bottom: 18px; }
+  .modal-close { background: none; border: none; color: var(--text-dim); font-size: 18px; cursor: pointer; padding: 0 4px; }
+  .modal-close:hover { color: var(--text); }
+  .modal-label { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px; display: block; }
+  .modal-textarea {
+    width: 100%; min-height: 90px; resize: none;
+    background: var(--dark-4); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 12px; font-size: 13px;
+    color: var(--text); font-family: inherit; line-height: 1.5;
+    outline: none; transition: border-color .15s; margin-bottom: 16px;
+  }
+  .modal-textarea:focus { border-color: var(--violet-light); }
+  .modal-textarea::placeholder { color: var(--text-dim); }
+  .modal-input {
+    width: 100%; background: var(--dark-4); border: 1px solid var(--border);
+    border-radius: 8px; padding: 9px 12px; font-size: 13px;
+    color: var(--text); font-family: inherit; outline: none;
+    transition: border-color .15s; margin-bottom: 16px;
+  }
+  .modal-input:focus { border-color: var(--violet-light); }
+  .modal-actions { display: flex; gap: 10px; }
+  .modal-btn-primary {
+    flex: 1; background: var(--violet); color: #fff; border: none;
+    border-radius: 8px; padding: 11px; font-size: 13px; font-weight: 700;
+    cursor: pointer; font-family: inherit; transition: opacity .15s;
+  }
+  .modal-btn-primary:hover { opacity: .85; }
+  .modal-btn-primary.green { background: var(--green); }
+  .modal-btn-primary.red   { background: var(--red); }
+  .modal-btn-secondary {
+    background: var(--dark-4); color: var(--text-mid); border: 1px solid var(--border);
+    border-radius: 8px; padding: 11px 18px; font-size: 13px; font-weight: 600;
+    cursor: pointer; font-family: inherit; transition: opacity .15s;
+  }
+  .modal-btn-secondary:hover { opacity: .8; }
+  .modal-info-row { display: flex; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+  .modal-info-item { font-size: 12px; color: var(--text-dim); }
+  .modal-info-item strong { color: var(--text); display: block; font-size: 13px; margin-bottom: 2px; }
+  .modal-links-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 18px; }
   .lead-links { display: flex; flex-wrap: wrap; gap: 4px; }
   .lead-link { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px; text-decoration: none; white-space: nowrap; transition: opacity .15s; }
   .lead-link:hover { opacity: .75; }
@@ -475,6 +546,38 @@ function leadLinks(row) {
   return links.length ? `<div class="lead-links">${links.join('')}</div>` : '<span style="color:var(--text-dim);font-size:11px">—</span>';
 }
 
+const OUTREACH_STATUS_MAP = {
+  'not-contacted': { label: 'Not Contacted', cls: 'os-none' },
+  'called':        { label: 'Called',         cls: 'os-called' },
+  'texted':        { label: 'Texted',         cls: 'os-texted' },
+  'emailed':       { label: 'Emailed',        cls: 'os-emailed' },
+  'no-answer':     { label: 'No Answer',      cls: 'os-no-answer' },
+  'voicemail':     { label: 'Voicemail',      cls: 'os-voicemail' },
+  'callback':      { label: 'Call Back',      cls: 'os-callback' },
+  'interested':    { label: 'Interested!',    cls: 'os-interested' },
+  'not-interested':{ label: 'Not Interested', cls: 'os-not-interested' },
+};
+
+function fmtOutreachStatus(st) {
+  const cfg = OUTREACH_STATUS_MAP[st || 'not-contacted'] || OUTREACH_STATUS_MAP['not-contacted'];
+  return `<span class="os-badge ${cfg.cls}">${cfg.label}</span>`;
+}
+
+function nextStep(status) {
+  const map = {
+    'not-contacted': 'Call Now',
+    'called':        'Follow Up',
+    'texted':        'Wait for Reply',
+    'emailed':       'Wait for Reply',
+    'no-answer':     'Try Again',
+    'voicemail':     'Try Again Tomorrow',
+    'callback':      'Call Back',
+    'interested':    'Send Proposal',
+    'not-interested':'—',
+  };
+  return map[status] || 'Follow Up';
+}
+
 function leadRow(row, num) {
   const score = row.opportunity_score || 0;
   const sfCls = score >= 8 ? 'sf-8' : 'sf-7';
@@ -483,63 +586,235 @@ function leadRow(row, num) {
   const phoneHtml = row.phone
     ? `<a href="tel:${row.phone}" style="color:var(--text-mid);text-decoration:none">${row.phone}</a>`
     : '—';
+  const custId = `U-${String(row.client_number || num).padStart(4,'0')}`;
+  const st = row.outreach_status || 'not-contacted';
+  const log = Array.isArray(row.outreach_log) ? row.outreach_log : [];
+  const lastEntry = log[log.length - 1];
+  const lastActionText = lastEntry ? `${lastEntry.method} · ${lastEntry.date}` : '—';
+  const nextStepText = nextStep(st);
+  const idJson = JSON.stringify(row.id);
   return `
   <tr id="lead-row-${row.id}">
+    <td style="font-size:11px;color:var(--violet-light);font-weight:700;white-space:nowrap">${custId}</td>
     <td>
-      <span class="client-num">${num}</span>
       <strong>${row.business_name || '—'}</strong>
-      ${row.contact_name ? `<div style="font-size:11px;color:var(--text-dim);margin-top:2px;padding-left:27px">${row.contact_name}</div>` : ''}
+      ${row.contact_name ? `<div style="font-size:11px;color:var(--text-dim);margin-top:2px">${row.contact_name}</div>` : ''}
     </td>
-    <td style="color:var(--text-dim);font-size:12px">${row.about || ''}</td>
+    <td style="color:var(--text-dim);font-size:12px;white-space:nowrap">${row.category || (row.about ? row.about.split(',')[0] : '—')}</td>
     <td>${phoneHtml}</td>
-    <td>${leadLinks(row)}</td>
     <td>
       <div class="score">
         <span class="score-n ${snCls}">${score}</span>
         <div class="score-track"><div class="score-fill ${sfCls}" style="width:${pct}"></div></div>
       </div>
     </td>
+    <td>${fmtOutreachStatus(st)}</td>
+    <td class="last-action-cell" style="font-size:11px;color:var(--text-dim);white-space:nowrap">${lastActionText}</td>
+    <td class="next-step-cell" style="font-size:12px;color:var(--text-mid);white-space:nowrap">${nextStepText}</td>
     <td>
-      <div style="display:flex;flex-direction:column;gap:5px;align-items:flex-start">
-        <span class="reach-tag">Reach Out</span>
-        <button class="execute-btn" id="exec-${row.id}" onclick="executeLeadToProduction('${row.id}','${(row.business_name||'').replace(/'/g,"\\'")}')">Execute</button>
-      </div>
+      <select class="action-select" onchange="openActionModal(${idJson}, this.value); this.value='__prompt__'">
+        <option value="__prompt__">Actions ▾</option>
+        <optgroup label="Contact">
+          <option value="call-now">📞 Call Now</option>
+          <option value="send-text">💬 Send Text</option>
+          <option value="send-email">📧 Send Email</option>
+        </optgroup>
+        <optgroup label="Log Outcome">
+          <option value="mark-called">✓ Mark Called</option>
+          <option value="mark-texted">✓ Mark Texted</option>
+          <option value="no-answer">No Answer</option>
+          <option value="left-voicemail">Left Voicemail</option>
+          <option value="callback-later">Call Back Later</option>
+        </optgroup>
+        <optgroup label="Status">
+          <option value="interested">⭐ Interested</option>
+          <option value="not-interested">✗ Not Interested</option>
+        </optgroup>
+        <optgroup label="Actions">
+          <option value="send-to-production">▶ Send to Production</option>
+          <option value="add-note">📝 Add Note / Request</option>
+          <option value="view-profile">👁 View Full Profile</option>
+          <option value="remove-lead">✕ Remove Lead</option>
+        </optgroup>
+      </select>
     </td>
   </tr>`;
 }
 
-async function executeLeadToProduction(id, name) {
-  const btn = document.getElementById(`exec-${id}`);
-  if (!btn) return;
-  if (!confirm(`Launch "${name}" into production?\n\nThis will move them from Leads to In Progress on the dashboard.`)) return;
-  btn.textContent = 'Launching…';
-  btn.disabled = true;
+function openActionModal(id, action) {
+  if (!action || action === '__prompt__') return;
+  const allLeads = window._currentLeads || [];
+  const row = allLeads.find(r => r.id === id) || {};
+  window._modalId = id;
+  window._modalAction = action;
+
+  const ACTION_META = {
+    'call-now':          { title: 'Log This Call',         note: true,  placeholder: 'Notes from the call...', btn: 'Log & Next', cls: '' },
+    'send-text':         { title: 'Log This Text',         note: true,  placeholder: 'What did you send?',     btn: 'Log & Next', cls: '' },
+    'send-email':        { title: 'Log This Email',        note: true,  placeholder: 'What did you send?',     btn: 'Log & Next', cls: '' },
+    'mark-called':       { title: 'Mark as Called',        note: true,  placeholder: 'Optional note...',       btn: 'Save & Next', cls: '' },
+    'mark-texted':       { title: 'Mark as Texted',        note: true,  placeholder: 'Optional note...',       btn: 'Save & Next', cls: '' },
+    'no-answer':         { title: 'No Answer',             note: true,  placeholder: 'e.g. Called 10:42 AM, try again tomorrow', btn: 'Save & Next', cls: '' },
+    'left-voicemail':    { title: 'Left Voicemail',        note: true,  placeholder: 'What did you say?',      btn: 'Save & Next', cls: '' },
+    'callback-later':    { title: 'Call Back Later',       note: true,  placeholder: 'When should we follow up?', btn: 'Save & Next', cls: '' },
+    'interested':        { title: 'Interested!',           note: true,  placeholder: 'What did they say?',     btn: 'Save & Next', cls: 'green' },
+    'not-interested':    { title: 'Not Interested',        note: true,  placeholder: 'Optional reason...',     btn: 'Save & Next', cls: 'red' },
+    'send-to-production':{ title: 'Send to Production',   note: true,  placeholder: 'Any launch notes...',    btn: 'Launch', cls: 'green' },
+    'add-note':          { title: 'Add Note / Request',    note: true,  placeholder: 'Message to Unveiled system... (e.g. use purple hero section)', btn: 'Send to System', cls: '' },
+    'view-profile':      { title: 'Full Profile',          note: false, placeholder: '',                       btn: 'Close', cls: '' },
+    'remove-lead':       { title: 'Remove Lead',           note: true,  placeholder: 'Reason (optional)...',  btn: 'Remove', cls: 'red' },
+  };
+
+  const meta = ACTION_META[action] || { title: action, note: true, placeholder: '', btn: 'Save', cls: '' };
+  document.getElementById('modal-title').textContent = meta.title;
+  document.getElementById('modal-biz').textContent = row.business_name || '';
+
+  // If call/text action, open native dialer first
+  if (action === 'call-now' && row.phone) window.open(`tel:${row.phone}`);
+  if (action === 'send-text' && row.phone) window.open(`sms:${row.phone}`);
+
+  let body = '';
+  if (action === 'view-profile') {
+    const sp = row.social_profiles || {};
+    const links = [];
+    if (sp.google)    links.push(`<a href="${sp.google}"    target="_blank" class="lead-link google">Google</a>`);
+    if (sp.facebook)  links.push(`<a href="${sp.facebook}"  target="_blank" class="lead-link facebook">FB</a>`);
+    if (sp.instagram) links.push(`<a href="${sp.instagram}" target="_blank" class="lead-link instagram">IG</a>`);
+    if (sp.yelp)      links.push(`<a href="${sp.yelp}"      target="_blank" class="lead-link yelp">Yelp</a>`);
+    if (row.website)  links.push(`<a href="${row.website}"  target="_blank" class="lead-link website">Site</a>`);
+    if (row.source)   links.push(`<a href="${row.source}"   target="_blank" class="lead-link source">Source</a>`);
+    const logLines = Array.isArray(row.outreach_log) && row.outreach_log.length
+      ? row.outreach_log.map(e => `${e.date}: ${e.method}${e.note ? ' — ' + e.note : ''}`).join('<br>')
+      : 'No outreach yet';
+    body = `
+      <div class="modal-info-row">
+        <div class="modal-info-item"><strong>Phone</strong>${row.phone || '—'}</div>
+        <div class="modal-info-item"><strong>Status</strong>${fmtOutreachStatus(row.outreach_status)}</div>
+        <div class="modal-info-item"><strong>Fit Score</strong>${row.opportunity_score || '—'}/10</div>
+      </div>
+      ${row.about ? `<div style="font-size:12px;color:var(--text-dim);margin-bottom:14px">${row.about}</div>` : ''}
+      <div class="modal-links-row">${links.join('')}</div>
+      <label class="modal-label">Outreach Log</label>
+      <div style="font-size:12px;color:var(--text-dim);line-height:1.8;margin-bottom:14px">${logLines}</div>
+      ${row.requirements ? `<label class="modal-label">System Notes</label><div style="font-size:12px;color:var(--text-mid);line-height:1.6">${row.requirements.replace(/\n/g,'<br>')}</div>` : ''}
+    `;
+  } else if (meta.note) {
+    body = `<label class="modal-label">Note</label>
+      <textarea id="modal-note" class="modal-textarea" placeholder="${meta.placeholder}"></textarea>`;
+  }
+
+  document.getElementById('modal-body').innerHTML = body;
+  const btn = document.getElementById('modal-save');
+  btn.textContent = meta.btn;
+  btn.className = `modal-btn-primary${meta.cls ? ' ' + meta.cls : ''}`;
+  btn.onclick = () => executeModalAction(action, id);
+  document.getElementById('action-modal').style.display = 'flex';
+  if (meta.note) setTimeout(() => document.getElementById('modal-note')?.focus(), 60);
+}
+
+function closeActionModal() {
+  document.getElementById('action-modal').style.display = 'none';
+}
+
+async function executeModalAction(action, id) {
+  const noteEl = document.getElementById('modal-note');
+  const note = noteEl ? noteEl.value.trim() : '';
+  const today = new Date().toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+  const ACTION_STATUS = {
+    'call-now':'called','send-text':'texted','send-email':'emailed',
+    'mark-called':'called','mark-texted':'texted','no-answer':'no-answer',
+    'left-voicemail':'voicemail','callback-later':'callback',
+    'interested':'interested','not-interested':'not-interested',
+  };
+
   try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/leads?id=eq.${id}`, {
-      method: 'PATCH',
-      headers: {
-        apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`,
-        'Content-Type': 'application/json', Prefer: 'return=minimal'
-      },
-      body: JSON.stringify({ status: 'BUILDING', discovery_method: 'unveiled-form' })
-    });
-    if (res.ok) {
-      const row = document.getElementById(`lead-row-${id}`);
-      if (row) {
-        row.style.background = 'rgba(16,185,129,.08)';
-        row.style.transition = 'opacity .5s';
-        setTimeout(() => { row.style.opacity = '0'; }, 800);
-        setTimeout(() => { row.remove(); }, 1400);
+    if (action === 'view-profile') { closeActionModal(); return; }
+
+    if (action === 'remove-lead') {
+      if (!confirm(`Remove this lead permanently?`)) return;
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/leads?id=eq.${id}`, {
+        method: 'DELETE',
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, Prefer: 'return=minimal' }
+      });
+      if (res.ok) {
+        const domRow = document.getElementById(`lead-row-${id}`);
+        if (domRow) { domRow.style.transition = 'opacity .4s'; domRow.style.opacity = '0'; setTimeout(() => domRow.remove(), 500); }
+        window._currentLeads = (window._currentLeads || []).filter(r => r.id !== id);
       }
-      btn.textContent = 'Launched ✓';
-      setTimeout(() => loadData(), 1600);
-    } else {
-      btn.textContent = 'Error — retry';
-      btn.disabled = false;
+      closeActionModal(); advanceModal(id); return;
     }
-  } catch(e) {
-    btn.textContent = 'Error — retry';
-    btn.disabled = false;
+
+    if (action === 'send-to-production') {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/leads?id=eq.${id}`, {
+        method: 'PATCH',
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+        body: JSON.stringify({ status: 'BUILDING', discovery_method: 'unveiled-form', ...(note ? { requirements: note } : {}) })
+      });
+      if (res.ok) {
+        const domRow = document.getElementById(`lead-row-${id}`);
+        if (domRow) { domRow.style.transition = 'opacity .5s'; domRow.style.background = 'rgba(16,185,129,.08)'; setTimeout(() => { domRow.style.opacity='0'; }, 400); setTimeout(() => { domRow.remove(); }, 900); }
+        setTimeout(() => loadData(), 1100);
+      }
+      closeActionModal(); return;
+    }
+
+    if (action === 'add-note') {
+      if (!note) { closeActionModal(); return; }
+      const getRes = await fetch(`${SUPABASE_URL}/rest/v1/leads?id=eq.${id}&select=requirements`, {
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+      });
+      const [cur] = await getRes.json();
+      const existing = cur?.requirements || '';
+      const newNote = existing ? `${existing}\n[${today}] ${note}` : `[${today}] ${note}`;
+      await fetch(`${SUPABASE_URL}/rest/v1/leads?id=eq.${id}`, {
+        method: 'PATCH',
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+        body: JSON.stringify({ requirements: newNote })
+      });
+      closeActionModal(); advanceModal(id); return;
+    }
+
+    const newStatus = ACTION_STATUS[action];
+    if (newStatus) {
+      const getRes = await fetch(`${SUPABASE_URL}/rest/v1/leads?id=eq.${id}&select=outreach_log`, {
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+      });
+      const [cur] = await getRes.json();
+      const log = Array.isArray(cur?.outreach_log) ? cur.outreach_log : [];
+      log.push({ method: newStatus, date: today, ...(note ? { note } : {}) });
+      await fetch(`${SUPABASE_URL}/rest/v1/leads?id=eq.${id}`, {
+        method: 'PATCH',
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+        body: JSON.stringify({ outreach_status: newStatus, outreach_log: log })
+      });
+      // Update DOM in-place
+      const badge = document.querySelector(`#lead-row-${id} .os-badge`);
+      if (badge) { const cfg = OUTREACH_STATUS_MAP[newStatus]; badge.textContent = cfg.label; badge.className = `os-badge ${cfg.cls}`; }
+      const lastCell = document.querySelector(`#lead-row-${id} .last-action-cell`);
+      if (lastCell) lastCell.textContent = `${newStatus} · ${today}`;
+      const nextCell = document.querySelector(`#lead-row-${id} .next-step-cell`);
+      if (nextCell) nextCell.textContent = nextStep(newStatus);
+      // Update in-memory row
+      const mem = (window._currentLeads || []).find(r => r.id === id);
+      if (mem) { mem.outreach_status = newStatus; mem.outreach_log = log; }
+    }
+
+    closeActionModal(); advanceModal(id);
+  } catch(e) { console.error(e); closeActionModal(); }
+}
+
+function advanceModal(currentId) {
+  const leads = window._currentLeads || [];
+  const idx = leads.findIndex(r => r.id === currentId);
+  if (idx >= 0 && idx < leads.length - 1) {
+    const next = leads[idx + 1];
+    const nextRow = document.getElementById(`lead-row-${next.id}`);
+    if (nextRow) {
+      nextRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      nextRow.style.transition = 'background .4s';
+      nextRow.style.background = 'rgba(139,92,246,.1)';
+      setTimeout(() => { nextRow.style.background = ''; }, 1400);
+    }
   }
 }
 
@@ -602,9 +877,14 @@ async function loadData() {
     const heFormLeads  = rows.filter(r => r.status === 'NEW LEAD' && (r.discovery_method === 'website-onboarding-he' || r.discovery_method === 'unveiled-form-he'));
     const discoveredLeads = rows.filter(r => r.status === 'NEW LEAD' && r.discovery_method === 'google-maps');
 
+    window._currentLeads = [...enFormLeads, ...heFormLeads, ...discoveredLeads];
+
     const LEAD_TABLE = (leads, startNum) => `
       <div class="leads-wrap"><table>
-        <thead><tr><th>Business</th><th>About</th><th>Phone</th><th>Links</th><th>Score</th><th>Action</th></tr></thead>
+        <thead><tr>
+          <th>ID</th><th>Business</th><th>Category</th><th>Phone</th>
+          <th>Score</th><th>Status</th><th>Last Action</th><th>Next Step</th><th>Actions</th>
+        </tr></thead>
         <tbody>${leads.map((r,i) => leadRow(r, startNum + i)).join('')}</tbody>
       </table></div>`;
 
@@ -667,5 +947,23 @@ async function loadData() {
 if (sessionStorage.getItem(SESSION_KEY) === '1') loadData();
 setInterval(() => { if (sessionStorage.getItem(SESSION_KEY) === '1') loadData(); }, 60000);
 </script>
+
+<!-- ACTION MODAL -->
+<div id="action-modal" style="display:none" onclick="if(event.target===this)closeActionModal()">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="modal-title">Action</div>
+        <div class="modal-biz" id="modal-biz"></div>
+      </div>
+      <button class="modal-close" onclick="closeActionModal()">✕</button>
+    </div>
+    <div id="modal-body"></div>
+    <div class="modal-actions">
+      <button class="modal-btn-secondary" onclick="closeActionModal()">Cancel</button>
+      <button class="modal-btn-primary" id="modal-save">Save</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
