@@ -19,7 +19,7 @@
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="UNVEILED — a sphere of websites" />
+  <meta property="og:image:alt" content="UNVEILED: a sphere of websites" />
 
   <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image" />
@@ -2555,7 +2555,7 @@ heroOut.observe(hero);
   //    enqueues the confirmation email + internal alert into the MONA task worker. ──
   const SUPA = {
     url: 'https://eosvftmiwndmctrqprtz.supabase.co',
-    key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVvc3ZmdG1pd25kbWN0cnFwcnR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1MTcxMDYsImV4cCI6MjA5NjA5MzEwNn0.6Ep76e3vkck3uDOzn7x5fy0bABTHUhn0HmhPEeoeirM',  // publishable key (safe in client) — protected by insert-only RLS
+    key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVvc3ZmdG1pd25kbWN0cnFwcnR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1MTcxMDYsImV4cCI6MjA5NjA5MzEwNn0.6Ep76e3vkck3uDOzn7x5fy0bABTHUhn0HmhPEeoeirM',  // publishable key (safe in client): protected by insert-only RLS
     bucket: 'lead-uploads',
     enabled: true   // set false to fully disable real submission
   };
@@ -2593,7 +2593,7 @@ heroOut.observe(hero);
         id: leadId, business_name: data.biz||null, contact_name: data.name||null, email: data.email||null,
         phone: data.phone||null, website: data.url||null, social_profiles: data.social||{}, about: data.about||null,
         requirements: data.requirements||null, additional_notes: data.anything||null, inspiration_links: data.inspoUrls||[],
-        photos: photos, logos: logos, inspiration_screenshots: shots, status: 'NEW LEAD', source: 'website-onboarding'
+        photos: photos, logos: logos, inspiration_screenshots: shots, status: 'NEW LEAD', source: 'website-onboarding', discovery_method: 'unveiled-form'
       };
       const to = withTimeout(12000);
       const r = await fetch(SUPA.url+'/rest/v1/leads', {
@@ -2608,7 +2608,7 @@ heroOut.observe(hero);
       const ld = {id:leadId,business_name:data.biz||'',contact_name:data.name||'',email:data.email||'',phone:data.phone||'',website:data.url||'',social_profiles:data.social||{},about:data.about||'',requirements:data.requirements||'',additional_notes:data.anything||'',inspiration_links:data.inspoUrls||[],photos:photos,logos:logos,inspiration_screenshots:shots,source:'website-onboarding'};
       const tasks = [
         {type:'email',to:'monaempoweryou@gmail.com',subject:'New UNVEILED lead: '+(data.biz||'unknown'),body:'New lead submitted via website.\n\nBusiness: '+(data.biz||'N/A')+'\nContact: '+(data.name||'N/A')+'\nEmail: '+(data.email||'N/A')+'\nPhone: '+(data.phone||'N/A')+'\nWebsite: '+(data.url||'N/A')+'\n\nProduction will begin automatically.'},
-        {type:'sms',to:'+19164733131',message:'New UNVEILED lead: '+(data.biz||'?')+' — '+(data.email||'no email')},
+        {type:'sms',to:'+19164733131',message:'New UNVEILED lead: '+(data.biz||'?')+': '+(data.email||'no email')},
         {type:'production',phase:'research',lead_id:leadId,lead_data:ld}
       ];
       const taskResults = await Promise.all(tasks.map(t=>insertTask(t)));
@@ -2621,12 +2621,12 @@ heroOut.observe(hero);
   async function fallbackCapture(){
     try {
       const payload = {
-        _subject: 'UNVEILED lead (FALLBACK) — '+(data.biz||'no business name'),
+        _subject: 'UNVEILED lead (FALLBACK): '+(data.biz||'no business name'),
         business_name: data.biz||'', contact_name: data.name||'', email: data.email||'', phone: data.phone||'',
         website: data.url||'', socials: JSON.stringify(data.social||{}), about: data.about||'',
         requirements: data.requirements||'', notes: data.anything||'', inspiration: JSON.stringify(data.inspoUrls||[]),
         files: 'photos:'+(data.photos||[]).length+' / logos:'+(data.logo||[]).length+' / inspo:'+(data.inspoShots||[]).length,
-        source: 'website-onboarding (FALLBACK — Supabase was unavailable)'
+        source: 'website-onboarding (FALLBACK: Supabase was unavailable)'
       };
       const to = withTimeout(12000);
       const r = await fetch('https://formsubmit.co/ajax/maor@monadigitalmarketing.com', {
@@ -2786,7 +2786,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
       }
 
       const A = w * 0.50;     // horizontal radius (wider than sphere)
-      const B = h * 0.18;     // vertical radius — enough for real front/back, still a flat ring
+      const B = h * 0.18;     // vertical radius: enough for real front/back, still a flat ring
       for (const o of els){
         const ang  = (reduce ? 0.7 : t * 0.20 * o.spd) + o.phase * TAU;
         const wob  = o.wob * Math.sin(t * o.wf + o.phase * TAU) * h;   // subtle organic drift
