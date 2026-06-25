@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Kapara Mio — La Punta's #1 Mediterranean | Falafel, Hummus & Israeli Street Food in Puerto Escondido</title>
-<meta name="description" content="The highest-rated Mediterranean in Puerto Escondido — 4.9★ from 580+ travelers. Authentic Israeli street food: vegan falafel, fluffy pita, hummus & shawarma in La Punta, Zicatela. Order takeout & delivery online." />
+<title>Kapara Mio: La Punta's #1 Mediterranean | Falafel, Hummus & Israeli Street Food in Puerto Escondido</title>
+<meta name="description" content="The highest-rated Mediterranean in Puerto Escondido. 4.9★ from 580+ travelers. Authentic Israeli street food: vegan falafel, fluffy pita, hummus & shawarma in La Punta, Zicatela. Order takeout & delivery online." />
 <meta name="theme-color" content="#C65D3B" />
 
 <!-- Open Graph -->
 <meta property="og:type" content="restaurant" />
-<meta property="og:title" content="Kapara Mio — La Punta's #1 Mediterranean Street Food" />
+<meta property="og:title" content="Kapara Mio: La Punta's #1 Mediterranean Street Food" />
 <meta property="og:description" content="4.9★ from 580+ travelers. Authentic Israeli falafel, fluffy pita & hummus in Puerto Escondido. Order takeout & delivery." />
 <meta property="og:image" content="assets/hero.jpg" />
 <meta property="og:locale" content="en_US" />
@@ -23,6 +23,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Assistant:wght@300;400;500;600;700;800&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap" rel="stylesheet" />
+
+<!-- GSAP + ScrollTrigger -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<!-- Lenis smooth scroll -->
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/bundled/lenis.min.js"></script>
+<!-- CountUp.js -->
+<script src="https://cdn.jsdelivr.net/npm/countup.js@2.8.0/dist/countUp.umd.js"></script>
 
 <!-- Structured data -->
 <script type="application/ld+json">
@@ -164,20 +172,24 @@ html[lang="he"] .mobile-nav a{font-family:'Frank Ruhl Libre',serif}
 .mobile-nav .btn{margin-top:24px}
 
 /* ============ HERO ============ */
-.hero{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:center;padding-top:var(--header-h);overflow:hidden}
+.hero{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:center;justify-content:center;padding-top:var(--header-h);overflow:hidden;text-align:center}
 .hero-bg{position:absolute;inset:0;z-index:-2}
-.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center 65%}
-.hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(43,38,34,.55) 0%,rgba(43,38,34,.25) 40%,rgba(43,38,34,.65) 100%)}
-.hero-inner{position:relative;z-index:1;color:#fff;max-width:760px;padding:48px 0}
-.hero .rating-pill{display:inline-flex;align-items:center;gap:10px;background:rgba(245,239,227,.95);color:var(--charcoal);padding:9px 18px;border-radius:50px;font-weight:700;font-size:.95rem;box-shadow:var(--shadow-md);margin-bottom:26px}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center 55%}
+.hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,14,10,.72) 0%,rgba(20,14,10,.52) 45%,rgba(20,14,10,.82) 100%)}
+.hero-bg::before{content:"";position:absolute;inset:0;z-index:1;background:radial-gradient(ellipse 80% 70% at 50% 50%,transparent 35%,rgba(10,6,4,.55) 100%)}
+.hero-inner{position:relative;z-index:2;color:#fff;max-width:820px;padding:56px 0;display:flex;flex-direction:column;align-items:center}
+.hero .rating-pill{display:inline-flex;align-items:center;gap:10px;background:rgba(245,239,227,.95);color:var(--charcoal);padding:9px 20px;border-radius:50px;font-weight:700;font-size:.92rem;box-shadow:0 4px 20px rgba(0,0,0,.35);margin-bottom:32px}
 .hero .rating-pill .stars{color:var(--gold);letter-spacing:1px}
-.hero h1{font-size:clamp(2.6rem,7vw,4.6rem);font-weight:600;color:#fff;text-shadow:0 2px 24px rgba(0,0,0,.35);margin-bottom:8px}
+.hero h1{font-size:clamp(3rem,9vw,5.8rem);font-weight:600;color:#fff;text-shadow:0 2px 40px rgba(0,0,0,.6);margin-bottom:0;line-height:1.05;letter-spacing:-.01em}
 .hero h1 em{font-style:italic;color:var(--gold)}
-.hero .quote{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(1.25rem,3vw,1.7rem);font-weight:500;margin:22px 0 10px;color:#fff;opacity:.97}
+.hero-divider{display:flex;align-items:center;gap:16px;margin:28px auto;width:min(340px,80%);opacity:.7}
+.hero-divider::before,.hero-divider::after{content:"";flex:1;height:1px;background:rgba(255,255,255,.45)}
+.hero-divider span{color:var(--gold);font-size:1.3rem;flex-shrink:0}
+.hero .quote{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(1.15rem,2.8vw,1.55rem);font-weight:500;margin:0 0 6px;color:rgba(255,255,255,.95);max-width:600px}
 html[lang="he"] .hero .quote{font-family:'Frank Ruhl Libre',serif}
-.hero .quote-by{font-size:.92rem;opacity:.85;margin-bottom:30px;font-weight:600;letter-spacing:.04em}
-.hero-cta{display:flex;flex-wrap:wrap;gap:14px}
-.scroll-hint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:1;color:#fff;opacity:.8;font-size:1.6rem;animation:bob 2s infinite}
+.hero .quote-by{font-size:.82rem;opacity:.7;margin-bottom:36px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.hero-cta{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
+.scroll-hint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:1;color:#fff;opacity:.65;font-size:1.5rem;animation:bob 2s infinite}
 @keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,8px)}}
 
 /* ============ TRUST BAR ============ */
@@ -198,7 +210,7 @@ html[lang="he"] .trust-item .big{font-family:'Frank Ruhl Libre',serif}
 .menu-tab:hover:not(.active){color:var(--terracotta)}
 .menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:26px}
 .menu-card{background:var(--white);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);transition:transform .25s var(--ease),box-shadow .25s var(--ease);display:flex;flex-direction:column}
-.menu-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-md)}
+.menu-card:hover{box-shadow:var(--shadow-md)}
 .menu-card .img-wrap{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--cream-deep)}
 .menu-card .img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease)}
 .menu-card:hover .img-wrap img{transform:scale(1.06)}
@@ -385,9 +397,8 @@ html[lang="he"] .cart-total .v{font-family:'Frank Ruhl Libre',serif}
 .toast.show{transform:translateX(-50%) translateY(0)}
 .toast svg{color:var(--gold)}
 
-/* reveal animation */
-.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
-.reveal.in{opacity:1;transform:none}
+/* reveal animation: GSAP handles the transition */
+.reveal{opacity:0}
 
 /* ============ RESPONSIVE ============ */
 @media(max-width:980px){
@@ -413,8 +424,8 @@ html[lang="he"] .cart-total .v{font-family:'Frank Ruhl Libre',serif}
   .field-row{grid-template-columns:1fr}
   .float-order{display:inline-flex}
   .foot-bottom{flex-direction:column;text-align:center}
-  .hero-cta{flex-direction:column;align-items:stretch}
-  .hero-cta .btn{width:100%}
+  .hero-cta{flex-direction:column;align-items:center}
+  .hero-cta .btn{width:min(320px,100%)}
   .foot-cta .btns{flex-direction:column;align-items:stretch}
   .foot-cta .btns .btn{width:100%}
 }
@@ -488,8 +499,9 @@ html[lang="he"] .cart-total .v{font-family:'Frank Ruhl Libre',serif}
         <span><strong>4.9</strong> · <span data-i18n="hero.reviews">580+ Google reviews</span></span>
       </div>
       <h1><span data-i18n="hero.h1a">La Punta's #1</span><br><em data-i18n="hero.h1b">Mediterranean.</em></h1>
-      <p class="quote" data-i18n="hero.quote">"Forget the Michelin star restaurant — eat at Kapara Mio!"</p>
-      <p class="quote-by" data-i18n="hero.quoteby">— Verified Google review</p>
+      <div class="hero-divider"><span>🔥</span></div>
+      <p class="quote" data-i18n="hero.quote">"Forget the Michelin star restaurant. Eat at Kapara Mio!"</p>
+      <p class="quote-by" data-i18n="hero.quoteby">Verified Google review</p>
       <div class="hero-cta">
         <button class="btn btn-primary btn-lg" data-open-cart data-i18n="hero.cta1">Order Takeout / Delivery</button>
         <a href="#menu" class="btn btn-secondary btn-lg" data-i18n="hero.cta2">View Menu</a>
@@ -503,13 +515,13 @@ html[lang="he"] .cart-total .v{font-family:'Frank Ruhl Libre',serif}
 <section class="trustbar" id="trust">
   <div class="wrap">
     <div class="trust-items">
-      <div class="trust-item"><span class="big">4.9★</span><span class="lbl" data-i18n="trust.rating">Google rating</span></div>
+      <div class="trust-item"><span class="big" data-count="4.9" data-suffix="★" data-decimals="1">4.9★</span><span class="lbl" data-i18n="trust.rating">Google rating</span></div>
       <div class="trust-divider"></div>
-      <div class="trust-item"><span class="big">580+</span><span class="lbl" data-i18n="trust.reviews">Google reviews</span></div>
+      <div class="trust-item"><span class="big" data-count="580" data-suffix="+">580+</span><span class="lbl" data-i18n="trust.reviews">Google reviews</span></div>
       <div class="trust-divider"></div>
       <div class="trust-item"><span class="big">#1</span><span class="lbl" data-i18n="trust.rank">Mediterranean in Puerto</span></div>
       <div class="trust-divider"></div>
-      <div class="trust-item"><span class="big">100%</span><span class="lbl" data-i18n="trust.veg">Vegan-friendly</span></div>
+      <div class="trust-item"><span class="big" data-count="100" data-suffix="%">100%</span><span class="lbl" data-i18n="trust.veg">Vegan-friendly</span></div>
       <div class="trust-divider"></div>
       <div class="trust-item"><span class="big">🇮🇱</span><span class="lbl" data-i18n="trust.auth">Authentic Israeli recipes</span></div>
     </div>
@@ -522,11 +534,11 @@ html[lang="he"] .cart-total .v{font-family:'Frank Ruhl Libre',serif}
     <div class="section-head reveal">
       <span class="eyebrow" data-i18n="menu.eyebrow">The Menu</span>
       <h2 data-i18n="menu.h2">Order fresh, in seconds</h2>
-      <p data-i18n="menu.sub">Real Israeli street food, made to order. Tap any dish to customize it — remove what you don't like, and we'll have it ready for pickup or delivery.</p>
+      <p data-i18n="menu.sub">Real Israeli street food, made to order. Tap any dish to customize it: remove what you don't want, and we'll have it ready for pickup or delivery.</p>
     </div>
     <div class="menu-tabs" id="menuTabs" role="tablist"></div>
     <div class="menu-grid" id="menuGrid"></div>
-    <p class="menu-note" data-i18n="menu.note">Prices in Mexican pesos (MXN). Menu reflects our signature favorites — final pricing & full selection confirmed at checkout.</p>
+    <p class="menu-note" data-i18n="menu.note">Prices in Mexican pesos (MXN). Menu reflects our signature favorites. Final pricing & full selection confirmed at checkout.</p>
   </div>
 </section>
 
@@ -537,8 +549,8 @@ html[lang="he"] .cart-total .v{font-family:'Frank Ruhl Libre',serif}
       <div class="story-text reveal">
         <span class="eyebrow" data-i18n="story.eyebrow">Our Story</span>
         <h2 data-i18n="story.h2">Two worlds on one plate</h2>
-        <p data-i18n="story.p1">Kapara Mio was born from family recipes passed down through generations — the same falafel, hummus and fluffy pita our grandparents made, now served steps from the Pacific.</p>
-        <p data-i18n="story.p2">We blend fine spices brought from Israel with the rich flavors of Oaxaca, and build every plate from fresh, locally-sourced ingredients. It's where the desert meets the sea — honest food, made fresh, every single day.</p>
+        <p data-i18n="story.p1">Kapara Mio was born from family recipes passed down through generations: the same falafel, hummus and fluffy pita our grandparents made, now served steps from the Pacific.</p>
+        <p data-i18n="story.p2">We blend fine spices brought from Israel with the rich flavors of Oaxaca, and build every plate from fresh, locally-sourced ingredients. It's where the desert meets the sea. Honest food, made fresh, every single day.</p>
         <a href="#menu" class="btn btn-terra" data-i18n="story.cta">See the menu</a>
       </div>
       <div class="story-media reveal">
@@ -550,17 +562,17 @@ html[lang="he"] .cart-total .v{font-family:'Frank Ruhl Libre',serif}
       <div class="pillar reveal">
         <div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7.4L12 17l-6.3 4.4L8 14 2 9.4h7.6z"/></svg></div>
         <h3 data-i18n="story.pill1t">Authentic</h3>
-        <p data-i18n="story.pill1p">Real Israeli family recipes and imported spices — the genuine taste of the Mediterranean.</p>
+        <p data-i18n="story.pill1p">Real Israeli family recipes and imported spices: the genuine taste of the Mediterranean.</p>
       </div>
       <div class="pillar reveal">
         <div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8 6 6 9 6 13a6 6 0 0 0 12 0c0-4-2-7-6-11z"/></svg></div>
         <h3 data-i18n="story.pill2t">Always Fresh</h3>
-        <p data-i18n="story.pill2p">Made to order with locally-sourced ingredients. Nothing sits — everything is prepared the moment you order.</p>
+        <p data-i18n="story.pill2p">Made to order with locally-sourced ingredients. Nothing sits. Everything is prepared the moment you order.</p>
       </div>
       <div class="pillar reveal">
         <div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
         <h3 data-i18n="story.pill3t">Honest Pricing</h3>
-        <p data-i18n="story.pill3p">The price you see is the price you pay. No surprise service charges — ever.</p>
+        <p data-i18n="story.pill3p">The price you see is the price you pay. No surprise service charges. Ever..</p>
       </div>
     </div>
   </div>
@@ -572,7 +584,7 @@ html[lang="he"] .cart-total .v{font-family:'Frank Ruhl Libre',serif}
     <div class="section-head reveal">
       <span class="eyebrow" data-i18n="cater.eyebrow">Catering</span>
       <h2 data-i18n="cater.h2">A Mediterranean feast for your crew</h2>
-      <p data-i18n="cater.sub">Surf retreat, beach party, birthday or wedding — we'll bring the falafel, hummus, shawarma and mezze to you. Tell us your headcount and budget, we'll build the perfect spread.</p>
+      <p data-i18n="cater.sub">Surf retreat, beach party, birthday or wedding: we'll bring the falafel, hummus, shawarma and mezze to you. Tell us your headcount and budget, we'll build the perfect spread.</p>
     </div>
     <div class="cater-grid">
       <div class="cater-media reveal">
@@ -585,7 +597,7 @@ html[lang="he"] .cart-total .v{font-family:'Frank Ruhl Libre',serif}
       </div>
       <form class="cater-form reveal" id="caterForm" action="#" method="post" novalidate>
         <h3 data-i18n="cater.formt">Request a catering quote</h3>
-        <p class="sub" data-i18n="cater.forms">Tell us about your event — we typically reply within 24 hours.</p>
+        <p class="sub" data-i18n="cater.forms">Tell us about your event. We reply within 24 hours.</p>
         <div class="field-row">
           <div class="field"><label data-i18n="cater.fname">Your name</label><input type="text" name="name" required /></div>
           <div class="field"><label data-i18n="cater.fphone">Phone / WhatsApp</label><input type="tel" name="phone" required /></div>
@@ -602,7 +614,7 @@ html[lang="he"] .cart-total .v{font-family:'Frank Ruhl Libre',serif}
               <option data-i18n="cater.opt1">Mezze Grazing Table</option>
               <option data-i18n="cater.opt2">The Full Feast</option>
               <option data-i18n="cater.opt3">Build Your Own</option>
-              <option data-i18n="cater.opt4">Not sure yet — help me choose</option>
+              <option data-i18n="cater.opt4">Not sure yet? Help me choose</option>
             </select>
           </div>
         </div>
@@ -621,12 +633,12 @@ html[lang="he"] .cart-total .v{font-family:'Frank Ruhl Libre',serif}
     <div class="section-head reveal">
       <span class="eyebrow" style="color:var(--gold)" data-i18n="rev.eyebrow">Reviews</span>
       <h2 data-i18n="rev.h2">Travelers can't stop raving</h2>
-      <p data-i18n="rev.sub">4.9★ from over 580 reviews — the highest-rated Mediterranean in Puerto Escondido. Don't take our word for it:</p>
+      <p data-i18n="rev.sub">4.9★ from over 580 reviews: the highest-rated Mediterranean in Puerto Escondido. Don't take our word for it:</p>
     </div>
     <div class="review-grid">
       <div class="review-card reveal">
         <div class="stars">★★★★★</div>
-        <blockquote data-i18n="rev.q1">"Forget the Michelin star restaurant in Puerto Escondido — eat at Kapara Mio!"</blockquote>
+        <blockquote data-i18n="rev.q1">"Forget the Michelin star restaurant in Puerto Escondido. Eat at Kapara Mio!"</blockquote>
         <div class="who">★ <span data-i18n="rev.via">Google review</span></div>
       </div>
       <div class="review-card reveal">
@@ -656,7 +668,7 @@ html[lang="he"] .cart-total .v{font-family:'Frank Ruhl Libre',serif}
         <div class="info-list">
           <div class="info-row">
             <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
-            <div><div class="t" data-i18n="visit.addrt">Our location</div><div class="d" data-i18n="visit.addrd">Av. Justo Salvador Maldonado, esq. Coahuila, Col. Brisas de Zicatela — steps from Punta Zicatela beach, Puerto Escondido, Oaxaca 70934</div></div>
+            <div><div class="t" data-i18n="visit.addrt">Our location</div><div class="d" data-i18n="visit.addrd">Av. Justo Salvador Maldonado, esq. Coahuila, Col. Brisas de Zicatela, steps from Punta Zicatela beach, Puerto Escondido, Oaxaca 70934</div></div>
           </div>
           <div class="info-row">
             <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
@@ -788,7 +800,7 @@ html[lang="he"] .cart-total .v{font-family:'Frank Ruhl Libre',serif}
       <span class="v" id="cartTotal">$0</span>
     </div>
     <button class="btn btn-primary checkout-btn" id="checkoutBtn" data-i18n="cart.checkout">Place Order</button>
-    <p class="cart-disclaim" data-i18n="cart.disclaim">You'll confirm details & payment with our team — no card charged online yet.</p>
+    <p class="cart-disclaim" data-i18n="cart.disclaim">You'll confirm details & payment with our team. No card charged online yet.</p>
   </div>
 </aside>
 
@@ -800,48 +812,48 @@ html[lang="he"] .cart-total .v{font-family:'Frank Ruhl Libre',serif}
 const I18N = {
   en:{
     "nav.menu":"Menu","nav.story":"Our Story","nav.catering":"Catering","nav.reviews":"Reviews","nav.visit":"Visit","nav.order":"Order Now",
-    "hero.reviews":"580+ Google reviews","hero.h1a":"La Punta's #1","hero.h1b":"Mediterranean.","hero.quote":"“Forget the Michelin star restaurant — eat at Kapara Mio!”","hero.quoteby":"— Verified Google review","hero.cta1":"Order Takeout / Delivery","hero.cta2":"View Menu",
+    "hero.reviews":"580+ Google reviews","hero.h1a":"La Punta's #1","hero.h1b":"Mediterranean.","hero.quote":"“Forget the Michelin star restaurant. Eat at Kapara Mio!”","hero.quoteby":"Verified Google review","hero.cta1":"Order Takeout / Delivery","hero.cta2":"View Menu",
     "trust.rating":"Google rating","trust.reviews":"Google reviews","trust.rank":"Mediterranean in Puerto","trust.veg":"Vegan-friendly","trust.auth":"Authentic Israeli recipes",
-    "menu.eyebrow":"The Menu","menu.h2":"Order fresh, in seconds","menu.sub":"Real Israeli street food, made to order. Tap any dish to customize it — remove what you don't like, and we'll have it ready for pickup or delivery.","menu.note":"Prices in Mexican pesos (MXN). Menu reflects our signature favorites — final pricing & full selection confirmed at checkout.",
-    "story.eyebrow":"Our Story","story.h2":"Two worlds on one plate","story.p1":"Kapara Mio was born from family recipes passed down through generations — the same falafel, hummus and fluffy pita our grandparents made, now served steps from the Pacific.","story.p2":"We blend fine spices brought from Israel with the rich flavors of Oaxaca, and build every plate from fresh, locally-sourced ingredients. It's where the desert meets the sea — honest food, made fresh, every single day.","story.cta":"See the menu",
-    "story.pill1t":"Authentic","story.pill1p":"Real Israeli family recipes and imported spices — the genuine taste of the Mediterranean.","story.pill2t":"Always Fresh","story.pill2p":"Made to order with locally-sourced ingredients. Nothing sits — everything is prepared the moment you order.","story.pill3t":"Honest Pricing","story.pill3p":"The price you see is the price you pay. No surprise service charges — ever.",
-    "cater.eyebrow":"Catering","cater.h2":"A Mediterranean feast for your crew","cater.sub":"Surf retreat, beach party, birthday or wedding — we'll bring the falafel, hummus, shawarma and mezze to you. Tell us your headcount and budget, we'll build the perfect spread.","cater.pkg1t":"Mezze Grazing Table","cater.pkg1p":"Hummus, baba ganoush, falafel, fresh pita & salads. Perfect for mingling.","cater.pkg2t":"The Full Feast","cater.pkg2p":"Everything in the grazing table plus shawarma, skewers, schnitzel & sides.","cater.pkg3t":"Build Your Own","cater.pkg3p":"Custom menu shaped entirely around your headcount, budget & dietary needs.",
-    "cater.formt":"Request a catering quote","cater.forms":"Tell us about your event — we typically reply within 24 hours.","cater.fname":"Your name","cater.fphone":"Phone / WhatsApp","cater.femail":"Email","cater.fpeople":"Number of people","cater.fbudget":"Budget (MXN)","cater.fdate":"Event date","cater.fpkg":"Package","cater.opt1":"Mezze Grazing Table","cater.opt2":"The Full Feast","cater.opt3":"Build Your Own","cater.opt4":"Not sure yet — help me choose","cater.fnotes":"Anything else? (dietary needs, location, time)","cater.fsubmit":"Request Catering Quote","cater.fnote":"No payment required to request a quote. We'll confirm availability & a custom menu by email or WhatsApp.","cater.success":"Thanks! Your catering request is in — we'll reply within 24 hours. 🌿",
-    "rev.eyebrow":"Reviews","rev.h2":"Travelers can't stop raving","rev.sub":"4.9★ from over 580 reviews — the highest-rated Mediterranean in Puerto Escondido. Don't take our word for it:","rev.q1":"“Forget the Michelin star restaurant in Puerto Escondido — eat at Kapara Mio!”","rev.q2":"“The best falafel and hummus inside Mexico. 10/10 for food, service and vibes.”","rev.q3":"“The most amazing fluffy pita I've ever had. We came back three nights in a row.”","rev.via":"Google review","rev.cta":"Read all 580+ reviews on Google",
-    "visit.eyebrow":"Find Us","visit.h2":"Right here in La Punta","visit.addrt":"Our location","visit.addrd":"Av. Justo Salvador Maldonado, esq. Coahuila, Col. Brisas de Zicatela — steps from Punta Zicatela beach, Puerto Escondido, Oaxaca 70934","visit.phonet":"Call or WhatsApp","visit.hourst":"Hours","visit.hoursd":"Open daily for lunch & dinner","visit.hoursflag":"Call ahead to confirm tonight's hours","visit.igt":"Follow us","visit.deliv":"We deliver to nearby hostels, Airbnbs & beach spots in La Punta.","visit.cta1":"Get Directions","visit.cta2":"Call Us",
+    "menu.eyebrow":"The Menu","menu.h2":"Order fresh, in seconds","menu.sub":"Real Israeli street food, made to order. Tap any dish to customize it: remove what you don't want, and we'll have it ready for pickup or delivery.","menu.note":"Prices in Mexican pesos (MXN). Menu reflects our signature favorites. Final pricing & full selection confirmed at checkout.",
+    "story.eyebrow":"Our Story","story.h2":"Two worlds on one plate","story.p1":"Kapara Mio was born from family recipes passed down through generations: the same falafel, hummus and fluffy pita our grandparents made, now served steps from the Pacific.","story.p2":"We blend fine spices brought from Israel with the rich flavors of Oaxaca, and build every plate from fresh, locally-sourced ingredients. It's where the desert meets the sea. Honest food, made fresh, every single day.","story.cta":"See the menu",
+    "story.pill1t":"Authentic","story.pill1p":"Real Israeli family recipes and imported spices: the genuine taste of the Mediterranean.","story.pill2t":"Always Fresh","story.pill2p":"Made to order with locally-sourced ingredients. Nothing sits. Everything is prepared the moment you order.","story.pill3t":"Honest Pricing","story.pill3p":"The price you see is the price you pay. No surprise service charges. Ever..",
+    "cater.eyebrow":"Catering","cater.h2":"A Mediterranean feast for your crew","cater.sub":"Surf retreat, beach party, birthday or wedding: we'll bring the falafel, hummus, shawarma and mezze to you. Tell us your headcount and budget, we'll build the perfect spread.","cater.pkg1t":"Mezze Grazing Table","cater.pkg1p":"Hummus, baba ganoush, falafel, fresh pita & salads. Perfect for mingling.","cater.pkg2t":"The Full Feast","cater.pkg2p":"Everything in the grazing table plus shawarma, skewers, schnitzel & sides.","cater.pkg3t":"Build Your Own","cater.pkg3p":"Custom menu shaped entirely around your headcount, budget & dietary needs.",
+    "cater.formt":"Request a catering quote","cater.forms":"Tell us about your event. We reply within 24 hours.","cater.fname":"Your name","cater.fphone":"Phone / WhatsApp","cater.femail":"Email","cater.fpeople":"Number of people","cater.fbudget":"Budget (MXN)","cater.fdate":"Event date","cater.fpkg":"Package","cater.opt1":"Mezze Grazing Table","cater.opt2":"The Full Feast","cater.opt3":"Build Your Own","cater.opt4":"Not sure yet? Help me choose","cater.fnotes":"Anything else? (dietary needs, location, time)","cater.fsubmit":"Request Catering Quote","cater.fnote":"No payment required to request a quote. We'll confirm availability & a custom menu by email or WhatsApp.","cater.success":"Thanks! Your catering request is in. We'll reply within 24 hours. 🌿",
+    "rev.eyebrow":"Reviews","rev.h2":"Travelers can't stop raving","rev.sub":"4.9★ from over 580 reviews: the highest-rated Mediterranean in Puerto Escondido. Don't take our word for it:","rev.q1":"“Forget the Michelin star restaurant in Puerto Escondido. Eat at Kapara Mio!”","rev.q2":"“The best falafel and hummus inside Mexico. 10/10 for food, service and vibes.”","rev.q3":"“The most amazing fluffy pita I've ever had. We came back three nights in a row.”","rev.via":"Google review","rev.cta":"Read all 580+ reviews on Google",
+    "visit.eyebrow":"Find Us","visit.h2":"Right here in La Punta","visit.addrt":"Our location","visit.addrd":"Av. Justo Salvador Maldonado, esq. Coahuila, Col. Brisas de Zicatela, steps from Punta Zicatela beach, Puerto Escondido, Oaxaca 70934","visit.phonet":"Call or WhatsApp","visit.hourst":"Hours","visit.hoursd":"Open daily for lunch & dinner","visit.hoursflag":"Call ahead to confirm tonight's hours","visit.igt":"Follow us","visit.deliv":"We deliver to nearby hostels, Airbnbs & beach spots in La Punta.","visit.cta1":"Get Directions","visit.cta2":"Call Us",
     "foot.h2":"Hungry? <em>We're a tap away.</em>","foot.p":"4.9★ from 580+ travelers. Order your falafel, hummus & fresh pita right now.","foot.cta1":"Order Now","foot.cta2":"Follow on Instagram","foot.about":"La Punta's #1-rated Mediterranean. Authentic Israeli street food, made fresh where the desert meets the Pacific.","foot.explore":"Explore","foot.contact":"Contact","foot.addr":"Brisas de Zicatela, La Punta<br>Puerto Escondido, Oaxaca","foot.copy":"© 2026 Kapara Mio · Mediterranean street food, La Punta · Puerto Escondido","foot.made":"Made fresh, served with love · עשוי באהבה",
     "modal.custt":"Make it yours","modal.custs":"— tap to remove anything","modal.notes":"Special requests","modal.notesph":"e.g. extra spicy, allergy note…","modal.qty":"Quantity","modal.add":"Add to Order",
-    "cart.title":"Your Order","cart.takeout":"🥡 Takeout","cart.delivery":"🛵 Delivery","cart.addr":"Delivery address (hostel / Airbnb / beach spot)","cart.addrph":"Where in La Punta should we bring it?","cart.total":"Total","cart.checkout":"Place Order","cart.disclaim":"You'll confirm details & payment with our team — no card charged online yet.","cart.empty":"Your order is empty.","cart.emptysub":"Add some falafel to get started!","cart.no":"No","cart.placed":"Order received! We'll confirm your order shortly. Beteavon! 🧆","cart.added":"Added to your order!","cart.needaddr":"Please add a delivery address.","cart.browse":"Browse the menu"
+    "cart.title":"Your Order","cart.takeout":"🥡 Takeout","cart.delivery":"🛵 Delivery","cart.addr":"Delivery address (hostel / Airbnb / beach spot)","cart.addrph":"Where in La Punta should we bring it?","cart.total":"Total","cart.checkout":"Place Order","cart.disclaim":"You'll confirm details & payment with our team. No card charged online yet.","cart.empty":"Your order is empty.","cart.emptysub":"Add some falafel to get started!","cart.no":"No","cart.placed":"Order received! We'll confirm your order shortly. Beteavon! 🧆","cart.added":"Added to your order!","cart.needaddr":"Please add a delivery address.","cart.browse":"Browse the menu"
   },
   es:{
     "nav.menu":"Menú","nav.story":"Nuestra Historia","nav.catering":"Banquetes","nav.reviews":"Reseñas","nav.visit":"Visítanos","nav.order":"Ordenar",
-    "hero.reviews":"580+ reseñas en Google","hero.h1a":"El #1 Mediterráneo","hero.h1b":"de La Punta.","hero.quote":"“Olvida el restaurante con estrella Michelin — ¡come en Kapara Mio!”","hero.quoteby":"— Reseña verificada de Google","hero.cta1":"Ordenar para llevar / a domicilio","hero.cta2":"Ver el menú",
+    "hero.reviews":"580+ reseñas en Google","hero.h1a":"El #1 Mediterráneo","hero.h1b":"de La Punta.","hero.quote":"“Olvida el restaurante con estrella Michelin. ¡Come en Kapara Mio!”","hero.quoteby":"Reseña verificada de Google","hero.cta1":"Ordenar para llevar / a domicilio","hero.cta2":"Ver el menú",
     "trust.rating":"Calificación Google","trust.reviews":"reseñas en Google","trust.rank":"Mediterráneo en Puerto","trust.veg":"Apto para veganos","trust.auth":"Recetas israelíes auténticas",
-    "menu.eyebrow":"El Menú","menu.h2":"Ordena fresco, en segundos","menu.sub":"Auténtica comida callejera israelí, hecha al momento. Toca cualquier platillo para personalizarlo — quita lo que no te guste y lo tendremos listo para recoger o entregar.","menu.note":"Precios en pesos mexicanos (MXN). El menú muestra nuestros favoritos — precios y selección final se confirman al ordenar.",
-    "story.eyebrow":"Nuestra Historia","story.h2":"Dos mundos en un plato","story.p1":"Kapara Mio nació de recetas familiares transmitidas por generaciones — el mismo falafel, hummus y pita esponjosa que hacían nuestros abuelos, ahora a unos pasos del Pacífico.","story.p2":"Mezclamos finas especias traídas de Israel con los ricos sabores de Oaxaca, y armamos cada plato con ingredientes frescos y locales. Donde el desierto se encuentra con el mar — comida honesta, hecha fresca, todos los días.","story.cta":"Ver el menú",
-    "story.pill1t":"Auténtico","story.pill1p":"Recetas familiares israelíes reales y especias importadas — el sabor genuino del Mediterráneo.","story.pill2t":"Siempre Fresco","story.pill2p":"Hecho al momento con ingredientes locales. Nada espera — todo se prepara cuando ordenas.","story.pill3t":"Precios Honestos","story.pill3p":"El precio que ves es el que pagas. Sin cargos sorpresa por servicio — nunca.",
-    "cater.eyebrow":"Banquetes","cater.h2":"Un festín mediterráneo para tu gente","cater.sub":"Retiro de surf, fiesta en la playa, cumpleaños o boda — llevamos el falafel, hummus, shawarma y mezze a ti. Dinos cuántos son y tu presupuesto, armamos el banquete perfecto.","cater.pkg1t":"Mesa de Mezze","cater.pkg1p":"Hummus, baba ganoush, falafel, pita fresca y ensaladas. Perfecto para convivir.","cater.pkg2t":"El Festín Completo","cater.pkg2p":"Todo lo de la mesa de mezze más shawarma, brochetas, schnitzel y guarniciones.","cater.pkg3t":"Arma el Tuyo","cater.pkg3p":"Menú personalizado según tu número de personas, presupuesto y necesidades.",
-    "cater.formt":"Solicita una cotización","cater.forms":"Cuéntanos sobre tu evento — normalmente respondemos en 24 horas.","cater.fname":"Tu nombre","cater.fphone":"Teléfono / WhatsApp","cater.femail":"Correo","cater.fpeople":"Número de personas","cater.fbudget":"Presupuesto (MXN)","cater.fdate":"Fecha del evento","cater.fpkg":"Paquete","cater.opt1":"Mesa de Mezze","cater.opt2":"El Festín Completo","cater.opt3":"Arma el Tuyo","cater.opt4":"Aún no sé — ayúdenme a elegir","cater.fnotes":"¿Algo más? (dieta, ubicación, hora)","cater.fsubmit":"Solicitar Cotización","cater.fnote":"No se requiere pago para cotizar. Confirmaremos disponibilidad y menú por correo o WhatsApp.","cater.success":"¡Gracias! Recibimos tu solicitud — responderemos en 24 horas. 🌿",
-    "rev.eyebrow":"Reseñas","rev.h2":"Los viajeros no paran de hablar","rev.sub":"4.9★ de más de 580 reseñas — el mediterráneo mejor calificado de Puerto Escondido. No solo lo decimos nosotros:","rev.q1":"“Olvida el restaurante con estrella Michelin en Puerto Escondido — ¡come en Kapara Mio!”","rev.q2":"“El mejor falafel y hummus de México. 10/10 en comida, servicio y ambiente.”","rev.q3":"“La pita más esponjosa que he probado. Regresamos tres noches seguidas.”","rev.via":"Reseña de Google","rev.cta":"Lee las 580+ reseñas en Google",
-    "visit.eyebrow":"Encuéntranos","visit.h2":"Aquí mismo en La Punta","visit.addrt":"Nuestra ubicación","visit.addrd":"Av. Justo Salvador Maldonado, esq. Coahuila, Col. Brisas de Zicatela — a unos pasos de la playa Punta Zicatela, Puerto Escondido, Oaxaca 70934","visit.phonet":"Llama o WhatsApp","visit.hourst":"Horario","visit.hoursd":"Abierto a diario para comida y cena","visit.hoursflag":"Llama para confirmar el horario de hoy","visit.igt":"Síguenos","visit.deliv":"Entregamos a hostales, Airbnbs y la playa cercanos en La Punta.","visit.cta1":"Cómo llegar","visit.cta2":"Llámanos",
+    "menu.eyebrow":"El Menú","menu.h2":"Ordena fresco, en segundos","menu.sub":"Auténtica comida callejera israelí, hecha al momento. Toca cualquier platillo para personalizarlo: quita lo que no te guste y lo tendremos listo para recoger o entregar.","menu.note":"Precios en pesos mexicanos (MXN). El menú muestra nuestros favoritos. Precios y selección final se confirman al ordenar.",
+    "story.eyebrow":"Nuestra Historia","story.h2":"Dos mundos en un plato","story.p1":"Kapara Mio nació de recetas familiares transmitidas por generaciones: el mismo falafel, hummus y pita esponjosa que hacían nuestros abuelos, ahora a unos pasos del Pacífico.","story.p2":"Mezclamos finas especias traídas de Israel con los ricos sabores de Oaxaca, y armamos cada plato con ingredientes frescos y locales. Donde el desierto se encuentra con el mar. Comida honesta, hecha fresca, todos los días.","story.cta":"Ver el menú",
+    "story.pill1t":"Auténtico","story.pill1p":"Recetas familiares israelíes reales y especias importadas: el sabor genuino del Mediterráneo.","story.pill2t":"Siempre Fresco","story.pill2p":"Hecho al momento con ingredientes locales. Nada espera. Todo se prepara cuando ordenas.","story.pill3t":"Precios Honestos","story.pill3p":"El precio que ves es el que pagas. Sin cargos sorpresa por servicio. Nunca..",
+    "cater.eyebrow":"Banquetes","cater.h2":"Un festín mediterráneo para tu gente","cater.sub":"Retiro de surf, fiesta en la playa, cumpleaños o boda: llevamos el falafel, hummus, shawarma y mezze a ti. Dinos cuántos son y tu presupuesto, armamos el banquete perfecto.","cater.pkg1t":"Mesa de Mezze","cater.pkg1p":"Hummus, baba ganoush, falafel, pita fresca y ensaladas. Perfecto para convivir.","cater.pkg2t":"El Festín Completo","cater.pkg2p":"Todo lo de la mesa de mezze más shawarma, brochetas, schnitzel y guarniciones.","cater.pkg3t":"Arma el Tuyo","cater.pkg3p":"Menú personalizado según tu número de personas, presupuesto y necesidades.",
+    "cater.formt":"Solicita una cotización","cater.forms":"Cuéntanos sobre tu evento. Normalmente respondemos en 24 horas.","cater.fname":"Tu nombre","cater.fphone":"Teléfono / WhatsApp","cater.femail":"Correo","cater.fpeople":"Número de personas","cater.fbudget":"Presupuesto (MXN)","cater.fdate":"Fecha del evento","cater.fpkg":"Paquete","cater.opt1":"Mesa de Mezze","cater.opt2":"El Festín Completo","cater.opt3":"Arma el Tuyo","cater.opt4":"Aún no sé... ayúdenme a elegir","cater.fnotes":"¿Algo más? (dieta, ubicación, hora)","cater.fsubmit":"Solicitar Cotización","cater.fnote":"No se requiere pago para cotizar. Confirmaremos disponibilidad y menú por correo o WhatsApp.","cater.success":"¡Gracias! Recibimos tu solicitud. Responderemos en 24 horas. 🌿",
+    "rev.eyebrow":"Reseñas","rev.h2":"Los viajeros no paran de hablar","rev.sub":"4.9★ de más de 580 reseñas: el mediterráneo mejor calificado de Puerto Escondido. No solo lo decimos nosotros:","rev.q1":"“Olvida el restaurante con estrella Michelin en Puerto Escondido. ¡Come en Kapara Mio!”","rev.q2":"“El mejor falafel y hummus de México. 10/10 en comida, servicio y ambiente.”","rev.q3":"“La pita más esponjosa que he probado. Regresamos tres noches seguidas.”","rev.via":"Reseña de Google","rev.cta":"Lee las 580+ reseñas en Google",
+    "visit.eyebrow":"Encuéntranos","visit.h2":"Aquí mismo en La Punta","visit.addrt":"Nuestra ubicación","visit.addrd":"Av. Justo Salvador Maldonado, esq. Coahuila, Col. Brisas de Zicatela, a unos pasos de la playa Punta Zicatela, Puerto Escondido, Oaxaca 70934","visit.phonet":"Llama o WhatsApp","visit.hourst":"Horario","visit.hoursd":"Abierto a diario para comida y cena","visit.hoursflag":"Llama para confirmar el horario de hoy","visit.igt":"Síguenos","visit.deliv":"Entregamos a hostales, Airbnbs y la playa cercanos en La Punta.","visit.cta1":"Cómo llegar","visit.cta2":"Llámanos",
     "foot.h2":"¿Con hambre? <em>Estamos a un toque.</em>","foot.p":"4.9★ de 580+ viajeros. Ordena tu falafel, hummus y pita fresca ahora mismo.","foot.cta1":"Ordenar","foot.cta2":"Síguenos en Instagram","foot.about":"El mediterráneo mejor calificado de La Punta. Auténtica comida callejera israelí, hecha fresca donde el desierto se encuentra con el Pacífico.","foot.explore":"Explora","foot.contact":"Contacto","foot.addr":"Brisas de Zicatela, La Punta<br>Puerto Escondido, Oaxaca","foot.copy":"© 2026 Kapara Mio · Comida callejera mediterránea, La Punta · Puerto Escondido","foot.made":"Hecho fresco, servido con amor · עשוי באהבה",
     "modal.custt":"Hazlo a tu gusto","modal.custs":"— toca para quitar algo","modal.notes":"Peticiones especiales","modal.notesph":"ej. extra picante, alergia…","modal.qty":"Cantidad","modal.add":"Agregar al pedido",
-    "cart.title":"Tu Pedido","cart.takeout":"🥡 Para llevar","cart.delivery":"🛵 A domicilio","cart.addr":"Dirección de entrega (hostal / Airbnb / playa)","cart.addrph":"¿A dónde en La Punta lo llevamos?","cart.total":"Total","cart.checkout":"Realizar Pedido","cart.disclaim":"Confirmarás detalles y pago con nuestro equipo — aún no se cobra en línea.","cart.empty":"Tu pedido está vacío.","cart.emptysub":"¡Agrega algo de falafel para empezar!","cart.no":"Sin","cart.placed":"¡Pedido recibido! Lo confirmaremos en breve. ¡Beteavón! 🧆","cart.added":"¡Agregado a tu pedido!","cart.needaddr":"Por favor agrega una dirección de entrega.","cart.browse":"Ver el menú"
+    "cart.title":"Tu Pedido","cart.takeout":"🥡 Para llevar","cart.delivery":"🛵 A domicilio","cart.addr":"Dirección de entrega (hostal / Airbnb / playa)","cart.addrph":"¿A dónde en La Punta lo llevamos?","cart.total":"Total","cart.checkout":"Realizar Pedido","cart.disclaim":"Confirmarás detalles y pago con nuestro equipo. Aún no se cobra en línea.","cart.empty":"Tu pedido está vacío.","cart.emptysub":"¡Agrega algo de falafel para empezar!","cart.no":"Sin","cart.placed":"¡Pedido recibido! Lo confirmaremos en breve. ¡Beteavón! 🧆","cart.added":"¡Agregado a tu pedido!","cart.needaddr":"Por favor agrega una dirección de entrega.","cart.browse":"Ver el menú"
   },
   he:{
     "nav.menu":"תפריט","nav.story":"הסיפור שלנו","nav.catering":"קייטרינג","nav.reviews":"ביקורות","nav.visit":"בקרו אותנו","nav.order":"להזמין",
-    "hero.reviews":"+580 ביקורות בגוגל","hero.h1a":"המסעדה הים-תיכונית","hero.h1b":"מספר 1 בלָה פּונטה.","hero.quote":"“תשכחו ממסעדת הכוכב מישלן — תאכלו בכפרה מיו!”","hero.quoteby":"— ביקורת מאומתת בגוגל","hero.cta1":"הזמנת טייק אווי / משלוח","hero.cta2":"לתפריט",
+    "hero.reviews":"+580 ביקורות בגוגל","hero.h1a":"המסעדה הים-תיכונית","hero.h1b":"מספר 1 בלָה פּונטה.","hero.quote":"“תשכחו ממסעדת הכוכב מישלן. תאכלו בכפרה מיו!”","hero.quoteby":"ביקורת מאומתת בגוגל","hero.cta1":"הזמנת טייק אווי / משלוח","hero.cta2":"לתפריט",
     "trust.rating":"דירוג גוגל","trust.reviews":"ביקורות בגוגל","trust.rank":"ים-תיכונית בפוארטו","trust.veg":"ידידותי לטבעונים","trust.auth":"מתכונים ישראליים אותנטיים",
-    "menu.eyebrow":"התפריט","menu.h2":"מזמינים טרי, תוך שניות","menu.sub":"אוכל רחוב ישראלי אמיתי, מוכן במקום. הקליקו על כל מנה כדי להתאים אותה — הסירו מה שלא בא לכם, ונכין אותה לאיסוף או למשלוח.","menu.note":"המחירים בפזו מקסיקני (MXN). התפריט מציג את המנות האהובות שלנו — מחיר ובחירה סופית מאושרים בהזמנה.",
-    "story.eyebrow":"הסיפור שלנו","story.h2":"שני עולמות בצלחת אחת","story.p1":"כפרה מיו נולדה ממתכונים משפחתיים שעברו מדור לדור — אותו פלאפל, חומוס ופיתה אוורירית שסבא וסבתא הכינו, עכשיו צעדים מהאוקיינוס השקט.","story.p2":"אנחנו משלבים תבלינים משובחים מישראל עם הטעמים העשירים של אואחקה, ובונים כל צלחת ממרכיבים טריים ומקומיים. כאן המדבר פוגש את הים — אוכל כן, מוכן טרי, כל יום.","story.cta":"לתפריט",
-    "story.pill1t":"אותנטי","story.pill1p":"מתכונים משפחתיים ישראליים אמיתיים ותבלינים מיובאים — הטעם האמיתי של הים התיכון.","story.pill2t":"תמיד טרי","story.pill2p":"מוכן במקום ממרכיבים מקומיים. שום דבר לא עומד — הכל מוכן ברגע שאתם מזמינים.","story.pill3t":"מחירים הוגנים","story.pill3p":"המחיר שאתם רואים הוא המחיר שאתם משלמים. בלי דמי שירות מפתיעים — אף פעם.",
-    "cater.eyebrow":"קייטרינג","cater.h2":"חגיגה ים-תיכונית לכל החבר'ה","cater.sub":"ריטריט גלישה, מסיבת חוף, יום הולדת או חתונה — נביא אליכם את הפלאפל, החומוס, השווארמה והמזה. ספרו לנו כמה אתם והתקציב, ונבנה את המפגש המושלם.","cater.pkg1t":"שולחן מזטים","cater.pkg1p":"חומוס, בבא גנוש, פלאפל, פיתה טרייה וסלטים. מושלם למפגש.","cater.pkg2t":"החגיגה המלאה","cater.pkg2p":"כל מה שבשולחן המזטים בתוספת שווארמה, שיפודים, שניצל ותוספות.","cater.pkg3t":"בנו בעצמכם","cater.pkg3p":"תפריט מותאם לחלוטין למספר האנשים, התקציב והצרכים שלכם.",
-    "cater.formt":"בקשת הצעת מחיר לקייטרינג","cater.forms":"ספרו לנו על האירוע — בדרך כלל נחזור תוך 24 שעות.","cater.fname":"השם שלכם","cater.fphone":"טלפון / וואטסאפ","cater.femail":"אימייל","cater.fpeople":"מספר אנשים","cater.fbudget":"תקציב (MXN)","cater.fdate":"תאריך האירוע","cater.fpkg":"חבילה","cater.opt1":"שולחן מזטים","cater.opt2":"החגיגה המלאה","cater.opt3":"בנו בעצמכם","cater.opt4":"עדיין לא בטוחים — עזרו לי לבחור","cater.fnotes":"עוד משהו? (צרכים תזונתיים, מיקום, שעה)","cater.fsubmit":"שליחת בקשה","cater.fnote":"אין צורך בתשלום לבקשת הצעת מחיר. נאשר זמינות ותפריט מותאם באימייל או וואטסאפ.","cater.success":"תודה! קיבלנו את הבקשה — נחזור אליכם תוך 24 שעות. 🌿",
-    "rev.eyebrow":"ביקורות","rev.h2":"המטיילים לא מפסיקים להלל","rev.sub":"4.9★ מתוך יותר מ-580 ביקורות — הים-תיכונית המדורגת ביותר בפוארטו אסקונדידו. אל תאמינו רק לנו:","rev.q1":"“תשכחו ממסעדת הכוכב מישלן בפוארטו אסקונדידו — תאכלו בכפרה מיו!”","rev.q2":"“הפלאפל והחומוס הכי טובים במקסיקו. 10/10 על האוכל, השירות והאווירה.”","rev.q3":"“הפיתה הכי אוורירית שאכלתי אי פעם. חזרנו שלושה ערבים ברצף.”","rev.via":"ביקורת גוגל","rev.cta":"קראו את כל 580+ הביקורות בגוגל",
-    "visit.eyebrow":"מצאו אותנו","visit.h2":"כאן בלָה פּונטה","visit.addrt":"המיקום שלנו","visit.addrd":"Av. Justo Salvador Maldonado, פינת Coahuila, Col. Brisas de Zicatela — צעדים מחוף פונטה זיקטלה, פוארטו אסקונדידו, אואחקה 70934","visit.phonet":"חייגו או וואטסאפ","visit.hourst":"שעות פתיחה","visit.hoursd":"פתוח כל יום לצהריים וערב","visit.hoursflag":"חייגו מראש לאישור שעות הערב","visit.igt":"עקבו אחרינו","visit.deliv":"אנחנו מספקים למקומות אירוח, Airbnb וחופים סמוכים בלָה פּונטה.","visit.cta1":"הוראות הגעה","visit.cta2":"התקשרו","foot.h2":"רעבים? <em>אנחנו במרחק נגיעה.</em>",
+    "menu.eyebrow":"התפריט","menu.h2":"מזמינים טרי, תוך שניות","menu.sub":"אוכל רחוב ישראלי אמיתי, מוכן במקום. הקליקו על כל מנה כדי להתאים אותה: הסירו מה שלא בא לכם, ונכין אותה לאיסוף או למשלוח.","menu.note":"המחירים בפזו מקסיקני (MXN). התפריט מציג את המנות האהובות שלנו. מחיר ובחירה סופית מאושרים בהזמנה.",
+    "story.eyebrow":"הסיפור שלנו","story.h2":"שני עולמות בצלחת אחת","story.p1":"כפרה מיו נולדה ממתכונים משפחתיים שעברו מדור לדור: אותו פלאפל, חומוס ופיתה אוורירית שסבא וסבתא הכינו, עכשיו צעדים מהאוקיינוס השקט.","story.p2":"אנחנו משלבים תבלינים משובחים מישראל עם הטעמים העשירים של אואחקה, ובונים כל צלחת ממרכיבים טריים ומקומיים. כאן המדבר פוגש את הים. אוכל כן, מוכן טרי, כל יום.","story.cta":"לתפריט",
+    "story.pill1t":"אותנטי","story.pill1p":"מתכונים משפחתיים ישראליים אמיתיים ותבלינים מיובאים: הטעם האמיתי של הים התיכון.","story.pill2t":"תמיד טרי","story.pill2p":"מוכן במקום ממרכיבים מקומיים. שום דבר לא עומד. הכל מוכן ברגע שאתם מזמינים.","story.pill3t":"מחירים הוגנים","story.pill3p":"המחיר שאתם רואים הוא המחיר שאתם משלמים. בלי דמי שירות מפתיעים. אף פעם..",
+    "cater.eyebrow":"קייטרינג","cater.h2":"חגיגה ים-תיכונית לכל החבר'ה","cater.sub":"ריטריט גלישה, מסיבת חוף, יום הולדת או חתונה: נביא אליכם את הפלאפל, החומוס, השווארמה והמזה. ספרו לנו כמה אתם והתקציב, ונבנה את המפגש המושלם.","cater.pkg1t":"שולחן מזטים","cater.pkg1p":"חומוס, בבא גנוש, פלאפל, פיתה טרייה וסלטים. מושלם למפגש.","cater.pkg2t":"החגיגה המלאה","cater.pkg2p":"כל מה שבשולחן המזטים בתוספת שווארמה, שיפודים, שניצל ותוספות.","cater.pkg3t":"בנו בעצמכם","cater.pkg3p":"תפריט מותאם לחלוטין למספר האנשים, התקציב והצרכים שלכם.",
+    "cater.formt":"בקשת הצעת מחיר לקייטרינג","cater.forms":"ספרו לנו על האירוע. בדרך כלל נחזור תוך 24 שעות.","cater.fname":"השם שלכם","cater.fphone":"טלפון / וואטסאפ","cater.femail":"אימייל","cater.fpeople":"מספר אנשים","cater.fbudget":"תקציב (MXN)","cater.fdate":"תאריך האירוע","cater.fpkg":"חבילה","cater.opt1":"שולחן מזטים","cater.opt2":"החגיגה המלאה","cater.opt3":"בנו בעצמכם","cater.opt4":"עדיין לא בטוחים? עזרו לי לבחור","cater.fnotes":"עוד משהו? (צרכים תזונתיים, מיקום, שעה)","cater.fsubmit":"שליחת בקשה","cater.fnote":"אין צורך בתשלום לבקשת הצעת מחיר. נאשר זמינות ותפריט מותאם באימייל או וואטסאפ.","cater.success":"תודה! קיבלנו את הבקשה. נחזור אליכם תוך 24 שעות. 🌿",
+    "rev.eyebrow":"ביקורות","rev.h2":"המטיילים לא מפסיקים להלל","rev.sub":"4.9★ מתוך יותר מ-580 ביקורות: הים-תיכונית המדורגת ביותר בפוארטו אסקונדידו. אל תאמינו רק לנו:","rev.q1":"“תשכחו ממסעדת הכוכב מישלן בפוארטו אסקונדידו. תאכלו בכפרה מיו!”","rev.q2":"“הפלאפל והחומוס הכי טובים במקסיקו. 10/10 על האוכל, השירות והאווירה.”","rev.q3":"“הפיתה הכי אוורירית שאכלתי אי פעם. חזרנו שלושה ערבים ברצף.”","rev.via":"ביקורת גוגל","rev.cta":"קראו את כל 580+ הביקורות בגוגל",
+    "visit.eyebrow":"מצאו אותנו","visit.h2":"כאן בלָה פּונטה","visit.addrt":"המיקום שלנו","visit.addrd":"Av. Justo Salvador Maldonado, פינת Coahuila, Col. Brisas de Zicatela, צעדים מחוף פונטה זיקטלה, פוארטו אסקונדידו, אואחקה 70934","visit.phonet":"חייגו או וואטסאפ","visit.hourst":"שעות פתיחה","visit.hoursd":"פתוח כל יום לצהריים וערב","visit.hoursflag":"חייגו מראש לאישור שעות הערב","visit.igt":"עקבו אחרינו","visit.deliv":"אנחנו מספקים למקומות אירוח, Airbnb וחופים סמוכים בלָה פּונטה.","visit.cta1":"הוראות הגעה","visit.cta2":"התקשרו","foot.h2":"רעבים? <em>אנחנו במרחק נגיעה.</em>",
     "foot.p":"4.9★ מ-580+ מטיילים. הזמינו את הפלאפל, החומוס והפיתה הטרייה עכשיו.","foot.cta1":"להזמין","foot.cta2":"עקבו באינסטגרם","foot.about":"הים-תיכונית המדורגת מספר 1 בלָה פּונטה. אוכל רחוב ישראלי אותנטי, מוכן טרי במקום שבו המדבר פוגש את האוקיינוס.","foot.explore":"ניווט","foot.contact":"צרו קשר","foot.addr":"Brisas de Zicatela, La Punta<br>פוארטו אסקונדידו, אואחקה","foot.copy":"© 2026 כפרה מיו · אוכל רחוב ים-תיכוני, לָה פּונטה · פוארטו אסקונדידו","foot.made":"מוכן טרי, מוגש באהבה",
     "modal.custt":"התאימו לעצמכם","modal.custs":"— הקליקו כדי להסיר","modal.notes":"בקשות מיוחדות","modal.notesph":"לדוגמה: חריף במיוחד, אלרגיה…","modal.qty":"כמות","modal.add":"הוספה להזמנה",
-    "cart.title":"ההזמנה שלך","cart.takeout":"🥡 איסוף","cart.delivery":"🛵 משלוח","cart.addr":"כתובת למשלוח (הוסטל / Airbnb / חוף)","cart.addrph":"לאן בלָה פּונטה להביא?","cart.total":"סה\"כ","cart.checkout":"לבצע הזמנה","cart.disclaim":"תאשרו פרטים ותשלום מול הצוות שלנו — עדיין לא מחויב כרטיס אונליין.","cart.empty":"ההזמנה ריקה.","cart.emptysub":"הוסיפו קצת פלאפל כדי להתחיל!","cart.no":"בלי","cart.placed":"ההזמנה התקבלה! נאשר אותה בקרוב. בתאבון! 🧆","cart.added":"נוסף להזמנה!","cart.needaddr":"אנא הוסיפו כתובת למשלוח.","cart.browse":"לתפריט"
+    "cart.title":"ההזמנה שלך","cart.takeout":"🥡 איסוף","cart.delivery":"🛵 משלוח","cart.addr":"כתובת למשלוח (הוסטל / Airbnb / חוף)","cart.addrph":"לאן בלָה פּונטה להביא?","cart.total":"סה\"כ","cart.checkout":"לבצע הזמנה","cart.disclaim":"תאשרו פרטים ותשלום מול הצוות שלנו. עדיין לא מחויב כרטיס אונליין.","cart.empty":"ההזמנה ריקה.","cart.emptysub":"הוסיפו קצת פלאפל כדי להתחיל!","cart.no":"בלי","cart.placed":"ההזמנה התקבלה! נאשר אותה בקרוב. בתאבון! 🧆","cart.added":"נוסף להזמנה!","cart.needaddr":"אנא הוסיפו כתובת למשלוח.","cart.browse":"לתפריט"
   }
 };
 
@@ -881,7 +893,7 @@ const ITEMS = [
   // FALAFEL & PITA
   {cat:"falafel",img:"assets/section-menu-falafel.jpg",loved:true,veg:true,price:120,
    name:{en:"Vegan Falafel Plate",es:"Plato de Falafel Vegano",he:"מנת פלאפל טבעוני"},
-   desc:{en:"Our signature — crispy, herb-green falafel drizzled with tahini. The dish everyone raves about.",es:"Nuestro favorito — falafel crujiente y verde con tahini. El platillo del que todos hablan.",he:"המנה שלנו — פלאפל פריך וירוק עם טחינה. המנה שכולם מדברים עליה."},
+   desc:{en:"Our signature: crispy, herb-green falafel drizzled with tahini. The dish everyone raves about.",es:"Nuestro favorito: falafel crujiente y verde con tahini. El platillo del que todos hablan.",he:"המנה שלנו: פלאפל פריך וירוק עם טחינה. המנה שכולם מדברים עליה."},
    ing:["tahini","pickles","onion","parsley","hotsauce"]},
   {cat:"falafel",img:"assets/section-menu-pita.jpg",loved:true,veg:true,price:150,
    name:{en:"Falafel Pita Wrap",es:"Pita de Falafel",he:"פיתה פלאפל"},
@@ -889,7 +901,7 @@ const ITEMS = [
    ing:["hummus","tahini","salad","pickles","onion","cabbage","amba","hotsauce"]},
   {cat:"falafel",img:"assets/section-menu-pita.jpg",veg:true,price:45,
    name:{en:"Fresh Fluffy Pita",es:"Pita Fresca",he:"פיתה טרייה"},
-   desc:{en:"“The most amazing fluffy pita I've ever had” — baked fresh in our wood-fired oven.",es:"“La pita más esponjosa que he probado” — horneada fresca en horno de leña.",he:"“הפיתה הכי אוורירית שאכלתי” — נאפית טרייה בטאבון."},
+   desc:{en:"“The most amazing fluffy pita I've ever had”. Baked fresh in our wood-fired oven.",es:"“La pita más esponjosa que he probado.” Horneada fresca en horno de leña.",he:"“הפיתה הכי אוורירית שאכלתי.” נאפית טרייה בטאבון."},
    ing:[]},
   // PLATES & MEZZE
   {cat:"mezze",img:"assets/section-menu-hummus.jpg",loved:true,veg:true,price:110,
@@ -905,33 +917,33 @@ const ITEMS = [
    desc:{en:"Hummus, baba ganoush, falafel, fresh salad & a basket of warm pita. The full spread.",es:"Hummus, baba ganoush, falafel, ensalada fresca y canasta de pita caliente. El festín completo.",he:"חומוס, בבא גנוש, פלאפל, סלט טרי וסל פיתות חמות. המפגש המלא."},
    ing:["hummus","tahini","salad","onion","pickles","hotsauce"]},
   // SHAWARMA & SKEWERS
-  {cat:"shawarma",img:null,price:190,
+  {cat:"shawarma",img:"assets/section-menu-shawarma.jpg",price:190,
    name:{en:"Chicken Shawarma Plate",es:"Plato de Shawarma de Pollo",he:"מנת שווארמה עוף"},
    desc:{en:"Marinated chicken shawarma with tahini, fresh salad, pickles & fries. Spiced just right.",es:"Shawarma de pollo marinado con tahini, ensalada fresca, pepinillos y papas. Bien condimentado.",he:"שווארמה עוף מתובלת עם טחינה, סלט טרי, חמוצים וצ'יפס. מתובלת בדיוק נכון."},
    ing:["tahini","onion","parsley","pickles","fries","amba","hotsauce"]},
-  {cat:"shawarma",img:null,price:200,
+  {cat:"shawarma",img:"assets/section-menu-shawarma.jpg",price:200,
    name:{en:"Grilled Chicken Skewers",es:"Brochetas de Pollo a la Parrilla",he:"שיפודי עוף בגריל"},
    desc:{en:"Tender chicken skewers grilled over open flame with garlic, lemon & Mediterranean herbs.",es:"Brochetas de pollo a la parrilla con ajo, limón y hierbas mediterráneas.",he:"שיפודי עוף עסיסיים על האש עם שום, לימון ועשבי תיבול ים-תיכוניים."},
    ing:["garlic","lemon","herbs","oliveoil","salad","fries"]},
-  {cat:"shawarma",img:null,veg:true,price:160,
+  {cat:"shawarma",img:"assets/section-menu-salads.jpg",veg:true,price:160,
    name:{en:"Vegetable Skewers",es:"Brochetas de Verduras",he:"שיפודי ירקות"},
    desc:{en:"Charred seasonal vegetables on the grill, brushed with olive oil & herbs. Vegan.",es:"Verduras de temporada a la parrilla con aceite de oliva y hierbas. Vegano.",he:"ירקות עונתיים על הגריל עם שמן זית ועשבי תיבול. טבעוני."},
    ing:["oliveoil","herbs","garlic","salad"]},
   // SCHNITZEL
-  {cat:"schnitzel",img:null,price:185,
+  {cat:"schnitzel",img:"assets/section-menu-schnitzel.jpg",price:185,
    name:{en:"Chicken Schnitzel Plate",es:"Plato de Schnitzel de Pollo",he:"מנת שניצל עוף"},
    desc:{en:"Golden, crispy chicken schnitzel with fresh salad, fries, tahini & pickles. A crowd favorite.",es:"Schnitzel de pollo dorado y crujiente con ensalada, papas, tahini y pepinillos. Favorito de todos.",he:"שניצל עוף זהוב ופריך עם סלט טרי, צ'יפס, טחינה וחמוצים. אהוב על כולם."},
    ing:["salad","fries","tahini","pickles","hotsauce"]},
-  {cat:"schnitzel",img:null,price:175,
+  {cat:"schnitzel",img:"assets/section-menu-pita.jpg",price:175,
    name:{en:"Schnitzel in Pita",es:"Schnitzel en Pita",he:"שניצל בפיתה"},
    desc:{en:"Crispy schnitzel tucked into fresh pita with hummus, salad & your choice of toppings.",es:"Schnitzel crujiente en pita fresca con hummus, ensalada y los toppings que elijas.",he:"שניצל פריך בפיתה טרייה עם חומוס, סלט והתוספות שתבחרו."},
    ing:["hummus","tahini","salad","pickles","onion","amba","hotsauce"]},
   // SALADS
-  {cat:"salads",img:null,veg:true,price:90,
+  {cat:"salads",img:"assets/section-menu-salads.jpg",veg:true,price:90,
    name:{en:"Israeli Salad",es:"Ensalada Israelí",he:"סלט ישראלי"},
    desc:{en:"Finely chopped tomato, cucumber & onion with parsley, lemon & olive oil. Bright & fresh.",es:"Tomate, pepino y cebolla finamente picados con perejil, limón y aceite de oliva. Fresco y vibrante.",he:"עגבנייה, מלפפון ובצל קצוצים דק עם פטרוזיליה, לימון ושמן זית. רענן ובהיר."},
    ing:["tomato","cucumber","onion","parsley","lemon","oliveoil"]},
-  {cat:"salads",img:null,veg:true,price:120,
+  {cat:"salads",img:"assets/section-menu-schnitzel.jpg",veg:true,price:120,
    name:{en:"Tahini Green Salad",es:"Ensalada Verde con Tahini",he:"סלט ירוק בטחינה"},
    desc:{en:"Crisp greens & vegetables tossed in our house tahini-lemon dressing. Light & satisfying.",es:"Verduras frescas con nuestro aderezo de tahini y limón. Ligero y satisfactorio.",he:"ירקות עלים וירקות טריים ברוטב טחינה-לימון של הבית. קליל ומשביע."},
    ing:["tahini","lemon","oliveoil","herbs"]},
@@ -976,9 +988,9 @@ function applyLang(l){
   });
   $$("[data-i18n-ph]").forEach(el=>{ el.placeholder = t(el.getAttribute("data-i18n-ph")); });
   $$(".lang button").forEach(b=> b.classList.toggle("active", b.dataset.lang===l));
-  document.title = l==="es" ? "Kapara Mio — El #1 Mediterráneo de La Punta | Falafel, Hummus y Comida Israelí en Puerto Escondido"
-    : l==="he" ? "כפרה מיו — הים-תיכונית מספר 1 בלָה פּונטה | פלאפל, חומוס ואוכל רחוב ישראלי בפוארטו אסקונדידו"
-    : "Kapara Mio — La Punta's #1 Mediterranean | Falafel, Hummus & Israeli Street Food in Puerto Escondido";
+  document.title = l==="es" ? "Kapara Mio: El #1 Mediterráneo de La Punta | Falafel, Hummus y Comida Israelí en Puerto Escondido"
+    : l==="he" ? "כפרה מיו: הים-תיכונית מספר 1 בלָה פּונטה | פלאפל, חומוס ואוכל רחוב ישראלי בפוארטו אסקונדידו"
+    : "Kapara Mio: La Punta's #1 Mediterranean | Falafel, Hummus & Israeli Street Food in Puerto Escondido";
   try{ localStorage.setItem("km_lang", l); }catch(e){}
   renderTabs(); renderMenu(); renderCart();
 }
@@ -1005,7 +1017,7 @@ function renderMenu(){
   ITEMS.filter(i=>i.cat===activeCat).forEach((item,idx)=>{
     const globalIdx = ITEMS.indexOf(item);
     const card = document.createElement("article");
-    card.className = "menu-card reveal in";
+    card.className = "menu-card";
     const lovedTxt = lang==="es"?"Lo más pedido":lang==="he"?"הכי אהוב":"Most loved";
     const vegTxt = lang==="es"?"Vegano":lang==="he"?"טבעוני":"Vegan";
     const addTxt = lang==="es"?"Agregar":lang==="he"?"הוספה":"Add";
@@ -1025,6 +1037,16 @@ function renderMenu(){
       '</div>';
     card.querySelector(".add-btn").onclick = ()=> openModal(globalIdx);
     grid.appendChild(card);
+    // 3D tilt on desktop hover
+    if(!('ontouchstart' in window)){
+      card.addEventListener("mousemove",e=>{
+        const r=card.getBoundingClientRect();
+        const x=(e.clientX-r.left)/r.width-.5;
+        const y=(e.clientY-r.top)/r.height-.5;
+        card.style.transform=`perspective(700px) rotateY(${x*10}deg) rotateX(${-y*8}deg) translateY(-6px)`;
+      });
+      card.addEventListener("mouseleave",()=>{ card.style.transform=""; });
+    }
   });
 }
 
@@ -1220,11 +1242,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   window.addEventListener("scroll", onScroll, {passive:true});
   onScroll();
 
-  // reveal on scroll
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); } });
-  },{threshold:0.12});
-  $$(".reveal").forEach(el=> io.observe(el));
+  // .reveal elements are handled by GSAP (see animation script below)
 });
 
 function toggleMobile(){
@@ -1240,6 +1258,101 @@ function closeMobile(){
   $("#hamburger").setAttribute("aria-expanded","false");
   if(!$("#cartDrawer").classList.contains("open") && !$("#modalOverlay").classList.contains("open")) document.body.style.overflow="";
 }
+</script>
+
+<!-- ============ ANIMATIONS (GSAP + Lenis + CountUp) ============ -->
+<script>
+(function(){
+  if(typeof gsap==="undefined") return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* Lenis smooth scroll */
+  if(typeof Lenis!=="undefined"){
+    const lenis=new Lenis({lerp:0.08});
+    gsap.ticker.add(time=>lenis.raf(time*1000));
+    gsap.ticker.lagSmoothing(0);
+    lenis.on("scroll",ScrollTrigger.update);
+  }
+
+  /* Hero parallax */
+  gsap.to(".hero-bg img",{
+    yPercent:18,ease:"none",
+    scrollTrigger:{trigger:".hero",start:"top top",end:"bottom top",scrub:true}
+  });
+
+  /* Hero entrance: cinematic stagger on load */
+  const heroTl=gsap.timeline({delay:0.15});
+  heroTl
+    .from(".rating-pill",{opacity:0,y:24,duration:0.7,ease:"power3.out"})
+    .from(".hero h1",{opacity:0,y:42,duration:0.85,ease:"power3.out"},"-=0.35")
+    .from(".hero .quote",{opacity:0,y:20,duration:0.65,ease:"power2.out"},"-=0.4")
+    .from(".hero .quote-by",{opacity:0,duration:0.5},"-=0.3")
+    .from(".hero-cta .btn",{opacity:0,y:18,stagger:0.14,duration:0.6,ease:"power2.out"},"-=0.35")
+    .from(".scroll-hint",{opacity:0,duration:0.5},"-=0.25");
+
+  /* Trust bar stagger */
+  gsap.from(".trust-item,.trust-divider",{
+    opacity:0,y:22,stagger:0.09,duration:0.65,ease:"power2.out",
+    scrollTrigger:{trigger:".trustbar",start:"top 88%",toggleActions:"play none none none"}
+  });
+
+  /* CountUp on trust bar numbers */
+  const countEls=document.querySelectorAll("[data-count]");
+  if(countEls.length&&typeof countUp!=="undefined"){
+    const cuObs=new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(!entry.isIntersecting) return;
+        const el=entry.target;
+        const cu=new countUp.CountUp(el,parseFloat(el.dataset.count),{
+          suffix:el.dataset.suffix||"",
+          decimalPlaces:parseInt(el.dataset.decimals||"0"),
+          duration:2.2,useEasing:true
+        });
+        cu.start();
+        cuObs.unobserve(el);
+      });
+    },{threshold:0.7});
+    countEls.forEach(el=>cuObs.observe(el));
+  }
+
+  /* General .reveal via GSAP ScrollTrigger */
+  document.querySelectorAll(".reveal").forEach(el=>{
+    gsap.fromTo(el,
+      {opacity:0,y:30},
+      {opacity:1,y:0,duration:0.85,ease:"power3.out",
+       scrollTrigger:{trigger:el,start:"top 88%",toggleActions:"play none none none"}}
+    );
+  });
+
+  /* Pillar stagger */
+  gsap.fromTo(".pillar",
+    {opacity:0,y:38},
+    {opacity:1,y:0,stagger:0.17,duration:0.8,ease:"power3.out",
+     scrollTrigger:{trigger:".pillars",start:"top 85%",toggleActions:"play none none none"}}
+  );
+
+  /* Review card stagger */
+  gsap.fromTo(".review-card",
+    {opacity:0,y:32},
+    {opacity:1,y:0,stagger:0.15,duration:0.75,ease:"power3.out",
+     scrollTrigger:{trigger:".review-grid",start:"top 85%",toggleActions:"play none none none"}}
+  );
+
+  /* Catering package stagger */
+  gsap.fromTo(".pkg",
+    {opacity:0,x:-22},
+    {opacity:1,x:0,stagger:0.14,duration:0.65,ease:"power2.out",
+     scrollTrigger:{trigger:".cater-pkgs",start:"top 85%",toggleActions:"play none none none"}}
+  );
+
+  /* Info rows stagger */
+  gsap.fromTo(".info-row",
+    {opacity:0,x:-18},
+    {opacity:1,x:0,stagger:0.12,duration:0.6,ease:"power2.out",
+     scrollTrigger:{trigger:".info-list",start:"top 85%",toggleActions:"play none none none"}}
+  );
+
+})();
 </script>
 </body>
 </html>

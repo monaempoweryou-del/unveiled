@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shani Gabay Law | Hebrew-Speaking Attorney in Los Angeles | Immigration &amp; Personal Injury</title>
+<meta name="description" content="Immigration Law &amp; Personal Injury. Hebrew-speaking attorney in Encino, Los Angeles. Personal attention in Hebrew, English, or Spanish. Available 24/7. Free consultation.">
+<meta name="keywords" content="Hebrew speaking attorney Los Angeles, immigration lawyer Encino, personal injury attorney Los Angeles, accident lawyer Encino, Israeli attorney LA, green card lawyer, car accident attorney, Hebrew speaking lawyer California">
+<meta name="author" content="Law Offices of Shani Gabay">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://unveiled.pro/preview/shani-gabay-en/">
+<meta property="og:title" content="Shani Gabay Law | Hebrew-Speaking Attorney in Los Angeles">
+<meta property="og:description" content="Immigration Law &amp; Personal Injury. Personal attention in Hebrew, English, or Spanish. Available 24/7. Free consultation.">
+<meta property="og:image" content="https://unveiled.pro/preview/shani-gabay-en/assets/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="he_IL">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Shani Gabay Law | Hebrew-Speaking Attorney in Los Angeles">
+<meta name="twitter:description" content="Immigration Law &amp; Personal Injury. Personal attention in Hebrew, English, or Spanish. Available 24/7. Free consultation.">
+<meta name="twitter:image" content="https://unveiled.pro/preview/shani-gabay-en/assets/og-image.jpg">
+
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/favicon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Frank+Ruhl+Libre:wght@500;700;900&family=Assistant:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<!-- Structured data: LegalService -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LegalService",
+  "name": "Law Offices of Shani Gabay",
+  "image": "assets/logo.png",
+  "description": "Hebrew-, English-, and Spanish-speaking attorney in Encino, Los Angeles. Immigration law and personal injury. Available 24/7. Free consultation.",
+  "url": "https://www.shanigabay.com/",
+  "telephone": "+1-818-961-4861",
+  "email": "law@shanigabay.com",
+  "priceRange": "Free consultation",
+  "areaServed": ["Encino", "Tarzana", "Sherman Oaks", "San Fernando Valley", "Los Angeles", "California"],
+  "knowsLanguage": ["he", "en", "es"],
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "16027 Ventura Blvd",
+    "addressLocality": "Encino",
+    "addressRegion": "CA",
+    "postalCode": "91436",
+    "addressCountry": "US"
+  }
+}
+</script>
+
+<style>
+/* ===== RESET & FOUNDATION ===== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy:        #0F2742;
+  --navy-deep:   #081626;
+  --navy-deeper: #050E1A;
+  --navy-soft:   #163457;
+  --gold:        #C9A24B;
+  --gold-light:  #E2C079;
+  --gold-deep:   #9C7A2E;
+  --blue:        #4E80C2;
+  --blue-light:  #7AA6DD;
+  --blue-deep:   #2B5183;
+  --warm:        #F5F1E9;
+  --ink:         #14202E;
+
+  /* shared easing for card + attorney attention transitions */
+  --att-ease: cubic-bezier(.22,.61,.36,1);
+}
+
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+body {
+  font-family: 'Assistant', sans-serif;
+  background: var(--navy-deeper);
+  color: var(--warm);
+  overflow-x: hidden;
+}
+
+h1, h2, h3 { font-family: 'Frank Ruhl Libre', serif; font-weight: 700; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+
+/* ===================================================================
+   HERO
+=================================================================== */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  isolation: isolate;   /* contain mix-blend-mode of the attorney video to the hero */
+  background:
+    radial-gradient(120% 90% at 50% 8%,  rgba(28,58,96,.55) 0%, rgba(10,24,42,.0) 55%),
+    radial-gradient(80% 70% at 50% 120%, rgba(20,44,78,.55) 0%, rgba(8,20,36,0) 60%),
+    linear-gradient(180deg, #0a1a2e 0%, #081626 45%, #050d18 100%);
+}
+
+/* ---- Background art layer (arcs / glows / city haze) ---- */
+.hero-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.hero-bg svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* warm + cool ambient pools that intensify on hover */
+.glow {
+  position: absolute; border-radius: 50%; filter: blur(80px);
+  opacity: .45; transition: opacity .7s ease, transform .7s ease;
+}
+.glow-imm {
+  left: 10%; top: 22%; width: 42%; height: 72%;
+  background: radial-gradient(circle, rgba(201,162,75,.34) 0%, rgba(201,162,75,0) 62%);
+}
+.glow-pi {
+  right: 10%; top: 24%; width: 42%; height: 72%;
+  background: radial-gradient(circle, rgba(78,128,194,.30) 0%, rgba(78,128,194,0) 62%);
+}
+.hero.is-imm .glow-imm { opacity: .80; }
+.hero.is-pi  .glow-pi  { opacity: .80; }
+
+/* ===== NAV ===== */
+.nav {
+  position: relative; z-index: 40;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.6rem clamp(1.2rem, 3.5vw, 3.5rem) 1.2rem;
+}
+.brand { display: flex; align-items: center; gap: .85rem; }
+.brand-mark {
+  width: 50px; height: 50px; flex: none;
+  display: grid; place-items: center;
+  border: 1px solid rgba(201,162,75,.55);
+  border-radius: 4px;
+  font-family: 'Cormorant Garamond', serif; font-weight: 700;
+  font-size: 1.5rem; letter-spacing: .02em; color: var(--gold-light);
+  background: linear-gradient(160deg, rgba(201,162,75,.10), rgba(201,162,75,0));
+}
+.brand-text { display: flex; flex-direction: column; }
+.brand-name {
+  display: block;
+  font-family: 'Cormorant Garamond', serif; font-weight: 700;
+  font-size: 1.45rem; letter-spacing: .26em; color: var(--warm);
+  line-height: 1; text-transform: uppercase; white-space: nowrap;
+}
+.brand-sub {
+  display: block;
+  font-size: .62rem; letter-spacing: .42em; color: var(--gold);
+  text-transform: uppercase; margin-top: .42rem; padding-left: .1rem; white-space: nowrap;
+}
+.nav-links { display: flex; align-items: center; gap: clamp(1rem, 2vw, 2.1rem); }
+.nav-links a {
+  font-size: .82rem; font-weight: 600; letter-spacing: .12em;
+  text-transform: uppercase; color: rgba(245,241,233,.82);
+  transition: color .3s; white-space: nowrap;
+}
+.nav-links a:hover { color: var(--gold-light); }
+.nav-links .has-caret::after { content: " \25BE"; font-size: .7em; color: var(--gold); }
+.nav-cta {
+  font-family: 'Assistant', sans-serif;
+  font-size: .8rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--gold-light);
+  padding: .85rem 1.5rem; border: 1px solid rgba(201,162,75,.6); border-radius: 3px;
+  transition: all .35s ease; white-space: nowrap;
+}
+.nav-cta:hover { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+
+/* ===== HERO HEADLINE ===== */
+.hero-head {
+  position: relative; z-index: 30;
+  padding: clamp(.5rem, 2vh, 1.6rem) clamp(1.2rem, 3.5vw, 3.6rem) 0;
+  max-width: 760px;
+}
+.hero-head h1 {
+  font-size: clamp(1.8rem, 2.85vw, 2.7rem);
+  line-height: 1.14; color: var(--warm); letter-spacing: .005em;
+}
+.hero-head h1 .nowrap { white-space: nowrap; }
+.hero-head h1 .accent { color: var(--gold-light); }
+.hero-rule { width: 54px; height: 2px; background: var(--gold); margin: 1.1rem 0 1rem; opacity: .9; }
+.hero-sub { font-size: clamp(.95rem, 1.3vw, 1.08rem); font-weight: 300; color: rgba(245,241,233,.8); letter-spacing: .02em; }
+.hero-heb { display: inline-block; margin-top: .5rem; color: var(--gold); font-size: 1rem; letter-spacing: .04em; transition: opacity .3s; opacity: .85; }
+.hero-heb:hover { opacity: 1; }
+
+/* ===================================================================
+   STAGE: two cards + attorney
+=================================================================== */
+.stage {
+  position: relative;
+  flex: 1;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem;
+  padding: clamp(.5rem, 1.4vh, 1.4rem) clamp(.4rem, 1vw, 1rem) clamp(1rem, 2vh, 1.6rem);
+  min-height: 0;
+}
+
+/* ----- attorney ----- */
+.attorney {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: clamp(420px, 76%, 940px);
+  /* NO transform/translate/z-index/opacity here: those create a stacking
+     context that would trap the videos' mix-blend-mode. Paints above cards
+     via DOM order; blend reaches the navy+arc because the hero is isolated. */
+  pointer-events: none;
+}
+/* Living portrait: each clip is the attorney cut out on pure black, so
+   mix-blend-mode:lighten drops the black and reveals the navy + gold arc
+   behind her. Two real clips crossfade: she gazes LEFT (Immigration) by
+   default, and turns to gaze RIGHT (Personal Injury) when that side is active.
+   Real footage motion = natural, never robotic. */
+.att-video {
+  position: absolute; bottom: 0; left: 50%;
+  transform: translateX(-50%);   /* the video may form its own context; that's
+                                    fine. Only an ANCESTOR context would trap
+                                    the blend, and .attorney has none. */
+  height: 100%; width: auto; aspect-ratio: 820 / 906;
+  object-fit: contain; object-position: bottom center;
+  mix-blend-mode: lighten;
+  transition: opacity .7s ease;
+}
+.att-left  { opacity: 1; }   /* default gaze: toward Immigration */
+.att-right { opacity: 0; }
+.hero.is-pi  .att-left  { opacity: 0; }
+.hero.is-pi  .att-right { opacity: 1; }
+.hero.is-imm .att-left  { opacity: 1; }
+.hero.is-imm .att-right { opacity: 0; }
+
+/* ---- 2.5D layered figure: head/shoulders parallax over the body ----
+   At rest both layers coincide exactly (same source), so the seam is invisible.
+   On attention they lean from a low pivot at slightly different rates → a human
+   body-weight shift + head-follow, never a flat plane rotating. */
+.att-layer {
+  position: absolute; bottom: 0; left: 50%;
+  height: 100%; width: auto; display: block;
+  translate: -50% 0;
+  transform-origin: 50% 100%;
+  transform: translateX(var(--x, 0px)) rotate(var(--rot, 0deg));
+  will-change: transform;
+}
+.att-body { filter: drop-shadow(0 24px 50px rgba(0,0,0,.55));
+  transition: transform 1.25s cubic-bezier(.22,.61,.36,1); }
+.att-head { filter: none;
+  transition: transform 1.4s cubic-bezier(.22,.61,.36,1) .06s; }
+
+/* Directional lean disabled: flat-photo 2D transforms read as robotic/seamed.
+   She now stays calm & present (gentle breathing only); the hovered card's
+   glow/lift carries the "attention" cue. A genuinely human turn needs real
+   character animation (video), pursued separately. */
+.hero.is-imm .att-body, .hero.is-imm .att-head,
+.hero.is-pi  .att-body, .hero.is-pi  .att-head { --x: 0px; --rot: 0deg; }
+
+/* ----- cards ----- */
+.card {
+  position: relative;
+  width: 36%; max-width: 500px;
+  align-self: center;
+  min-height: clamp(440px, 64vh, 660px);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+  padding: clamp(1.6rem, 2.6vw, 2.8rem) clamp(1.2rem, 1.8vw, 2.2rem) clamp(1.8rem, 2.6vw, 2.6rem);
+  border-radius: 22px;
+  background-size: cover; background-position: center;
+  isolation: isolate; overflow: hidden;
+  cursor: pointer;
+  transition: transform .7s var(--att-ease), box-shadow .7s ease, border-color .5s ease;
+}
+.card::before {            /* dark wash over the photo */
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  transition: opacity .6s ease;
+}
+.card-imm {
+  border: 1px solid rgba(201,162,75,.42);
+  background-image: url('assets/card-bg-immigration.jpg');
+  box-shadow: 0 30px 70px rgba(0,0,0,.45), inset 0 0 60px rgba(201,162,75,.05);
+}
+.card-imm::before {
+  background: linear-gradient(180deg, rgba(8,18,30,.62) 0%, rgba(10,22,38,.78) 55%, rgba(6,14,26,.9) 100%);
+}
+.card-pi {
+  border: 1px solid rgba(78,128,194,.45);
+  background-image: url('assets/card-bg-personal-injury.jpg');
+  box-shadow: 0 30px 70px rgba(0,0,0,.45), inset 0 0 60px rgba(78,128,194,.06);
+}
+.card-pi::before {
+  background: linear-gradient(180deg, rgba(8,18,32,.6) 0%, rgba(9,20,38,.78) 55%, rgba(6,12,24,.9) 100%);
+}
+
+.hero.is-imm .card-imm {
+  transform: translateY(-6px) scale(1.015);
+  border-color: rgba(226,192,121,.9);
+  box-shadow: 0 38px 90px rgba(0,0,0,.5), 0 0 50px rgba(201,162,75,.22), inset 0 0 70px rgba(201,162,75,.09);
+}
+.hero.is-pi .card-pi {
+  transform: translateY(-6px) scale(1.015);
+  border-color: rgba(122,166,221,.95);
+  box-shadow: 0 38px 90px rgba(0,0,0,.5), 0 0 50px rgba(78,128,194,.24), inset 0 0 70px rgba(78,128,194,.1);
+}
+/* dim the opposite card slightly to focus attention */
+.hero.is-imm .card-pi, .hero.is-pi .card-imm { opacity: .82; }
+.card, .card-imm, .card-pi { transition: transform .7s var(--att-ease), box-shadow .7s ease, border-color .5s ease, opacity .5s ease; }
+
+.card-ico {
+  width: 60px; height: 60px; border-radius: 50%;
+  display: grid; place-items: center; margin-bottom: 1.2rem;
+  border: 1.4px solid currentColor;
+  transition: transform .5s ease, box-shadow .5s ease;
+}
+.card-ico svg { width: 27px; height: 27px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.card-imm .card-ico { color: var(--gold-light); }
+.card-pi  .card-ico { color: var(--blue-light); }
+.hero.is-imm .card-imm .card-ico { transform: scale(1.08); box-shadow: 0 0 24px rgba(201,162,75,.3); }
+.hero.is-pi  .card-pi  .card-ico { transform: scale(1.08); box-shadow: 0 0 24px rgba(78,128,194,.32); }
+
+.card h2 { font-size: clamp(1.6rem, 2.3vw, 2.25rem); letter-spacing: .01em; margin-bottom: .55rem; }
+.card-imm h2 { color: var(--gold-light); }
+.card-pi  h2 { color: #fff; }
+.pi-accidents { font-size: .5em; font-weight: 400; letter-spacing: .03em; color: var(--blue-light); opacity: .92; vertical-align: middle; }
+.card-divider { width: 46px; height: 2px; margin-bottom: 1rem; opacity: .85; }
+.card-imm .card-divider { background: var(--gold); }
+.card-pi  .card-divider { background: var(--blue-light); }
+.card-tag { font-size: clamp(.92rem, 1.15vw, 1.05rem); font-weight: 300; color: rgba(245,241,233,.78); margin-bottom: 1.5rem; }
+
+.card-list { width: 100%; max-width: 290px; text-align: left; margin-bottom: 1.7rem; }
+.card-list li {
+  display: flex; align-items: center; gap: .7rem;
+  font-size: clamp(.85rem, 1vw, .96rem); font-weight: 400; color: rgba(245,241,233,.92);
+  padding: .5rem 0;
+}
+.card-list li + li { border-top: 1px solid rgba(255,255,255,.06); }
+.card-list .chk { flex: none; width: 20px; height: 20px; }
+.card-imm .chk { color: var(--gold); }
+.card-pi  .chk { color: var(--blue-light); }
+
+.card-btn {
+  display: inline-flex; align-items: center; gap: .6rem;
+  width: 100%; justify-content: center;
+  padding: .95rem 1.4rem; border-radius: 4px;
+  font-size: .82rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  transition: transform .35s ease, box-shadow .35s ease, filter .35s ease;
+}
+.card-btn .arr { transition: transform .35s ease; }
+.card:hover .card-btn .arr { transform: translateX(4px); }
+.card-imm .card-btn { color: var(--ink); background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%); box-shadow: 0 6px 22px rgba(201,162,75,.28); }
+.card-pi  .card-btn { color: #fff; background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue) 100%); box-shadow: 0 6px 22px rgba(43,81,131,.4); border: 1px solid rgba(122,166,221,.5); }
+.card-imm:hover .card-btn { filter: brightness(1.05); box-shadow: 0 10px 30px rgba(201,162,75,.4); }
+.card-pi:hover  .card-btn { filter: brightness(1.1); box-shadow: 0 10px 30px rgba(43,81,131,.55); }
+
+/* ===================================================================
+   RESPONSIVE
+=================================================================== */
+@media (max-width: 1080px) {
+  .card { width: 33%; }
+  .nav-links { gap: 1rem; }
+  .nav-links a { font-size: .74rem; }
+}
+@media (max-width: 900px) {
+  .nav { flex-wrap: wrap; justify-content: space-between; gap: .8rem 1.2rem; }
+  .nav-links { display: none; }   /* header menu not needed on the mobile landing page */
+  .hero-head { max-width: 100%; text-align: center; padding-top: .5rem; }
+  .hero-rule { margin-left: auto; margin-right: auto; }
+
+  /* Keep the side-by-side split on mobile so her left/right gaze still maps to
+     the two choices; just compact the cards. She stays absolutely centered
+     BETWEEN them (the blend keeps working: .attorney has no transform/z-index). */
+  .stage { gap: .45rem; padding: clamp(.5rem, 2vh, 1.2rem) .55rem 1.4rem; align-items: center; }
+  .card {
+    width: 38%; max-width: none; min-height: clamp(280px, 50vh, 440px);
+    padding: 1.3rem .7rem 1.4rem; border-radius: 16px;
+  }
+  .card-list, .card-tag { display: none; }   /* drop bullets/tagline in the compact view */
+  .card-ico { width: 44px; height: 44px; margin-bottom: .75rem; }
+  .card-ico svg { width: 20px; height: 20px; }
+  .card h2 { font-size: clamp(1rem, 4.3vw, 1.5rem); line-height: 1.15; }
+  .pi-accidents { display: block; font-size: .6em; margin-top: .1rem; }
+  .card-divider { margin-bottom: .85rem; }
+  .card-btn { padding: .7rem .45rem; font-size: clamp(.58rem, 2.5vw, .72rem); letter-spacing: .03em; }
+  .card-btn .arr { display: none; }
+
+  /* smaller figure so her body sits in the centre gap between the two cards */
+  .attorney { height: clamp(240px, 40vh, 360px); }
+}
+@media (max-width: 480px) {
+  .brand-name { font-size: 1.15rem; letter-spacing: .2em; }
+  .hero-head h1 { font-size: 1.5rem; }
+  .card h2 { font-size: 1.05rem; }
+  .card-btn { font-size: .56rem; }
+  .attorney { height: clamp(220px, 34vh, 320px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .att-video { transition: none; }
+  .card, html { transition: none; scroll-behavior: auto; }
+}
+</style>
+</head>
+<body>
+
+<section class="hero" id="hero">
+
+  <!-- ===== BACKGROUND ART ===== -->
+  <div class="hero-bg" aria-hidden="true">
+    <div class="glow glow-imm"></div>
+    <div class="glow glow-pi"></div>
+    <svg viewBox="0 0 1400 1000" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="halo" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%"  stop-color="#C9A24B" stop-opacity="0.9"/>
+          <stop offset="45%" stop-color="#C9A24B" stop-opacity="0.15"/>
+          <stop offset="55%" stop-color="#4E80C2" stop-opacity="0.15"/>
+          <stop offset="100%" stop-color="#4E80C2" stop-opacity="0.9"/>
+        </linearGradient>
+        <filter id="soft"><feGaussianBlur stdDeviation="3"/></filter>
+      </defs>
+      <circle cx="700" cy="610" r="438" fill="none" stroke="url(#halo)" stroke-width="6" opacity="0.45" filter="url(#soft)"/>
+      <circle cx="700" cy="610" r="438" fill="none" stroke="url(#halo)" stroke-width="1.4" opacity="0.9"/>
+    </svg>
+  </div>
+
+  <!-- ===== NAV ===== -->
+  <nav class="nav">
+    <a href="index.html" class="brand" aria-label="Shani Gabay Law Offices">
+      <span class="brand-mark">SG</span>
+      <span class="brand-text">
+        <span class="brand-name">Shani Gabay</span>
+        <span class="brand-sub">Law Offices</span>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="#" class="has-caret">Practice Areas</a>
+      <a href="#">Attorney Profile</a>
+      <a href="#" class="has-caret">Resources</a>
+      <a href="#">Testimonials</a>
+      <a href="#">Contact</a>
+    </div>
+    <a href="#" class="nav-cta">Schedule Consultation</a>
+  </nav>
+
+  <!-- ===== HEADLINE ===== -->
+  <header class="hero-head">
+    <h1>Trusted Legal Guidance.<br><span class="nowrap">Two Paths. <span class="accent">One Advocate.</span></span></h1>
+    <div class="hero-rule"></div>
+    <p class="hero-sub">Hebrew-Speaking Attorney in Los Angeles</p>
+    <a href="../website/" class="hero-heb">עברית</a>
+  </header>
+
+  <!-- ===== STAGE ===== -->
+  <div class="stage">
+
+    <!-- IMMIGRATION CARD -->
+    <a href="immigration.html" class="card card-imm" data-side="imm" aria-label="Explore Immigration Law services">
+      <span class="card-ico">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10A15.3 15.3 0 0 1 12 2z"/></svg>
+      </span>
+      <h2>Immigration Law</h2>
+      <span class="card-divider"></span>
+      <p class="card-tag">Your path to a new beginning in America.</p>
+      <ul class="card-list">
+        <li><svg class="chk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5-5.5"/></svg>Green Cards &amp; Visas</li>
+        <li><svg class="chk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5-5.5"/></svg>Family-Based Immigration</li>
+        <li><svg class="chk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5-5.5"/></svg>U.S. Citizenship &amp; Naturalization</li>
+      </ul>
+      <span class="card-btn">Explore Immigration Services <span class="arr">&rarr;</span></span>
+    </a>
+
+    <!-- PERSONAL INJURY CARD -->
+    <a href="personal-injury.html" class="card card-pi" data-side="pi" aria-label="Explore Personal Injury services">
+      <span class="card-ico">
+        <svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.35-7.5-10.2A4.3 4.3 0 0 1 12 7.8a4.3 4.3 0 0 1 7.5 3A11 11 0 0 1 12 21z"/><path d="M3.5 12h4l1.5-3 2.5 6 1.8-4 1.2 1h4.5"/></svg>
+      </span>
+      <h2>Personal Injury <span class="pi-accidents">(Accidents)</span></h2>
+      <span class="card-divider"></span>
+      <p class="card-tag">Fighting for the compensation you deserve.</p>
+      <ul class="card-list">
+        <li><svg class="chk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5-5.5"/></svg>Car &amp; Auto Accidents</li>
+        <li><svg class="chk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5-5.5"/></svg>Slip &amp; Fall Injuries</li>
+        <li><svg class="chk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5-5.5"/></svg>Insurance Claims &amp; Settlements</li>
+      </ul>
+      <span class="card-btn">Explore Personal Injury Services <span class="arr">&rarr;</span></span>
+    </a>
+
+  </div>
+
+  <!-- ATTORNEY: two living clips; she gazes toward the side you explore.
+       Sits above the cards (z-index) but inside the isolated hero so the
+       lighten blend composites over the navy + gold arc. -->
+  <div class="attorney" aria-hidden="true">
+    <video class="att-video att-left"  src="assets/shani-left.mp4"  autoplay muted loop playsinline poster="assets/attorney-cutout.png"></video>
+    <video class="att-video att-right" src="assets/shani-right.mp4" autoplay muted loop playsinline></video>
+  </div>
+</section>
+
+<!-- ===================================================================
+     ATTENTION INTERACTION
+     She subtly orients toward the side the visitor is exploring.
+=================================================================== -->
+<script>
+(function () {
+  var hero = document.getElementById('hero');
+  if (!hero) return;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // JS only sets the gaze state; the crossfade between the two clips lives in CSS.
+  function apply(state) {
+    hero.classList.toggle('is-imm', state === 'imm');
+    hero.classList.toggle('is-pi',  state === 'pi');
+  }
+
+  if (reduce) { apply('none'); return; }
+
+  var cards = hero.querySelectorAll('.card');
+  var touchMQ = window.matchMedia('(hover: none)');   // touch / no real hover
+
+  cards.forEach(function (card) {
+    var side = card.getAttribute('data-side');
+
+    /* Desktop: she gazes toward the hovered side, returns to center on leave. */
+    card.addEventListener('mouseenter', function () { if (!touchMQ.matches) apply(side); });
+    card.addEventListener('mouseleave', function () { if (!touchMQ.matches) apply('none'); });
+    card.addEventListener('focus', function () { apply(side); });
+    card.addEventListener('blur',  function () { apply('none'); });
+
+    /* Touch (side-by-side compact): a tap on the card turns her toward that
+       side; the "Explore" button still navigates. */
+    card.addEventListener('click', function (e) {
+      if (!touchMQ.matches) return;                  // desktop click navigates
+      if (e.target.closest('.card-btn')) return;     // CTA navigates
+      e.preventDefault();
+      apply(side);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

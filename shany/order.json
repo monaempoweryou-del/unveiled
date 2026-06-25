@@ -1,0 +1,25 @@
+{
+  "lead_id": "119a1cff-8ca2-4a09-89b8-892b0375c390",
+  "business_name": "Law Offices of Shani Gabay",
+  "contact_name": "Shani Gabay",
+  "email": "law@shanigabay.com",
+  "phone": "8189614861",
+  "website": "https://www.shanigabay.com/",
+  "social_profiles": "{\"facebook\": \"https://facebook.com/Shani-Gabay-1634013443531730\", \"linkedin\": \"https://linkedin.com\", \"yelp\": \"https://yelp.com/biz/law-offices-of-shani-gabay-encino\"}",
+  "about": "Immigration law firm in Encino, CA. Services: Immigration Law, U.S. Citizenship & Naturalization, Personal Injury, Family Law, Real Estate. 24/7 availability, free consultations. Address: 16027 Ventura Blvd, Encino, CA 91436.",
+  "requirements": "Lead from Hebrew site \u2014 likely Hebrew-speaking attorney serving Israeli/Hebrew-speaking community in LA. Current site exists at shanigabay.com but may want a refresh. Source: website-onboarding-he.",
+  "additional_notes": "Lead recovered manually \u2014 original Hebrew site form submission was lost due to RLS bug. Submitted via unveiled.pro/he/.",
+  "inspiration_links": "[\"https://www.shanigabay.com/\"]",
+  "photos": [],
+  "logos": [],
+  "inspiration_screenshots": [],
+  "status": "failed-at-build",
+  "created_at": "2026-06-16T06:34:09.578174+00:00",
+  "phases_completed": [
+    "research",
+    "strategy",
+    "assets"
+  ],
+  "current_phase": "build",
+  "client_number": 4
+}
