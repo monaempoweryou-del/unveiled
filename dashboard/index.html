@@ -204,6 +204,15 @@
   .sf-7 { background: var(--yellow); }
   .tag { font-size: 11px; background: var(--dark-4); color: var(--text-dim); padding: 2px 8px; border-radius: 20px; }
   .reach-tag { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; color: var(--violet-light); background: var(--violet-dim); padding: 3px 9px; border-radius: 20px; }
+  .execute-btn {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 11px; font-weight: 700; color: #fff;
+    background: var(--green); border: none; padding: 4px 10px;
+    border-radius: 20px; cursor: pointer; font-family: inherit;
+    transition: opacity .15s; white-space: nowrap;
+  }
+  .execute-btn:hover { opacity: .8; }
+  .execute-btn:disabled { opacity: .5; cursor: default; }
   .lead-links { display: flex; flex-wrap: wrap; gap: 4px; }
   .lead-link { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px; text-decoration: none; white-space: nowrap; transition: opacity .15s; }
   .lead-link:hover { opacity: .75; }
@@ -388,7 +397,8 @@ function cardBtns(row) {
 
 function productionCard(row, num, showNotes) {
   const cfg = STATUS_CONFIG[row.status] || STATUS_CONFIG['NEW LEAD'];
-  const numBadge = `<span class="client-num">${num}</span>`;
+  const stableNum = row.client_number || num;
+  const numBadge = `<span class="client-num">${stableNum}</span>`;
   const card = `
   <div class="card ${cfg.border}" id="card-${row.id}">
     <div>
@@ -474,13 +484,13 @@ function leadRow(row, num) {
     ? `<a href="tel:${row.phone}" style="color:var(--text-mid);text-decoration:none">${row.phone}</a>`
     : '—';
   return `
-  <tr>
+  <tr id="lead-row-${row.id}">
     <td>
       <span class="client-num">${num}</span>
       <strong>${row.business_name || '—'}</strong>
       ${row.contact_name ? `<div style="font-size:11px;color:var(--text-dim);margin-top:2px;padding-left:27px">${row.contact_name}</div>` : ''}
     </td>
-    <td style="color:var(--text-dim);font-size:12px">${row.about || row.additional_notes || ''}</td>
+    <td style="color:var(--text-dim);font-size:12px">${row.about || ''}</td>
     <td>${phoneHtml}</td>
     <td>${leadLinks(row)}</td>
     <td>
@@ -489,8 +499,48 @@ function leadRow(row, num) {
         <div class="score-track"><div class="score-fill ${sfCls}" style="width:${pct}"></div></div>
       </div>
     </td>
-    <td><span class="reach-tag">Reach Out</span></td>
+    <td>
+      <div style="display:flex;flex-direction:column;gap:5px;align-items:flex-start">
+        <span class="reach-tag">Reach Out</span>
+        <button class="execute-btn" id="exec-${row.id}" onclick="executeLeadToProduction('${row.id}','${(row.business_name||'').replace(/'/g,"\\'")}')">Execute</button>
+      </div>
+    </td>
   </tr>`;
+}
+
+async function executeLeadToProduction(id, name) {
+  const btn = document.getElementById(`exec-${id}`);
+  if (!btn) return;
+  if (!confirm(`Launch "${name}" into production?\n\nThis will move them from Leads to In Progress on the dashboard.`)) return;
+  btn.textContent = 'Launching…';
+  btn.disabled = true;
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/leads?id=eq.${id}`, {
+      method: 'PATCH',
+      headers: {
+        apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json', Prefer: 'return=minimal'
+      },
+      body: JSON.stringify({ status: 'BUILDING', discovery_method: 'unveiled-form' })
+    });
+    if (res.ok) {
+      const row = document.getElementById(`lead-row-${id}`);
+      if (row) {
+        row.style.background = 'rgba(16,185,129,.08)';
+        row.style.transition = 'opacity .5s';
+        setTimeout(() => { row.style.opacity = '0'; }, 800);
+        setTimeout(() => { row.remove(); }, 1400);
+      }
+      btn.textContent = 'Launched ✓';
+      setTimeout(() => loadData(), 1600);
+    } else {
+      btn.textContent = 'Error — retry';
+      btn.disabled = false;
+    }
+  } catch(e) {
+    btn.textContent = 'Error — retry';
+    btn.disabled = false;
+  }
 }
 
 async function loadData() {
@@ -547,13 +597,44 @@ async function loadData() {
       html += `<div class="section-head"><h2>Converted</h2><span class="count-badge">${converted.length}</span></div>
                <div class="cards">${converted.map(r => productionCard(r, clientNum++, false)).join('')}</div>`;
 
-    if (ocLeads.length)
+    // ── LEAD TIERS ─────────────────────────────────────────────────────────
+    const enFormLeads  = rows.filter(r => r.status === 'NEW LEAD' && r.discovery_method === 'unveiled-form');
+    const heFormLeads  = rows.filter(r => r.status === 'NEW LEAD' && (r.discovery_method === 'website-onboarding-he' || r.discovery_method === 'unveiled-form-he'));
+    const discoveredLeads = rows.filter(r => r.status === 'NEW LEAD' && r.discovery_method === 'google-maps');
+
+    const LEAD_TABLE = (leads, startNum) => `
+      <div class="leads-wrap"><table>
+        <thead><tr><th>Business</th><th>About</th><th>Phone</th><th>Links</th><th>Score</th><th>Action</th></tr></thead>
+        <tbody>${leads.map((r,i) => leadRow(r, startNum + i)).join('')}</tbody>
+      </table></div>`;
+
+    const TIER_LABEL = (icon, title, badge, sub) =>
+      `<div class="section-head" style="margin-top:28px">
+        <span style="font-size:14px">${icon}</span>
+        <h2>${title}</h2><span class="count-badge">${badge}</span>
+        <span style="font-size:11px;color:var(--text-dim);margin-left:4px">${sub}</span>
+       </div>`;
+
+    if (enFormLeads.length || heFormLeads.length || discoveredLeads.length) {
       html += `<div class="divider"></div>
-               <div class="section-head"><h2>OC Lead Hunt — Round 1</h2><span class="count-badge">${ocLeads.length} businesses</span></div>
-               <div class="leads-wrap"><table>
-                 <thead><tr><th>Business</th><th>About</th><th>Phone</th><th>Links</th><th>Score</th><th>Action</th></tr></thead>
-                 <tbody>${ocLeads.map((r,i) => leadRow(r, clientNum + i)).join('')}</tbody>
-               </table></div>`;
+               <div class="section-head"><h2>Incoming Leads</h2><span class="count-badge">${enFormLeads.length + heFormLeads.length + discoveredLeads.length} total</span></div>`;
+    }
+
+    let leadNum = clientNum;
+    if (enFormLeads.length) {
+      html += TIER_LABEL('🟢', 'Tier 1 — English Website Form', enFormLeads.length, 'Highest intent: filled out our form in English');
+      html += LEAD_TABLE(enFormLeads, leadNum);
+      leadNum += enFormLeads.length;
+    }
+    if (heFormLeads.length) {
+      html += TIER_LABEL('🔵', 'Tier 2 — Hebrew Website Form', heFormLeads.length, 'High intent: filled out our form in Hebrew');
+      html += LEAD_TABLE(heFormLeads, leadNum);
+      leadNum += heFormLeads.length;
+    }
+    if (discoveredLeads.length) {
+      html += TIER_LABEL('🟣', 'Tier 3 — Discovered', discoveredLeads.length, 'Found via Google Maps — not yet contacted');
+      html += LEAD_TABLE(discoveredLeads, leadNum);
+    }
 
     html += `<div class="note-grid">
       <div class="note-card">
