@@ -72,6 +72,52 @@
   /* PAGE */
   .page { max-width: 1300px; margin: 0 auto; padding: 28px 16px 80px; }
 
+  /* FILTER BAR */
+  .filter-bar {
+    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+  .filter-label {
+    font-size: 10px; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--text-dim); margin-right: 4px;
+  }
+  .filter-btn {
+    font-size: 11px; font-weight: 600; padding: 5px 12px; border-radius: 20px;
+    border: 1px solid var(--border); background: var(--dark-4);
+    color: var(--text-dim); cursor: pointer; font-family: inherit;
+    transition: all .15s; white-space: nowrap;
+  }
+  .filter-btn:hover { border-color: var(--violet-light); color: var(--violet-light); }
+  .filter-btn.active { background: var(--violet-dim); border-color: var(--violet-light); color: var(--violet-light); }
+  .filter-btn.red.active   { background: rgba(239,68,68,.12); border-color: var(--red); color: var(--red); }
+  .filter-btn.yellow.active{ background: rgba(245,158,11,.12); border-color: var(--yellow); color: var(--yellow); }
+  .filter-count {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 16px; height: 16px; border-radius: 8px; font-size: 9px;
+    font-weight: 700; padding: 0 4px; margin-left: 4px;
+    background: var(--violet); color: #fff;
+  }
+  .filter-count.red    { background: var(--red); }
+  .filter-count.yellow { background: var(--yellow); color: #000; }
+
+  /* FOLLOW-UP BADGES */
+  .followup-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 20px;
+    white-space: nowrap; cursor: default;
+  }
+  .fu-overdue { background: rgba(239,68,68,.15); color: var(--red); }
+  .fu-today   { background: rgba(245,158,11,.15); color: var(--yellow); }
+  .fu-soon    { background: rgba(59,130,246,.12); color: #60a5fa; }
+  .fu-future  { background: rgba(255,255,255,.06); color: var(--text-dim); }
+  .assignee-badge {
+    display: inline-flex; align-items: center;
+    font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 20px;
+    white-space: nowrap;
+  }
+  .as-maor   { background: rgba(139,92,246,.15); color: var(--violet-light); }
+  .as-nataly { background: rgba(16,185,129,.12);  color: var(--green); }
+
   /* SYSTEM HEALTH PANEL */
   .health-panel {
     background: var(--dark-3); border: 1px solid var(--border);
@@ -628,6 +674,133 @@ function nextStep(status) {
   return map[status] || 'Follow Up';
 }
 
+function followUpBadge(row) {
+  if (!row.follow_up_date) return '';
+  const today = new Date(); today.setHours(0,0,0,0);
+  const fu = new Date(row.follow_up_date + 'T00:00:00');
+  const diffDays = Math.round((fu - today) / 86400000);
+  let cls, label;
+  if (diffDays < 0)      { cls = 'fu-overdue'; label = `⚠ ${Math.abs(diffDays)}d overdue`; }
+  else if (diffDays === 0){ cls = 'fu-today';   label = '📅 Today'; }
+  else if (diffDays === 1){ cls = 'fu-soon';    label = '📅 Tomorrow'; }
+  else if (diffDays <= 7) { cls = 'fu-soon';    label = `📅 ${fu.toLocaleDateString('en-US',{month:'short',day:'numeric'})}`; }
+  else                    { cls = 'fu-future';  label = `📅 ${fu.toLocaleDateString('en-US',{month:'short',day:'numeric'})}`; }
+  const reason = row.follow_up_reason ? ` · ${row.follow_up_reason}` : '';
+  return `<span class="followup-badge ${cls}">${label}${reason}</span>`;
+}
+
+function assigneeBadge(row) {
+  const a = row.assigned_to || 'Maor';
+  return `<span class="assignee-badge ${a === 'Nataly' ? 'as-nataly' : 'as-maor'}">${a}</span>`;
+}
+
+// Filter state
+window._leadFilter = window._leadFilter || 'all';
+function applyFilter(f) {
+  window._leadFilter = f;
+  // Re-render just the leads section from cached data
+  const allLeads = window._currentLeads || [];
+  renderLeadSection(allLeads);
+}
+
+function filterLeads(leads) {
+  const f = window._leadFilter;
+  if (f === 'all') return leads;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const tomorrow = new Date(today); tomorrow.setDate(tomorrow.getDate() + 1);
+  const weekEnd  = new Date(today); weekEnd.setDate(weekEnd.getDate() + 7);
+  return leads.filter(r => {
+    const fu = r.follow_up_date ? new Date(r.follow_up_date + 'T00:00:00') : null;
+    if (f === 'overdue')      return fu && fu < today;
+    if (f === 'due-today')    return fu && fu.getTime() === today.getTime();
+    if (f === 'tomorrow')     return fu && fu.getTime() === tomorrow.getTime();
+    if (f === 'this-week')    return fu && fu >= today && fu <= weekEnd;
+    if (f === 'no-followup')  return !fu;
+    return true;
+  });
+}
+
+function filterCounts(leads) {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const tomorrow = new Date(today); tomorrow.setDate(tomorrow.getDate() + 1);
+  const weekEnd  = new Date(today); weekEnd.setDate(weekEnd.getDate() + 7);
+  const c = { overdue:0, 'due-today':0, tomorrow:0, 'this-week':0, 'no-followup':0 };
+  leads.forEach(r => {
+    const fu = r.follow_up_date ? new Date(r.follow_up_date + 'T00:00:00') : null;
+    if (!fu) { c['no-followup']++; return; }
+    if (fu < today)                          c.overdue++;
+    if (fu.getTime() === today.getTime())    c['due-today']++;
+    if (fu.getTime() === tomorrow.getTime()) c.tomorrow++;
+    if (fu >= today && fu <= weekEnd)        c['this-week']++;
+  });
+  return c;
+}
+
+function renderLeadSection(allLeads) {
+  const enForm   = allLeads.filter(r => r.discovery_method === 'unveiled-form' || r.source === 'website-onboarding');
+  const heForm   = allLeads.filter(r => r.discovery_method === 'website-onboarding-he' || r.discovery_method === 'unveiled-form-he');
+  const discovered = allLeads.filter(r => r.discovery_method === 'google-maps');
+  const counts = filterCounts(allLeads);
+  const f = window._leadFilter;
+
+  const badge = (n, cls='') => n > 0 ? `<span class="filter-count ${cls}">${n}</span>` : '';
+  const filterBar = `
+    <div class="filter-bar">
+      <span class="filter-label">Filter</span>
+      <button class="filter-btn red ${f==='overdue'?'active':''}"    onclick="applyFilter('overdue')">Overdue${badge(counts.overdue,'red')}</button>
+      <button class="filter-btn yellow ${f==='due-today'?'active':''}" onclick="applyFilter('due-today')">Due Today${badge(counts['due-today'],'yellow')}</button>
+      <button class="filter-btn ${f==='tomorrow'?'active':''}"        onclick="applyFilter('tomorrow')">Tomorrow${badge(counts.tomorrow)}</button>
+      <button class="filter-btn ${f==='this-week'?'active':''}"       onclick="applyFilter('this-week')">This Week${badge(counts['this-week'])}</button>
+      <button class="filter-btn ${f==='no-followup'?'active':''}"     onclick="applyFilter('no-followup')">No Follow-Up${badge(counts['no-followup'])}</button>
+      ${f !== 'all' ? `<button class="filter-btn active" onclick="applyFilter('all')">✕ Clear Filter</button>` : ''}
+    </div>`;
+
+  const TIER_LABEL = (icon, title, badge2, sub) =>
+    `<div class="section-head" style="margin-top:28px">
+      <span style="font-size:14px">${icon}</span>
+      <h2>${title}</h2><span class="count-badge">${badge2}</span>
+      <span style="font-size:11px;color:var(--text-dim);margin-left:4px">${sub}</span>
+     </div>`;
+
+  const LEAD_TABLE = (leads, startNum) => {
+    if (!leads.length) return '';
+    return `<div class="leads-wrap"><table>
+      <thead><tr>
+        <th>ID</th><th>Business</th><th>Category</th><th>Phone</th>
+        <th>Score</th><th>Status</th><th>Last Action</th><th>Next Step</th><th>Actions</th>
+      </tr></thead>
+      <tbody>${leads.map((r,i) => leadRow(r, startNum + i)).join('')}</tbody>
+    </table></div>`;
+  };
+
+  let html = filterBar;
+  const startNum = (window._productionCount || 8) + 1;
+
+  if (f !== 'all') {
+    // Flat filtered view
+    const filtered = filterLeads(allLeads);
+    const filterNames = { overdue:'Overdue', 'due-today':'Due Today', tomorrow:'Tomorrow', 'this-week':'This Week', 'no-followup':'No Follow-Up Set' };
+    html += `<div class="section-head"><h2>${filterNames[f]}</h2><span class="count-badge">${filtered.length} lead${filtered.length!==1?'s':''}</span></div>`;
+    html += LEAD_TABLE(filtered, startNum);
+    if (!filtered.length) html += `<div style="padding:32px;text-align:center;color:var(--text-dim);font-size:13px">No leads match this filter.</div>`;
+  } else {
+    if (enForm.length) {
+      html += TIER_LABEL('🟢','Tier 1 — English Website Form', enForm.length, 'Highest intent: filled out our form in English');
+      html += LEAD_TABLE(enForm, startNum);
+    }
+    if (heForm.length) {
+      html += TIER_LABEL('🔵','Tier 2 — Hebrew Website Form', heForm.length, 'High intent: filled out our form in Hebrew');
+      html += LEAD_TABLE(heForm, startNum + enForm.length);
+    }
+    if (discovered.length) {
+      html += TIER_LABEL('🟣','Tier 3 — Discovered', discovered.length, 'Found via Lead Hunter — not yet contacted');
+      html += LEAD_TABLE(discovered, startNum + enForm.length + heForm.length);
+    }
+  }
+
+  document.getElementById('leads-section').innerHTML = html;
+}
+
 function leadRow(row, num) {
   const score = row.opportunity_score || 0;
   const sfCls = score >= 8 ? 'sf-8' : 'sf-7';
@@ -650,6 +823,7 @@ function leadRow(row, num) {
       <strong>${row.business_name || '—'}</strong>
       ${row.contact_name ? `<div style="font-size:11px;color:var(--text-dim);margin-top:2px">${row.contact_name}</div>` : ''}
       ${(()=>{ const ll=leadLinks(row); return ll.length ? `<div class="lead-links" style="margin-top:5px">${ll.join('')}</div>` : ''; })()}
+      ${(()=>{ const fu=followUpBadge(row); const as=assigneeBadge(row); return (fu||as) ? `<div style="margin-top:4px;display:flex;gap:4px;flex-wrap:wrap">${fu}${as}</div>` : ''; })()}
     </td>
     <td style="color:var(--text-dim);font-size:12px;white-space:nowrap">${row.category || (row.about ? row.about.split(',')[0] : '—')}</td>
     <td>${phoneHtml}</td>
@@ -680,6 +854,12 @@ function leadRow(row, num) {
         <optgroup label="Status">
           <option value="interested">⭐ Interested</option>
           <option value="not-interested">✗ Not Interested</option>
+        </optgroup>
+        <optgroup label="Follow-Up">
+          <option value="set-followup">📅 Set Follow-Up</option>
+          <option value="clear-followup">✕ Clear Follow-Up</option>
+          <option value="mark-followed-up">✓ Mark Followed Up</option>
+          <option value="reassign">👤 Reassign</option>
         </optgroup>
         <optgroup label="Actions">
           <option value="send-to-production">▶ Send to Production</option>
@@ -714,6 +894,10 @@ function openActionModal(id, action) {
     'add-note':          { title: 'Add Note / Request',    note: true,  placeholder: 'Message to Unveiled system... (e.g. use purple hero section)', btn: 'Send to System', cls: '' },
     'view-profile':      { title: 'Full Profile',          note: false, placeholder: '',                       btn: 'Close', cls: '' },
     'remove-lead':       { title: 'Remove Lead',           note: true,  placeholder: 'Reason (optional)...',  btn: 'Remove', cls: 'red' },
+    'set-followup':      { title: 'Set Follow-Up',         note: false, placeholder: '',                       btn: 'Save Follow-Up', cls: '' },
+    'clear-followup':    { title: 'Clear Follow-Up',       note: false, placeholder: '',                       btn: 'Clear', cls: 'red' },
+    'mark-followed-up':  { title: 'Mark Followed Up',      note: true,  placeholder: 'What happened on this follow-up?', btn: 'Save & Next', cls: 'green' },
+    'reassign':          { title: 'Reassign Lead',         note: false, placeholder: '',                       btn: 'Save', cls: '' },
   };
 
   const meta = ACTION_META[action] || { title: action, note: true, placeholder: '', btn: 'Save', cls: '' };
@@ -749,6 +933,32 @@ function openActionModal(id, action) {
       <div style="font-size:12px;color:var(--text-dim);line-height:1.8;margin-bottom:14px">${logLines}</div>
       ${row.requirements ? `<label class="modal-label">System Notes</label><div style="font-size:12px;color:var(--text-mid);line-height:1.6">${row.requirements.replace(/\n/g,'<br>')}</div>` : ''}
     `;
+  } else if (action === 'set-followup') {
+    const existingDate   = row.follow_up_date   || '';
+    const existingReason = row.follow_up_reason || '';
+    const existingAssign = row.assigned_to      || 'Maor';
+    body = `
+      <label class="modal-label">Date</label>
+      <input id="modal-fudate" type="date" class="modal-input" value="${existingDate}" min="${new Date().toISOString().slice(0,10)}">
+      <label class="modal-label">Reason</label>
+      <input id="modal-fureason" type="text" class="modal-input" placeholder="e.g. Call back, Send proposal, Check in…" value="${existingReason}">
+      <label class="modal-label">Assign To</label>
+      <div style="display:flex;gap:8px;margin-bottom:16px">
+        <button id="assign-maor"   class="modal-btn-${existingAssign==='Nataly'?'secondary':'primary'}" style="flex:1" onclick="document.getElementById('assign-maor').className='modal-btn-primary';document.getElementById('assign-nataly').className='modal-btn-secondary';window._assignTo='Maor'">Maor</button>
+        <button id="assign-nataly" class="modal-btn-${existingAssign==='Nataly'?'primary':'secondary'}" style="flex:1" onclick="document.getElementById('assign-nataly').className='modal-btn-primary';document.getElementById('assign-maor').className='modal-btn-secondary';window._assignTo='Nataly'">Nataly</button>
+      </div>`;
+    window._assignTo = existingAssign;
+  } else if (action === 'clear-followup') {
+    body = `<div style="font-size:13px;color:var(--text-mid);margin-bottom:16px">Remove the follow-up date and reason for <strong>${row.business_name || ''}</strong>?</div>`;
+  } else if (action === 'reassign') {
+    const current = row.assigned_to || 'Maor';
+    body = `
+      <label class="modal-label">Assign To</label>
+      <div style="display:flex;gap:8px;margin-bottom:16px">
+        <button id="assign-maor"   class="modal-btn-${current==='Nataly'?'secondary':'primary'}" style="flex:1" onclick="document.getElementById('assign-maor').className='modal-btn-primary';document.getElementById('assign-nataly').className='modal-btn-secondary';window._assignTo='Maor'">Maor</button>
+        <button id="assign-nataly" class="modal-btn-${current==='Nataly'?'primary':'secondary'}" style="flex:1" onclick="document.getElementById('assign-nataly').className='modal-btn-primary';document.getElementById('assign-maor').className='modal-btn-secondary';window._assignTo='Nataly'">Nataly</button>
+      </div>`;
+    window._assignTo = current;
   } else if (meta.note) {
     body = `<label class="modal-label">Note</label>
       <textarea id="modal-note" class="modal-textarea" placeholder="${meta.placeholder}"></textarea>`;
@@ -806,6 +1016,73 @@ async function executeModalAction(action, id) {
         if (domRow) { domRow.style.transition = 'opacity .5s'; domRow.style.background = 'rgba(16,185,129,.08)'; setTimeout(() => { domRow.style.opacity='0'; }, 400); setTimeout(() => { domRow.remove(); }, 900); }
         setTimeout(() => loadData(), 1100);
       }
+      closeActionModal(); return;
+    }
+
+    if (action === 'set-followup') {
+      const fuDate   = document.getElementById('modal-fudate')?.value || '';
+      const fuReason = document.getElementById('modal-fureason')?.value.trim() || '';
+      const assignTo = window._assignTo || 'Maor';
+      if (!fuDate) { alert('Please pick a date.'); return; }
+      await fetch(`${SUPABASE_URL}/rest/v1/leads?id=eq.${id}`, {
+        method: 'PATCH',
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+        body: JSON.stringify({ follow_up_date: fuDate, follow_up_reason: fuReason, assigned_to: assignTo })
+      });
+      const mem = (window._currentLeads||[]).find(r=>r.id===id);
+      if (mem) { mem.follow_up_date=fuDate; mem.follow_up_reason=fuReason; mem.assigned_to=assignTo; }
+      // Update badges in row
+      const bizCell = document.querySelector(`#lead-row-${id} td:nth-child(2)`);
+      if (bizCell) {
+        let fuRow = bizCell.querySelector('.fu-row');
+        if (!fuRow) { fuRow = document.createElement('div'); fuRow.className='fu-row'; fuRow.style='margin-top:4px;display:flex;gap:4px;flex-wrap:wrap'; bizCell.appendChild(fuRow); }
+        fuRow.innerHTML = followUpBadge({follow_up_date:fuDate,follow_up_reason:fuReason}) + assigneeBadge({assigned_to:assignTo});
+      }
+      closeActionModal(); advanceModal(id); return;
+    }
+
+    if (action === 'clear-followup') {
+      await fetch(`${SUPABASE_URL}/rest/v1/leads?id=eq.${id}`, {
+        method: 'PATCH',
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+        body: JSON.stringify({ follow_up_date: null, follow_up_reason: null })
+      });
+      const mem = (window._currentLeads||[]).find(r=>r.id===id);
+      if (mem) { mem.follow_up_date=null; mem.follow_up_reason=null; }
+      const fuRow = document.querySelector(`#lead-row-${id} .fu-row`);
+      if (fuRow) fuRow.innerHTML = assigneeBadge({assigned_to: mem?.assigned_to||'Maor'});
+      closeActionModal(); return;
+    }
+
+    if (action === 'mark-followed-up') {
+      const noteEl = document.getElementById('modal-note');
+      const outcome = noteEl ? noteEl.value.trim() : '';
+      const today = new Date().toISOString().slice(0,10);
+      await fetch(`${SUPABASE_URL}/rest/v1/leads?id=eq.${id}`, {
+        method: 'PATCH',
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+        body: JSON.stringify({ last_contacted: today, contact_outcome: outcome, follow_up_date: null, follow_up_reason: null })
+      });
+      const mem = (window._currentLeads||[]).find(r=>r.id===id);
+      if (mem) { mem.last_contacted=today; mem.contact_outcome=outcome; mem.follow_up_date=null; mem.follow_up_reason=null; }
+      const fuRow = document.querySelector(`#lead-row-${id} .fu-row`);
+      if (fuRow) fuRow.innerHTML = assigneeBadge({assigned_to: mem?.assigned_to||'Maor'});
+      const lastCell = document.querySelector(`#lead-row-${id} .last-action-cell`);
+      if (lastCell) lastCell.textContent = `followed up · ${new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}`;
+      closeActionModal(); advanceModal(id); return;
+    }
+
+    if (action === 'reassign') {
+      const assignTo = window._assignTo || 'Maor';
+      await fetch(`${SUPABASE_URL}/rest/v1/leads?id=eq.${id}`, {
+        method: 'PATCH',
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+        body: JSON.stringify({ assigned_to: assignTo })
+      });
+      const mem = (window._currentLeads||[]).find(r=>r.id===id);
+      if (mem) mem.assigned_to = assignTo;
+      const fuRow = document.querySelector(`#lead-row-${id} .fu-row`);
+      if (fuRow) { const badge = fuRow.querySelector('.assignee-badge'); if (badge) { badge.textContent=assignTo; badge.className=`assignee-badge ${assignTo==='Nataly'?'as-nataly':'as-maor'}`; } }
       closeActionModal(); return;
     }
 
@@ -1024,47 +1301,15 @@ async function loadData() {
                <div class="cards">${converted.map(r => productionCard(r, clientNum++, false)).join('')}</div>`;
 
     // ── LEAD TIERS ─────────────────────────────────────────────────────────
-    const enFormLeads  = rows.filter(r => r.status === 'NEW LEAD' && r.discovery_method === 'unveiled-form');
-    const heFormLeads  = rows.filter(r => r.status === 'NEW LEAD' && (r.discovery_method === 'website-onboarding-he' || r.discovery_method === 'unveiled-form-he'));
-    const discoveredLeads = rows.filter(r => r.status === 'NEW LEAD' && r.discovery_method === 'google-maps');
+    const allLeadRows = rows.filter(r => r.status === 'NEW LEAD');
+    window._currentLeads = allLeadRows;
+    window._productionCount = productions.length;
 
-    window._currentLeads = [...enFormLeads, ...heFormLeads, ...discoveredLeads];
-
-    const LEAD_TABLE = (leads, startNum) => `
-      <div class="leads-wrap"><table>
-        <thead><tr>
-          <th>ID</th><th>Business</th><th>Category</th><th>Phone</th>
-          <th>Score</th><th>Status</th><th>Last Action</th><th>Next Step</th><th>Actions</th>
-        </tr></thead>
-        <tbody>${leads.map((r,i) => leadRow(r, startNum + i)).join('')}</tbody>
-      </table></div>`;
-
-    const TIER_LABEL = (icon, title, badge, sub) =>
-      `<div class="section-head" style="margin-top:28px">
-        <span style="font-size:14px">${icon}</span>
-        <h2>${title}</h2><span class="count-badge">${badge}</span>
-        <span style="font-size:11px;color:var(--text-dim);margin-left:4px">${sub}</span>
-       </div>`;
-
-    if (enFormLeads.length || heFormLeads.length || discoveredLeads.length) {
+    const totalLeads = allLeadRows.length;
+    if (totalLeads > 0) {
       html += `<div class="divider"></div>
-               <div class="section-head"><h2>Incoming Leads</h2><span class="count-badge">${enFormLeads.length + heFormLeads.length + discoveredLeads.length} total</span></div>`;
-    }
-
-    let leadNum = clientNum;
-    if (enFormLeads.length) {
-      html += TIER_LABEL('🟢', 'Tier 1 — English Website Form', enFormLeads.length, 'Highest intent: filled out our form in English');
-      html += LEAD_TABLE(enFormLeads, leadNum);
-      leadNum += enFormLeads.length;
-    }
-    if (heFormLeads.length) {
-      html += TIER_LABEL('🔵', 'Tier 2 — Hebrew Website Form', heFormLeads.length, 'High intent: filled out our form in Hebrew');
-      html += LEAD_TABLE(heFormLeads, leadNum);
-      leadNum += heFormLeads.length;
-    }
-    if (discoveredLeads.length) {
-      html += TIER_LABEL('🟣', 'Tier 3 — Discovered', discoveredLeads.length, 'Found via Google Maps — not yet contacted');
-      html += LEAD_TABLE(discoveredLeads, leadNum);
+               <div class="section-head"><h2>Incoming Leads</h2><span class="count-badge">${totalLeads} total</span></div>
+               <div id="leads-section"></div>`;
     }
 
     html += `<div class="note-grid">
@@ -1087,6 +1332,9 @@ async function loadData() {
 
     document.getElementById('main-content').innerHTML = html;
     document.getElementById('last-updated').textContent = 'Updated ' + new Date().toLocaleTimeString();
+
+    // Render leads section with filter
+    if (totalLeads > 0) renderLeadSection(allLeadRows);
 
   } catch (err) {
     document.getElementById('main-content').innerHTML =
