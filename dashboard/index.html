@@ -118,6 +118,61 @@
   .as-maor   { background: rgba(139,92,246,.15); color: var(--violet-light); }
   .as-nataly { background: rgba(16,185,129,.12);  color: var(--green); }
 
+  /* USER SELECTOR */
+  .user-selector { display: flex; gap: 4px; }
+  .user-btn {
+    font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 20px;
+    border: 1px solid var(--border); background: none; color: var(--text-dim);
+    cursor: pointer; font-family: inherit; transition: all .15s;
+  }
+  .user-btn.active { background: var(--violet-dim); border-color: var(--violet-light); color: var(--violet-light); }
+  .user-btn.nataly.active { background: rgba(16,185,129,.12); border-color: var(--green); color: var(--green); }
+
+  /* HEALTH SCORE DOT */
+  .hs-dot {
+    display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+    flex-shrink: 0; vertical-align: middle; margin-right: 3px;
+    cursor: help;
+  }
+  .hs-green  { background: var(--green);  box-shadow: 0 0 4px var(--green); }
+  .hs-yellow { background: var(--yellow); box-shadow: 0 0 4px var(--yellow); }
+  .hs-red    { background: var(--red);    box-shadow: 0 0 4px var(--red); }
+
+  /* ACTIVITY FEED */
+  .activity-panel {
+    background: var(--dark-3); border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px 20px; margin-bottom: 24px;
+    overflow: hidden;
+  }
+  .activity-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .activity-title { font-size: 10px; font-weight: 700; letter-spacing:.12em; text-transform:uppercase; color:var(--text-dim); }
+  .activity-sync  { font-size: 10px; color: var(--text-dim); }
+  .activity-list  { display: flex; flex-direction: column; gap: 1px; }
+  .activity-row {
+    display: flex; align-items: baseline; gap: 10px; padding: 5px 0;
+    border-bottom: 1px solid var(--border); font-size: 12px;
+  }
+  .activity-row:last-child { border-bottom: none; }
+  .activity-time { font-size: 10px; color: var(--text-dim); white-space: nowrap; min-width: 42px; }
+  .activity-text { color: var(--text-mid); flex: 1; line-height: 1.4; }
+  .activity-text strong { color: var(--text); }
+  .activity-empty { font-size: 12px; color: var(--text-dim); padding: 8px 0; }
+
+  /* TIMELINE IN MODAL */
+  .timeline-list { display: flex; flex-direction: column; gap: 0; }
+  .timeline-event {
+    display: flex; gap: 12px; padding: 8px 0;
+    border-bottom: 1px solid var(--border); font-size: 12px;
+  }
+  .timeline-event:last-child { border-bottom: none; }
+  .timeline-ts { font-size: 10px; color: var(--text-dim); white-space: nowrap; min-width: 100px; padding-top: 1px; }
+  .timeline-body { flex: 1; }
+  .timeline-event-text { color: var(--text-mid); line-height:1.4; }
+  .timeline-actor { font-size: 10px; color: var(--violet-light); margin-top: 1px; }
+
   /* SYSTEM HEALTH PANEL */
   .health-panel {
     background: var(--dark-3); border: 1px solid var(--border);
@@ -425,11 +480,26 @@
   <div class="topbar-right">
     <div class="live-dot"></div>
     <span id="last-updated">Loading...</span>
-    <button class="refresh-btn" onclick="loadSystemHealth();loadData()">↻ Refresh</button>
+    <div class="user-selector">
+      <button class="user-btn active" id="user-maor"   onclick="setUser('Maor')">Maor</button>
+      <button class="user-btn nataly" id="user-nataly" onclick="setUser('Nataly')">Nataly</button>
+    </div>
+    <button class="refresh-btn" onclick="loadSystemHealth();loadActivityFeed();loadData()">↻ Refresh</button>
   </div>
 </div>
 
 <div class="page">
+  <!-- ACTIVITY FEED -->
+  <div class="activity-panel" id="activity-panel">
+    <div class="activity-header">
+      <div class="activity-title">Live Activity</div>
+      <div class="activity-sync" id="activity-sync">Loading…</div>
+    </div>
+    <div class="activity-list" id="activity-list">
+      <div class="activity-empty">No activity yet.</div>
+    </div>
+  </div>
+
   <div class="pipeline" id="pipeline">
     <div class="pipe-stage"><div class="pipe-count zero" id="cnt-new">—</div><div class="pipe-label">New<br>Lead</div></div>
     <div class="pipe-stage"><div class="pipe-count zero" id="cnt-research">—</div><div class="pipe-label">Research-<br>ing</div></div>
@@ -473,7 +543,8 @@ function checkPassword() {
     sessionStorage.setItem(SESSION_KEY, '1');
     document.getElementById('login-gate').style.display = 'none';
     document.getElementById('dashboard').style.display = '';
-    loadSystemHealth(); loadData();
+    setUser(sessionStorage.getItem('uv_user') || 'Maor');
+    loadSystemHealth(); loadActivityFeed(); loadData();
   } else {
     const inp = document.getElementById('pw-input');
     inp.classList.add('error');
@@ -818,7 +889,9 @@ function leadRow(row, num) {
   const idJson = JSON.stringify(row.id);
   return `
   <tr id="lead-row-${row.id}">
-    <td style="font-size:11px;color:var(--violet-light);font-weight:700;white-space:nowrap">${custId}</td>
+    <td style="font-size:11px;color:var(--violet-light);font-weight:700;white-space:nowrap">
+      ${(()=>{ const hs=healthScore(row); return `<span class="hs-dot ${hs.cls}" title="${hs.tip}"></span>`; })()}${custId}
+    </td>
     <td>
       <strong>${row.business_name || '—'}</strong>
       ${row.contact_name ? `<div style="font-size:11px;color:var(--text-dim);margin-top:2px">${row.contact_name}</div>` : ''}
@@ -929,9 +1002,35 @@ function openActionModal(id, action) {
       </div>
       ${row.about ? `<div style="font-size:12px;color:var(--text-dim);margin-bottom:14px">${row.about}</div>` : ''}
       <div class="modal-links-row">${links.join('')}</div>
-      <label class="modal-label">Outreach Log</label>
-      <div style="font-size:12px;color:var(--text-dim);line-height:1.8;margin-bottom:14px">${logLines}</div>
-      ${row.requirements ? `<label class="modal-label">System Notes</label><div style="font-size:12px;color:var(--text-mid);line-height:1.6">${row.requirements.replace(/\n/g,'<br>')}</div>` : ''}
+      ${row.requirements ? `<label class="modal-label">System Notes</label><div style="font-size:12px;color:var(--text-mid);line-height:1.6;margin-bottom:16px">${row.requirements.replace(/\n/g,'<br>')}</div>` : ''}
+      <label class="modal-label">Timeline</label>
+      <div class="timeline-list" style="max-height:260px;overflow-y:auto">${(()=>{
+        const tl  = Array.isArray(row.timeline)     ? [...row.timeline]     : [];
+        const log = Array.isArray(row.outreach_log) ? row.outreach_log      : [];
+        // Merge timeline + outreach_log into unified events, sort ascending
+        const events = [
+          ...tl.map(e => ({ ts: e.ts, text: e.event, actor: e.actor, fromTl: true })),
+          ...log.filter(e => !tl.some(t => t.event && t.event.includes(e.method))).map(e => ({
+            ts: new Date(e.date + 'T12:00:00Z').toISOString(),
+            text: `${e.method}${e.note ? ' — ' + e.note : ''}`,
+            actor: e.actor || '',
+            fromTl: false
+          }))
+        ].sort((a,b) => new Date(a.ts)-new Date(b.ts));
+        if (!events.length) return '<div class="activity-empty">No history yet — actions will appear here.</div>';
+        return events.map(e => {
+          const d = new Date(e.ts);
+          const dateStr = d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+          const timeStr = d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true});
+          return `<div class="timeline-event">
+            <div class="timeline-ts">${dateStr} ${timeStr}</div>
+            <div class="timeline-body">
+              <div class="timeline-event-text">${e.text}</div>
+              ${e.actor && e.actor !== 'system' ? `<div class="timeline-actor">${e.actor}</div>` : ''}
+            </div>
+          </div>`;
+        }).join('');
+      })()}</div>
     `;
   } else if (action === 'set-followup') {
     const existingDate   = row.follow_up_date   || '';
@@ -988,6 +1087,10 @@ async function executeModalAction(action, id) {
     'interested':'interested','not-interested':'not-interested',
   };
 
+  const row2 = (window._currentLeads||[]).find(r=>r.id===id) || {};
+  const bizName = row2.business_name || '';
+  const custId2 = `U-${String(row2.client_number||0).padStart(4,'0')}`;
+
   try {
     if (action === 'view-profile') { closeActionModal(); return; }
 
@@ -1012,6 +1115,7 @@ async function executeModalAction(action, id) {
         body: JSON.stringify({ status: 'BUILDING', discovery_method: 'unveiled-form', ...(note ? { requirements: note } : {}) })
       });
       if (res.ok) {
+        appendTimeline(id, bizName, custId2, 'Moved to Production', 'production');
         const domRow = document.getElementById(`lead-row-${id}`);
         if (domRow) { domRow.style.transition = 'opacity .5s'; domRow.style.background = 'rgba(16,185,129,.08)'; setTimeout(() => { domRow.style.opacity='0'; }, 400); setTimeout(() => { domRow.remove(); }, 900); }
         setTimeout(() => loadData(), 1100);
@@ -1031,7 +1135,8 @@ async function executeModalAction(action, id) {
       });
       const mem = (window._currentLeads||[]).find(r=>r.id===id);
       if (mem) { mem.follow_up_date=fuDate; mem.follow_up_reason=fuReason; mem.assigned_to=assignTo; }
-      // Update badges in row
+      const fuLabel = new Date(fuDate+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
+      appendTimeline(id, bizName, custId2, `Follow-up scheduled for ${fuLabel}${fuReason?' — '+fuReason:''}`, 'followup');
       const bizCell = document.querySelector(`#lead-row-${id} td:nth-child(2)`);
       if (bizCell) {
         let fuRow = bizCell.querySelector('.fu-row');
@@ -1049,6 +1154,7 @@ async function executeModalAction(action, id) {
       });
       const mem = (window._currentLeads||[]).find(r=>r.id===id);
       if (mem) { mem.follow_up_date=null; mem.follow_up_reason=null; }
+      appendTimeline(id, bizName, custId2, 'Follow-up cleared', 'followup');
       const fuRow = document.querySelector(`#lead-row-${id} .fu-row`);
       if (fuRow) fuRow.innerHTML = assigneeBadge({assigned_to: mem?.assigned_to||'Maor'});
       closeActionModal(); return;
@@ -1057,14 +1163,15 @@ async function executeModalAction(action, id) {
     if (action === 'mark-followed-up') {
       const noteEl = document.getElementById('modal-note');
       const outcome = noteEl ? noteEl.value.trim() : '';
-      const today = new Date().toISOString().slice(0,10);
+      const today2 = new Date().toISOString().slice(0,10);
       await fetch(`${SUPABASE_URL}/rest/v1/leads?id=eq.${id}`, {
         method: 'PATCH',
         headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
-        body: JSON.stringify({ last_contacted: today, contact_outcome: outcome, follow_up_date: null, follow_up_reason: null })
+        body: JSON.stringify({ last_contacted: today2, contact_outcome: outcome, follow_up_date: null, follow_up_reason: null })
       });
       const mem = (window._currentLeads||[]).find(r=>r.id===id);
-      if (mem) { mem.last_contacted=today; mem.contact_outcome=outcome; mem.follow_up_date=null; mem.follow_up_reason=null; }
+      if (mem) { mem.last_contacted=today2; mem.contact_outcome=outcome; mem.follow_up_date=null; mem.follow_up_reason=null; }
+      appendTimeline(id, bizName, custId2, `Followed up${outcome?' — '+outcome:''}`, 'call');
       const fuRow = document.querySelector(`#lead-row-${id} .fu-row`);
       if (fuRow) fuRow.innerHTML = assigneeBadge({assigned_to: mem?.assigned_to||'Maor'});
       const lastCell = document.querySelector(`#lead-row-${id} .last-action-cell`);
@@ -1081,6 +1188,7 @@ async function executeModalAction(action, id) {
       });
       const mem = (window._currentLeads||[]).find(r=>r.id===id);
       if (mem) mem.assigned_to = assignTo;
+      appendTimeline(id, bizName, custId2, `Assigned to ${assignTo}`, 'assign');
       const fuRow = document.querySelector(`#lead-row-${id} .fu-row`);
       if (fuRow) { const badge = fuRow.querySelector('.assignee-badge'); if (badge) { badge.textContent=assignTo; badge.className=`assignee-badge ${assignTo==='Nataly'?'as-nataly':'as-maor'}`; } }
       closeActionModal(); return;
@@ -1099,6 +1207,7 @@ async function executeModalAction(action, id) {
         headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
         body: JSON.stringify({ requirements: newNote })
       });
+      appendTimeline(id, bizName, custId2, `Note added: ${note.slice(0,60)}${note.length>60?'…':''}`, 'note');
       closeActionModal(); advanceModal(id); return;
     }
 
@@ -1115,14 +1224,14 @@ async function executeModalAction(action, id) {
         headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
         body: JSON.stringify({ outreach_status: newStatus, outreach_log: log })
       });
-      // Update DOM in-place
+      const STATUS_LABELS = { called:'Called', texted:'Texted', emailed:'Emailed', 'no-answer':'Called — No Answer', voicemail:'Left Voicemail', callback:'Scheduled Callback', interested:'Marked Interested', 'not-interested':'Marked Not Interested' };
+      appendTimeline(id, bizName, custId2, `${STATUS_LABELS[newStatus]||newStatus}${note?' — '+note:''}`, 'outreach');
       const badge = document.querySelector(`#lead-row-${id} .os-badge`);
       if (badge) { const cfg = OUTREACH_STATUS_MAP[newStatus]; badge.textContent = cfg.label; badge.className = `os-badge ${cfg.cls}`; }
       const lastCell = document.querySelector(`#lead-row-${id} .last-action-cell`);
       if (lastCell) lastCell.textContent = `${newStatus} · ${today}`;
       const nextCell = document.querySelector(`#lead-row-${id} .next-step-cell`);
       if (nextCell) nextCell.textContent = nextStep(newStatus);
-      // Update in-memory row
       const mem = (window._currentLeads || []).find(r => r.id === id);
       if (mem) { mem.outreach_status = newStatus; mem.outreach_log = log; }
     }
@@ -1144,6 +1253,107 @@ function advanceModal(currentId) {
       setTimeout(() => { nextRow.style.background = ''; }, 1400);
     }
   }
+}
+
+// ── USER SELECTOR ─────────────────────────────────────────────────────────
+window._currentUser = sessionStorage.getItem('uv_user') || 'Maor';
+function setUser(name) {
+  window._currentUser = name;
+  sessionStorage.setItem('uv_user', name);
+  document.getElementById('user-maor').className   = `user-btn${name==='Maor'   ? ' active' : ''}`;
+  document.getElementById('user-nataly').className = `user-btn nataly${name==='Nataly' ? ' active' : ''}`;
+}
+
+// ── TIMELINE HELPER (fire-and-forget) ────────────────────────────────────
+function appendTimeline(leadId, leadName, custId, event, type) {
+  const actor = window._currentUser || 'system';
+  ;(async () => {
+    try {
+      await fetch(`${SUPABASE_URL}/rest/v1/rpc/append_timeline`, {
+        method: 'POST',
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ p_lead_id: leadId, p_event: event, p_actor: actor, p_type: type || 'action', p_lead_name: leadName || '', p_cust_id: custId || '' })
+      });
+      // Update in-memory timeline
+      const mem = (window._currentLeads||[]).find(r=>r.id===leadId);
+      if (mem) {
+        if (!Array.isArray(mem.timeline)) mem.timeline = [];
+        mem.timeline.push({ ts: new Date().toISOString(), event, actor, type: type||'action' });
+      }
+      loadActivityFeed();
+    } catch(e) { console.warn('timeline append failed', e); }
+  })();
+}
+
+// ── ACTIVITY FEED ─────────────────────────────────────────────────────────
+async function loadActivityFeed() {
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/activity_log?order=created_at.desc&limit=12`,
+      { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } }
+    );
+    const rows = await res.json();
+    if (!Array.isArray(rows)) return;
+
+    const TYPE_ICON = {
+      import:'📥', call:'📞', text:'💬', email:'📧', followup:'📅',
+      status:'🔄', note:'📝', production:'▶', assign:'👤', action:'•',
+      outreach:'📞', 'mark-followed-up':'✓', 'set-followup':'📅',
+      'clear-followup':'✕', reassign:'👤', 'add-note':'📝',
+    };
+
+    if (!rows.length) {
+      document.getElementById('activity-list').innerHTML = '<div class="activity-empty">No activity yet — actions you take will appear here.</div>';
+    } else {
+      document.getElementById('activity-list').innerHTML = rows.map(r => {
+        const meta = r.meta || {};
+        const custId = meta.customer_id || '';
+        const leadName = meta.lead_name || '';
+        const icon = TYPE_ICON[r.type || meta.type] || '•';
+        const ts = new Date(r.created_at);
+        const timeStr = ts.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit', hour12:true });
+        const actorStr = r.actor && r.actor !== 'system' ? `<strong>${r.actor}</strong> ` : '';
+        const idStr = custId ? `<strong>${custId}</strong>` : (leadName ? `<strong>${leadName}</strong>` : '');
+        return `<div class="activity-row">
+          <div class="activity-time">${timeStr}</div>
+          <div class="activity-text">${icon} ${actorStr}${r.action}${idStr ? ' — ' + idStr : ''}</div>
+        </div>`;
+      }).join('');
+    }
+    document.getElementById('activity-sync').textContent = 'Updated ' + new Date().toLocaleTimeString();
+  } catch(e) { console.warn('activity feed failed', e); }
+}
+
+// ── HEALTH SCORE ──────────────────────────────────────────────────────────
+function healthScore(row) {
+  const now = Date.now();
+  const log = Array.isArray(row.outreach_log) ? row.outreach_log : [];
+  const tl  = Array.isArray(row.timeline)     ? row.timeline     : [];
+  const created = new Date(row.created_at).getTime();
+
+  // Last real activity: timeline ts, outreach_log dates, or created_at
+  const times = [
+    ...tl.map(e  => new Date(e.ts).getTime()),
+    ...log.map(e => new Date(e.date).getTime()),
+    created
+  ].filter(t => !isNaN(t));
+  const lastActivity = Math.max(...times);
+  const daysSince = (now - lastActivity) / 86400000;
+  const daysSinceCreated = (now - created) / 86400000;
+  const st = row.outreach_status || 'not-contacted';
+
+  // 🔴 At Risk
+  if (st === 'not-contacted' && daysSinceCreated > 7) return { cls:'hs-red',   tip:'At Risk — never contacted, 7+ days old' };
+  if (daysSince > 7)                                  return { cls:'hs-red',   tip:'At Risk — no activity in 7+ days' };
+  if (st === 'no-answer' && daysSince > 3)            return { cls:'hs-red',   tip:'At Risk — no answer, 3+ days without retry' };
+
+  // 🟡 Needs Attention
+  if (st === 'not-contacted' && daysSinceCreated > 3) return { cls:'hs-yellow', tip:'Needs Attention — not contacted in 3+ days' };
+  if (!row.follow_up_date && st !== 'not-contacted' && st !== 'not-interested') return { cls:'hs-yellow', tip:'Needs Attention — no follow-up scheduled' };
+  if (daysSince > 3)                                  return { cls:'hs-yellow', tip:'Needs Attention — no activity in 3+ days' };
+
+  // 🟢 Healthy
+  return { cls:'hs-green', tip:'Healthy' };
 }
 
 function healthItem(dotCls, label, value) {
@@ -1343,9 +1553,12 @@ async function loadData() {
   }
 }
 
-if (sessionStorage.getItem(SESSION_KEY) === '1') { loadSystemHealth(); loadData(); }
+if (sessionStorage.getItem(SESSION_KEY) === '1') {
+  setUser(sessionStorage.getItem('uv_user') || 'Maor');
+  loadSystemHealth(); loadActivityFeed(); loadData();
+}
 setInterval(() => {
-  if (sessionStorage.getItem(SESSION_KEY) === '1') { loadSystemHealth(); loadData(); }
+  if (sessionStorage.getItem(SESSION_KEY) === '1') { loadSystemHealth(); loadActivityFeed(); loadData(); }
 }, 60000);
 </script>
 
