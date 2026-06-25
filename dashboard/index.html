@@ -88,6 +88,7 @@
 
   /* CARDS */
   .cards { display: flex; flex-direction: column; gap: 10px; margin-bottom: 40px; }
+  .card-wrap { display: flex; gap: 0; align-items: stretch; }
   .card {
     background: var(--dark-3); border: 1px solid var(--border); border-radius: 12px;
     padding: 16px 18px;
@@ -95,7 +96,9 @@
     gap: 16px; align-items: center;
     transition: border-color .15s;
     border-left: 3px solid transparent;
+    flex: 1; min-width: 0;
   }
+  .card-wrap .card { border-radius: 12px 0 0 12px; border-right: none; }
   .card:hover { border-color: rgba(139,92,246,.25); }
   .card.green  { border-left-color: var(--green); }
   .card.yellow { border-left-color: var(--yellow); }
@@ -104,7 +107,44 @@
   .card.orange { border-left-color: var(--orange); }
   .card.violet { border-left-color: var(--violet-light); }
 
-  .card-name { font-size: 15px; font-weight: 600; margin-bottom: 3px; }
+  /* NOTE PANEL */
+  .note-panel {
+    width: 220px; flex-shrink: 0;
+    background: var(--dark-4); border: 1px solid var(--border); border-left: none;
+    border-radius: 0 12px 12px 0;
+    display: flex; flex-direction: column; padding: 12px;
+    gap: 8px;
+  }
+  .note-panel-label { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-dim); }
+  .note-textarea {
+    flex: 1; min-height: 72px; resize: none;
+    background: var(--dark-3); border: 1px solid var(--border);
+    border-radius: 7px; padding: 8px 10px;
+    font-size: 12px; color: var(--text); font-family: inherit; line-height: 1.4;
+    outline: none; transition: border-color .15s;
+  }
+  .note-textarea:focus { border-color: var(--violet-light); }
+  .note-textarea::placeholder { color: var(--text-dim); }
+  .note-save-btn {
+    background: var(--violet); color: #fff; border: none;
+    border-radius: 7px; padding: 6px 10px;
+    font-size: 11px; font-weight: 700; cursor: pointer;
+    font-family: inherit; transition: opacity .15s; text-align: center;
+  }
+  .note-save-btn:hover { opacity: .8; }
+  .note-save-btn.saved { background: var(--green); }
+  .note-save-btn.saving { opacity: .5; pointer-events: none; }
+
+  /* NUMBER BADGE */
+  .client-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--dark-4); border: 1px solid var(--border);
+    font-size: 10px; font-weight: 700; color: var(--text-dim);
+    margin-right: 7px; flex-shrink: 0; vertical-align: middle;
+  }
+
+  .card-name { font-size: 15px; font-weight: 600; margin-bottom: 3px; display: flex; align-items: center; }
   .card-sub  { font-size: 12px; color: var(--text-dim); display:flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 6px; }
   .card-sub a { color: var(--violet-light); text-decoration: none; font-size:11px; }
 
@@ -192,7 +232,9 @@
 
   /* MOBILE */
   @media (max-width: 768px) {
-    .card { grid-template-columns: 1fr; gap: 10px; }
+    .card { grid-template-columns: 1fr; gap: 10px; border-radius: 12px 12px 0 0 !important; border-right: 1px solid var(--border) !important; }
+    .card-wrap { flex-direction: column; }
+    .note-panel { width: 100%; border-left: 1px solid var(--border); border-top: none; border-radius: 0 0 12px 12px; }
     .card-btns { flex-direction: row; align-items: flex-start; flex-wrap: wrap; }
     .pipeline { grid-template-columns: repeat(4,1fr); }
     .note-grid { grid-template-columns: 1fr; }
@@ -344,12 +386,13 @@ function cardBtns(row) {
   return btns.join('');
 }
 
-function productionCard(row) {
+function productionCard(row, num, showNotes) {
   const cfg = STATUS_CONFIG[row.status] || STATUS_CONFIG['NEW LEAD'];
-  return `
-  <div class="card ${cfg.border}">
+  const numBadge = `<span class="client-num">${num}</span>`;
+  const card = `
+  <div class="card ${cfg.border}" id="card-${row.id}">
     <div>
-      <div class="card-name">${row.business_name || '—'}</div>
+      <div class="card-name">${numBadge}${row.business_name || '—'}</div>
       ${cardLinks(row)}
       <div class="phases" style="margin-top:8px">${phaseHtml(cfg.phases)}</div>
     </div>
@@ -366,6 +409,47 @@ function productionCard(row) {
     </div>
     <div class="card-btns">${cardBtns(row)}</div>
   </div>`;
+
+  if (!showNotes) return card;
+
+  const existingNote = (row.requirements || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const notePanel = `
+  <div class="note-panel">
+    <div class="note-panel-label">Message to System</div>
+    <textarea class="note-textarea" id="note-${row.id}" placeholder="Add correction, request, or update…">${existingNote}</textarea>
+    <button class="note-save-btn" onclick="saveNote('${row.id}')">Save</button>
+  </div>`;
+
+  return `<div class="card-wrap">${card}${notePanel}</div>`;
+}
+
+async function saveNote(id) {
+  const textarea = document.getElementById(`note-${id}`);
+  const btn = textarea?.closest('.note-panel')?.querySelector('.note-save-btn');
+  if (!textarea || !btn) return;
+  btn.textContent = 'Saving…';
+  btn.className = 'note-save-btn saving';
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/leads?id=eq.${id}`, {
+      method: 'PATCH',
+      headers: {
+        apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json', Prefer: 'return=minimal'
+      },
+      body: JSON.stringify({ requirements: textarea.value })
+    });
+    if (res.ok) {
+      btn.textContent = 'Saved ✓';
+      btn.className = 'note-save-btn saved';
+      setTimeout(() => { btn.textContent = 'Save'; btn.className = 'note-save-btn'; }, 2000);
+    } else {
+      btn.textContent = 'Error — retry';
+      btn.className = 'note-save-btn';
+    }
+  } catch(e) {
+    btn.textContent = 'Error — retry';
+    btn.className = 'note-save-btn';
+  }
 }
 
 function leadLinks(row) {
@@ -381,7 +465,7 @@ function leadLinks(row) {
   return links.length ? `<div class="lead-links">${links.join('')}</div>` : '<span style="color:var(--text-dim);font-size:11px">—</span>';
 }
 
-function leadRow(row) {
+function leadRow(row, num) {
   const score = row.opportunity_score || 0;
   const sfCls = score >= 8 ? 'sf-8' : 'sf-7';
   const snCls = score >= 8 ? 'h8' : 'h7';
@@ -392,8 +476,9 @@ function leadRow(row) {
   return `
   <tr>
     <td>
+      <span class="client-num">${num}</span>
       <strong>${row.business_name || '—'}</strong>
-      ${row.contact_name ? `<div style="font-size:11px;color:var(--text-dim);margin-top:2px">${row.contact_name}</div>` : ''}
+      ${row.contact_name ? `<div style="font-size:11px;color:var(--text-dim);margin-top:2px;padding-left:27px">${row.contact_name}</div>` : ''}
     </td>
     <td style="color:var(--text-dim);font-size:12px">${row.about || row.additional_notes || ''}</td>
     <td>${phoneHtml}</td>
@@ -448,25 +533,26 @@ async function loadData() {
     const converted      = productions.filter(r => ['APPROVED','ACTIVE CUSTOMER'].includes(r.status));
 
     let html = '';
+    let clientNum = 1;
 
     if (needsAttention.length)
       html += `<div class="section-head"><h2>Needs Attention</h2><span class="count-badge">${needsAttention.length}</span></div>
-               <div class="cards">${needsAttention.map(productionCard).join('')}</div>`;
+               <div class="cards">${needsAttention.map(r => productionCard(r, clientNum++, true)).join('')}</div>`;
 
     if (inProgress.length)
       html += `<div class="section-head"><h2>In Progress</h2><span class="count-badge">${inProgress.length}</span></div>
-               <div class="cards">${inProgress.map(productionCard).join('')}</div>`;
+               <div class="cards">${inProgress.map(r => productionCard(r, clientNum++, true)).join('')}</div>`;
 
     if (converted.length)
       html += `<div class="section-head"><h2>Converted</h2><span class="count-badge">${converted.length}</span></div>
-               <div class="cards">${converted.map(productionCard).join('')}</div>`;
+               <div class="cards">${converted.map(r => productionCard(r, clientNum++, false)).join('')}</div>`;
 
     if (ocLeads.length)
       html += `<div class="divider"></div>
                <div class="section-head"><h2>OC Lead Hunt — Round 1</h2><span class="count-badge">${ocLeads.length} businesses</span></div>
                <div class="leads-wrap"><table>
                  <thead><tr><th>Business</th><th>About</th><th>Phone</th><th>Links</th><th>Score</th><th>Action</th></tr></thead>
-                 <tbody>${ocLeads.map(leadRow).join('')}</tbody>
+                 <tbody>${ocLeads.map((r,i) => leadRow(r, clientNum + i)).join('')}</tbody>
                </table></div>`;
 
     html += `<div class="note-grid">
