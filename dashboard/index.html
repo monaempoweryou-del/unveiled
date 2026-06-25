@@ -164,6 +164,15 @@
   .sf-7 { background: var(--yellow); }
   .tag { font-size: 11px; background: var(--dark-4); color: var(--text-dim); padding: 2px 8px; border-radius: 20px; }
   .reach-tag { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; color: var(--violet-light); background: var(--violet-dim); padding: 3px 9px; border-radius: 20px; }
+  .lead-links { display: flex; flex-wrap: wrap; gap: 4px; }
+  .lead-link { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px; text-decoration: none; white-space: nowrap; transition: opacity .15s; }
+  .lead-link:hover { opacity: .75; }
+  .lead-link.google   { background: rgba(59,130,246,.15);  color: #60a5fa; }
+  .lead-link.website  { background: rgba(139,92,246,.15);  color: var(--violet-light); }
+  .lead-link.facebook { background: rgba(59,100,246,.15);  color: #818cf8; }
+  .lead-link.instagram{ background: rgba(249,115,22,.15);  color: #fb923c; }
+  .lead-link.yelp     { background: rgba(239,68,68,.15);   color: #f87171; }
+  .lead-link.source   { background: rgba(16,185,129,.15);  color: var(--green); }
 
   /* DIVIDER */
   .divider { height: 1px; background: var(--border); margin: 36px 0; }
@@ -349,6 +358,19 @@ function productionCard(row) {
   </div>`;
 }
 
+function leadLinks(row) {
+  const sp = row.social_profiles || {};
+  const links = [];
+  if (sp.google)    links.push(`<a class="lead-link google"   href="${sp.google}"    target="_blank">Maps</a>`);
+  if (row.website)  links.push(`<a class="lead-link website"  href="${row.website}"  target="_blank">Site</a>`);
+  if (sp.facebook)  links.push(`<a class="lead-link facebook" href="${sp.facebook}"  target="_blank">FB</a>`);
+  if (sp.instagram) links.push(`<a class="lead-link instagram"href="${sp.instagram}" target="_blank">IG</a>`);
+  if (sp.yelp)      links.push(`<a class="lead-link yelp"     href="${sp.yelp}"      target="_blank">Yelp</a>`);
+  if (row.source && !links.find(l => l.includes(row.source)))
+    links.push(`<a class="lead-link source" href="${row.source}" target="_blank">Source</a>`);
+  return links.length ? `<div class="lead-links">${links.join('')}</div>` : '<span style="color:var(--text-dim);font-size:11px">—</span>';
+}
+
 function leadRow(row) {
   const score = row.opportunity_score || 0;
   const sfCls = score >= 8 ? 'sf-8' : 'sf-7';
@@ -359,9 +381,13 @@ function leadRow(row) {
     : '—';
   return `
   <tr>
-    <td><strong>${row.business_name || '—'}</strong></td>
-    <td style="color:var(--text-dim);font-size:12px">${row.contact_name || ''}</td>
+    <td>
+      <strong>${row.business_name || '—'}</strong>
+      ${row.contact_name ? `<div style="font-size:11px;color:var(--text-dim);margin-top:2px">${row.contact_name}</div>` : ''}
+    </td>
+    <td style="color:var(--text-dim);font-size:12px">${row.about || row.additional_notes || ''}</td>
     <td>${phoneHtml}</td>
+    <td>${leadLinks(row)}</td>
     <td>
       <div class="score">
         <span class="score-n ${snCls}">${score}</span>
@@ -429,7 +455,7 @@ async function loadData() {
       html += `<div class="divider"></div>
                <div class="section-head"><h2>OC Lead Hunt — Round 1</h2><span class="count-badge">${ocLeads.length} businesses</span></div>
                <div class="leads-wrap"><table>
-                 <thead><tr><th>Business</th><th>Contact</th><th>Phone</th><th>Score</th><th>Action</th></tr></thead>
+                 <thead><tr><th>Business</th><th>About</th><th>Phone</th><th>Links</th><th>Score</th><th>Action</th></tr></thead>
                  <tbody>${ocLeads.map(leadRow).join('')}</tbody>
                </table></div>`;
 
