@@ -313,18 +313,26 @@ function statusBadge(status) {
   return `<div class="status-badge ${cfg.cls}">${cfg.label}</div>`;
 }
 
-function previewLink(row) {
+function cardLinks(row) {
+  const sp = row.social_profiles || {};
+  const links = [];
+  // Unveiled preview (highest priority)
   if (row.website && row.website.includes('unveiled.pro/previews'))
-    return `<a href="${row.website}" target="_blank">View Preview</a>`;
-  if (row.website && row.website.startsWith('http'))
-    return `<a href="${row.website}" target="_blank">Existing Site</a>`;
-  return '';
+    links.push(`<a class="lead-link preview-link" href="${row.website}" target="_blank">Unveiled Preview</a>`);
+  // Their existing website (separate from preview)
+  const existingSite = sp.website || (row.website && !row.website.includes('unveiled.pro') ? row.website : null);
+  if (existingSite)
+    links.push(`<a class="lead-link website" href="${existingSite}" target="_blank">Their Site</a>`);
+  // Social / directory links
+  if (sp.google)    links.push(`<a class="lead-link google"    href="${sp.google}"    target="_blank">Google</a>`);
+  if (sp.facebook)  links.push(`<a class="lead-link facebook"  href="${sp.facebook}"  target="_blank">Facebook</a>`);
+  if (sp.instagram) links.push(`<a class="lead-link instagram" href="${sp.instagram}" target="_blank">Instagram</a>`);
+  if (sp.yelp)      links.push(`<a class="lead-link yelp"      href="${sp.yelp}"      target="_blank">Yelp</a>`);
+  return links.length ? `<div class="lead-links" style="margin-top:6px">${links.join('')}</div>` : '';
 }
 
 function cardBtns(row) {
   const btns = [];
-  if (row.status === 'PREVIEW DELIVERED' && row.website && row.website.includes('unveiled.pro'))
-    btns.push(`<a class="btn btn-ghost" href="${row.website}" target="_blank">Preview</a>`);
   if (row.email) {
     const sub = encodeURIComponent('Following up on your ' + row.business_name + ' website');
     btns.push(`<a class="btn btn-primary" href="mailto:${row.email}?subject=${sub}">Email</a>`);
@@ -340,8 +348,8 @@ function productionCard(row) {
   <div class="card ${cfg.border}">
     <div>
       <div class="card-name">${row.business_name || '—'}</div>
-      <div class="card-sub">${previewLink(row)}</div>
-      <div class="phases">${phaseHtml(cfg.phases)}</div>
+      ${cardLinks(row)}
+      <div class="phases" style="margin-top:8px">${phaseHtml(cfg.phases)}</div>
     </div>
     <div>
       <div class="contact-name">${row.contact_name || '—'}</div>
