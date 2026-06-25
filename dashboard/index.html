@@ -591,9 +591,9 @@ function leadLinks(row) {
   if (sp.facebook)  links.push(`<a class="lead-link facebook" href="${sp.facebook}"  target="_blank">FB</a>`);
   if (sp.instagram) links.push(`<a class="lead-link instagram"href="${sp.instagram}" target="_blank">IG</a>`);
   if (sp.yelp)      links.push(`<a class="lead-link yelp"     href="${sp.yelp}"      target="_blank">Yelp</a>`);
-  if (row.source && !links.find(l => l.includes(row.source)))
-    links.push(`<a class="lead-link source" href="${row.source}" target="_blank">Source</a>`);
-  return links.length ? `<div class="lead-links">${links.join('')}</div>` : '<span style="color:var(--text-dim);font-size:11px">—</span>';
+  // source_url is a real URL from discovery; row.source is just a tag string
+  if (sp.source_url) links.push(`<a class="lead-link source" href="${sp.source_url}" target="_blank">Source</a>`);
+  return links;
 }
 
 const OUTREACH_STATUS_MAP = {
@@ -649,6 +649,7 @@ function leadRow(row, num) {
     <td>
       <strong>${row.business_name || '—'}</strong>
       ${row.contact_name ? `<div style="font-size:11px;color:var(--text-dim);margin-top:2px">${row.contact_name}</div>` : ''}
+      ${(()=>{ const ll=leadLinks(row); return ll.length ? `<div class="lead-links" style="margin-top:5px">${ll.join('')}</div>` : ''; })()}
     </td>
     <td style="color:var(--text-dim);font-size:12px;white-space:nowrap">${row.category || (row.about ? row.about.split(',')[0] : '—')}</td>
     <td>${phoneHtml}</td>
