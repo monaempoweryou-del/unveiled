@@ -176,7 +176,7 @@
 
     @media(max-width:900px){
       .cards{grid-template-columns:1fr;max-width:440px}
-      .card.rec{transform:none;order:-1}.card.rec:hover{transform:translateY(-4px)}
+      .card.rec{transform:none;order:0}.card.rec:hover{transform:translateY(-4px)}
       .mgrid{grid-template-columns:1fr 1fr}
       .band{grid-template-columns:1fr}
       .tbl{font-size:12px}.tbl th,.tbl td{padding:12px 10px}
@@ -204,7 +204,7 @@
     <div class="pgroup-cards three">
     <div class="card">
       <div class="tier">השקת אתר</div>
-      <div class="tline">״אני רוצה את האתר, לא את כל המערכת.״ חי, מאוחסן ומטופל על ידינו.</div>
+      <div class="tline">״אני רוצה את האתר, לא את כל המערכת.״ Live, מאוחסן ומטופל על ידינו.</div>
       <div class="price"><span class="amt" dir="ltr">$297</span><span class="per">/לחודש</span></div>
       <div class="setup">האתר שכבר ראיתם, רץ ומתוחזק. ביטול בכל עת.</div>
       <ul class="feat">
@@ -218,17 +218,17 @@
     </div>
 
     <div class="card">
-      <div class="tier">נראות</div>
+      <div class="tier">Visual</div>
       <div class="tline">״אני רוצה שימצאו אותי ושאהיה מול הלקוחות.״ האתר שלכם, עובד כדי לזכות בתשומת לב.</div>
       <div class="price"><span class="amt" dir="ltr">$597</span><span class="per">/לחודש</span></div>
-      <div class="setup">הכל מה שב-השקת אתר, בתוספת נראות חודשית. ביטול בכל עת.</div>
+      <div class="setup">הכל מה שב-השקת אתר, בתוספת Visual חודשית. ביטול בכל עת.</div>
       <ul class="feat">
         <li class="head">הכל מה שב-השקת אתר, ובנוסף:</li>
         <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>שירותי SEO חודשיים</li>
         <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>פרסום בלוג חודשי</li>
         <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>אופטימיזציה לפרופיל העסק בגוגל</li>
       </ul>
-      <button class="btn ghost" data-plan="נראות" data-price="$597/לחודש">שיימצאו אתכם</button>
+      <button class="btn ghost" data-plan="Visual" data-price="$597/לחודש">שיימצאו אתכם</button>
     </div>
 
     <div class="card rec">
@@ -236,9 +236,9 @@
       <div class="tier">מכונת צמיחה</div>
       <div class="tline">״אני רוצה את האתר ואת המערכת המלאה שעובדת בשבילי.״ פה זה מתחיל לעבוד באמת.</div>
       <div class="price"><span class="amt" dir="ltr">$1,297</span><span class="per">/לחודש</span></div>
-      <div class="setup">הכל מה שב-נראות, באוטומציה מלאה. ביטול בכל עת.</div>
+      <div class="setup">הכל מה שב-Visual, באוטומציה מלאה. ביטול בכל עת.</div>
       <ul class="feat">
-        <li class="head">הכל מה שב-נראות, ובנוסף:</li>
+        <li class="head">הכל מה שב-Visual, ובנוסף:</li>
         <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>עוזר AI שעובד בשביל העסק שלכם</li>
         <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>אוטומציית SMS וזימון תורים אונליין</li>
         <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>מעקב אוטומטי אחרי כל ליד</li>
@@ -281,11 +281,11 @@
           <span class="adesc">אחסון, אבטחת SSL, תחזוקה, עדכונים שוטפים ותמיכה. אנחנו דואגים שהאתר שלכם ימשיך לרוץ.</span>
         </span>
       </label>
-      <label class="aopt" data-addon="נראות" data-mo="397">
+      <label class="aopt" data-addon="Visual" data-mo="397">
         <input type="checkbox" />
         <span class="box"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>
         <span class="atext">
-          <span class="aname">נראות <span class="aprice">+$397/חודש</span></span>
+          <span class="aname">Visual <span class="aprice">+$397/חודש</span></span>
           <span class="adesc">SEO חודשי, פרסום בלוג חודשי ואופטימיזציה לפרופיל העסק בגוגל. שימצאו אתכם בכל מקום.</span>
         </span>
       </label>
@@ -331,7 +331,7 @@
     <h2>השוו מה כלול בכל מסלול</h2>
     <p class="csub">התחילו מאיפה שנוח לכם. תוסיפו עוד מהמערכת מתי שתרצו.</p>
     <table class="tbl">
-      <thead><tr><th>&nbsp;</th><th>השקת אתר</th><th>נראות</th><th class="rec">מכונת צמיחה</th><th>בעלות לצמיתות</th></tr></thead>
+      <thead><tr><th>&nbsp;</th><th>השקת אתר</th><th>Visual</th><th class="rec">מכונת צמיחה</th><th>בעלות לצמיתות</th></tr></thead>
       <tbody>
         <tr><td>איך זה עובד</td><td class="lab">אנחנו מפעילים</td><td class="lab">מפעילים ומצמיחים</td><td class="lab">מפעילים את המערכת המלאה</td><td class="lab">בבעלותכם</td></tr>
         <tr><td>מחיר</td><td><span dir="ltr">$297</span>/חודש</td><td><span dir="ltr">$597</span>/חודש</td><td><span dir="ltr">$1,297</span>/חודש</td><td><span dir="ltr">$2,997</span> חד-פעמי</td></tr>
@@ -341,7 +341,7 @@
         <tr><td>תחזוקה ועדכונים</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="lab">תוספת</td></tr>
         <tr><td>ניהול דומיין</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="lab">מועבר אליכם</td></tr>
         <tr><td>תמיכה שוטפת באתר</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="lab">תוספת</td></tr>
-        <tr class="grp"><td colspan="5">נראות ותוכן</td></tr>
+        <tr class="grp"><td colspan="5">Visual ותוכן</td></tr>
         <tr><td>שירותי SEO חודשיים</td><td class="dash">&ndash;</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="lab">תוספת</td></tr>
         <tr><td>פרסום בלוג חודשי</td><td class="dash">&ndash;</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="lab">תוספת</td></tr>
         <tr><td>אופטימיזציה לפרופיל העסק בגוגל</td><td class="dash">&ndash;</td><td class="ckc">&#10003;</td><td class="ckc">&#10003;</td><td class="lab">תוספת</td></tr>
@@ -374,9 +374,9 @@
   <section class="wrap faq">
     <h2>שאלות ותשובות</h2>
     <details class="q"><summary>צריך לשלם רק כדי לראות את האתר?<span class="pm">+</span></summary><div class="a">לא. כבר ראיתם את האתר האמיתי שלכם, בחינם. אתם בוחרים מסלול רק כשרוצים להעלות אותו לאוויר.</div></details>
-    <details class="q"><summary>מה ההבדל בין ארבע האפשרויות?<span class="pm">+</span></summary><div class="a">שלוש חודשיות, שבהן אנחנו מפעילים לכם את האתר: <b>השקת אתר</b> שומר את האתר חי ומתוחזק, <b>נראות</b> מוסיפה SEO חודשי, פרסום בלוג ואופטימיזציה לפרופיל העסק בגוגל כדי שימצאו אתכם, ו<b>מכונת צמיחה</b> מוסיפה את האוטומציה המלאה: עוזר AI, SMS וזימון תורים, מעקב אוטומטי ו-CRM שפעילים מביאים ועוקבים אחרי לקוחות. <b>בעלות לצמיתות</b> היא רכישה חד-פעמית: אתם קונים את האתר ואנחנו מעבירים אליכם הכל, בלי מנוי &mdash; ועדיין אפשר להוסיף כל אחד מהשירותים האלה כתוספת.</div></details>
-    <details class="q"><summary>למה שלוש אפשרויות חודשיות ואחת חד-פעמית?<span class="pm">+</span></summary><div class="a">המסלולים החודשיים הם מערכת יחסים שוטפת: אנחנו מארחים, מתחזקים, ובנראות ובמכונת צמיחה גם מצמיחים את העסק בשבילכם כל חודש. בעלות לצמיתות היא רכישה, לא מערכת יחסים: אתם הבעלים של הנכס ומפעילים אותו לבד, עם שירותים אופציונליים שזמינים מתי שתרצו.</div></details>
-    <details class="q"><summary>קניתי את האתר בבעלות מלאה. עדיין אפשר להוסיף שירותים?<span class="pm">+</span></summary><div class="a">כן. אחרי שהאתר בבעלותכם, אפשר להוסיף כל אחד משלושה שירותים חודש-חודש, במחיר לבעלים כי הבנייה כבר שלכם: <b>תוכנית תחזוקה</b> (<span dir="ltr">$97</span>/חודש) לאחסון, תחזוקה ותמיכה; <b>נראות</b> (<span dir="ltr">$397</span>/חודש) ל-SEO, פרסום בלוג ופרופיל העסק בגוגל; ו<b>מכונת צמיחה</b> (<span dir="ltr">$897</span>/חודש) לאוטומציה המלאה, ה-CRM והמעקב. בחרו כמה שתרצו, את כולם או אף אחד, וביטול בכל עת.</div></details>
+    <details class="q"><summary>מה ההבדל בין ארבע האפשרויות?<span class="pm">+</span></summary><div class="a">שלוש חודשיות, שבהן אנחנו מפעילים לכם את האתר: <b>השקת אתר</b> שומר את האתר Live ומתוחזק, <b>Visual</b> מוסיפה SEO חודשי, פרסום בלוג ואופטימיזציה לפרופיל העסק בגוגל כדי שימצאו אתכם, ו<b>מכונת צמיחה</b> מוסיפה את האוטומציה המלאה: עוזר AI, SMS וזימון תורים, מעקב אוטומטי ו-CRM שפעילים מביאים ועוקבים אחרי לקוחות. <b>בעלות לצמיתות</b> היא רכישה חד-פעמית: אתם קונים את האתר ואנחנו מעבירים אליכם הכל, בלי מנוי &mdash; ועדיין אפשר להוסיף כל אחד מהשירותים האלה כתוספת.</div></details>
+    <details class="q"><summary>למה שלוש אפשרויות חודשיות ואחת חד-פעמית?<span class="pm">+</span></summary><div class="a">המסלולים החודשיים הם מערכת יחסים שוטפת: אנחנו מארחים, מתחזקים, ובVisual ובמכונת צמיחה גם מצמיחים את העסק בשבילכם כל חודש. בעלות לצמיתות היא רכישה, לא מערכת יחסים: אתם הבעלים של הנכס ומפעילים אותו לבד, עם שירותים אופציונליים שזמינים מתי שתרצו.</div></details>
+    <details class="q"><summary>קניתי את האתר בבעלות מלאה. עדיין אפשר להוסיף שירותים?<span class="pm">+</span></summary><div class="a">כן. אחרי שהאתר בבעלותכם, אפשר להוסיף כל אחד משלושה שירותים חודש-חודש, במחיר לבעלים כי הבנייה כבר שלכם: <b>תוכנית תחזוקה</b> (<span dir="ltr">$97</span>/חודש) לאחסון, תחזוקה ותמיכה; <b>Visual</b> (<span dir="ltr">$397</span>/חודש) ל-SEO, פרסום בלוג ופרופיל העסק בגוגל; ו<b>מכונת צמיחה</b> (<span dir="ltr">$897</span>/חודש) לאוטומציה המלאה, ה-CRM והמעקב. בחרו כמה שתרצו, את כולם או אף אחד, וביטול בכל עת.</div></details>
     <details class="q"><summary>מה קורה אחרי שלוחצים על הפעלה?<span class="pm">+</span></summary><div class="a">אתם מאשרים את המסלול ומשלימים תשלום מאובטח, ואז אנחנו מחברים את הדומיין ומעלים את האתר לאוויר, בדרך כלל תוך 24 עד 48 שעות. לבעלות לצמיתות, אתם משלימים תשלום חד-פעמי (בתוספת כל שירות שבחרתם) ואנחנו מעבירים אליכם את הבעלות על האתר, האחסון והדומיין.</div></details>
     <details class="q"><summary>אפשר לשנות אחר כך?<span class="pm">+</span></summary><div class="a">כן. תתחילו עם השקת אתר ותוסיפו את המערכת מתי שתרצו. שום דבר לא נבנה מחדש, האתר והמידע עוברים איתכם.</div></details>
     <details class="q"><summary>יש חוזה?<span class="pm">+</span></summary><div class="a">לא. המנויים החודשיים הם חודש-חודש. ביטול בכל עת.</div></details>
@@ -424,7 +424,7 @@
           <ul class="next">
             <li><span class="n">1</span><span id="cf-n1"><b>בדקו את המייל.</b> אישור וקבלה בדרך אליכם.</span></li>
             <li><span class="n">2</span><span id="cf-n2"><b>אנחנו מעלים לאוויר.</b> מחברים את הדומיין ומשיקים את האתר תוך 24&ndash;48 שעות.</span></li>
-            <li><span class="n">3</span><span id="cf-n3"><b>המערכת נדלקת.</b> נראות, לכידת לידים ומעקב מתחילים לעבוד בשבילכם.</span></li>
+            <li><span class="n">3</span><span id="cf-n3"><b>המערכת נדלקת.</b> Visual, לכידת לידים ומעקב מתחילים לעבוד בשבילכם.</span></li>
             <li id="cf-l4"><span class="n">4</span><span id="cf-n4"><b>תשמעו מאיתנו.</b> העדכון הראשון מגיע בקרוב, בלי שתצטרכו לרדוף.</span></li>
           </ul>
           <button class="btn ghost" id="ovDone" style="margin-top:18px">סיום</button>
@@ -452,7 +452,7 @@
         document.getElementById('cf-p').textContent='ברוכים הבאים ל-UNVEILED. העסק שלכם רשמית בתנועה.';
         n1.innerHTML='<b>בדקו את המייל.</b> אישור וקבלה בדרך אליכם.';
         n2.innerHTML='<b>אנחנו מעלים לאוויר.</b> מחברים את הדומיין ומשיקים תוך 24–48 שעות.';
-        n3.innerHTML='<b>המערכת נדלקת.</b> נראות, לכידת לידים ומעקב מתחילים לעבוד.';
+        n3.innerHTML='<b>המערכת נדלקת.</b> Visual, לכידת לידים ומעקב מתחילים לעבוד.';
         document.getElementById('cf-l4').style.display='';
       }
     }

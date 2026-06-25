@@ -149,6 +149,7 @@
     .nav-links { display: flex; gap: 28px; list-style: none; }
     .nav-links a { font-size: 14px; font-weight: 500; color: rgba(18,16,14,0.55); text-decoration: none; transition: color 0.2s; }
     .nav-links a:hover { color: var(--dark); }
+    .nav-pricing-mobile { display: none; font-size: 13px; font-weight: 600; color: var(--violet); text-decoration: none; white-space: nowrap; }
 
     .nav-cta {
       background: var(--grad-v); color: #fff; border: none;
@@ -1531,6 +1532,7 @@
       #hero { padding-top: 0; }
       .hero-grid { padding-top: 88px; }
       .nav-links { display: none; }
+      .nav-pricing-mobile { display: inline; }
       .outcome-inner { grid-template-columns: 1fr 1fr; gap: 14px; padding: 60px 18px 8px; }
       .outcome-stat { padding: 26px 18px 24px; border-radius: 18px; }
       .outcome-value { min-height: 0; margin-bottom: 8px; }
@@ -1791,7 +1793,9 @@
     <li><a href="#showcase">Transformations</a></li>
     <li><a href="#how">How It Works</a></li>
     <li><a href="#comparison">vs. Agencies</a></li>
+    <li><a href="pricing.html">Pricing</a></li>
   </ul>
+  <a class="nav-pricing-mobile" href="pricing.html">Pricing</a>
   <button class="nav-cta onb-launch">Show Me What's Possible</button>
 </nav>
 
@@ -2345,6 +2349,7 @@
         <ul>
           <li><a href="#cta">See what's possible</a></li>
           <li><a class="onb-launch" href="#cta">Start your preview</a></li>
+          <li><a href="pricing.html">View Pricing</a></li>
           <li><a href="#ecosystem">What comes next</a></li>
         </ul>
       </div>
