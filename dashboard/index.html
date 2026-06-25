@@ -172,7 +172,8 @@
   .lead-link.facebook { background: rgba(59,100,246,.15);  color: #818cf8; }
   .lead-link.instagram{ background: rgba(249,115,22,.15);  color: #fb923c; }
   .lead-link.yelp     { background: rgba(239,68,68,.15);   color: #f87171; }
-  .lead-link.source   { background: rgba(16,185,129,.15);  color: var(--green); }
+  .lead-link.source        { background: rgba(16,185,129,.15);  color: var(--green); }
+  .lead-link.preview-link  { background: rgba(16,185,129,.2);   color: #34d399; font-weight: 700; }
 
   /* DIVIDER */
   .divider { height: 1px; background: var(--border); margin: 36px 0; }
@@ -316,11 +317,12 @@ function statusBadge(status) {
 function cardLinks(row) {
   const sp = row.social_profiles || {};
   const links = [];
-  // Unveiled preview (highest priority)
-  if (row.website && row.website.includes('unveiled.pro/previews'))
-    links.push(`<a class="lead-link preview-link" href="${row.website}" target="_blank">Unveiled Preview</a>`);
-  // Their existing website (separate from preview)
-  const existingSite = sp.website || (row.website && !row.website.includes('unveiled.pro') ? row.website : null);
+  // Unveiled-built preview (highest priority)
+  const builtUrl = sp.unveiled_preview || (row.website && row.website.includes('unveiled.pro') ? row.website : null);
+  if (builtUrl)
+    links.push(`<a class="lead-link preview-link" href="${builtUrl}" target="_blank">Our Build</a>`);
+  // Their existing website
+  const existingSite = row.website && !row.website.includes('unveiled.pro') ? row.website : null;
   if (existingSite)
     links.push(`<a class="lead-link website" href="${existingSite}" target="_blank">Their Site</a>`);
   // Social / directory links
