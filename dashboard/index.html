@@ -118,6 +118,120 @@
   .as-maor   { background: rgba(139,92,246,.15); color: var(--violet-light); }
   .as-nataly { background: rgba(16,185,129,.12);  color: var(--green); }
 
+  /* ── OUTREACH MODE ──────────────────────────────────────────────────── */
+  #outreach-mode {
+    position: fixed; inset: 0; background: var(--dark); z-index: 200;
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+  .om-topbar {
+    background: var(--dark-2); border-bottom: 1px solid var(--border);
+    padding: 0 24px; height: 56px; flex-shrink: 0;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .om-title { font-size: 12px; font-weight: 700; letter-spacing:.12em; text-transform:uppercase; color:var(--violet-light); white-space:nowrap; }
+  .om-progress-wrap { display:flex; align-items:center; gap:10px; flex:1; max-width:280px; }
+  .om-progress-text { font-size:11px; color:var(--text-dim); white-space:nowrap; }
+  .om-progress-bar { flex:1; height:4px; background:var(--dark-4); border-radius:2px; overflow:hidden; }
+  .om-progress-fill { height:100%; background:var(--violet); border-radius:2px; transition:width .4s; }
+  .om-filters { display:flex; gap:8px; margin-left:auto; }
+  .om-exit {
+    background:none; border:1px solid var(--border); color:var(--text-dim);
+    padding:5px 14px; border-radius:6px; font-size:11px; font-weight:600;
+    cursor:pointer; font-family:inherit; transition:all .15s; white-space:nowrap;
+  }
+  .om-exit:hover { border-color:var(--violet-light); color:var(--violet-light); }
+  .om-body {
+    flex:1; overflow-y:auto; display:flex; align-items:flex-start; justify-content:center;
+    padding:32px 16px 80px;
+  }
+  .om-card {
+    background:var(--dark-3); border:1px solid var(--border); border-radius:16px;
+    padding:32px; width:100%; max-width:560px;
+  }
+  .om-lead-meta { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+  .om-cust-id { font-size:11px; font-weight:700; color:var(--violet-light); }
+  .om-score-badge {
+    font-size:11px; font-weight:700; padding:2px 8px; border-radius:20px;
+    background:rgba(245,158,11,.15); color:var(--yellow);
+  }
+  .om-biz-name { font-size:22px; font-weight:700; margin-bottom:10px; line-height:1.2; }
+  .om-links { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:16px; }
+  .om-info-grid {
+    display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:20px;
+    background:var(--dark-4); border-radius:10px; padding:14px 16px;
+  }
+  .om-info-item { font-size:12px; }
+  .om-info-label { font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text-dim); margin-bottom:2px; }
+  .om-info-val { color:var(--text-mid); }
+  .om-info-val a { color:var(--text-mid); text-decoration:none; }
+  .om-info-val a:hover { color:var(--text); }
+  .om-section-label {
+    font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--text-dim); margin-bottom:10px;
+  }
+  .om-contact-row { display:flex; gap:8px; margin-bottom:20px; }
+  .om-contact-btn {
+    flex:1; padding:12px; border-radius:10px; border:1px solid var(--border);
+    background:var(--dark-4); color:var(--text-mid); font-size:13px; font-weight:700;
+    cursor:pointer; font-family:inherit; transition:all .15s; text-align:center;
+  }
+  .om-contact-btn:hover { border-color:var(--violet-light); color:var(--violet-light); background:var(--violet-dim); }
+  .om-contact-btn.call:hover { border-color:#60a5fa; color:#60a5fa; background:rgba(59,130,246,.1); }
+  .om-contact-btn.text:hover { border-color:var(--green); color:var(--green); background:rgba(16,185,129,.1); }
+  .om-outcome-row { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:20px; }
+  .om-outcome-btn {
+    padding:8px 14px; border-radius:8px; border:1px solid var(--border);
+    background:var(--dark-4); color:var(--text-dim); font-size:12px; font-weight:600;
+    cursor:pointer; font-family:inherit; transition:all .15s;
+  }
+  .om-outcome-btn:hover { border-color:var(--text-mid); color:var(--text-mid); }
+  .om-outcome-btn.selected { border-color:var(--violet-light); color:var(--violet-light); background:var(--violet-dim); }
+  .om-outcome-btn.selected.green  { border-color:var(--green);  color:var(--green);  background:rgba(16,185,129,.12); }
+  .om-outcome-btn.selected.red    { border-color:var(--red);    color:var(--red);    background:rgba(239,68,68,.1); }
+  .om-outcome-btn.selected.yellow { border-color:var(--yellow); color:var(--yellow); background:rgba(245,158,11,.1); }
+  .om-note {
+    width:100%; min-height:76px; resize:none; background:var(--dark-4);
+    border:1px solid var(--border); border-radius:8px; padding:10px 12px;
+    font-size:13px; color:var(--text); font-family:inherit; outline:none;
+    transition:border-color .15s; margin-bottom:14px; line-height:1.5;
+  }
+  .om-note:focus { border-color:var(--violet-light); }
+  .om-note::placeholder { color:var(--text-dim); }
+  .om-followup-row { display:flex; gap:8px; margin-bottom:20px; }
+  .om-followup-row input {
+    background:var(--dark-4); border:1px solid var(--border); border-radius:8px;
+    padding:8px 12px; font-size:12px; color:var(--text); font-family:inherit;
+    outline:none; transition:border-color .15s;
+  }
+  .om-followup-row input:focus { border-color:var(--violet-light); }
+  .om-followup-row input[type="date"] { flex:0 0 140px; }
+  .om-followup-row input[type="text"] { flex:1; }
+  .om-action-row { display:flex; gap:10px; }
+  .om-save-btn {
+    flex:1; background:var(--violet); color:#fff; border:none; border-radius:10px;
+    padding:14px; font-size:14px; font-weight:700; cursor:pointer; font-family:inherit;
+    transition:opacity .15s;
+  }
+  .om-save-btn:hover { opacity:.85; }
+  .om-save-btn:disabled { opacity:.4; cursor:default; }
+  .om-skip-btn {
+    background:var(--dark-4); color:var(--text-dim); border:1px solid var(--border);
+    border-radius:10px; padding:14px 20px; font-size:13px; font-weight:600;
+    cursor:pointer; font-family:inherit; transition:all .15s;
+  }
+  .om-skip-btn:hover { border-color:var(--text-mid); color:var(--text-mid); }
+  .om-empty {
+    text-align:center; padding:60px 20px; color:var(--text-dim);
+  }
+  .om-empty-icon { font-size:40px; margin-bottom:16px; }
+  .om-empty-title { font-size:18px; font-weight:700; color:var(--text); margin-bottom:8px; }
+  .om-enter-btn {
+    background:var(--violet); color:#fff; border:none; border-radius:8px;
+    padding:8px 18px; font-size:12px; font-weight:700; cursor:pointer;
+    font-family:inherit; transition:opacity .15s; white-space:nowrap;
+  }
+  .om-enter-btn:hover { opacity:.85; }
+
   /* USER SELECTOR */
   .user-selector { display: flex; gap: 4px; }
   .user-btn {
@@ -484,6 +598,7 @@
       <button class="user-btn active" id="user-maor"   onclick="setUser('Maor')">Maor</button>
       <button class="user-btn nataly" id="user-nataly" onclick="setUser('Nataly')">Nataly</button>
     </div>
+    <button class="om-enter-btn" onclick="enterOutreachMode()">▶ Outreach Mode</button>
     <button class="refresh-btn" onclick="loadSystemHealth();loadActivityFeed();loadData()">↻ Refresh</button>
   </div>
 </div>
@@ -1456,6 +1571,271 @@ async function loadSystemHealth() {
   }
 }
 
+// ── OUTREACH MODE ─────────────────────────────────────────────────────────
+let _omQueue = [];       // ordered lead array for current session
+let _omIdx   = 0;        // current position
+let _omDone  = new Set();// ids logged this session (prevent double-contact)
+let _omSelected = null;  // currently chosen outcome string
+
+function buildOmQueue() {
+  const all    = window._currentLeads || [];
+  const filter = document.getElementById('om-filter')?.value  || 'default';
+  const who    = document.getElementById('om-assignee')?.value || 'mine';
+  const user   = window._currentUser || 'Maor';
+  const today  = new Date(); today.setHours(0,0,0,0);
+  const tomorrow = new Date(today); tomorrow.setDate(tomorrow.getDate()+1);
+  const weekEnd  = new Date(today); weekEnd.setDate(weekEnd.getDate()+7);
+
+  let leads = all.filter(r => {
+    // Skip already handled this session
+    if (_omDone.has(r.id)) return false;
+    // Assignee filter
+    if (who === 'mine')   return (r.assigned_to || 'Maor') === user;
+    if (who === 'Maor')   return r.assigned_to === 'Maor';
+    if (who === 'Nataly') return r.assigned_to === 'Nataly';
+    return true; // 'all'
+  });
+
+  if (filter === 'default') {
+    leads = leads.filter(r => {
+      const fu = r.follow_up_date ? new Date(r.follow_up_date+'T00:00:00') : null;
+      const st = r.outreach_status || 'not-contacted';
+      return (fu && fu <= today) || !fu || st === 'not-contacted';
+    });
+  } else if (filter === 'due-today') {
+    leads = leads.filter(r => {
+      const fu = r.follow_up_date ? new Date(r.follow_up_date+'T00:00:00') : null;
+      return fu && fu.getTime() === today.getTime();
+    });
+  } else if (filter === 'no-followup') {
+    leads = leads.filter(r => !r.follow_up_date);
+  } else if (filter === 'never-contacted') {
+    leads = leads.filter(r => (r.outreach_status || 'not-contacted') === 'not-contacted');
+  }
+  // 'all' = no extra filter
+
+  // Sort: overdue first, then due-today, then no-followup, then rest
+  leads.sort((a, b) => {
+    const fuA = a.follow_up_date ? new Date(a.follow_up_date+'T00:00:00') : null;
+    const fuB = b.follow_up_date ? new Date(b.follow_up_date+'T00:00:00') : null;
+    const rankA = fuA ? (fuA < today ? 0 : fuA.getTime()===today.getTime() ? 1 : 2) : 3;
+    const rankB = fuB ? (fuB < today ? 0 : fuB.getTime()===today.getTime() ? 1 : 2) : 3;
+    if (rankA !== rankB) return rankA - rankB;
+    return (b.opportunity_score||0) - (a.opportunity_score||0); // higher score first
+  });
+
+  return leads;
+}
+
+function enterOutreachMode() {
+  _omDone = new Set();
+  _omIdx  = 0;
+  _omQueue = buildOmQueue();
+  document.getElementById('outreach-mode').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  omRender();
+}
+
+function exitOutreachMode() {
+  document.getElementById('outreach-mode').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function reloadOutreachQueue() {
+  _omIdx   = 0;
+  _omQueue = buildOmQueue();
+  omRender();
+}
+
+function omUpdateProgress() {
+  const total     = _omQueue.length + _omDone.size;
+  const contacted = _omDone.size;
+  const pct       = total ? Math.round(contacted / total * 100) : 0;
+  document.getElementById('om-progress-text').textContent = `${contacted} / ${total} contacted`;
+  document.getElementById('om-progress-fill').style.width = pct + '%';
+}
+
+function omRender() {
+  omUpdateProgress();
+  const card = document.getElementById('om-card');
+  if (!_omQueue.length) {
+    card.innerHTML = `<div class="om-empty">
+      <div class="om-empty-icon">✅</div>
+      <div class="om-empty-title">Queue Complete</div>
+      <div style="font-size:13px;color:var(--text-dim);margin-bottom:24px">
+        All ${_omDone.size} lead${_omDone.size!==1?'s':''} in this queue have been handled.
+      </div>
+      <button class="om-save-btn" style="max-width:200px;margin:0 auto;display:block" onclick="exitOutreachMode()">← Back to Dashboard</button>
+    </div>`;
+    return;
+  }
+  const r = _omQueue[_omIdx] || _omQueue[0];
+  if (!r) { exitOutreachMode(); return; }
+  _omSelected = null;
+  const custId = `U-${String(r.client_number||0).padStart(4,'0')}`;
+  const score  = r.opportunity_score || 0;
+  const hs     = healthScore(r);
+  const st     = r.outreach_status || 'not-contacted';
+  const log    = Array.isArray(r.outreach_log) ? r.outreach_log : [];
+  const lastEntry = log[log.length-1];
+  const lastStr   = lastEntry ? `${lastEntry.method} · ${lastEntry.date}` : 'Never contacted';
+  const fuStr     = r.follow_up_date
+    ? `${new Date(r.follow_up_date+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})}${r.follow_up_reason?' — '+r.follow_up_reason:''}`
+    : 'Not set';
+  const links = leadLinks(r);
+  const linksHtml = links.length ? links.join('') : '<span style="color:var(--text-dim);font-size:11px">No links</span>';
+  const phoneLink = r.phone ? `<a href="tel:${r.phone}" style="color:var(--text);font-weight:600;text-decoration:none">${r.phone}</a>` : '—';
+
+  card.innerHTML = `
+    <div class="om-lead-meta">
+      <span class="hs-dot ${hs.cls}" title="${hs.tip}" style="width:9px;height:9px"></span>
+      <span class="om-cust-id">${custId}</span>
+      <span class="om-score-badge">${score}/10</span>
+      <span style="font-size:11px;color:var(--text-dim);margin-left:auto">${_omIdx+1} of ${_omQueue.length}</span>
+    </div>
+    <div class="om-biz-name">${r.business_name || '—'}</div>
+    ${r.contact_name ? `<div style="font-size:13px;color:var(--text-dim);margin-bottom:10px">${r.contact_name}</div>` : ''}
+    <div class="om-links">${linksHtml}</div>
+
+    <div class="om-info-grid">
+      <div class="om-info-item"><div class="om-info-label">Phone</div><div class="om-info-val">${phoneLink}</div></div>
+      <div class="om-info-item"><div class="om-info-label">Assigned</div><div class="om-info-val"><span class="assignee-badge ${(r.assigned_to||'Maor')==='Nataly'?'as-nataly':'as-maor'}">${r.assigned_to||'Maor'}</span></div></div>
+      <div class="om-info-item"><div class="om-info-label">Last Action</div><div class="om-info-val">${lastStr}</div></div>
+      <div class="om-info-item"><div class="om-info-label">Next Follow-Up</div><div class="om-info-val">${fuStr}</div></div>
+      ${r.about ? `<div class="om-info-item" style="grid-column:1/-1"><div class="om-info-label">About</div><div class="om-info-val">${r.about}</div></div>` : ''}
+    </div>
+
+    <div class="om-section-label">Contact</div>
+    <div class="om-contact-row">
+      <button class="om-contact-btn call" onclick="omDial('tel:${r.phone||''}','${r.id}','${(r.business_name||'').replace(/'/g,"\\'")}','${custId}')">📞 Call</button>
+      <button class="om-contact-btn text" onclick="omDial('sms:${r.phone||''}','${r.id}','${(r.business_name||'').replace(/'/g,"\\'")}','${custId}')">💬 Text</button>
+      <button class="om-contact-btn" onclick="omDial('mailto:${r.email||''}','${r.id}','${(r.business_name||'').replace(/'/g,"\\'")}','${custId}')">📧 Email</button>
+    </div>
+
+    <div class="om-section-label">Outcome</div>
+    <div class="om-outcome-row">
+      <button class="om-outcome-btn" id="oout-no-answer"    onclick="omOutcome('no-answer','No Answer')">No Answer</button>
+      <button class="om-outcome-btn" id="oout-voicemail"    onclick="omOutcome('voicemail','Left Voicemail')">Left Voicemail</button>
+      <button class="om-outcome-btn" id="oout-callback"     onclick="omOutcome('callback','Call Back Later')">Call Back Later</button>
+      <button class="om-outcome-btn green" id="oout-interested"    onclick="omOutcome('interested','Interested ⭐')">Interested ⭐</button>
+      <button class="om-outcome-btn red"   id="oout-not-interested" onclick="omOutcome('not-interested','Not Interested')">Not Interested</button>
+    </div>
+
+    <div class="om-section-label">Notes</div>
+    <textarea id="om-note" class="om-note" placeholder="Notes from this contact…"></textarea>
+
+    <div class="om-section-label" style="display:flex;align-items:center;gap:8px">
+      Set Follow-Up
+      <span style="font-size:10px;color:var(--text-dim);font-weight:400;text-transform:none;letter-spacing:0">(optional)</span>
+    </div>
+    <div class="om-followup-row">
+      <input type="date" id="om-fu-date" value="${r.follow_up_date||''}" min="${new Date().toISOString().slice(0,10)}">
+      <input type="text" id="om-fu-reason" placeholder="Reason (e.g. Call back, Send proposal…)" value="${r.follow_up_reason||''}">
+    </div>
+
+    <div class="om-action-row">
+      <button class="om-save-btn" id="om-save-btn" onclick="omSaveAndNext()">Save & Next →</button>
+      <button class="om-skip-btn" onclick="omSkip()">Skip →</button>
+    </div>`;
+}
+
+function omDial(url, id, name, custId) {
+  if (url === 'tel:' || url === 'sms:' || url === 'mailto:') return;
+  window.open(url);
+  // Log that contact was initiated
+  appendTimeline(id, name, custId, `${url.startsWith('tel')? 'Called' : url.startsWith('sms') ? 'Texted' : 'Emailed'} (outreach mode)`, 'outreach');
+}
+
+function omOutcome(value, label) {
+  _omSelected = value;
+  document.querySelectorAll('.om-outcome-btn').forEach(b => b.classList.remove('selected'));
+  const colorMap = { interested:'green', 'not-interested':'red', 'no-answer':'yellow', voicemail:'yellow', callback:'' };
+  const btn = document.getElementById(`oout-${value}`);
+  if (btn) btn.classList.add('selected', colorMap[value]||'');
+}
+
+async function omSaveAndNext() {
+  const r = _omQueue[_omIdx];
+  if (!r) return;
+  const btn = document.getElementById('om-save-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Saving…'; }
+
+  const note    = document.getElementById('om-note')?.value.trim()     || '';
+  const fuDate  = document.getElementById('om-fu-date')?.value         || '';
+  const fuReason= document.getElementById('om-fu-reason')?.value.trim()|| '';
+  const outcome = _omSelected;
+  const custId  = `U-${String(r.client_number||0).padStart(4,'0')}`;
+  const today   = new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+
+  try {
+    // Build PATCH payload
+    const patch = {};
+    if (outcome) patch.outreach_status = outcome;
+    if (fuDate)  { patch.follow_up_date = fuDate; patch.follow_up_reason = fuReason || null; }
+    if (outcome === 'not-interested') { patch.follow_up_date = null; patch.follow_up_reason = null; }
+
+    // Append to outreach_log
+    if (outcome || note) {
+      const getRes = await fetch(`${SUPABASE_URL}/rest/v1/leads?id=eq.${r.id}&select=outreach_log`, {
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+      });
+      const [cur] = await getRes.json();
+      const log = Array.isArray(cur?.outreach_log) ? cur.outreach_log : [];
+      log.push({ method: outcome || 'contacted', date: today, ...(note ? { note } : {}) });
+      patch.outreach_log = log;
+    }
+
+    if (Object.keys(patch).length) {
+      await fetch(`${SUPABASE_URL}/rest/v1/leads?id=eq.${r.id}`, {
+        method: 'PATCH',
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+        body: JSON.stringify(patch)
+      });
+    }
+
+    // Timeline
+    const STATUS_LABELS2 = { called:'Called', texted:'Texted', emailed:'Emailed', 'no-answer':'Called — No Answer', voicemail:'Left Voicemail', callback:'Scheduled Callback', interested:'Interested ⭐', 'not-interested':'Not Interested', callback:'Call Back Later' };
+    const evtText = outcome ? `${STATUS_LABELS2[outcome]||outcome}${note?' — '+note:''}` : (note ? `Note: ${note}` : 'Contacted (no outcome logged)');
+    appendTimeline(r.id, r.business_name, custId, evtText, 'outreach');
+    if (fuDate) {
+      const fuLabel = new Date(fuDate+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+      appendTimeline(r.id, r.business_name, custId, `Follow-up scheduled for ${fuLabel}${fuReason?' — '+fuReason:''}`, 'followup');
+    }
+
+    // Update in-memory lead
+    const mem = (window._currentLeads||[]).find(l=>l.id===r.id);
+    if (mem) {
+      if (outcome) mem.outreach_status = outcome;
+      if (patch.outreach_log) mem.outreach_log = patch.outreach_log;
+      if (fuDate) { mem.follow_up_date = fuDate; mem.follow_up_reason = fuReason; }
+      if (outcome === 'not-interested') { mem.follow_up_date = null; mem.follow_up_reason = null; }
+    }
+
+    // Mark done; remove from queue and rebuild from current position
+    _omDone.add(r.id);
+    // Only keep in queue if a future follow-up was set
+    if (fuDate && new Date(fuDate+'T00:00:00') > new Date()) {
+      // Stays in _currentLeads but remove from this session's queue
+    }
+    _omQueue = buildOmQueue();
+    _omIdx   = 0;
+    omRender();
+
+  } catch(e) {
+    console.error(e);
+    if (btn) { btn.disabled = false; btn.textContent = 'Save & Next →'; }
+  }
+}
+
+function omSkip() {
+  if (!_omQueue.length) return;
+  _omIdx = (_omIdx + 1) % _omQueue.length;
+  if (_omIdx === 0 && _omQueue.length > 0) {
+    // Wrapped around — show done if same leads remain
+  }
+  omRender();
+}
+
 async function loadData() {
   try {
     const res = await fetch(
@@ -1561,6 +1941,36 @@ setInterval(() => {
   if (sessionStorage.getItem(SESSION_KEY) === '1') { loadSystemHealth(); loadActivityFeed(); loadData(); }
 }, 60000);
 </script>
+
+<!-- OUTREACH MODE OVERLAY -->
+<div id="outreach-mode" style="display:none">
+  <div class="om-topbar">
+    <div class="om-title">Outreach Mode</div>
+    <div class="om-progress-wrap">
+      <div class="om-progress-text" id="om-progress-text">0 / 0</div>
+      <div class="om-progress-bar"><div class="om-progress-fill" id="om-progress-fill" style="width:0%"></div></div>
+    </div>
+    <div class="om-filters">
+      <select id="om-filter" class="action-select" onchange="reloadOutreachQueue()">
+        <option value="default">Due + Uncontacted</option>
+        <option value="due-today">Due Today</option>
+        <option value="no-followup">No Follow-Up Set</option>
+        <option value="never-contacted">Never Contacted</option>
+        <option value="all">All Leads</option>
+      </select>
+      <select id="om-assignee" class="action-select" onchange="reloadOutreachQueue()">
+        <option value="mine">My Leads</option>
+        <option value="Maor">Maor Only</option>
+        <option value="Nataly">Nataly Only</option>
+        <option value="all">All</option>
+      </select>
+    </div>
+    <button class="om-exit" onclick="exitOutreachMode()">← Dashboard</button>
+  </div>
+  <div class="om-body">
+    <div id="om-card"></div>
+  </div>
+</div>
 
 <!-- ACTION MODAL -->
 <div id="action-modal" style="display:none" onclick="if(event.target===this)closeActionModal()">
