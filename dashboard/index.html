@@ -87,7 +87,9 @@
   <div class="v display">Command Center</div>
   <div style="color:var(--mut);font-size:15px">Sign in to see your company.</div>
   <input id="email" type="email" placeholder="you@monadigitalmarketing.com" autocomplete="email"/>
-  <button class="btn primary" onclick="sendLink()">Send sign-in link</button>
+  <input id="password" type="password" placeholder="Password" autocomplete="current-password"/>
+  <button class="btn primary" onclick="signInPassword()">Sign in</button>
+  <div class="note"><a href="#" style="color:var(--violet)" onclick="sendLink();return false;">Email me a sign-in link instead</a></div>
   <div class="note" id="signinNote"></div>
 </div>
 
@@ -133,6 +135,13 @@ async function init(){
 async function sendLink(){const e=$('#email').value.trim();if(!e)return;$('#signinNote').textContent='Sending…';
   const {error}=await sb.auth.signInWithOtp({email:e,options:{emailRedirectTo:location.href}});
   $('#signinNote').textContent=error?('Error: '+error.message):'Check your email, tap the link, and you are in.';}
+async function signInPassword(){
+  const email=$('#email').value.trim(), password=$('#password').value;
+  if(!email||!password){ $('#signinNote').textContent='Enter your email and password.'; return; }
+  $('#signinNote').textContent='Signing in…';
+  const { error } = await sb.auth.signInWithPassword({ email, password });
+  if(error){ $('#signinNote').textContent='Error: '+error.message; }
+}
 async function signOut(){await sb.auth.signOut();location.reload();}
 
 async function load(){
