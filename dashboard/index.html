@@ -57,6 +57,13 @@
   .row .t{flex:1;font-size:15px} .row .v{color:var(--mut);font-size:14px}
   .allclear{text-align:center;padding:34px 18px;color:var(--mut)}
   .allclear .big{font-family:'Space Grotesk';font-size:40px;margin-bottom:6px}
+  .deps{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+  .dep{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px}
+  .dep .h{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600}
+  .dep .d{font-size:12px;color:var(--mut);margin-top:3px}
+  .idot{width:8px;height:8px;border-radius:50%;background:var(--ok);flex:0 0 auto}
+  .idot.idle{background:var(--faint)} .idot.warn{background:var(--warn)} .idot.bad{background:var(--bad)}
+  .opp{background:linear-gradient(120deg,rgba(139,92,246,.12),rgba(168,85,247,.06));border:1px solid #4a3a7a;border-radius:var(--r);padding:16px;margin-bottom:12px}
   /* progressive disclosure */
   details.more{margin-top:30px;border-top:1px solid var(--line);padding-top:16px}
   details.more>summary{list-style:none;cursor:pointer;color:var(--faint);font-size:14px;display:flex;align-items:center;gap:8px}
@@ -101,6 +108,9 @@
   </div>
   <div class="ribbon" id="ribbon"></div>
   <div id="decisions"></div>
+  <div id="overnight"></div>
+  <div id="departments"></div>
+  <div id="automations"></div>
   <div id="attention"></div>
   <details class="more" id="moreWrap"><summary>View full operations ▾</summary><div id="full"></div></details>
   <div class="foot" id="foot"></div>
@@ -200,6 +210,49 @@ function render(leads,tasks,acts){
     $('#decisions').innerHTML=`<div class="allclear"><div class="big">✓</div>No approvals waiting. You're clear.</div>`;
   }
 
+  // WARM OPPORTUNITIES — qualified leads worth a personal touch (executive move)
+  const warm=B.qualified.filter(l=>(l.additional_notes||'').toLowerCase().includes('warm')||l.phone);
+  if(warm.length){
+    $('#decisions').innerHTML += `<div class="lab">Opportunities for you</div>`+warm.map(l=>`<div class="opp">
+      <div style="font-family:'Space Grotesk';font-weight:600;font-size:17px">${esc(l.business_name||'')}</div>
+      <div style="color:var(--mut);font-size:13px;margin-top:3px">${esc((l.additional_notes||'').slice(0,130))}</div>
+      <div class="acts" style="margin-top:12px">
+        ${l.phone?`<a class="btn primary" href="tel:${esc(l.phone)}">Call ${esc(l.phone)}</a>`:''}
+        ${l.preview_url?`<a class="btn second" href="${esc(l.preview_url)}" target="_blank">Preview</a>`:''}
+        <button class="btn second" onclick="logContact('${l.id}')">Log: I reached out</button>
+      </div></div>`).join('');
+  }
+
+  // OVERNIGHT — what happened since you left
+  const recentActs=acts.filter(a=>Date.now()-new Date(a.created_at).getTime()<14*3600*1000);
+  if(recentActs.length||sent.length){
+    $('#overnight').innerHTML=`<div class="lab">Overnight</div>`+
+      recentActs.slice(0,5).map(a=>`<div class="row"><span class="ic g"></span><span class="t">${esc(a.action||'event')}</span><span class="v">${esc(a.actor||'')}</span></div>`).join('')+
+      `<div class="row"><span class="ic g"></span><span class="t">${sent.length} email${sent.length!==1?'s':''} delivered by the worker</span></div>`;
+  } else { $('#overnight').innerHTML=''; }
+
+  // DEPARTMENTS — what each is doing
+  const fu=acts.find(a=>a.actor==='run_followups');
+  const deps=[
+    ['Growth', recentActs.some(a=>['enriched','disqualified'].includes(a.action))?'g':'idle', recentActs.filter(a=>['enriched','disqualified'].includes(a.action)).length+' enriched · needs data source'],
+    ['Production', (B.production.length+B.qa.length)?'g':'idle', (B.production.length+B.qa.length)+' in build/QA'],
+    ['QA', 'g', 'gates enforced'],
+    ['Outreach', sent.length?'g':'idle', sent.length+' sent'],
+    ['Follow-up', fu?'g':'warn', fu?'sweeper live':'scheduled'],
+    ['Learning', recentActs.length?'g':'idle', recentActs.length+' events']
+  ];
+  $('#departments').innerHTML=`<div class="lab">Departments</div><div class="deps">`+deps.map(([n,s,d])=>`<div class="dep"><div class="h"><span class="idot ${s==='g'?'':s}"></span>${n}</div><div class="d">${esc(d)}</div></div>`).join('')+`</div>`;
+
+  // AUTOMATIONS — health
+  const autos=[
+    ['Approve → reveal','g','live · verified'],
+    ['Preview-ready → approval email','g','live · verified'],
+    ['Follow-up sweeper','g',fu?'ran '+timeAgo(fu.created_at):'live (30-min cron)'],
+    ['Growth queue engine','y','scheduled · needs one-time approval'],
+    ['Morning brief','y','6:34am · needs approval']
+  ];
+  $('#automations').innerHTML=`<div class="lab">Automations</div>`+autos.map(([n,s,d])=>`<div class="row"><span class="ic ${s}"></span><span class="t">${n}</span><span class="v">${esc(d)}</span></div>`).join('');
+
   // ATTENTION — calm one-liners
   const rows=[];
   if(blockers.length) rows.push(['r',`${blockers.length} blocked`, blockers.map(b=>esc(b.business_name)).slice(0,3).join(', ')]);
@@ -233,6 +286,11 @@ async function act(id,decision){
     try{await sb.from('activity_log').insert({entity_type:'lead',entity_id:id,action:'ceo_decision',actor:'CEO',meta:{decision:map[decision]}});}catch(_){}
     load();
   }catch(e){ alert('Could not update (permission?): '+e.message); }
+}
+function timeAgo(t){ const m=Math.round((Date.now()-new Date(t).getTime())/60000); return m<1?'just now':m<60?m+'m ago':Math.round(m/60)+'h ago'; }
+async function logContact(id){
+  try{ await sb.from('activity_log').insert({entity_type:'lead',entity_id:id,action:'ceo_outreach',actor:'CEO',meta:{}}); load(); }
+  catch(e){ alert('Could not log: '+e.message); }
 }
 sb.auth.onAuthStateChange(()=>init()); init();
 </script>
