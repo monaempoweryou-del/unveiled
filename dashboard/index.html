@@ -2,189 +2,230 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="robots" content="noindex,nofollow" />
-<title>UNVEILED — Command Center</title>
+<meta name="theme-color" content="#0A0912" />
+<title>UNVEILED</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{ --bg:#0B0916; --panel:#15121f; --panel2:#1c1830; --ink:#F3F0FA; --mut:#A89BC4; --line:#2a2440;
-         --violet:#8B5CF6; --grad:linear-gradient(120deg,#7C3AED,#A855F7); --ok:#34D399; --warn:#FBBF24; --bad:#F87171; }
-  *{box-sizing:border-box} html,body{margin:0;background:var(--bg);color:var(--ink);
-    font-family:'Space Grotesk',Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;-webkit-font-smoothing:antialiased}
-  a{color:var(--violet)} .wrap{max-width:1100px;margin:0 auto;padding:14px}
-  header{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 14px;position:sticky;top:0;background:rgba(11,9,22,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
-  .logo{font-weight:700;letter-spacing:.04em} .logo b{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-  .dot{width:9px;height:9px;border-radius:50%;background:var(--mut);display:inline-block;margin-right:5px}
+  :root{
+    --bg:#0A0912; --bg2:#0F0D18; --card:#15121f; --soft:#1b1729; --ink:#F6F4FB; --mut:#9b93b3; --faint:#6a6480;
+    --line:rgba(255,255,255,.06); --violet:#9b7bff; --grad:linear-gradient(120deg,#8B5CF6,#A855F7);
+    --ok:#4ade80; --warn:#fbbf24; --bad:#fb7185;
+    --r:20px; --sp:clamp(16px,4vw,28px);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;background:radial-gradient(120% 60% at 50% -10%, #161227 0%, var(--bg) 60%);color:var(--ink);
+    font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5}
+  .display{font-family:'Space Grotesk',Inter,sans-serif}
+  a{color:var(--violet);text-decoration:none}
+  .wrap{max-width:720px;margin:0 auto;padding:0 var(--sp) 64px}
+  .top{display:flex;align-items:center;gap:10px;padding:20px var(--sp);max-width:720px;margin:0 auto}
+  .brand{font-family:'Space Grotesk';font-weight:700;letter-spacing:.14em;font-size:13px;color:var(--mut)}
+  .brand b{color:var(--ink)} .grow{flex:1}
+  .ghost{background:none;border:0;color:var(--faint);font:inherit;font-size:13px;cursor:pointer;padding:8px;border-radius:10px}
+  .ghost:hover{color:var(--ink)}
+  /* hero verdict */
+  .hero{padding:14px 0 8px}
+  .greet{color:var(--mut);font-size:15px;margin-bottom:10px}
+  .verdict{font-family:'Space Grotesk';font-weight:600;font-size:clamp(28px,7vw,40px);line-height:1.12;letter-spacing:-.02em;margin:0}
+  .verdict .hl{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .sub{color:var(--mut);font-size:15px;margin-top:12px}
+  /* ribbon */
+  .ribbon{display:flex;gap:10px;margin:22px 0 6px}
+  .stat{flex:1;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+  .stat .n{font-family:'Space Grotesk';font-weight:700;font-size:24px}
+  .stat .l{color:var(--faint);font-size:12px;margin-top:2px}
+  /* section label */
+  .lab{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin:30px 0 12px;font-weight:600}
+  /* decision card */
+  .dcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;margin-bottom:14px;
+    box-shadow:0 12px 40px rgba(0,0,0,.25)}
+  .dcard .nm{font-family:'Space Grotesk';font-weight:600;font-size:19px}
+  .dcard .meta{color:var(--mut);font-size:14px;margin-top:4px}
+  .dcard .why{color:var(--ink);font-size:15px;margin:12px 0 4px}
+  .thumb{display:block;width:100%;height:150px;border-radius:14px;border:1px solid var(--line);object-fit:cover;background:var(--soft);margin:12px 0 4px}
+  .acts{display:flex;gap:10px;margin-top:16px}
+  .btn{flex:1;border:0;border-radius:14px;padding:14px;font:inherit;font-weight:600;font-size:15px;cursor:pointer}
+  .primary{background:var(--grad);color:#fff;box-shadow:0 8px 24px rgba(139,92,246,.35)}
+  .second{flex:0 0 auto;background:var(--soft);color:var(--mut);border:1px solid var(--line);padding:14px 16px}
+  /* calm rows */
+  .row{display:flex;align-items:center;gap:14px;padding:15px 16px;background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:10px}
+  .row .ic{width:9px;height:9px;border-radius:50%;background:var(--mut);flex:0 0 auto}
+  .row .ic.g{background:var(--ok)} .row .ic.y{background:var(--warn)} .row .ic.r{background:var(--bad)}
+  .row .t{flex:1;font-size:15px} .row .v{color:var(--mut);font-size:14px}
+  .allclear{text-align:center;padding:34px 18px;color:var(--mut)}
+  .allclear .big{font-family:'Space Grotesk';font-size:40px;margin-bottom:6px}
+  /* progressive disclosure */
+  details.more{margin-top:30px;border-top:1px solid var(--line);padding-top:16px}
+  details.more>summary{list-style:none;cursor:pointer;color:var(--faint);font-size:14px;display:flex;align-items:center;gap:8px}
+  details.more>summary::-webkit-details-marker{display:none}
+  details.more[open]>summary{color:var(--mut)}
+  .qh{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin:20px 0 8px}
+  .mini{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px;font-size:14px}
+  .mini .s{color:var(--faint);font-size:12px}
+  .foot{color:var(--faint);font-size:12px;text-align:center;margin-top:30px}
+  /* signin */
+  .signin{max-width:380px;margin:18vh auto 0;text-align:center;padding:0 var(--sp)}
+  .signin .v{font-family:'Space Grotesk';font-weight:600;font-size:24px;margin-bottom:6px}
+  .signin input{width:100%;background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:14px;padding:14px;font:inherit;font-size:16px;margin-top:16px}
+  .signin .btn{width:100%;margin-top:12px}
+  .note{font-size:13px;color:var(--faint);margin-top:12px}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--faint);display:inline-block;margin-right:6px}
   .dot.ok{background:var(--ok)} .dot.bad{background:var(--bad)}
-  .spacer{flex:1} button{font-family:inherit;cursor:pointer;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:var(--ink);padding:9px 13px;font-size:14px}
-  button.pri{background:var(--grad);border:0;font-weight:700} button.sm{padding:7px 10px;font-size:13px}
-  input{font-family:inherit;background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:10px 12px;font-size:15px;width:100%}
-  .muted{color:var(--mut)} .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0}
-  .tile{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px}
-  .tile .n{font-size:26px;font-weight:700} .tile .l{font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
-  h2{font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin:22px 0 10px;display:flex;align-items:center;gap:8px}
-  .pill{font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--mut)}
-  .pill.inb{background:rgba(139,92,246,.15);border-color:#5b3aa6;color:#cbb6ff}
-  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:8px}
-  .card h3{margin:0;font-size:16px} .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-  .badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--panel2);border:1px solid var(--line)}
-  .b-ok{color:var(--ok);border-color:#1f6b50} .b-warn{color:var(--warn);border-color:#7a5a16} .b-bad{color:var(--bad);border-color:#7a2727}
-  .kv{font-size:13px;color:var(--mut)} .kv b{color:var(--ink);font-weight:600}
-  .acts{display:flex;gap:7px;margin-top:4px;flex-wrap:wrap}
-  .acts button{flex:1;min-width:84px} .approve{background:rgba(52,211,153,.16);border-color:#1f6b50;color:#7ef0c4}
-  .changes{background:rgba(251,191,36,.14);border-color:#7a5a16;color:#ffd97a} .reject{background:rgba(248,113,113,.14);border-color:#7a2727;color:#ffb0b0}
-  .empty{color:var(--mut);font-size:13px;padding:10px;border:1px dashed var(--line);border-radius:12px}
-  .signin{max-width:420px;margin:60px auto;text-align:center;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px}
-  .note{font-size:12px;color:var(--mut);margin-top:8px}
-  @media(max-width:560px){ .cards{grid-template-columns:1fr} header{padding:10px} .wrap{padding:10px} }
 </style>
 </head>
 <body>
-<header>
-  <span class="logo">UNVEILED <b>Command Center</b></span>
-  <span class="spacer"></span>
-  <span id="conn" class="muted"><span class="dot" id="dot"></span><span id="connTxt">connecting…</span></span>
-  <button class="sm" id="refresh" onclick="loadAll()">↻ Refresh</button>
-  <button class="sm" id="signout" style="display:none" onclick="signOut()">Sign out</button>
-</header>
-<div class="wrap" id="app">
-  <div class="signin" id="signin" style="display:none">
-    <div class="logo" style="font-size:20px;margin-bottom:6px">UNVEILED <b>Command Center</b></div>
-    <p class="muted">Staff sign-in. We email you a one-time link.</p>
-    <input id="email" type="email" placeholder="you@monadigitalmarketing.com" autocomplete="email"/>
-    <button class="pri" style="width:100%;margin-top:10px" onclick="sendLink()">Send sign-in link</button>
-    <div class="note" id="signinNote"></div>
+<div class="top">
+  <span class="brand">UNVEILED <b>·</b> COMMAND</span><span class="grow"></span>
+  <span id="conn" style="font-size:12px;color:var(--faint)"><span class="dot" id="dot"></span><span id="connTxt"></span></span>
+  <button class="ghost" id="signout" style="display:none" onclick="signOut()">Sign out</button>
+</div>
+
+<div id="signin" class="signin" style="display:none">
+  <div class="v display">Command Center</div>
+  <div style="color:var(--mut);font-size:15px">Sign in to see your company.</div>
+  <input id="email" type="email" placeholder="you@monadigitalmarketing.com" autocomplete="email"/>
+  <button class="btn primary" onclick="sendLink()">Send sign-in link</button>
+  <div class="note" id="signinNote"></div>
+</div>
+
+<div id="board" class="wrap" style="display:none">
+  <div class="hero">
+    <div class="greet" id="greet"></div>
+    <h1 class="verdict" id="verdict">…</h1>
+    <div class="sub" id="sub"></div>
   </div>
-  <div id="board" style="display:none">
-    <div class="tiles" id="tiles"></div>
-    <div id="sections"></div>
-    <p class="note" id="lastUpd"></p>
-  </div>
+  <div class="ribbon" id="ribbon"></div>
+  <div id="decisions"></div>
+  <div id="attention"></div>
+  <details class="more" id="moreWrap"><summary>View full operations ▾</summary><div id="full"></div></details>
+  <div class="foot" id="foot"></div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const CFG = { url:'https://eosvftmiwndmctrqprtz.supabase.co', key:'sb_publishable_BYxqF1ViwTrfaI4RGhciVw_kgbt-pSA' };
-const sb = window.supabase.createClient(CFG.url, CFG.key);
-const $ = s => document.querySelector(s);
-const esc = s => (s==null?'':String(s)).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
-const OUTBOUND_SOURCES = ['outbound','prospect','prospecting','growth','cold'];
-
-function setConn(state,txt){ $('#dot').className='dot '+(state||''); $('#connTxt').textContent=txt; }
+const CFG={url:'https://eosvftmiwndmctrqprtz.supabase.co',key:'sb_publishable_BYxqF1ViwTrfaI4RGhciVw_kgbt-pSA'};
+const sb=window.supabase.createClient(CFG.url,CFG.key);
+const $=s=>document.querySelector(s);
+const esc=s=>(s==null?'':String(s)).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const OUT=['outbound','prospect','prospecting','growth','cold'];
+const isInbound=l=>!OUT.includes((l.source||'').toLowerCase());
+const setConn=(s,t)=>{$('#dot').className='dot '+(s||'');$('#connTxt').textContent=t;};
+const bucket=s=>{s=(s||'').toUpperCase();
+  if(['NEW LEAD','ENRICHING','QUALIFYING','VALIDATING'].includes(s))return'intake';
+  if(s==='QUALIFIED')return'qualified';
+  if(['RESEARCHING','BUILDING'].includes(s))return'production';
+  if(s==='QA')return'qa';
+  if(['DEPLOYED','PREVIEW READY','APPROVAL-READY'].includes(s))return'approval';
+  if(['PREVIEW DELIVERED','REVEAL-SENT'].includes(s))return'reveal';
+  if(['FOLLOW-UP','REPLIED'].includes(s))return'followup';
+  if(s.startsWith('STUCK')||s==='BLOCKED'||s==='FAILED-QUAL')return'blocked';
+  if(['APPROVED','ACTIVE CUSTOMER','WON','PAYMENT','ONBOARDING'].includes(s))return'won';
+  if(s==='LOST')return'lost';return'other';};
 
 async function init(){
-  const { data:{ session } } = await sb.auth.getSession();
-  if(session){ $('#signin').style.display='none'; $('#board').style.display='block'; $('#signout').style.display='inline-block'; loadAll(); }
-  else { $('#signin').style.display='block'; $('#board').style.display='none'; setConn('', 'sign in to view live data'); }
+  const {data:{session}}=await sb.auth.getSession();
+  if(session){$('#signin').style.display='none';$('#board').style.display='block';$('#signout').style.display='inline-block';load();}
+  else{$('#signin').style.display='block';$('#board').style.display='none';setConn('','');}
 }
-async function sendLink(){
-  const email=$('#email').value.trim(); if(!email) return;
-  $('#signinNote').textContent='Sending…';
-  const { error } = await sb.auth.signInWithOtp({ email, options:{ emailRedirectTo: location.href } });
-  $('#signinNote').textContent = error ? ('Error: '+error.message) : 'Check your email for the sign-in link, then reopen this page.';
-}
-async function signOut(){ await sb.auth.signOut(); location.reload(); }
+async function sendLink(){const e=$('#email').value.trim();if(!e)return;$('#signinNote').textContent='Sending…';
+  const {error}=await sb.auth.signInWithOtp({email:e,options:{emailRedirectTo:location.href}});
+  $('#signinNote').textContent=error?('Error: '+error.message):'Check your email, tap the link, and you are in.';}
+async function signOut(){await sb.auth.signOut();location.reload();}
 
-const STATUS_BUCKET = s => {
-  s=(s||'').toUpperCase();
-  if(['NEW LEAD','ENRICHING','QUALIFYING','VALIDATING'].includes(s)) return 'intake';
-  if(s==='QUALIFIED') return 'qualified';
-  if(['RESEARCHING','BUILDING'].includes(s)) return 'production';
-  if(s==='QA') return 'qa';
-  if(['DEPLOYED','PREVIEW READY','APPROVAL-READY'].includes(s)) return 'approval';
-  if(['PREVIEW DELIVERED','REVEAL-SENT'].includes(s)) return 'reveal';
-  if(['FOLLOW-UP','REPLIED'].includes(s)) return 'followup';
-  if(s.startsWith('STUCK')||s==='BLOCKED'||s==='FAILED-QUAL') return 'blocked';
-  if(['APPROVED','ACTIVE CUSTOMER','WON','PAYMENT','ONBOARDING'].includes(s)) return 'won';
-  if(s==='LOST') return 'lost';
-  return 'other';
-};
-const isInbound = l => !OUTBOUND_SOURCES.includes((l.source||'').toLowerCase());
-const nextAction = s => ({intake:'Qualify + validate delivery path',qualified:'Start build',production:'Build preview',qa:'Run QA gates',approval:'CEO approval needed',reveal:'Awaiting reply / follow-up',followup:'Follow-up cadence',blocked:'Unblock or replace',won:'Onboard / success',lost:'Capture loss reason'}[STATUS_BUCKET(s)]||'Review');
-
-async function loadAll(){
-  setConn('', 'loading…'); $('#refresh').disabled=true;
-  let leads=[], tasks=[], acts=[];
+async function load(){
+  setConn('','syncing…');
+  let leads=[],tasks=[],acts=[];
   try{
-    const r1 = await sb.from('leads').select('*').order('created_at',{ascending:false}).limit(200);
-    if(r1.error) throw r1.error; leads=r1.data||[];
-    const r2 = await sb.from('tasks').select('id,status,prompt,created_at').order('created_at',{ascending:false}).limit(60);
-    tasks = r2.error? [] : (r2.data||[]);
-    const r3 = await sb.from('activity_log').select('*').order('created_at',{ascending:false}).limit(30);
-    acts = r3.error? [] : (r3.data||[]);
+    const r=await sb.from('leads').select('*').order('created_at',{ascending:false}).limit(200);
+    if(r.error)throw r.error; leads=r.data||[];
+    const t=await sb.from('tasks').select('id,status,prompt,created_at').order('created_at',{ascending:false}).limit(60); tasks=t.error?[]:t.data;
+    const a=await sb.from('activity_log').select('*').order('created_at',{ascending:false}).limit(20); acts=a.error?[]:a.data;
     setConn('ok','live');
-  }catch(e){ setConn('bad','read blocked — check staff RLS / sign-in'); }
-  render(leads, tasks, acts);
-  $('#refresh').disabled=false; $('#lastUpd').textContent='Last updated '+new Date().toLocaleString();
+  }catch(e){ setConn('bad','sign in again'); }
+  render(leads,tasks,acts);
 }
+function emailTasks(t){return t.map(x=>{let p={};try{p=JSON.parse(x.prompt)}catch(_){}return{...x,p}}).filter(x=>x.p&&x.p.type==='email');}
 
-function emailTasks(tasks){
-  return tasks.map(t=>{ let p={}; try{p=JSON.parse(t.prompt)}catch(_){ } return {...t, p}; })
-              .filter(t=>t.p && t.p.type==='email');
+function render(leads,tasks,acts){
+  const B={intake:[],qualified:[],production:[],qa:[],approval:[],reveal:[],followup:[],blocked:[],won:[],lost:[],other:[]};
+  leads.forEach(l=>B[bucket(l.status)].push(l));
+  const et=emailTasks(tasks),sent=et.filter(x=>x.status==='completed'),pend=et.filter(x=>x.status!=='completed');
+  const inbound=leads.filter(isInbound), decisions=B.approval, blockers=B.blocked;
+  const inFlight=B.reveal.length+B.followup.length+pend.length;
+  const needs=decisions.length+blockers.length;
+
+  const h=new Date().getHours();
+  $('#greet').textContent=(h<5?'Late night':h<12?'Good morning':h<18?'Good afternoon':'Good evening')+', Moe.';
+
+  if(decisions.length){ $('#verdict').innerHTML=`<span class="hl">${decisions.length} ${decisions.length>1?'decisions':'decision'}</span> ${decisions.length>1?'need':'needs'} you.`;
+    $('#sub').textContent='Everything else is running on its own.'; }
+  else if(blockers.length){ $('#verdict').innerHTML=`${blockers.length} ${blockers.length>1?'things':'thing'} need a look.`;
+    $('#sub').textContent='No approvals waiting — just a couple of blockers.'; }
+  else { $('#verdict').innerHTML=`The company is <span class="hl">running.</span>`;
+    $('#sub').textContent='Nothing needs you right now. '+(sent.length?`${sent.length} reveal${sent.length>1?'s':''} in flight.`:'Pipeline is warming up.'); }
+
+  $('#ribbon').innerHTML=[
+    ['Pipeline', inbound.length+B.production.length+B.qa.length+B.qualified.length],
+    ['In flight', inFlight],
+    ['Needs you', needs]
+  ].map(([l,n])=>`<div class="stat"><div class="n">${n}</div><div class="l">${l}</div></div>`).join('');
+
+  // DECISIONS — the focal point
+  if(decisions.length){
+    $('#decisions').innerHTML=`<div class="lab">Needs your decision</div>`+decisions.map(l=>{
+      const url=l.preview_url||l.website||'';
+      return `<div class="dcard">
+        <div class="nm">${esc(l.business_name||l.name||'Preview')}</div>
+        <div class="meta">${isInbound(l)?'Inbound · ':'Outbound · '}${esc(l.industry||'')} ${url?`· <a href="${esc(url)}" target="_blank">Open preview ↗</a>`:''}</div>
+        <div class="why">Preview is built and passed every quality gate. Approve to send the reveal.</div>
+        <div class="acts">
+          <button class="btn primary" onclick="act('${l.id}','APPROVED')">Approve & reveal</button>
+          <button class="btn second" onclick="act('${l.id}','CHANGES')">Changes</button>
+          <button class="btn second" onclick="act('${l.id}','LOST')">Pass</button>
+        </div></div>`;
+    }).join('');
+  } else {
+    $('#decisions').innerHTML=`<div class="allclear"><div class="big">✓</div>No approvals waiting. You're clear.</div>`;
+  }
+
+  // ATTENTION — calm one-liners
+  const rows=[];
+  if(blockers.length) rows.push(['r',`${blockers.length} blocked`, blockers.map(b=>esc(b.business_name)).slice(0,3).join(', ')]);
+  if(inbound.length) rows.push(['y',`${inbound.length} inbound lead${inbound.length>1?'s':''} waiting`,'priority #1']);
+  if(sent.length) rows.push(['g',`${sent.length} reveal${sent.length>1?'s':''} delivered`,'awaiting reply']);
+  if(B.followup.length) rows.push(['g',`${B.followup.length} in follow-up`,'auto-cadence']);
+  $('#attention').innerHTML = rows.length? `<div class="lab">Worth knowing</div>`+rows.map(([c,t,v])=>`<div class="row"><span class="ic ${c}"></span><span class="t">${t}</span><span class="v">${esc(v)}</span></div>`).join('') : '';
+
+  // FULL OPS (progressive disclosure)
+  const q=(title,arr)=>arr.length?`<div class="qh">${title} · ${arr.length}</div>`+arr.map(l=>`<div class="mini">${esc(l.business_name||l.name||'—')} <span class="s">· ${esc(l.status||'')}${l.email?' · '+esc(l.email):''}</span></div>`).join(''):'';
+  let full='';
+  full+=q('Inbound', inbound);
+  full+=q('Qualified', B.qualified);
+  full+=q('In production', [...B.production,...B.qa]);
+  full+=q('Reveals / follow-up', [...B.reveal,...B.followup]);
+  full+=q('Blocked', blockers);
+  full+=q('Outbound candidates', B.intake.filter(l=>!isInbound(l)));
+  full+=q('Customers', B.won);
+  full+=`<div class="qh">Outbound email · worker</div><div class="mini">Sent ${sent.length} · Pending ${pend.length}<div class="s">${sent.slice(0,4).map(t=>esc(t.p.to)).join(', ')||''}</div></div>`;
+  if(acts.length) full+=`<div class="qh">Learning events</div>`+acts.slice(0,6).map(a=>`<div class="mini">${esc(a.action||'event')}<span class="s"> · ${esc((a.created_at||'').slice(0,16).replace('T',' '))}</span></div>`).join('');
+  $('#full').innerHTML=full||'<div class="mini">Quiet across the board.</div>';
+  $('#moreWrap').style.display = full? 'block':'none';
+
+  $('#foot').textContent='Updated '+new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})+' · tap to refresh';
+  $('#foot').onclick=load;
 }
-function render(leads, tasks, acts){
-  const buckets={intake:[],qualified:[],production:[],qa:[],approval:[],reveal:[],followup:[],blocked:[],won:[],lost:[],other:[]};
-  leads.forEach(l=>buckets[STATUS_BUCKET(l.status)].push(l));
-  const inbound=leads.filter(isInbound), outbound=leads.filter(l=>!isInbound(l));
-  const et=emailTasks(tasks), sent=et.filter(t=>t.status==='completed'), pending=et.filter(t=>t.status!=='completed');
-
-  const tiles=[['Inbound',inbound.length],['Outbound',outbound.length],['In Production',buckets.production.length+buckets.qa.length],
-    ['Approval Ready',buckets.approval.length],['Reveals Sent',sent.length],['Blockers',buckets.blocked.length]];
-  $('#tiles').innerHTML=tiles.map(([l,n])=>`<div class="tile"><div class="n">${n}</div><div class="l">${l}</div></div>`).join('');
-
-  const card = l => {
-    const b=STATUS_BUCKET(l.status), bc=b==='blocked'||b==='lost'?'b-bad':(b==='approval'?'b-warn':'b-ok');
-    const url=l.preview_url||l.website||''; const contact=l.email||l.phone||'no verified path';
-    return `<div class="card">
-      <div class="row"><h3>${esc(l.business_name||l.name||'(unnamed)')}</h3><span class="spacer"></span><span class="badge ${bc}">${esc(l.status||'—')}</span></div>
-      <div class="kv">${isInbound(l)?'<span class="pill inb">INBOUND</span> ':'<span class="pill">outbound</span> '}${esc(l.industry||'')}</div>
-      ${url?`<div class="kv">Preview: <a href="${esc(url)}" target="_blank">${esc(url)}</a></div>`:''}
-      <div class="kv">Contact: <b>${esc(contact)}</b></div>
-      <div class="kv">Next: <b>${esc(nextAction(l.status))}</b></div>
-      <div class="acts">
-        <button class="approve sm" onclick="act('${l.id}','APPROVED')">Approve</button>
-        <button class="changes sm" onclick="act('${l.id}','CHANGES')">Changes</button>
-        <button class="reject sm" onclick="act('${l.id}','LOST')">Reject</button>
-      </div></div>`;
-  };
-  const sec=(title,arr,extra='')=>`<h2>${title} ${arr?`<span class="pill">${arr.length}</span>`:''}</h2>`+
-    (arr&&arr.length?`<div class="cards">${arr.map(card).join('')}</div>`:`<div class="empty">${extra||'Nothing here yet.'}</div>`);
-
-  let html='';
-  html+=`<h2>⬇ Inbound leads <span class="pill inb">priority #1</span></h2>`+
-        (inbound.length?`<div class="cards">${inbound.map(card).join('')}</div>`:`<div class="empty">No inbound leads yet. Website form + campaigns feed this; inbound always outranks outbound.</div>`);
-  html+=sec('Approval queue (decide)', buckets.approval, 'No previews awaiting your approval.');
-  html+=sec('Reveals sent / follow-up', [...buckets.reveal,...buckets.followup], sent.length?`${sent.length} reveal email(s) delivered via the approved path.`:'No reveals yet.');
-  html+=sec('In production / QA', [...buckets.production,...buckets.qa]);
-  html+=sec('Qualified — ready to build', buckets.qualified);
-  html+=sec('Blockers', buckets.blocked, 'No blockers.');
-  html+=sec('Outbound candidates', buckets.intake.filter(l=>!isInbound(l)));
-  html+=sec('Won / customers', buckets.won);
-
-  html+=`<h2>Outbound email pipeline <span class="pill">worker</span></h2>`+
-    `<div class="cards"><div class="card"><div class="row"><h3>Sent</h3><span class="spacer"></span><span class="badge b-ok">${sent.length}</span></div>`+
-    `<div class="kv">${sent.slice(0,5).map(t=>esc((t.p.subject||'')+' -> '+(t.p.to||''))).join('<br>')||'—'}</div></div>`+
-    `<div class="card"><div class="row"><h3>Pending</h3><span class="spacer"></span><span class="badge ${pending.length?'b-warn':'b-ok'}">${pending.length}</span></div>`+
-    `<div class="kv">${pending.slice(0,5).map(t=>esc((t.p.subject||'')+' -> '+(t.p.to||''))).join('<br>')||'none queued'}</div></div></div>`;
-
-  html+=`<h2>Learning events</h2>`+(acts.length?`<div class="cards">${acts.slice(0,9).map(a=>`<div class="card"><div class="kv"><b>${esc(a.action||a.entity_type||'event')}</b><br>${esc(JSON.stringify(a.meta||{}).slice(0,140))}<br><span class="muted">${esc((a.created_at||'').slice(0,16).replace('T',' '))}</span></div></div>`).join('')}</div>`:`<div class="empty">Learning events stream here from activity_log.</div>`);
-
-  $('#sections').innerHTML=html;
-}
-
 async function act(id,decision){
   const map={APPROVED:'APPROVED',CHANGES:'CHANGES REQUESTED',LOST:'LOST'};
-  if(!confirm('Set this lead to: '+map[decision]+'?')) return;
-  try{
-    const { error } = await sb.from('leads').update({ status:map[decision] }).eq('id',id);
-    if(error) throw error;
-    try{ await sb.from('activity_log').insert({ entity_type:'lead', entity_id:id, action:'ceo_decision', actor:'CEO', meta:{ decision:map[decision] } }); }catch(_){}
-    loadAll();
-  }catch(e){ alert('Could not update (RLS/permission?): '+e.message); }
+  if(!confirm((decision==='APPROVED'?'Approve and send the reveal?':'Set to '+map[decision]+'?')))return;
+  try{ const {error}=await sb.from('leads').update({status:map[decision]}).eq('id',id); if(error)throw error;
+    try{await sb.from('activity_log').insert({entity_type:'lead',entity_id:id,action:'ceo_decision',actor:'CEO',meta:{decision:map[decision]}});}catch(_){}
+    load();
+  }catch(e){ alert('Could not update (permission?): '+e.message); }
 }
-
-sb.auth.onAuthStateChange(()=>init());
-init();
+sb.auth.onAuthStateChange(()=>init()); init();
 </script>
 </body>
 </html>
