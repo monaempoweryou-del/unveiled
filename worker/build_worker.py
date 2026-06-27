@@ -94,13 +94,13 @@ def generate_site(lead, slug):
         f"- Wants: {lead.get('needs','')}\n- Canonical URL (use for canonical/og:url): {canon}\n"
         f"- For og:image/twitter:image use an absolute https Unsplash URL relevant to the industry.\n"
     )
-    body = {"model": MODEL, "max_tokens": 20000,
+    body = {"model": MODEL, "max_tokens": 14000,
             "messages": [{"role": "user", "content": prompt}]}
     req = urllib.request.Request(
         "https://api.anthropic.com/v1/messages", data=json.dumps(body).encode(),
         method="POST", headers={"x-api-key": ANTHROPIC_API_KEY,
         "anthropic-version": "2023-06-01", "content-type": "application/json"})
-    with urllib.request.urlopen(req, timeout=180) as r:
+    with urllib.request.urlopen(req, timeout=420) as r:
         out = json.loads(r.read().decode())
     html = "".join(b.get("text", "") for b in out.get("content", []))
     i = html.find("<!DOCTYPE")
