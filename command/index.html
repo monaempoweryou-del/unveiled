@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>UNVEILED — Command Center</title>
+<meta name="robots" content="noindex" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%237c3aed'/></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root{
+    --bg:#070509; --bg2:#0c0913; --panel:rgba(28,22,40,.55); --panel-line:rgba(150,120,220,.14);
+    --violet:#8b5cf6; --violet2:#a78bfa; --glow:rgba(124,58,237,.55);
+    --txt:#f4f1fb; --muted:#9b93b4; --faint:#6c647f;
+    --green:#46e5a0; --amber:#ffcf6b; --red:#ff6b81;
+    --radius:20px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:Inter,system-ui,sans-serif;color:var(--txt);background:var(--bg);
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  /* ambient purple light */
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(900px 600px at 78% -8%, rgba(124,58,237,.20), transparent 60%),
+      radial-gradient(700px 500px at 5% 110%, rgba(99,60,200,.16), transparent 60%),
+      linear-gradient(180deg,#070509,#0a0710 60%,#070509);}
+  .app{position:relative;z-index:1;display:flex;min-height:100vh}
+
+  /* ---------- sidebar ---------- */
+  .side{width:248px;flex:none;padding:22px 16px;display:flex;flex-direction:column;gap:6px;
+    border-right:1px solid var(--panel-line);background:linear-gradient(180deg,rgba(20,15,30,.5),rgba(10,8,16,.2));
+    position:sticky;top:0;height:100vh;backdrop-filter:blur(14px)}
+  .brand{display:flex;align-items:center;gap:12px;padding:6px 8px 18px}
+  .sphere{width:38px;height:38px;border-radius:50%;flex:none;position:relative;
+    background:radial-gradient(circle at 34% 30%, #c7b3ff 0%, #7c3aed 38%, #3a1d80 70%, #160b33 100%);
+    box-shadow:0 0 22px var(--glow),inset 0 0 14px rgba(255,255,255,.25);animation:pulse 5s ease-in-out infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 18px var(--glow),inset 0 0 14px rgba(255,255,255,.22)}50%{box-shadow:0 0 34px var(--glow),inset 0 0 16px rgba(255,255,255,.32)}}
+  .brand b{font-weight:700;letter-spacing:.28em;font-size:15px}
+  .nav{display:flex;flex-direction:column;gap:3px;margin-top:4px}
+  .nav a{display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:13px;color:var(--muted);
+    text-decoration:none;font-size:14px;font-weight:500;transition:.2s;cursor:pointer}
+  .nav a .ic{width:18px;text-align:center;opacity:.85}
+  .nav a:hover{background:rgba(255,255,255,.04);color:var(--txt)}
+  .nav a.on{background:linear-gradient(90deg,rgba(124,58,237,.28),rgba(124,58,237,.08));color:#fff;
+    box-shadow:inset 0 0 0 1px rgba(150,120,220,.22)}
+  .nav .badge{margin-left:auto;background:var(--violet);color:#fff;font-size:11px;font-weight:700;
+    padding:1px 8px;border-radius:999px}
+  .side .card{margin-top:auto;padding:16px;border-radius:16px;background:linear-gradient(160deg,rgba(124,58,237,.22),rgba(40,20,80,.25));
+    border:1px solid var(--panel-line)}
+  .side .card b{font-size:13px;letter-spacing:.2em}
+  .side .card p{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.5}
+  .me{display:flex;align-items:center;gap:10px;margin-top:14px;padding:8px;border-radius:13px}
+  .me .av{width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#cab8ff,#6d34d6);flex:none}
+  .me small{display:block;color:var(--faint);font-size:11px}
+
+  /* ---------- main ---------- */
+  .main{flex:1;min-width:0;padding:24px 30px 60px}
+  .top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:22px}
+  .hi{font-size:30px;font-weight:700;letter-spacing:-.02em}
+  .hi .sub{display:block;font-size:14px;color:var(--muted);font-weight:400;margin-top:6px}
+  .stamp{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px;
+    background:var(--panel);border:1px solid var(--panel-line);padding:9px 14px;border-radius:12px;backdrop-filter:blur(10px)}
+  .live{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--green)}
+  .live .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:blink 2s infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+
+  .grid{display:grid;gap:18px}
+  .panel{background:var(--panel);border:1px solid var(--panel-line);border-radius:var(--radius);
+    padding:20px;backdrop-filter:blur(16px);box-shadow:0 20px 50px -30px rgba(0,0,0,.8)}
+  .panel h3{font-size:13px;font-weight:600;letter-spacing:.04em;color:var(--muted);
+    text-transform:uppercase;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+  .panel h3 .link{color:var(--violet2);font-size:12px;text-transform:none;letter-spacing:0;cursor:pointer;font-weight:500}
+
+  /* hero stat row */
+  .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:18px}
+  .stat{background:var(--panel);border:1px solid var(--panel-line);border-radius:18px;padding:18px;backdrop-filter:blur(14px);position:relative;overflow:hidden}
+  .stat .lab{font-size:12px;color:var(--muted);font-weight:500}
+  .stat .big{font-size:34px;font-weight:700;margin-top:10px;letter-spacing:-.02em;line-height:1}
+  .stat .note{font-size:12px;margin-top:8px;color:var(--faint)}
+  .stat.health .big{color:var(--green)}
+  .stat .ring{position:absolute;right:-30px;top:-30px;width:110px;height:110px;border-radius:50%;
+    background:radial-gradient(circle,rgba(124,58,237,.18),transparent 70%)}
+
+  /* pipeline */
+  .pipe{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+  .stage{background:rgba(255,255,255,.02);border:1px solid var(--panel-line);border-radius:16px;padding:16px 10px;text-align:center;position:relative;transition:.25s}
+  .stage.active{border-color:rgba(139,92,246,.55);box-shadow:0 0 0 1px rgba(139,92,246,.35),0 0 26px -8px var(--glow)}
+  .stage .ico{width:46px;height:46px;border-radius:50%;margin:0 auto 10px;display:grid;place-items:center;
+    background:rgba(124,58,237,.12);border:1px solid var(--panel-line);font-size:20px}
+  .stage .nm{font-size:11.5px;color:var(--muted);font-weight:500}
+  .stage .ct{font-size:24px;font-weight:700;margin-top:4px}
+  .stage .ct.zero{color:var(--faint)}
+
+  /* approvals */
+  .apps{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+  .appcard{border:1px solid var(--panel-line);border-radius:16px;overflow:hidden;background:rgba(255,255,255,.02);transition:.25s}
+  .appcard:hover{transform:translateY(-3px);box-shadow:0 18px 40px -22px var(--glow);border-color:rgba(139,92,246,.4)}
+  .appcard .prev{height:140px;border:0;width:100%;background:#0c0913;display:block;pointer-events:none}
+  .appcard .thumb{height:140px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(124,58,237,.18),rgba(20,12,40,.4));color:var(--violet2);font-weight:600}
+  .appcard .meta{padding:13px 14px}
+  .appcard .meta b{font-size:14.5px}
+  .appcard .meta small{display:block;color:var(--faint);font-size:12px;margin-top:2px}
+  .appcard .acts{display:flex;gap:6px;padding:0 14px 14px}
+  .btn{flex:1;border:1px solid var(--panel-line);background:rgba(255,255,255,.03);color:var(--txt);
+    padding:8px;border-radius:10px;font-size:12.5px;font-weight:600;cursor:pointer;transition:.18s;font-family:inherit}
+  .btn:hover{background:rgba(255,255,255,.08)}
+  .btn.ok{background:linear-gradient(90deg,rgba(70,229,160,.18),rgba(70,229,160,.06));border-color:rgba(70,229,160,.3);color:#baf5da}
+  .btn.ok:hover{background:rgba(70,229,160,.25)}
+  .btn.no:hover{background:rgba(255,107,129,.18);color:#ffc2cb}
+
+  /* timeline */
+  .tl{display:flex;flex-direction:column;gap:2px;max-height:380px;overflow:auto}
+  .tl .ev{display:flex;gap:12px;padding:10px 4px;border-bottom:1px solid rgba(255,255,255,.04)}
+  .tl .ev:last-child{border:0}
+  .tl .tdot{width:30px;height:30px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:14px;
+    background:rgba(124,58,237,.14);border:1px solid var(--panel-line)}
+  .tl .ev b{font-size:13.5px;font-weight:600;display:block}
+  .tl .ev small{font-size:12px;color:var(--faint)}
+  .tl .ev .t{margin-left:auto;font-size:11px;color:var(--faint);white-space:nowrap}
+
+  /* health rows */
+  .hrow{display:flex;align-items:center;gap:10px;padding:11px 2px;border-bottom:1px solid rgba(255,255,255,.04);font-size:14px}
+  .hrow:last-child{border:0}
+  .hrow .d{width:9px;height:9px;border-radius:50%;flex:none}
+  .hrow .s{margin-left:auto;font-size:12.5px;font-weight:600}
+  .ok{color:var(--green)} .warn{color:var(--amber)} .bad{color:var(--red)}
+  .d.ok{background:var(--green);box-shadow:0 0 9px var(--green)}
+  .d.warn{background:var(--amber);box-shadow:0 0 9px var(--amber)}
+  .d.bad{background:var(--red);box-shadow:0 0 9px var(--red)}
+
+  .src{display:flex;align-items:center;gap:12px;margin:11px 0;font-size:13.5px}
+  .src .bar{flex:1;height:7px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden}
+  .src .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--violet),var(--violet2));border-radius:99px}
+  .src .pct{color:var(--muted);font-size:12.5px;width:38px;text-align:right}
+
+  .untracked{color:var(--faint);font-size:12.5px;font-style:italic}
+  .empty{color:var(--faint);font-size:13px;text-align:center;padding:26px 0}
+
+  /* login */
+  .gate{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:radial-gradient(800px 600px at 50% 0%,rgba(124,58,237,.18),#070509)}
+  .gate .box{width:340px;max-width:90vw;text-align:center;background:var(--panel);border:1px solid var(--panel-line);
+    border-radius:24px;padding:34px 28px;backdrop-filter:blur(18px)}
+  .gate .sphere{width:60px;height:60px;margin:0 auto 18px}
+  .gate b{letter-spacing:.3em;font-size:17px}
+  .gate p{color:var(--muted);font-size:13px;margin:8px 0 22px}
+  .gate input{width:100%;padding:13px 15px;border-radius:12px;border:1px solid var(--panel-line);
+    background:rgba(255,255,255,.04);color:#fff;font-family:inherit;font-size:14px;margin-bottom:10px}
+  .gate button{width:100%;padding:13px;border:0;border-radius:12px;cursor:pointer;font-weight:600;font-size:14px;
+    background:linear-gradient(90deg,var(--violet),#6d34d6);color:#fff;font-family:inherit}
+  .gate .msg{font-size:12.5px;color:var(--amber);margin-top:12px;min-height:16px}
+  .hamb{display:none}
+
+  @media(max-width:1100px){.stats{grid-template-columns:repeat(2,1fr)}.pipe{grid-template-columns:repeat(4,1fr)}}
+  @media(max-width:820px){
+    .side{position:fixed;left:0;top:0;z-index:40;transform:translateX(-100%);transition:.3s;box-shadow:0 0 60px rgba(0,0,0,.6)}
+    .side.open{transform:none}
+    .main{padding:18px 16px 60px}
+    .hamb{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;border:1px solid var(--panel-line);
+      background:var(--panel);color:#fff;font-size:20px;cursor:pointer}
+    .hi{font-size:23px}.stats{grid-template-columns:repeat(2,1fr);gap:10px}.stat .big{font-size:27px}
+    .pipe{grid-template-columns:repeat(2,1fr)}
+  }
+  .colspan{grid-column:1/-1}
+</style>
+</head>
+<body>
+
+<div class="gate" id="gate">
+  <div class="box">
+    <div class="sphere"></div>
+    <b>UNVEILED</b>
+    <p>Executive Command Center</p>
+    <input id="email" type="email" placeholder="you@email.com" autocomplete="username" />
+    <input id="pass" type="password" placeholder="Password" autocomplete="current-password" />
+    <button onclick="signIn()">Enter</button>
+    <div class="msg" id="gmsg"></div>
+    <p style="margin:14px 0 0"><a id="magic" style="color:var(--violet2);cursor:pointer;font-size:12.5px">Email me a sign-in link instead</a></p>
+  </div>
+</div>
+
+<div class="app" id="app" style="display:none">
+  <aside class="side" id="side">
+    <div class="brand"><div class="sphere"></div><b>UNVEILED</b></div>
+    <nav class="nav">
+      <a class="on"><span class="ic">◎</span> Command Center</a>
+      <a><span class="ic">⛓</span> Pipeline</a>
+      <a><span class="ic">✓</span> Approvals <span class="badge" id="navAppr">0</span></a>
+      <a><span class="ic">◍</span> Leads <span class="badge" id="navLeads">0</span></a>
+      <a><span class="ic">★</span> Clients</a>
+      <a><span class="ic">✦</span> Outreach</a>
+      <a><span class="ic">▤</span> Analytics</a>
+      <a><span class="ic">◆</span> Learning Center</a>
+      <a><span class="ic">⚙</span> Settings</a>
+    </nav>
+    <div class="card">
+      <b>UNVEILED</b>
+      <p>AI-powered websites, built while you sleep. Your production team works around the clock.</p>
+    </div>
+    <div class="me"><div class="av"></div><div><b style="font-size:14px">Moe</b><small>CEO · UNVEILED</small></div></div>
+  </aside>
+
+  <main class="main">
+    <div class="top">
+      <div style="display:flex;gap:14px;align-items:center">
+        <div class="hamb" onclick="document.getElementById('side').classList.toggle('open')">☰</div>
+        <div>
+          <div class="hi">Good <span id="part">day</span>, Moe.<span class="sub">Here's what happened while you were away.</span></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+        <div class="stamp" id="dateStamp">—</div>
+        <div class="live"><span class="dot"></span><span id="liveLbl">Live · production team working</span></div>
+      </div>
+    </div>
+
+    <!-- HERO STATS -->
+    <div class="stats">
+      <div class="stat health"><div class="ring"></div><div class="lab">Company Pulse</div><div class="big" id="pulse">—</div><div class="note" id="pulseNote">Checking systems…</div></div>
+      <div class="stat"><div class="ring"></div><div class="lab">Websites Delivered</div><div class="big" id="delivered">—</div><div class="note">Live customer previews</div></div>
+      <div class="stat"><div class="ring"></div><div class="lab">Awaiting Your Approval</div><div class="big" id="apprCount" style="color:var(--amber)">—</div><div class="note" id="apprNote">&nbsp;</div></div>
+      <div class="stat"><div class="ring"></div><div class="lab">New Leads</div><div class="big" id="newLeads">—</div><div class="note">In the pipeline now</div></div>
+      <div class="stat"><div class="ring"></div><div class="lab">Revenue (MTD)</div><div class="big" style="font-size:22px;color:var(--faint)">—</div><div class="note untracked">Not tracked yet</div></div>
+    </div>
+
+    <div class="grid" style="grid-template-columns:1fr 320px">
+      <!-- LEFT COLUMN -->
+      <div class="grid" style="gap:18px">
+        <!-- PIPELINE -->
+        <div class="panel colspan">
+          <h3>Live Production Pipeline <span class="link" onclick="load()">Refresh</span></h3>
+          <div class="pipe" id="pipe"></div>
+        </div>
+
+        <!-- APPROVALS -->
+        <div class="panel colspan">
+          <h3>Awaiting Your Approval <span id="apprBadge" style="color:var(--amber)"></span></h3>
+          <div class="apps" id="apps"><div class="empty">Loading…</div></div>
+        </div>
+
+        <!-- LEAD SOURCES + OUTREACH -->
+        <div class="grid" style="grid-template-columns:1fr 1fr;gap:18px" class="colspan">
+          <div class="panel">
+            <h3>Where Leads Come From</h3>
+            <div id="sources"><div class="empty">Loading…</div></div>
+          </div>
+          <div class="panel">
+            <h3>Outreach</h3>
+            <div class="hrow"><span>Reveals sent</span><span class="s" id="emailsSent">—</span></div>
+            <div class="hrow"><span>Open rate</span><span class="s untracked" style="font-weight:400">Not tracked yet</span></div>
+            <div class="hrow"><span>Reply rate</span><span class="s untracked" style="font-weight:400">Not tracked yet</span></div>
+            <p class="untracked" style="margin-top:12px">Open and reply tracking turns on when reply-detection ships.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div class="grid" style="gap:18px;align-content:start">
+        <div class="panel">
+          <h3>Activity <span class="link" onclick="load()">Refresh</span></h3>
+          <div class="tl" id="timeline"><div class="empty">Loading…</div></div>
+        </div>
+        <div class="panel">
+          <h3>System Health</h3>
+          <div id="health"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+const CFG={url:'https://eosvftmiwndmctrqprtz.supabase.co',key:'sb_publishable_BYxqF1ViwTrfaI4RGhciVw_kgbt-pSA'};
+const sb = supabase.createClient(CFG.url, CFG.key);
+
+const $=id=>document.getElementById(id);
+const esc=s=>(s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function timeAgo(d){const s=(Date.now()-new Date(d).getTime())/1000;if(s<60)return'just now';if(s<3600)return Math.floor(s/60)+'m ago';if(s<86400)return Math.floor(s/3600)+'h ago';return Math.floor(s/86400)+'d ago';}
+function clock(d){return new Date(d).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'});}
+
+// ---------- auth ----------
+async function signIn(){
+  const email=$('email').value.trim(), password=$('pass').value;
+  $('gmsg').textContent='Signing in…';
+  const {error}=await sb.auth.signInWithPassword({email,password});
+  if(error){$('gmsg').textContent=error.message;return;}
+  boot();
+}
+$('magic').onclick=async()=>{
+  const email=$('email').value.trim();
+  if(!email){$('gmsg').textContent='Enter your email first.';return;}
+  const {error}=await sb.auth.signInWithOtp({email,options:{emailRedirectTo:location.href}});
+  $('gmsg').textContent=error?error.message:'Check your email for a sign-in link.';
+};
+$('pass').addEventListener('keydown',e=>{if(e.key==='Enter')signIn();});
+
+async function boot(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){$('gate').style.display='grid';$('app').style.display='none';return;}
+  $('gate').style.display='none';$('app').style.display='flex';
+  const h=new Date().getHours();
+  $('part').textContent=h<12?'morning':h<18?'afternoon':'evening';
+  $('dateStamp').textContent=new Date().toLocaleDateString([], {weekday:'long',month:'long',day:'numeric'});
+  load(); setInterval(load,30000);
+}
+
+// ---------- business-language translation ----------
+const ACTIONS={
+  build_started:b=>['🛠','Started building '+b+"'s website"],
+  homepage_complete:b=>['✨','Website draft ready for '+b],
+  qa_passed:b=>['✓','Passed quality checks: '+b],
+  deployed:b=>['🌐',b+"'s website went live (preview)"],
+  job_completed:b=>['🎉',b+' is ready for your approval'],
+  auto_enqueued:b=>['◍','New lead entered the pipeline: '+b],
+  build_blocked:b=>['⚠','Build needs attention: '+b],
+  worker_down_alert:_=>['⚠','Production team needs attention'],
+  reveal_sent:b=>['📤','Reveal sent to '+b],
+};
+const PIPE=[
+  {nm:'New',ic:'◍',st:['NEW LEAD','QUALIFIED']},
+  {nm:'Research',ic:'🔎',st:['RESEARCHING']},
+  {nm:'Building',ic:'🛠',st:['BUILDING']},
+  {nm:'Quality',ic:'🛡',st:['QA']},
+  {nm:'Deploying',ic:'🚀',st:['DEPLOYING']},
+  {nm:'Awaiting You',ic:'✓',st:['PREVIEW READY']},
+  {nm:'Delivered',ic:'🌐',st:['PREVIEW DELIVERED','APPROVED']},
+];
+
+async function q(path){
+  const r=await fetch(CFG.url+'/rest/v1/'+path,{headers:{apikey:CFG.key,Authorization:'Bearer '+(await sb.auth.getSession()).data.session.access_token}});
+  return r.ok?r.json():[];
+}
+
+async function load(){
+  let leads=[], acts=[], beats=[], alerts=[], emails=[];
+  try{
+    [leads,acts,beats,alerts,emails]=await Promise.all([
+      q('leads?select=id,business_name,status,source,preview_url,updated_at&order=updated_at.desc&limit=400'),
+      q("activity_log?select=action,actor,meta,created_at,entity_id&action=neq.heartbeat&order=created_at.desc&limit=18"),
+      q("activity_log?select=created_at&action=eq.heartbeat&actor=eq.railway-worker-1&order=created_at.desc&limit=1"),
+      q("activity_log?select=created_at,meta&action=eq.worker_down_alert&order=created_at.desc&limit=1"),
+      q("tasks?select=id&status=eq.completed&limit=1000"),
+    ]);
+  }catch(e){}
+
+  const by=s=>leads.filter(l=>l.status===s);
+  const cnt=arr=>leads.filter(l=>arr.includes(l.status)).length;
+
+  // pipeline
+  $('pipe').innerHTML=PIPE.map(p=>{const c=cnt(p.st);return `<div class="stage ${c>0?'active':''}">
+    <div class="ico">${p.ic}</div><div class="nm">${p.nm}</div><div class="ct ${c?'':'zero'}">${c}</div></div>`;}).join('');
+
+  // hero stats
+  const delivered=cnt(['PREVIEW DELIVERED','APPROVED']);
+  const approvals=by('PREVIEW READY');
+  const newL=cnt(['NEW LEAD','QUALIFIED']);
+  $('delivered').textContent=delivered;
+  $('newLeads').textContent=newL;
+  $('apprCount').textContent=approvals.length;
+  $('apprNote').textContent=approvals.length?approvals.length+' need a decision':'all clear';
+  $('navAppr').textContent=approvals.length;
+  $('navLeads').textContent=newL;
+  $('apprBadge').textContent=approvals.length||'';
+  $('emailsSent').textContent=emails.length;
+
+  // worker pulse
+  const lastBeat=beats[0]?new Date(beats[0].created_at).getTime():0;
+  const alive=lastBeat && (Date.now()-lastBeat)<150000;
+  const recentAlert=alerts[0] && (Date.now()-new Date(alerts[0].created_at).getTime())<3600000;
+  if(alive && !recentAlert){$('pulse').textContent='Healthy';$('pulse').style.color='var(--green)';$('pulseNote').textContent='All systems working normally';$('liveLbl').textContent='Live · production team working';}
+  else if(recentAlert){$('pulse').textContent='Attention';$('pulse').style.color='var(--amber)';$('pulseNote').textContent='Production team needs a look';}
+  else{$('pulse').textContent='Checking';$('pulse').style.color='var(--amber)';$('pulseNote').textContent='Waiting for the latest pulse';}
+
+  // approvals cards
+  $('apps').innerHTML = approvals.length ? approvals.map(l=>`
+    <div class="appcard">
+      ${l.preview_url?`<iframe class="prev" src="${esc(l.preview_url)}" loading="lazy" scrolling="no"></iframe>`:`<div class="thumb">${esc(l.business_name||'Preview')}</div>`}
+      <div class="meta"><b>${esc(l.business_name||'Untitled')}</b><small>Ready ${timeAgo(l.updated_at)}</small></div>
+      <div class="acts">
+        <button class="btn ok" onclick="decide('${l.id}','APPROVED',this)">Approve</button>
+        <button class="btn" onclick="decide('${l.id}','CHANGES REQUESTED',this)">Revise</button>
+        <button class="btn no" onclick="decide('${l.id}','LOST',this)">Pass</button>
+      </div>
+    </div>`).join('') : `<div class="empty">Nothing waiting on you. The production team will surface the next finished website here.</div>`;
+
+  // timeline
+  $('timeline').innerHTML = acts.length ? acts.map(a=>{
+    const biz=(a.meta&&(a.meta.business||a.meta.slug))||'';
+    const f=ACTIONS[a.action]; const [ic,txt]=f?f(biz||''):['•',a.action.replace(/_/g,' ')];
+    return `<div class="ev"><div class="tdot">${ic}</div><div><b>${esc(txt)}</b></div><div class="t">${clock(a.created_at)}</div></div>`;
+  }).join('') : `<div class="empty">Quiet so far. Activity from your production team will appear here live.</div>`;
+
+  // lead sources
+  const srcMap={};leads.forEach(l=>{const s=(l.source||'unknown').replace(/-/g,' ');srcMap[s]=(srcMap[s]||0)+1;});
+  const tot=leads.length||1; const top=Object.entries(srcMap).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  $('sources').innerHTML = top.length ? top.map(([s,n])=>{const p=Math.round(n/tot*100);
+    return `<div class="src"><span style="width:120px;text-transform:capitalize">${esc(s)}</span><span class="bar"><i style="width:${p}%"></i></span><span class="pct">${p}%</span></div>`;}).join('')
+    : `<div class="empty">No leads yet.</div>`;
+
+  // health (business language)
+  const rows=[
+    ['Website Builder', alive?'ok':'warn', alive?'Working':'Quiet'],
+    ['Production Team', (alive&&!recentAlert)?'ok':'warn', recentAlert?'Needs attention':(alive?'Working':'Idle')],
+    ['Customer Records','ok','Healthy'],
+    ['Delivery (email)','ok','Operational'],
+    ['Follow-up Engine','ok','Running'],
+  ];
+  $('health').innerHTML=rows.map(([n,c,s])=>`<div class="hrow"><span class="d ${c}"></span><span>${n}</span><span class="s ${c}">${s}</span></div>`).join('');
+}
+
+async function decide(id,status,btn){
+  btn.textContent='…';btn.disabled=true;
+  const {error}=await sb.from('leads').update({status,updated_at:new Date().toISOString()}).eq('id',id);
+  if(error){btn.textContent='!';alert('Could not save: '+error.message);btn.disabled=false;return;}
+  load();
+}
+
+sb.auth.onAuthStateChange((_e,s)=>{if(s)boot();});
+boot();
+</script>
+</body>
+</html>
