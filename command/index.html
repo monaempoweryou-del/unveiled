@@ -311,6 +311,29 @@
   .thumb{width:88px;height:60px;border-radius:11px;overflow:hidden;border:1px solid var(--line);flex:none;background:#fff;position:relative;box-shadow:0 1px 2px rgba(40,25,80,.05)}
   .thumb iframe{width:314px;height:214px;border:0;transform:scale(.28);transform-origin:top left;pointer-events:none;position:absolute;top:0;left:0}
   .assetgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(116px,1fr));gap:11px}
+  /* asset manager */
+  .slots{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  .aslot{position:relative;border:1px dashed var(--line);border-radius:13px;min-height:104px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;background:var(--panel2)}
+  .aslot.filled{border-style:solid}
+  .aslot>img{width:100%;height:104px;object-fit:cover}
+  .aslot .aslab{position:absolute;top:7px;left:8px;font-size:10px;font-weight:700;background:rgba(255,255,255,.88);padding:2px 8px;border-radius:999px;color:var(--muted);letter-spacing:.03em}
+  .aslot.empty{cursor:pointer} .aslot.empty:hover{border-color:var(--violet);background:#faf7ff}
+  .aplus{font-size:25px;color:var(--violet2);line-height:1} .aplus.dim{color:var(--faint)}
+  .aslot .abtns{position:absolute;bottom:0;left:0;right:0;display:flex}
+  .aslot .abtns button{flex:1;border:0;background:rgba(20,12,40,.74);color:#fff;font-size:11px;padding:7px;cursor:pointer;font-family:inherit}
+  .aslot .abtns button:hover{background:rgba(20,12,40,.9)}
+  .galhead{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin:15px 0 9px;display:flex;gap:8px}
+  .galhead span{color:var(--faint)}
+  .agal{display:grid;grid-template-columns:repeat(auto-fill,minmax(122px,1fr));gap:10px}
+  .atile{border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel2);display:flex;flex-direction:column}
+  .atile>img{width:100%;height:84px;object-fit:cover;display:block}
+  .atile.add{min-height:120px;align-items:center;justify-content:center;cursor:pointer;border-style:dashed}
+  .atile.add:hover{border-color:var(--violet);background:#faf7ff}
+  .atbtns{display:flex;flex-wrap:wrap;gap:2px;padding:4px}
+  .atbtns button{flex:1 0 auto;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--txt);font-size:10.5px;font-weight:600;padding:4px 6px;cursor:pointer;font-family:inherit;min-width:26px}
+  .atbtns button:hover{background:var(--violet);color:#fff;border-color:transparent}
+  .atbtns button.del:hover{background:var(--red)}
+  .agal.view .atbtns{display:none}
   .asset{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 1px 2px rgba(40,25,80,.05)}
   .asset .ph{width:100%;height:84px;object-fit:cover;display:block;background:#f1eff8}
   .asset .arow{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;font-size:12px;color:var(--muted)}
@@ -349,6 +372,7 @@
 <div id="loader"><div style="text-align:center"><img class="logo-sphere-lg" src="/command/sphere.png" alt="UNVEILED" style="animation:breathe 2.4s ease-in-out infinite" /><p>Bringing your company online…</p></div></div>
 <div id="toast"></div>
 <input type="file" id="fileinput" accept="image/*" style="display:none" />
+<input type="file" id="assetinput" accept="image/*" multiple style="display:none" />
 <div id="revmodal" class="modal">
   <div class="mbox">
     <h3 id="revtitle">Request a revision</h3>
@@ -841,13 +865,12 @@ function renderCustomer(id){
 
     ${revisionsHTML(id)}
 
-    <div class="wcard"><h3>Website assets</h3>
-      <div class="assetgrid" id="assetgrid"><div class="soonbox">Loading your website's images…</div></div>
-      <div class="soonbox" style="margin-top:11px">Tap <b>Replace</b> on any image to upload a new one — it goes straight into production as a tracked revision.</div></div>
+    <div class="wcard"><h3>Website assets <span class="soon" id="assetcap"></span></h3>
+      <div id="assetmgr"><div class="soonbox">Loading your asset library…</div></div></div>
     <div class="wcard int"><h3>Emails & engagement <span class="inttag">Team only</span><span class="soon" style="margin-left:8px">not instrumented</span></h3><div class="soonbox">Per-customer email threads and open/click tracking aren't connected yet, so I won't show "opened 3 times" until we can measure it. Lights up with the email-tracking instrumentation.</div></div>
     <div class="wcard"><h3>Invoices & subscription <span class="inttag int">not instrumented</span></h3><div class="soonbox">No invoices yet.<span class="int"> Billing (Stripe) isn't connected yet; invoices and subscription status will appear here once it is.</span></div></div>
   `;
-  loadAssets(l);
+  renderAssetMgr(l);
 }
 
 function onboardingHTML(l){
@@ -897,21 +920,82 @@ function journeyHTML(l){
     <div class="soonbox int" style="margin-top:11px">Greyed steps (opened, replied, paid, live) aren't instrumented yet. I won't light them up until we can measure them honestly — see the blind-spot report for how we wire each one.</div></div>`;
 }
 
-async function loadAssets(l){
-  const box=document.getElementById('assetgrid'); if(!box) return;
-  if(!l.preview_url){ box.innerHTML='<div class="soonbox">Your website is still being built — its images will appear here once it\'s ready.</div>'; return; }
-  try{
-    const r=await fetch(l.preview_url); const html=await r.text();
-    const doc=new DOMParser().parseFromString(html,'text/html');
-    const urls=new Set();
-    doc.querySelectorAll('img').forEach(i=>{const s=i.getAttribute('src'); if(s) urls.add(s);});
-    const styleText=[...doc.querySelectorAll('[style]')].map(e=>e.getAttribute('style')).join(';')+' '+[...doc.querySelectorAll('style')].map(e=>e.textContent).join(' ');
-    [...styleText.matchAll(/url\(\s*['"]?([^'")]+)['"]?\s*\)/g)].forEach(m=>urls.add(m[1]));
-    const abs=[...urls].map(u=>{try{return new URL(u,l.preview_url).href;}catch(e){return null;}}).filter(u=>u && /^https?:/i.test(u) && !/\.svg(\?|$)/i.test(u) && !/data:/i.test(u));
-    const uniq=[...new Set(abs)].slice(0,18);
-    if(!uniq.length){ box.innerHTML='<div class="soonbox">No images detected on this site.</div>'; return; }
-    box.innerHTML=uniq.map((u,i)=>`<div class="asset"><img class="ph" src="${esc(u)}" loading="lazy" onerror="this.closest('.asset').remove()"/><div class="arow"><span>Image ${i+1}</span><button onclick="replaceAsset(this.closest('.asset').querySelector('img').getAttribute('src'))">Replace</button></div></div>`).join('');
-  }catch(e){ box.innerHTML='<div class="soonbox">Could not load assets right now.</div>'; }
+// ===== Asset manager: Logo + Hero + up to 8 gallery (the standard 10-asset structure) =====
+let ADRAFT=null, AEDIT=false, AUP=null;
+const A_MAX_GAL=8;
+function normAssets(a){ a=a||{}; return {logo:a.logo||null,hero:a.hero||null,gallery:Array.isArray(a.gallery)?a.gallery.slice(0,A_MAX_GAL):[]}; }
+function aCount(a){ a=a||{}; return (a.logo?1:0)+(a.hero?1:0)+(a.gallery?a.gallery.length:0); }
+function curLead(){ return LEADS.find(x=>x.id===CURLEAD); }
+async function extractSiteImages(url){
+  try{ const r=await fetch(url); const html=await r.text(); const doc=new DOMParser().parseFromString(html,'text/html');
+    const urls=new Set(); doc.querySelectorAll('img').forEach(i=>{const s=i.getAttribute('src'); if(s)urls.add(s);});
+    const st=[...doc.querySelectorAll('[style]')].map(e=>e.getAttribute('style')).join(';')+' '+[...doc.querySelectorAll('style')].map(e=>e.textContent).join(' ');
+    [...st.matchAll(/url\(\s*['"]?([^'")]+)['"]?\s*\)/g)].forEach(m=>urls.add(m[1]));
+    const abs=[...urls].map(u=>{try{return new URL(u,url).href;}catch(e){return null;}}).filter(u=>u&&/^https?:/i.test(u)&&!/\.svg(\?|$)/i.test(u)&&!/data:/i.test(u));
+    return [...new Set(abs)];
+  }catch(e){ return []; }
+}
+function assetUploadInit(){ const fi=$('assetinput'); if(!fi||fi._wired)return; fi._wired=true;
+  fi.addEventListener('change',async e=>{ const files=[...(e.target.files||[])]; if(!files.length||!ADRAFT||!CURLEAD)return;
+    toast('Uploading '+files.length+(files.length>1?' images…':' image…'));
+    for(const f of files){ if(!/^image\//.test(f.type)) continue;
+      const path=CURLEAD+'/'+Date.now()+'-'+Math.floor(Math.random()*9999)+'-'+f.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+      const up=await sb.storage.from('assets').upload(path,f,{contentType:f.type,upsert:false});
+      if(up.error){ console.error('asset upload failed:',up.error); toast('An image didn’t upload — skipped it.'); continue; }
+      const url=sb.storage.from('assets').getPublicUrl(path).data.publicUrl; placeUpload(url);
+    }
+    renderAssetMgr(curLead());
+  });
+}
+function placeUpload(url){ const t=AUP;
+  if(t==='logo'||t==='rlogo') ADRAFT.logo=url;
+  else if(t==='hero'||t==='rhero') ADRAFT.hero=url;
+  else if(t&&t.repGal!=null) ADRAFT.gallery[t.repGal]=url;
+  else if(ADRAFT.gallery.length<A_MAX_GAL) ADRAFT.gallery.push(url);
+}
+function renderAssetMgr(l){
+  assetUploadInit(); const box=$('assetmgr'); if(!box||!l) return;
+  const saved=normAssets(l.assets); const cap=$('assetcap');
+  if(cap) cap.textContent=AEDIT?(aCount(ADRAFT)+' / 10'):(aCount(saved)?aCount(saved)+' / 10':'');
+  if(!AEDIT){
+    if(aCount(saved)>0) box.innerHTML=assetViewHTML(saved)+`<div class="acts" style="margin-top:12px"><button class="btn primary" onclick="startAssetEdit('${l.id}')">✎ Edit assets</button></div>`;
+    else box.innerHTML=`<div class="soonbox">No managed asset library yet. Build one from the customer's current site, or start fresh — Logo, Hero, and up to 8 gallery images.</div>
+      <div class="acts" style="margin-top:11px">${l.preview_url?`<button class="btn primary" onclick="seedFromSite('${l.id}',this)">Build library from current site</button>`:''}<button class="btn" onclick="startAssetEdit('${l.id}')">Start empty</button></div>`;
+    return;
+  }
+  box.innerHTML=assetEditHTML(ADRAFT)+`<div class="acts" style="margin-top:14px;align-items:center"><button class="btn primary" onclick="saveAssets('${l.id}',this)">Save library</button><button class="btn ghost" onclick="cancelAssetEdit('${l.id}')">Cancel</button><span class="soonbox">${aCount(ADRAFT)} / 10 assets</span></div>
+    <div class="soonbox int" style="margin-top:9px">This organizes the customer's asset library. The brand-aware build will place this exact set — Logo, Hero, gallery — onto their live site.</div>`;
+}
+function slotHTML(kind,url){ const label=kind==='logo'?'Logo':'Hero';
+  if(url) return `<div class="aslot filled"><img src="${esc(url)}"/><div class="aslab">${label}</div><div class="abtns"><button onclick="upTo('${kind==='logo'?'rlogo':'rhero'}')">Replace</button><button onclick="slotClear('${kind}')">Remove</button></div></div>`;
+  return `<div class="aslot empty" onclick="upTo('${kind}')"><div class="aplus">＋</div><div class="aslab">Add ${label}</div></div>`;
+}
+function assetEditHTML(a){ const gal=a.gallery||[];
+  return `<div class="slots">${slotHTML('logo',a.logo)}${slotHTML('hero',a.hero)}</div>
+    <div class="galhead">Gallery <span>${gal.length} / ${A_MAX_GAL}</span></div>
+    <div class="agal">${gal.map((u,i)=>`<div class="atile"><img src="${esc(u)}"/><div class="atbtns"><button onclick="galTo('logo',${i})">Logo</button><button onclick="galTo('hero',${i})">Hero</button><button onclick="galMove(${i},-1)">↑</button><button onclick="galMove(${i},1)">↓</button><button onclick="upTo({repGal:${i}})">↻</button><button class="del" onclick="galDel(${i})">✕</button></div></div>`).join('')}${gal.length<A_MAX_GAL?`<div class="atile add" onclick="upTo('gallery')"><div class="aplus">＋</div><div class="aslab">Add image</div></div>`:''}</div>`;
+}
+function assetViewHTML(a){ const gal=a.gallery||[];
+  return `<div class="slots"><div class="aslot ${a.logo?'filled':'empty'}">${a.logo?`<img src="${esc(a.logo)}"/>`:'<div class="aplus dim">—</div>'}<div class="aslab">Logo</div></div><div class="aslot ${a.hero?'filled':'empty'}">${a.hero?`<img src="${esc(a.hero)}"/>`:'<div class="aplus dim">—</div>'}<div class="aslab">Hero</div></div></div>${gal.length?`<div class="galhead">Gallery <span>${gal.length}</span></div><div class="agal view">${gal.map(u=>`<div class="atile"><img src="${esc(u)}"/></div>`).join('')}</div>`:''}`;
+}
+function startAssetEdit(id){ const l=LEADS.find(x=>x.id===id); ADRAFT=normAssets(l&&l.assets); AEDIT=true; renderAssetMgr(l); }
+function cancelAssetEdit(id){ AEDIT=false; ADRAFT=null; renderAssetMgr(LEADS.find(x=>x.id===id)); }
+async function seedFromSite(id,btn){ const l=LEADS.find(x=>x.id===id); if(!l)return; if(btn){btn.textContent='Scanning…';btn.disabled=true;}
+  const imgs=l.preview_url?await extractSiteImages(l.preview_url):[];
+  const logo=imgs.find(u=>/logo/i.test(u))||null; const rest=imgs.filter(u=>u!==logo);
+  ADRAFT={logo:logo,hero:rest[0]||null,gallery:rest.slice(1,1+A_MAX_GAL)}; AEDIT=true; renderAssetMgr(l);
+  if(!imgs.length) toast('No images detected on the site — start by uploading.');
+}
+function upTo(target){ AUP=target; const fi=$('assetinput'); fi.value=''; fi.click(); }
+function slotClear(kind){ if(!ADRAFT)return; ADRAFT[kind]=null; renderAssetMgr(curLead()); }
+function galTo(slot,i){ if(!ADRAFT)return; const u=ADRAFT.gallery[i]; if(!u)return; const prev=ADRAFT[slot]; ADRAFT.gallery.splice(i,1); ADRAFT[slot]=u; if(prev&&ADRAFT.gallery.length<A_MAX_GAL) ADRAFT.gallery.unshift(prev); renderAssetMgr(curLead()); }
+function galMove(i,d){ if(!ADRAFT)return; const g=ADRAFT.gallery,j=i+d; if(j<0||j>=g.length)return; const t=g[i];g[i]=g[j];g[j]=t; renderAssetMgr(curLead()); }
+function galDel(i){ if(!ADRAFT)return; ADRAFT.gallery.splice(i,1); renderAssetMgr(curLead()); }
+async function saveAssets(id,btn){ if(!ADRAFT)return; btn.textContent='Saving…';btn.disabled=true;
+  const a={logo:ADRAFT.logo||null,hero:ADRAFT.hero||null,gallery:(ADRAFT.gallery||[]).slice(0,A_MAX_GAL)};
+  const {error}=await sb.from('leads').update({assets:a,updated_at:new Date().toISOString()}).eq('id',id);
+  if(error){ console.error('assets save failed:',error); btn.textContent='Save library';btn.disabled=false; toast('That didn’t save — nothing changed. Try again.'); return; }
+  const l=LEADS.find(x=>x.id===id); if(l)l.assets=a; AEDIT=false; ADRAFT=null; renderAssetMgr(l); toast('Asset library saved ✓');
 }
 
 function humanAction(a){
