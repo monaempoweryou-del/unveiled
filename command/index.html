@@ -31,6 +31,8 @@
   @keyframes pulse{0%,100%{box-shadow:0 0 16px var(--glow),inset 0 0 12px rgba(255,255,255,.22)}50%{box-shadow:0 0 30px var(--glow),inset 0 0 14px rgba(255,255,255,.32)}}
   .topbar{display:flex;align-items:center;gap:12px;margin-bottom:20px}
   .topbar b{font-weight:700;letter-spacing:.26em;font-size:14px}
+  .wordmark{height:21px;width:auto;display:block}
+  .wordmark-lg{height:30px;width:auto;margin:0 auto 20px;display:block}
   .wpill{margin-left:auto;display:inline-flex;align-items:center;gap:7px;font-size:12.5px;background:var(--panel);border:1px solid var(--line);padding:7px 12px;border-radius:999px;backdrop-filter:blur(10px)}
   .dot{width:8px;height:8px;border-radius:50%}
   .dot.g{background:var(--green);box-shadow:0 0 9px var(--green)} .dot.a{background:var(--amber);box-shadow:0 0 9px var(--amber)} .dot.r{background:var(--red);box-shadow:0 0 9px var(--red)}
@@ -178,13 +180,32 @@
   .skel{background:#ece9f4;background-image:linear-gradient(90deg,#ece9f4,#f5f3fb,#ece9f4);background-size:600px 100%;border-radius:8px;animation:shimmer 1.25s linear infinite}
   #toast{position:fixed;left:50%;bottom:max(22px,env(safe-area-inset-bottom));transform:translate(-50%,16px);background:#211c34;color:#fff;padding:13px 20px;border-radius:14px;font-size:14px;font-weight:500;box-shadow:0 18px 44px -14px rgba(60,40,120,.5);opacity:0;pointer-events:none;transition:.3s cubic-bezier(.2,.7,.3,1);z-index:60;max-width:90vw;text-align:center}
   #toast.show{opacity:1;transform:translate(-50%,0)}
+  /* live website thumbnail in approval rows */
+  .thumb{width:88px;height:60px;border-radius:11px;overflow:hidden;border:1px solid var(--line);flex:none;background:#fff;position:relative;box-shadow:0 1px 2px rgba(40,25,80,.05)}
+  .thumb iframe{width:314px;height:214px;border:0;transform:scale(.28);transform-origin:top left;pointer-events:none;position:absolute;top:0;left:0}
+  /* typography & rhythm pass — nothing should strain to read */
+  body{font-size:15px;line-height:1.5}
+  .hello{font-size:27px} .hello .s{font-size:14px;line-height:1.45}
+  .kpi .n{font-size:27px} .kpi .l{font-size:12.5px}
+  .crow{padding:16px 16px} .crow .nm{font-size:15.5px} .crow .mt{font-size:13px}
+  .pill{font-size:12px;padding:4px 11px} .sec h2{font-size:12.5px}
+  .wcard h3{font-size:12.5px;letter-spacing:.06em} .kv{font-size:14.5px} .tl b{font-size:14px}
+  .banner{font-size:14.5px;line-height:1.45} .soonbox{font-size:13.5px}
+  .wpill{font-size:13px} .btn{font-size:14.5px}
+  @media(max-width:560px){
+    .hello{font-size:23px} .wsHead h1{font-size:24px}
+    .kpi .n{font-size:25px} .kpi .l{font-size:12.5px}
+    .crow .nm{font-size:16px} .crow .mt{font-size:13.5px} .pill{font-size:12px}
+    .btn{font-size:15px;padding:13px 16px} .kv{font-size:15px} .banner{font-size:15px}
+    .thumb{width:74px;height:51px} .thumb iframe{transform:scale(.235)}
+  }
 </style>
 </head>
 <body>
 
 <div class="gate" id="gate">
   <div class="box">
-    <div class="sphere"></div><b>UNVEILED</b><p>Command Center</p>
+    <img class="wordmark-lg" src="/command/wordmark.png" alt="UNVEILED" /><p>Command Center</p>
     <input id="email" type="email" placeholder="you@email.com" autocomplete="username" />
     <input id="pass" type="password" placeholder="Password" autocomplete="current-password" />
     <button onclick="signIn()">Enter</button>
@@ -193,13 +214,13 @@
   </div>
 </div>
 
-<div id="loader"><div style="text-align:center"><div class="sphere"></div><p>Bringing your company online…</p></div></div>
+<div id="loader"><div style="text-align:center"><img class="wordmark-lg" src="/command/wordmark.png" alt="UNVEILED" style="animation:breathe 2s ease-in-out infinite" /><p>Bringing your company online…</p></div></div>
 <div id="toast"></div>
 
 <div class="wrap" id="app" style="display:none">
   <!-- HOME -->
   <div id="home">
-    <div class="topbar"><div class="sphere"></div><b>UNVEILED</b><div class="wpill" id="wpill"><span class="dot a"></span><span id="wlbl">…</span></div></div>
+    <div class="topbar"><img class="wordmark" src="/command/wordmark.png" alt="UNVEILED" /><div class="wpill" id="wpill"><span class="dot a"></span><span id="wlbl">…</span></div></div>
     <div class="hello">Good <span id="part">day</span>, Moe.<span class="s" id="sub">Loading your company…</span></div>
     <div class="kpis" id="kpis"></div>
 
@@ -347,9 +368,10 @@ function toast(msg){ const t=$('toast'); if(!t)return; t.textContent=msg; t.clas
 function needRow(l){
   const sg=signal(l);
   let quick='<div class="chev">›</div>';
-  if(sg.k==='approve') quick=`<button class="btn good" style="padding:8px 14px;font-size:12.5px;flex:none" onclick="event.stopPropagation();decide('${l.id}','APPROVED',this)">Approve</button>`;
+  if(sg.k==='approve') quick=`<button class="btn good" style="padding:9px 15px;font-size:13px;flex:none" onclick="event.stopPropagation();decide('${l.id}','APPROVED',this)">Approve</button>`;
+  const left = l.preview_url ? `<div class="thumb"><iframe src="${esc(l.preview_url)}" scrolling="no" loading="lazy" tabindex="-1"></iframe></div>` : `<div class="ava">${esc(initials(l.business_name))}</div>`;
   return `<div class="crow" onclick="location.hash='#c/${l.id}'">
-    <div class="ava">${esc(initials(l.business_name))}</div>
+    ${left}
     <div><div class="nm">${esc(l.business_name||'Untitled')}</div><div class="mt">${esc(l.industry||l.source||'')} · ${ago(l.updated_at)}</div></div>
     <div class="sig"><span class="pill p-${sg.cls}">${sg.label}</span></div>${quick}
   </div>`;
