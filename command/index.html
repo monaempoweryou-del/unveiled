@@ -184,6 +184,18 @@
   .skel{background:#ece9f4;background-image:linear-gradient(90deg,#ece9f4,#f5f3fb,#ece9f4);background-size:600px 100%;border-radius:8px;animation:shimmer 1.25s linear infinite}
   #toast{position:fixed;left:50%;bottom:max(22px,env(safe-area-inset-bottom));transform:translate(-50%,16px);background:#211c34;color:#fff;padding:13px 20px;border-radius:14px;font-size:14px;font-weight:500;box-shadow:0 18px 44px -14px rgba(60,40,120,.5);opacity:0;pointer-events:none;transition:.3s cubic-bezier(.2,.7,.3,1);z-index:60;max-width:90vw;text-align:center}
   #toast.show{opacity:1;transform:translate(-50%,0)}
+  .modal{position:fixed;inset:0;z-index:55;display:none;place-items:center;background:rgba(20,12,40,.38);backdrop-filter:blur(3px);padding:18px}
+  .modal.show{display:grid}
+  .mbox{width:460px;max-width:100%;background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 30px 70px -24px rgba(70,45,130,.4);animation:fadeUp .2s ease both}
+  .mbox h3{font-size:17px;font-weight:700;margin-bottom:6px;text-transform:none;letter-spacing:0;color:var(--txt)}
+  .mbox .sub{font-size:13.5px;color:var(--muted);margin-bottom:14px;line-height:1.5}
+  .mbox textarea{min-height:120px;font-size:15px}
+  .mrow{display:flex;gap:10px;justify-content:flex-end;margin-top:14px}
+  .rev{display:flex;gap:11px;align-items:flex-start;padding:11px 2px;border-bottom:1px solid #f1eff7}
+  .rev:last-child{border:0}
+  .rev .rthumb{width:46px;height:34px;border-radius:8px;object-fit:cover;flex:none;border:1px solid var(--line)}
+  .rev b{font-size:13.5px;font-weight:600;display:block;line-height:1.35} .rev small{color:var(--faint);font-size:12px}
+  .rev .rstat{margin-left:auto;font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;white-space:nowrap;background:#f1ebff;color:var(--violet2)}
   /* live website thumbnail in approval rows */
   .thumb{width:88px;height:60px;border-radius:11px;overflow:hidden;border:1px solid var(--line);flex:none;background:#fff;position:relative;box-shadow:0 1px 2px rgba(40,25,80,.05)}
   .thumb iframe{width:314px;height:214px;border:0;transform:scale(.28);transform-origin:top left;pointer-events:none;position:absolute;top:0;left:0}
@@ -225,6 +237,15 @@
 
 <div id="loader"><div style="text-align:center"><img class="logo-sphere-lg" src="/command/sphere.png" alt="UNVEILED" style="animation:breathe 2.4s ease-in-out infinite" /><p>Bringing your company online…</p></div></div>
 <div id="toast"></div>
+<input type="file" id="fileinput" accept="image/*" style="display:none" />
+<div id="revmodal" class="modal">
+  <div class="mbox">
+    <h3 id="revtitle">Request a revision</h3>
+    <div class="sub" id="revsub">Describe exactly what you'd like changed. This becomes the instruction the production team works from — be as specific as you like.</div>
+    <textarea id="revtext" placeholder="e.g. Make the hero headline shorter and warmer, and use a brighter photo at the top."></textarea>
+    <div class="mrow"><button class="btn ghost" onclick="closeRev()">Cancel</button><button class="btn primary" id="revsend" onclick="submitRevision()">Send to production</button></div>
+  </div>
+</div>
 
 <div class="wrap" id="app" style="display:none">
   <!-- HOME -->
@@ -253,7 +274,7 @@ const esc=s=>(s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;
 const ago=d=>{if(!d)return'';const s=(Date.now()-new Date(d).getTime())/1000;if(s<60)return'just now';if(s<3600)return Math.floor(s/60)+'m ago';if(s<86400)return Math.floor(s/3600)+'h ago';return Math.floor(s/86400)+'d ago';};
 const clock=d=>new Date(d).toLocaleString([], {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
 const initials=n=>(n||'?').split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase();
-let LEADS=[], WQ=[], ACTS=[], BEAT=null, PKGS=[], FILTER=null;
+let LEADS=[], WQ=[], ACTS=[], BEAT=null, PKGS=[], FILTER=null, CURLEAD=null, PENDING_REPLACE=null;
 
 // ---- auth ----
 async function signIn(){const email=$('email').value.trim(),password=$('pass').value;$('gmsg').textContent='Signing in…';
@@ -292,7 +313,7 @@ async function load(){
   try{
     [LEADS,WQ,ACTS,BEAT,PKGS]=await Promise.all([
       q('leads?select=*&order=updated_at.desc&limit=500'),
-      q('work_queue?select=status,claimed_at,payload,blocker_reason,result&order=updated_at.desc&limit=200'),
+      q('work_queue?select=id,type,status,claimed_at,created_at,payload,blocker_reason,result&order=updated_at.desc&limit=200'),
       q('activity_log?select=action,meta,created_at,entity_id&action=neq.heartbeat&order=created_at.desc&limit=400'),
       q('activity_log?select=created_at&action=eq.heartbeat&order=created_at.desc&limit=1').then(r=>r[0]),
       q('service_packages?select=*'),
@@ -397,6 +418,7 @@ function rowHTML(l){
 // ---- CUSTOMER WORKSPACE ----
 function renderCustomer(id){
   const l=LEADS.find(x=>x.id===id); if(!l){location.hash='';return;}
+  CURLEAD=id;
   $('home').style.display='none'; $('ws').style.display='block'; $('ws').classList.remove('ascust'); window.scrollTo(0,0);
   const sg=signal(l);
   const myacts=ACTS.filter(a=>a.entity_id===id);
@@ -416,12 +438,12 @@ function renderCustomer(id){
   if(l.preview_url){ const open=`<a class="btn primary" href="${esc(l.preview_url)}" target="_blank">Open website ↗</a>`; teamActs+=open; custActs+=open; }
   if(sg.k==='approve'){ teamActs+=`
     <button class="btn good" onclick="decide('${id}','APPROVED',this)">Approve &amp; send reveal</button>
-    <button class="btn" onclick="decide('${id}','CHANGES REQUESTED',this)">Request changes</button>
     <button class="btn ghost" onclick="decide('${id}','LOST',this)">Pass</button>`;
   }
+  if(l.preview_url) teamActs+=`<button class="btn" onclick="openRevisionModal()">✎ Request a revision</button>`;
   if(phone) teamActs+=`<a class="btn" href="tel:${esc(phone.replace(/[^0-9+]/g,''))}">📞 Call</a>`;
   if(email) teamActs+=`<a class="btn" href="mailto:${esc(email)}">✉ Email</a>`;
-  custActs+=`<button class="btn" onclick="toast('Got it — change requests will route to your team once customer login is enabled.')">Request a change</button>`;
+  if(l.preview_url) custActs+=`<button class="btn" onclick="openRevisionModal()">✎ Request a change</button>`;
 
   $('ws').innerHTML=`
     <div class="back" onclick="location.hash=''">‹ All customers</div>
@@ -469,9 +491,11 @@ function renderCustomer(id){
       <div class="savebar"><button class="btn" onclick="saveNotes('${id}',this)">Save note</button><span class="ok" id="noteok"></span></div>
     </div>
 
+    ${revisionsHTML(id)}
+
     <div class="wcard"><h3>Website assets</h3>
       <div class="assetgrid" id="assetgrid"><div class="soonbox">Loading your website's images…</div></div>
-      <div class="soonbox int" style="margin-top:11px">Live images from the deployed site. Uploading a replacement needs file storage (next step) — for now "Replace" logs a change request for the team.</div></div>
+      <div class="soonbox" style="margin-top:11px">Tap <b>Replace</b> on any image to upload a new one — it goes straight into production as a tracked revision.</div></div>
     <div class="wcard int"><h3>Emails & engagement <span class="inttag">Team only</span><span class="soon" style="margin-left:8px">not instrumented</span></h3><div class="soonbox">Per-customer email threads and open/click tracking aren't connected yet, so I won't show "opened 3 times" until we can measure it. Lights up with the email-tracking instrumentation.</div></div>
     <div class="wcard"><h3>Invoices & subscription <span class="inttag int">not instrumented</span></h3><div class="soonbox">No invoices yet.<span class="int"> Billing (Stripe) isn't connected yet; invoices and subscription status will appear here once it is.</span></div></div>
   `;
@@ -538,7 +562,7 @@ async function loadAssets(l){
     const abs=[...urls].map(u=>{try{return new URL(u,l.preview_url).href;}catch(e){return null;}}).filter(u=>u && /^https?:/i.test(u) && !/\.svg(\?|$)/i.test(u) && !/data:/i.test(u));
     const uniq=[...new Set(abs)].slice(0,18);
     if(!uniq.length){ box.innerHTML='<div class="soonbox">No images detected on this site.</div>'; return; }
-    box.innerHTML=uniq.map((u,i)=>`<div class="asset"><img class="ph" src="${esc(u)}" loading="lazy" onerror="this.closest('.asset').remove()"/><div class="arow"><span>Image ${i+1}</span><button onclick="toast('Change request noted — your team will swap this image.')">Replace</button></div></div>`).join('');
+    box.innerHTML=uniq.map((u,i)=>`<div class="asset"><img class="ph" src="${esc(u)}" loading="lazy" onerror="this.closest('.asset').remove()"/><div class="arow"><span>Image ${i+1}</span><button onclick="replaceAsset(this.closest('.asset').querySelector('img').getAttribute('src'))">Replace</button></div></div>`).join('');
   }catch(e){ box.innerHTML='<div class="soonbox">Could not load assets right now.</div>'; }
 }
 
@@ -548,6 +572,36 @@ function humanAction(a){
   return m[a.action]||a.action.replace(/_/g,' ');
 }
 
+function revStatusLabel(s){return {pending:'In production queue',queued:'In production queue',running:'Being worked on now',in_progress:'Being worked on now',completed:'Completed',done:'Completed',blocked:'Needs attention',failed:'Needs attention'}[s]||s;}
+function revisionsHTML(id){
+  const revs=WQ.filter(j=>j.type==='revision' && j.payload && j.payload.lead_id===id)
+    .sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0));
+  if(!revs.length) return `<div class="wcard"><h3>Revisions</h3><div class="soonbox">No revisions yet. Use “Request a revision” above, or tap Replace on any image — each one becomes a tracked job here, start to finish.</div></div>`;
+  return `<div class="wcard"><h3>Revisions <span class="soon">${revs.length}</span></h3>${revs.map(r=>{
+    const p=r.payload||{}; const img=p.new_image_url?`<img class="rthumb" src="${esc(p.new_image_url)}"/>`:'';
+    const title=p.kind==='replace_image'?'Replace an image':(p.instruction||'Revision');
+    return `<div class="rev">${img}<div><b>${esc(title)}</b>${p.kind==='replace_image'&&p.instruction&&p.instruction!==title?`<small>${esc(p.instruction)}</small>`:''}<small>${r.created_at?ago(r.created_at):''}</small></div><span class="rstat">${esc(revStatusLabel(r.status))}</span></div>`;
+  }).join('')}</div>`;
+}
+async function createRevision(payload,label){
+  const ins=await sb.from('work_queue').insert({type:'revision',priority:2,status:'pending',payload,idempotency_key:'rev:'+payload.lead_id+':'+Date.now()});
+  if(ins.error){ toast('Could not queue revision — '+ins.error.message); return false; }
+  try{ await sb.from('activity_log').insert({entity_type:'lead',entity_id:payload.lead_id,action:'revision_requested',meta:{kind:payload.kind,instruction:payload.instruction||''}}); }catch(e){}
+  await sb.from('leads').update({status:'CHANGES REQUESTED',updated_at:new Date().toISOString()}).eq('id',payload.lead_id);
+  await load(); renderCustomer(payload.lead_id);
+  toast(label||'Revision sent to production ✓');
+  return true;
+}
+function replaceAsset(originalUrl){ if(!CURLEAD)return; PENDING_REPLACE=originalUrl; const fi=$('fileinput'); fi.value=''; fi.click(); }
+function openRevisionModal(){ const m=$('revmodal'); $('revtext').value=''; m.classList.add('show'); setTimeout(()=>$('revtext').focus(),60); }
+function closeRev(){ $('revmodal').classList.remove('show'); }
+async function submitRevision(){
+  const t=$('revtext').value.trim(); if(!t){ $('revtext').focus(); return; }
+  const btn=$('revsend'); btn.textContent='Sending…'; btn.disabled=true;
+  const ok=await createRevision({lead_id:CURLEAD,kind:'edit',instruction:t},'Revision sent to production ✓  It\'s now tracked below.');
+  btn.textContent='Send to production'; btn.disabled=false;
+  if(ok) closeRev();
+}
 async function decide(id,status,btn){btn.textContent='…';btn.disabled=true;
   const nm=(LEADS.find(x=>x.id===id)||{}).business_name||'Customer';
   const {error}=await sb.from('leads').update({status,updated_at:new Date().toISOString()}).eq('id',id);
@@ -561,6 +615,18 @@ async function saveNotes(id,btn){const v=$('notes').value;btn.textContent='Savin
   btn.textContent='Save note';$('noteok').textContent=error?('Error: '+error.message):'Saved ✓';
   const li=LEADS.find(x=>x.id===id);if(li)li.cc_notes=v;setTimeout(()=>$('noteok').textContent='',2500);}
 
+$('fileinput').addEventListener('change',async(e)=>{
+  const f=e.target.files&&e.target.files[0]; if(!f||!CURLEAD) return;
+  if(!/^image\//.test(f.type)){ toast('Please choose an image file.'); return; }
+  toast('Uploading '+f.name+'…');
+  const safe=f.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+  const path=CURLEAD+'/'+Date.now()+'-'+safe;
+  const up=await sb.storage.from('revisions').upload(path,f,{contentType:f.type,upsert:false});
+  if(up.error){ toast('Upload failed — '+up.error.message); return; }
+  const pub=sb.storage.from('revisions').getPublicUrl(path).data.publicUrl;
+  await createRevision({lead_id:CURLEAD,kind:'replace_image',original_url:PENDING_REPLACE,new_image_url:pub,instruction:'Swap the existing image for this newly uploaded one.'},'Image uploaded — revision is now in production ✓');
+  PENDING_REPLACE=null;
+});
 sb.auth.onAuthStateChange((_e,s)=>{if(s)boot();});
 boot();
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('/command/sw.js').catch(()=>{}); }
