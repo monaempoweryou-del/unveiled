@@ -207,6 +207,7 @@
   .conn .cn{font-weight:650;font-size:14px} .conn .cs{font-size:12px;color:var(--faint);margin-top:1px}
   .conn .cst{margin-left:auto;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:999px;flex:none}
   .cst.ok{background:rgba(15,157,99,.13);color:var(--green)} .cst.warn{background:rgba(182,124,8,.13);color:#b67c08} .cst.idle{background:rgba(156,150,173,.15);color:var(--faint)}
+  .cst.st-op{background:rgba(15,157,99,.13);color:var(--green)} .cst.st-cfg{background:rgba(182,124,8,.14);color:#b67c08} .cst.st-wait{background:rgba(224,131,58,.16);color:#c96e26} .cst.st-err{background:rgba(220,59,75,.13);color:var(--red)} .cst.st-instr{background:rgba(182,124,8,.1);color:#b67c08}
   /* decision triage */
   .legend{display:flex;flex-wrap:wrap;gap:13px;margin:2px 0 10px;font-size:11.5px;color:var(--muted)}
   .legend .lg{display:inline-flex;align-items:center;gap:6px}
@@ -395,7 +396,7 @@
       <a class="sb-item" data-v="marketing" onclick="go('marketing')"><span class="ic">📣</span><span>Marketing</span></a>
       <a class="sb-item" data-v="customers" onclick="go('customers')"><span class="ic">👥</span><span>Customers</span></a>
       <a class="sb-item" data-v="learning" onclick="go('learning')"><span class="ic">🧠</span><span>Learning</span></a>
-      <a class="sb-item" data-v="settings" onclick="go('settings')"><span class="ic">⚙️</span><span>Settings</span></a>
+      <a class="sb-item" data-v="settings" onclick="go('settings')"><span class="ic">⚙️</span><span>System Health</span></a>
     </nav>
     <div class="sb-foot"><div class="wpill" id="wpill"><span class="dot a"></span><span id="wlbl">…</span></div></div>
   </aside>
@@ -485,7 +486,7 @@ function workerPill(){
 
 // ===== Company OS navigation =====
 const VIEWS=['exec','production','comms','sales','marketing','customers','learning','settings'];
-const VTITLE={exec:'Executive',production:'Production',comms:'Communication',sales:'Sales',marketing:'Marketing',customers:'Customers',learning:'Learning',settings:'Settings'};
+const VTITLE={exec:'Executive',production:'Production',comms:'Communication',sales:'Sales',marketing:'Marketing',customers:'Customers',learning:'Learning',settings:'System Health'};
 const DEPTS=[
   {v:'production',i:'🏭',t:'Production',d:'Builds, QA, approvals, worker health'},
   {v:'comms',i:'💬',t:'Communication',d:'Every email, reply, call & follow-up'},
@@ -702,7 +703,7 @@ function renderSales(){
     <div class="sec"><h2>Packages we offer</h2></div>
     <div class="card">${pkgs.length?pkgs.map(p=>`<div class="crow" style="cursor:default"><div class="dcheck" style="background:rgba(124,58,237,.12);color:var(--violet2)">◆</div><div><div class="nm" style="text-transform:capitalize">${esc(p.name||'Package')}</div><div class="mt">${esc((p.definition&&(p.definition.summary||p.definition.next))||'Service package')}</div></div></div>`).join(''):'<div class="empty">No packages defined yet.</div>'}</div>
     ${instr('Learning','violet','Sales Intelligence','This recommendation engine gets smarter as customers move through the pipeline. The more conversations, approvals, and outcomes it observes, the better it predicts <b>what each customer needs next</b>.',
-      [{label:'Unified lead lifecycle recording every stage',done:true},{label:'Package catalog defined',done:pkgs.length>0},{label:'Enough closed outcomes to model close-rate',done:false},{label:'Connect payments for true lifetime value',done:false}],
+      [{label:'Unified lead lifecycle recording every stage',done:true},{label:'Package catalog defined',done:pkgs.length>0},{label:'Enough closed outcomes to model close-rate',done:false},{label:'Connect Square payments for true lifetime value',done:false}],
       'Once it has signal, opening a customer will surface which package fits, the next best offer, close probability, what is blocking the deal, and estimated lifetime value — recommendations, not raw data.')}`;
 }
 
@@ -738,20 +739,33 @@ function renderLearning(){
 }
 
 // ===== Settings & Integrations =====
+const SYS_STATE={op:['🟢 Operational','st-op'],cfg:['🟡 Needs setup','st-cfg'],wait:['🟠 Waiting','st-wait'],err:['🔴 Attention','st-err'],instr:['🟡 Instrumenting','st-instr']};
 function renderSettings(){
   const wh=workerHealth(), pkgs=PKGS||[];
-  const conns=[['🏭','Production worker',wh.live?('Heartbeat '+wh.since):'No recent heartbeat',wh.live?['Live','ok']:['Paused','warn']],
-    ['🗄️','Database (Supabase)','Single source of truth — connected',['Connected','ok']],
-    ['🌐','Hosting (GitHub Pages)','Live customer sites & this Command Center',['Live','ok']],
-    ['🤖','AI builder (Anthropic)','Generates and revises sites',['Active','ok']],
-    ['✉️','Email provider','Open / click tracking not connected yet',['Not connected','idle']],
-    ['📱','SMS / calls','Not connected yet',['Not connected','idle']],
-    ['💳','Payments (Stripe)','Not connected yet',['Not connected','idle']]];
+  const groups=[
+    ['Core platform',[
+      ['🏭','Production worker',wh.live?('Heartbeat '+wh.since):'No heartbeat in over 2 minutes',wh.live?'op':'err'],
+      ['🗄️','Database — Supabase','Single source of truth','op'],
+      ['🌐','Website hosting — GitHub Pages','Live customer sites & this Command Center','op'],
+      ['🤖','AI builder — Anthropic','Generates and revises websites','op'],
+    ]],
+    ['Communication',[
+      ['✉️','Operational email — Gmail / Google Workspace','Connected and sending from unveiled@monadigitalmarketing.com','op'],
+      ['📊','Email intelligence — opens, clicks, replies, bounces','Email delivery works. Engagement tracking needs a provider (Resend / Postmark) — a separate project','instr'],
+      ['💬','SMS messaging — Twilio','Account connected. A2P 10DLC campaigns pending EIN verification','wait'],
+      ['📞','Voice calls — Twilio','Connected and available now','op'],
+    ]],
+    ['Payments',[
+      ['💳','Square — source of truth for payments','Connected to the business. OS sync pending — needs Square API access to read live data','cfg'],
+    ]],
+  ];
+  const all=groups.flatMap(g=>g[1]); const opN=all.filter(s=>s[3]==='op').length;
   const autos=[['New lead → production queue','A new lead is automatically queued for a build.',true],['Follow-up scheduler','Recurring customer follow-ups run on a schedule.',true],['Worker watchdog','Flags the production worker if it goes quiet.',true]];
+  const row=([i,n,s,st])=>`<div class="conn"><div class="ci">${i}</div><div><div class="cn">${esc(n)}</div><div class="cs">${esc(s)}</div></div><span class="cst ${SYS_STATE[st][1]}">${SYS_STATE[st][0]}</span></div>`;
   $('v-settings').innerHTML=`
-    <div class="pulse" style="font-size:19px">Settings & Integrations<span class="s">What's connected, what isn't yet, and the automations running your company.</span></div>
-    <div class="sec"><h2>Connections</h2></div>
-    <div class="card" style="padding:2px 16px">${conns.map(([i,n,s,st])=>`<div class="conn"><div class="ci">${i}</div><div><div class="cn">${esc(n)}</div><div class="cs">${esc(s)}</div></div><span class="cst ${st[1]}">${esc(st[0])}</span></div>`).join('')}</div>
+    <div class="pulse" style="font-size:19px">System Health<span class="s">The real state of every system running your company — connected, configured, or waiting. ${opN} of ${all.length} fully operational.</span></div>
+    <div class="legend"><span class="lg"><i class="d-green"></i>Operational</span><span class="lg"><i class="d-amber"></i>Needs setup / instrumenting</span><span class="lg"><i style="background:#e0833a;width:9px;height:9px;border-radius:50%;display:inline-block"></i>Waiting on dependency</span><span class="lg"><i class="d-red"></i>Needs attention</span></div>
+    ${groups.map(([name,items])=>`<div class="sec"><h2>${name}</h2></div><div class="card" style="padding:2px 16px">${items.map(row).join('')}</div>${name==='Payments'?`<div class="soonbox" style="margin:8px 2px 0">Once Square is wired into the OS, every customer will show: payment status, purchased package, subscription status, invoices, recurring billing, and upgrade opportunities — with Square as the single source of truth. This needs your Square API credentials to begin.</div>`:''}`).join('')}
     <div class="sec"><h2>Onboarding packages</h2></div>
     <div class="card">${pkgs.length?pkgs.map(p=>`<div class="crow" style="cursor:default"><div class="dcheck" style="background:rgba(124,58,237,.12);color:var(--violet2)">◆</div><div><div class="nm" style="text-transform:capitalize">${esc(p.name)}</div><div class="mt">${(p.definition&&p.definition.what_we_need&&p.definition.what_we_need.length)||0} intake items</div></div></div>`).join(''):'<div class="empty">No packages yet.</div>'}</div>
     <div class="sec"><h2>Automations running</h2></div>
@@ -868,7 +882,7 @@ function renderCustomer(id){
     <div class="wcard"><h3>Website assets <span class="soon" id="assetcap"></span></h3>
       <div id="assetmgr"><div class="soonbox">Loading your asset library…</div></div></div>
     <div class="wcard int"><h3>Emails & engagement <span class="inttag">Team only</span><span class="soon" style="margin-left:8px">not instrumented</span></h3><div class="soonbox">Per-customer email threads and open/click tracking aren't connected yet, so I won't show "opened 3 times" until we can measure it. Lights up with the email-tracking instrumentation.</div></div>
-    <div class="wcard"><h3>Invoices & subscription <span class="inttag int">not instrumented</span></h3><div class="soonbox">No invoices yet.<span class="int"> Billing (Stripe) isn't connected yet; invoices and subscription status will appear here once it is.</span></div></div>
+    <div class="wcard"><h3>Invoices & subscription <span class="inttag int">Square — OS sync pending</span></h3><div class="soonbox">Payments run through <b>Square</b> (your source of truth). Once Square is wired into the OS, this shows payment status, purchased package, subscription, invoices, and recurring billing for this customer.</div></div>
   `;
   renderAssetMgr(l);
 }
