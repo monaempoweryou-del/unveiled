@@ -164,7 +164,7 @@ const esc=s=>(s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;
 const ago=d=>{if(!d)return'';const s=(Date.now()-new Date(d).getTime())/1000;if(s<60)return'just now';if(s<3600)return Math.floor(s/60)+'m ago';if(s<86400)return Math.floor(s/3600)+'h ago';return Math.floor(s/86400)+'d ago';};
 const clock=d=>new Date(d).toLocaleString([], {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
 const initials=n=>(n||'?').split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase();
-let LEADS=[], WQ=[], ACTS=[], BEAT=null, PKGS=[];
+let LEADS=[], WQ=[], ACTS=[], BEAT=null, PKGS=[], FILTER=null;
 
 // ---- auth ----
 async function signIn(){const email=$('email').value.trim(),password=$('pass').value;$('gmsg').textContent='Signing in…';
@@ -223,6 +223,7 @@ function route(){ const h=location.hash;
   else { $('ws').style.display='none'; $('home').style.display='block'; renderHome(); }
 }
 window.addEventListener('hashchange',route);
+function setFilter(f){ FILTER=(FILTER===f?null:f); if(FILTER==='pipeline')FILTER=null; renderHome(); window.scrollTo({top:0,behavior:'smooth'}); }
 
 function renderHome(){
   workerPill();
@@ -233,8 +234,21 @@ function renderHome(){
   const pipe=(appr.length+building.length+pending+LEADS.filter(l=>l.status==='QUALIFIED').length)*ONCE;
   $('sub').textContent=appr.length+' waiting on you · '+building.length+' building · '+pending+' queued';
   $('kpis').innerHTML=[
-    [appr.length,'Waiting approval'],[building.length,'Building'],[blocked.length,'Need changes'],['$'+(pipe/1000)+'k','Pipeline (est.)']
-  ].map(([n,l])=>`<div class="kpi"><div class="n">${n}</div><div class="l">${l}</div></div>`).join('');
+    [appr.length,'Waiting approval','approve'],[building.length,'Building','building'],[blocked.length,'Need changes','changes'],['$'+(pipe/1000)+'k','Pipeline (est.)','pipeline']
+  ].map(([n,l,f])=>`<div class="kpi" style="cursor:pointer" onclick="setFilter('${f}')"><div class="n">${n}</div><div class="l">${l} ›</div></div>`).join('');
+
+  // Every card is alive: a KPI click drills into exactly that cohort (no dead ends)
+  const hdr=document.querySelector('#home .sec h2');
+  if(FILTER && FILTER!=='pipeline'){
+    const map={approve:l=>l.status==='PREVIEW READY',building:l=>l.status==='BUILDING',changes:l=>l.status==='CHANGES REQUESTED'};
+    const title={approve:'Waiting on your approval',building:'In production',changes:'Need changes'};
+    const rows=LEADS.filter(map[FILTER]||(()=>false));
+    hdr.textContent=title[FILTER]||'Filtered';
+    $('needCount').innerHTML='<span style="cursor:pointer;color:var(--violet2)" onclick="setFilter(null)">‹ show everything</span>';
+    $('need').innerHTML=rows.length?rows.map(FILTER==='approve'?needRow:rowHTML).join(''):'<div class="empty">None right now.</div>';
+    $('groups').innerHTML=''; return;
+  }
+  hdr.textContent='Needs you now';
 
   // needs you = approvals + changes-needed (the truly actionable)
   const need=[...appr,...blocked].sort((a,b)=>signal(a).rank-signal(b).rank);
