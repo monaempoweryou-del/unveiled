@@ -106,6 +106,8 @@
   .custonly{display:none}
   #ws.ascust .int{display:none!important}
   #ws.ascust .acts.custonly{display:flex}
+  .obx{width:22px;height:22px;border-radius:7px;border:1px solid var(--line);display:inline-grid;place-items:center;font-size:13px;color:#fff;flex:none}
+  .obx.on{background:var(--green);border-color:transparent;color:#06210f;font-weight:700}
   /* login */
   .gate{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:radial-gradient(800px 600px at 50% 0%,rgba(124,58,237,.18),#070509)}
   .gate .box{width:340px;max-width:90vw;text-align:center;background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:34px 28px;backdrop-filter:blur(18px)}
@@ -156,7 +158,7 @@ const esc=s=>(s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;
 const ago=d=>{if(!d)return'';const s=(Date.now()-new Date(d).getTime())/1000;if(s<60)return'just now';if(s<3600)return Math.floor(s/60)+'m ago';if(s<86400)return Math.floor(s/3600)+'h ago';return Math.floor(s/86400)+'d ago';};
 const clock=d=>new Date(d).toLocaleString([], {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
 const initials=n=>(n||'?').split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase();
-let LEADS=[], WQ=[], ACTS=[], BEAT=null;
+let LEADS=[], WQ=[], ACTS=[], BEAT=null, PKGS=[];
 
 // ---- auth ----
 async function signIn(){const email=$('email').value.trim(),password=$('pass').value;$('gmsg').textContent='Signing in…';
@@ -190,11 +192,12 @@ function signal(l){
 
 async function load(){
   try{
-    [LEADS,WQ,ACTS,BEAT]=await Promise.all([
+    [LEADS,WQ,ACTS,BEAT,PKGS]=await Promise.all([
       q('leads?select=*&order=updated_at.desc&limit=500'),
       q('work_queue?select=status,claimed_at,payload,blocker_reason,result&order=updated_at.desc&limit=200'),
       q('activity_log?select=action,meta,created_at,entity_id&action=neq.heartbeat&order=created_at.desc&limit=400'),
       q('activity_log?select=created_at&action=eq.heartbeat&order=created_at.desc&limit=1').then(r=>r[0]),
+      q('service_packages?select=*'),
     ]);
   }catch(e){$('sub').textContent='Could not load: '+e.message;}
 }
@@ -306,6 +309,8 @@ function renderCustomer(id){
     ${l.preview_url?`<div class="wcard"><h3>Website</h3><iframe class="prev" src="${esc(l.preview_url)}" loading="lazy"></iframe>
       <div style="margin-top:10px"><a class="btn" href="${esc(l.preview_url)}" target="_blank">Open full site ↗</a></div></div>`:''}
 
+    ${onboardingHTML(l)}
+
     <div class="wcard int"><h3>Production <span class="inttag">Team only</span></h3>
       ${job?`<div class="kv"><span class="k">Status</span><span>${esc(job.status)}${job.status==='running'&&job.claimed_at?' · '+ago(job.claimed_at).replace(' ago',' in build'):''}</span></div>
       ${job.blocker_reason?`<div class="kv"><span class="k">Blocked</span><span>${esc(job.blocker_reason)}</span></div>`:''}
@@ -335,6 +340,25 @@ function renderCustomer(id){
     <div class="wcard int"><h3>Emails & engagement <span class="inttag">Team only</span><span class="soon" style="margin-left:8px">not tracked yet</span></h3><div class="soonbox">Per-customer email threads and open/click tracking aren't connected yet, so I can't honestly show "opened 3 times" — I won't fake it. This lights up when reply + open tracking ships.</div></div>
     <div class="wcard"><h3>Meetings & invoices <span class="soon">not tracked yet</span></h3><div class="soonbox">No calendar or billing integration yet. Meetings, calls, and invoices will gather here once connected.</div></div>
   `;
+}
+
+function onboardingHTML(l){
+  const pkg=(PKGS&&PKGS.find(p=>p.name===(l.package||'website')))||(PKGS&&PKGS[0]); if(!pkg)return'';
+  const def=pkg.definition||{}; const items=def.what_we_need||[]; const st=l.onboarding||{};
+  const done=items.filter(it=>st[it.k]).length;
+  return `<div class="wcard"><h3>Onboarding &amp; requirements <span class="soon">${done}/${items.length} done</span></h3>
+    <div class="soonbox" style="margin-bottom:12px">${esc(def.next||'')}</div>
+    ${items.map(it=>`<div class="kv" style="cursor:pointer;align-items:center" onclick="toggleOnb('${l.id}','${esc(it.k)}',this)">
+      <span class="obx ${st[it.k]?'on':''}">${st[it.k]?'✓':''}</span>
+      <span style="flex:1">${esc(it.label)}</span><span class="inttag" style="margin:0">${esc(it.kind||'')}</span></div>`).join('')}
+  </div>`;
+}
+async function toggleOnb(id,k,row){
+  const l=LEADS.find(x=>x.id===id); if(!l)return; l.onboarding=l.onboarding||{}; l.onboarding[k]=!l.onboarding[k];
+  const box=row.querySelector('.obx'); box.classList.toggle('on',l.onboarding[k]); box.textContent=l.onboarding[k]?'✓':'';
+  await sb.from('leads').update({onboarding:l.onboarding}).eq('id',id);
+  const pkg=(PKGS.find(p=>p.name===(l.package||'website'))||PKGS[0]); const items=(pkg&&pkg.definition.what_we_need)||[];
+  const done=items.filter(it=>l.onboarding[it.k]).length; const s=row.closest('.wcard').querySelector('.soon'); if(s)s.textContent=done+'/'+items.length+' done';
 }
 
 function setView(v,btn){
