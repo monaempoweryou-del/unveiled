@@ -392,7 +392,7 @@ function rowHTML(l){
 // ---- CUSTOMER WORKSPACE ----
 function renderCustomer(id){
   const l=LEADS.find(x=>x.id===id); if(!l){location.hash='';return;}
-  $('home').style.display='none'; $('ws').style.display='block'; window.scrollTo(0,0);
+  $('home').style.display='none'; $('ws').style.display='block'; $('ws').classList.remove('ascust'); window.scrollTo(0,0);
   const sg=signal(l);
   const myacts=ACTS.filter(a=>a.entity_id===id);
   const job=WQ.find(j=>j.payload&&j.payload.lead_id===id);
@@ -416,7 +416,7 @@ function renderCustomer(id){
   }
   if(phone) teamActs+=`<a class="btn" href="tel:${esc(phone.replace(/[^0-9+]/g,''))}">📞 Call</a>`;
   if(email) teamActs+=`<a class="btn" href="mailto:${esc(email)}">✉ Email</a>`;
-  custActs+=`<button class="btn" onclick="alert('Change requests route to your team once customer login ships.')">Request a change</button>`;
+  custActs+=`<button class="btn" onclick="toast('Got it — change requests will route to your team once customer login is enabled.')">Request a change</button>`;
 
   $('ws').innerHTML=`
     <div class="back" onclick="location.hash=''">‹ All customers</div>
@@ -425,7 +425,7 @@ function renderCustomer(id){
     <div class="wsHead">
       <div class="ava">${esc(initials(l.business_name))}</div>
       <div><h1>${esc(l.business_name||'Untitled')}</h1>
-      <div class="meta">${[l.industry,l.location].filter(Boolean).map(esc).join(' · ')||'—'}</div></div>
+      ${[l.industry,l.location].filter(Boolean).length?`<div class="meta">${[l.industry,l.location].filter(Boolean).map(esc).join(' · ')}</div>`:''}</div>
     </div>
     ${banner}
     <div class="acts int">${teamActs}</div>
@@ -514,7 +514,7 @@ function journeyHTML(l){
     out+=`<div class="jstep ${cls}"><span class="jd"></span><span class="jl">${st.l}${st.soon?'<i>not tracked</i>':''}</span></div>`;
   });
   return `<div class="wcard"><h3>Customer journey</h3><div class="journey">${out}</div>
-    <div class="soonbox" style="margin-top:11px">Greyed steps (opened, replied, paid, live) aren't instrumented yet. I won't light them up until we can measure them honestly — see the blind-spot report for how we wire each one.</div></div>`;
+    <div class="soonbox int" style="margin-top:11px">Greyed steps (opened, replied, paid, live) aren't instrumented yet. I won't light them up until we can measure them honestly — see the blind-spot report for how we wire each one.</div></div>`;
 }
 
 function humanAction(a){
