@@ -311,6 +311,26 @@
   /* live website thumbnail in approval rows */
   .thumb{width:88px;height:60px;border-radius:11px;overflow:hidden;border:1px solid var(--line);flex:none;background:#fff;position:relative;box-shadow:0 1px 2px rgba(40,25,80,.05)}
   .thumb iframe{width:314px;height:214px;border:0;transform:scale(.28);transform-origin:top left;pointer-events:none;position:absolute;top:0;left:0}
+  /* premium approval card: live homepage thumbnail + name + status + quick actions */
+  .acard{display:flex;gap:15px;padding:15px 16px;border-bottom:1px solid var(--line)}
+  .acard:last-child{border-bottom:0}
+  .acard-thumb{width:148px;height:100px;border-radius:13px;overflow:hidden;border:1px solid var(--line);flex:none;position:relative;background:#fff;cursor:pointer;box-shadow:0 1px 3px rgba(40,25,80,.08)}
+  .acard-thumb iframe{width:494px;height:334px;border:0;transform:scale(.30);transform-origin:top left;pointer-events:none;position:absolute;top:0;left:0}
+  .acard-thumb.noimg{display:grid;place-items:center;font-weight:700;font-size:24px;color:#fff;background:linear-gradient(140deg,#6d34d6,#3a1d80)}
+  .acard-open{position:absolute;left:0;right:0;bottom:0;font-size:10px;text-align:center;padding:3px;background:rgba(0,0,0,.5);color:#fff;opacity:0;transition:.15s}
+  .acard-thumb:hover .acard-open{opacity:1}
+  .acard-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+  .acard-top{display:flex;align-items:center;gap:10px;justify-content:space-between}
+  .acard-nm{font-size:16px;font-weight:700;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .acard-mt{font-size:12.5px;color:var(--faint)}
+  .acard-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto}
+  .acard-acts .btn{padding:10px 14px;font-size:13px;flex:1 1 auto;min-width:110px;text-align:center}
+  @media(max-width:560px){
+    .acard{flex-direction:column;gap:12px;padding:14px}
+    .acard-thumb{width:100%;height:168px}
+    .acard-thumb iframe{width:1080px;height:730px;transform:scale(.34)}
+    .acard-acts .btn{flex:1 1 100%}
+  }
   .assetgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(116px,1fr));gap:11px}
   /* asset manager */
   .slots{display:grid;grid-template-columns:1fr 1fr;gap:11px}
@@ -783,15 +803,41 @@ function renderSkeleton(){
 function toast(msg){ const t=$('toast'); if(!t)return; t.textContent=msg; t.classList.add('show'); clearTimeout(window._tt); window._tt=setTimeout(()=>t.classList.remove('show'),3400); }
 function needRow(l){
   const sg=signal(l);
-  let quick='<div class="chev">›</div>';
-  if(sg.k==='approve') quick=`<button class="btn good" style="padding:9px 15px;font-size:13px;flex:none" onclick="event.stopPropagation();decide('${l.id}','APPROVED',this)">Approve</button>`;
+  // Sites waiting on the CEO get a premium, scannable card: live homepage
+  // thumbnail + name + status + the three quick actions, so dozens can be
+  // reviewed from a phone without opening each project.
+  if(sg.k==='approve'){
+    const u=l.preview_url||'';
+    const thumb = u
+      ? `<div class="acard-thumb" onclick="location.hash='#c/${l.id}'"><iframe src="${esc(u)}" scrolling="no" loading="lazy" tabindex="-1"></iframe><span class="acard-open">Tap to expand</span></div>`
+      : `<div class="acard-thumb noimg" onclick="location.hash='#c/${l.id}'"><span>${esc(initials(l.business_name))}</span></div>`;
+    const openBtn = u ? `<a class="btn" href="${esc(u)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Open preview ↗</a>` : '';
+    return `<div class="acard">
+      ${thumb}
+      <div class="acard-body">
+        <div class="acard-top">
+          <div class="acard-nm">${esc(l.business_name||'Untitled')}</div>
+          <span class="pill p-${sg.cls}">${sg.label}</span>
+        </div>
+        <div class="acard-mt">${esc(l.industry||l.source||'')} · ready ${ago(l.updated_at)}</div>
+        <div class="acard-acts">
+          <button class="btn good" onclick="event.stopPropagation();decide('${l.id}','APPROVED',this)">Approve &amp; reveal</button>
+          <button class="btn" onclick="event.stopPropagation();requestRevisionFor('${l.id}')">Request revision</button>
+          ${openBtn}
+        </div>
+      </div>
+    </div>`;
+  }
+  // non-approval items (e.g. need-changes) keep the compact row
   const left = l.preview_url ? `<div class="thumb"><iframe src="${esc(l.preview_url)}" scrolling="no" loading="lazy" tabindex="-1"></iframe></div>` : `<div class="ava">${esc(initials(l.business_name))}</div>`;
   return `<div class="crow" onclick="location.hash='#c/${l.id}'">
     ${left}
     <div><div class="nm">${esc(l.business_name||'Untitled')}</div><div class="mt">${esc(l.industry||l.source||'')} · ${ago(l.updated_at)}</div></div>
-    <div class="sig"><span class="pill p-${sg.cls}">${sg.label}</span></div>${quick}
+    <div class="sig"><span class="pill p-${sg.cls}">${sg.label}</span></div><div class="chev">›</div>
   </div>`;
 }
+// open the revision modal for a specific lead from the approval list (not just the open workspace)
+function requestRevisionFor(id){ CURLEAD=id; openRevisionModal(); }
 function rowHTML(l){
   const sg=signal(l);
   return `<div class="crow" onclick="location.hash='#c/${l.id}'">
@@ -1048,12 +1094,41 @@ async function submitRevision(){
   btn.textContent='Send to production'; btn.disabled=false;
   if(ok) closeRev();
 }
-async function decide(id,status,btn){btn.textContent='…';btn.disabled=true;
+async function decide(id,status,btn){
   const nm=(LEADS.find(x=>x.id===id)||{}).business_name||'Customer';
-  const {error}=await sb.from('leads').update({status,updated_at:new Date().toISOString()}).eq('id',id);
-  if(error){console.error('decide failed:',error);btn.textContent='Try again';toast('That didn’t save — nothing changed. Tap to try once more.');btn.disabled=false;return;}
+  if(btn){btn.textContent='…';btn.disabled=true;}
+  // STEP 1 — request must reach the backend with an authorized identity.
+  // leads is RLS-protected (LS-PII); writes require a signed-in staff session.
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){ if(btn){btn.textContent='Sign in to approve';btn.disabled=false;}
+    toast('You are signed out. Approvals need a signed-in staff session — the database protects customer records. Sign in, then approve.'); return; }
+  // STEP 2 — update AND read the row back, so we can tell a real save from a
+  // silent no-op (an RLS policy that filters the row updates 0 rows with NO error).
+  const {data,error}=await sb.from('leads')
+    .update({status,updated_at:new Date().toISOString()}).eq('id',id)
+    .select('id,status,preview_url,reveal_sent_at');
+  if(error){ console.error('decide failed:',error); if(btn){btn.textContent='Try again';btn.disabled=false;}
+    const why=error.message||error.code||'unknown error';
+    toast('Could not approve: '+why+(error.code==='42501'?' — your account lacks approval permission (needs the staff/approver role).':'')); return; }
+  if(!data||!data.length){ if(btn){btn.textContent='Try again';btn.disabled=false;}
+    console.error('decide no-op: update matched 0 rows for',id,'status',status);
+    toast('Nothing changed: the database accepted the request but updated 0 rows — a security policy is filtering this record, so it was NOT approved. (Apply Backend/cc-approval-rls-fix.sql.)'); return; }
+  // STEP 3 — confirmed the status changed. Refresh the view.
+  const row=data[0];
   await load(); route();
-  toast({APPROVED:'Approved ✓   The reveal is on its way to '+nm+'.','CHANGES REQUESTED':'Sent back for changes — '+nm+' left your approval queue.',LOST:nm+' passed — moved to Archived.'}[status]||'Saved.');
+  if(status==='APPROVED'){
+    // STEP 4/5 — the reveal email (trigger -> tasks -> email worker) and the
+    // correct preview link. Surface the live link, then verify the reveal sent.
+    const link=row.preview_url||'';
+    toast('Approved ✓  Reveal on its way to '+nm+(link?'  ·  '+link:''));
+    setTimeout(async()=>{ try{
+      const {data:chk}=await sb.from('leads').select('reveal_sent_at').eq('id',id);
+      if(chk&&chk[0]&&!chk[0].reveal_sent_at)
+        toast('Approved — but the reveal email has not sent yet. It is queued; if it stays unsent, the email worker needs attention.');
+    }catch(e){} }, 4500);
+  } else {
+    toast({'CHANGES REQUESTED':'Sent back for changes — '+nm+' left your approval queue.',LOST:nm+' passed — moved to Archived.'}[status]||'Saved.');
+  }
 }
 
 async function saveNotes(id,btn){const v=$('notes').value;btn.textContent='Saving…';
