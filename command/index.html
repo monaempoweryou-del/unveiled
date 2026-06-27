@@ -10,92 +10,98 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root{
-    --bg:#070509; --panel:rgba(28,22,40,.55); --panel-line:rgba(150,120,220,.14);
-    --violet:#8b5cf6; --violet2:#a78bfa; --glow:rgba(124,58,237,.55);
+    --bg:#070509; --panel:rgba(28,22,40,.55); --panel2:rgba(255,255,255,.025); --line:rgba(150,120,220,.14);
+    --violet:#8b5cf6; --violet2:#a78bfa; --glow:rgba(124,58,237,.5);
     --txt:#f4f1fb; --muted:#9b93b4; --faint:#6c647f;
-    --green:#46e5a0; --amber:#ffcf6b; --red:#ff6b81; --radius:18px;
+    --green:#46e5a0; --amber:#ffcf6b; --red:#ff6b81; --blue:#7cc5ff; --radius:18px;
   }
-  *{box-sizing:border-box;margin:0;padding:0}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   html,body{height:100%}
   body{font-family:Inter,system-ui,sans-serif;color:var(--txt);background:var(--bg);-webkit-font-smoothing:antialiased;overflow-x:hidden}
-  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
-    background:radial-gradient(900px 600px at 78% -8%,rgba(124,58,237,.20),transparent 60%),radial-gradient(700px 500px at 5% 110%,rgba(99,60,200,.16),transparent 60%),linear-gradient(180deg,#070509,#0a0710 60%,#070509)}
-  .app{position:relative;z-index:1;display:flex;min-height:100vh}
-  .sphere{width:38px;height:38px;border-radius:50%;flex:none;position:relative;background:radial-gradient(circle at 34% 30%,#c7b3ff 0%,#7c3aed 38%,#3a1d80 70%,#160b33 100%);box-shadow:0 0 22px var(--glow),inset 0 0 14px rgba(255,255,255,.25);animation:pulse 5s ease-in-out infinite}
-  @keyframes pulse{0%,100%{box-shadow:0 0 18px var(--glow),inset 0 0 14px rgba(255,255,255,.22)}50%{box-shadow:0 0 34px var(--glow),inset 0 0 16px rgba(255,255,255,.32)}}
-  .side{width:230px;flex:none;padding:22px 16px;display:flex;flex-direction:column;gap:5px;border-right:1px solid var(--panel-line);background:linear-gradient(180deg,rgba(20,15,30,.5),rgba(10,8,16,.2));position:sticky;top:0;height:100vh;backdrop-filter:blur(14px)}
-  .brand{display:flex;align-items:center;gap:12px;padding:6px 8px 18px}
-  .brand b{font-weight:700;letter-spacing:.28em;font-size:15px}
-  .nav a{display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:13px;color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;cursor:pointer}
-  .nav a.on{background:linear-gradient(90deg,rgba(124,58,237,.28),rgba(124,58,237,.08));color:#fff;box-shadow:inset 0 0 0 1px rgba(150,120,220,.22)}
-  .nav .badge{margin-left:auto;background:var(--violet);color:#fff;font-size:11px;font-weight:700;padding:1px 8px;border-radius:999px}
-  .me{display:flex;align-items:center;gap:10px;margin-top:auto;padding:8px;border-radius:13px}
-  .me .av{width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#cab8ff,#6d34d6);flex:none}
-  .me small{display:block;color:var(--faint);font-size:11px}
-  .main{flex:1;min-width:0;padding:24px 28px 60px}
-  .top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:20px}
-  .hi{font-size:27px;font-weight:700;letter-spacing:-.02em}
-  .hi .sub{display:block;font-size:13px;color:var(--muted);font-weight:400;margin-top:6px}
-  .wpill{display:inline-flex;align-items:center;gap:8px;font-size:13px;background:var(--panel);border:1px solid var(--panel-line);padding:9px 14px;border-radius:12px;backdrop-filter:blur(10px)}
-  .wpill .dot{width:9px;height:9px;border-radius:50%}
-  .dot.g{background:var(--green);box-shadow:0 0 10px var(--green)} .dot.a{background:var(--amber);box-shadow:0 0 10px var(--amber)} .dot.r{background:var(--red);box-shadow:0 0 10px var(--red)}
-  .grid{display:grid;gap:16px}
-  .panel{background:var(--panel);border:1px solid var(--panel-line);border-radius:var(--radius);padding:18px;backdrop-filter:blur(16px);box-shadow:0 20px 50px -30px rgba(0,0,0,.8)}
-  .panel h3{font-size:12px;font-weight:600;letter-spacing:.05em;color:var(--muted);text-transform:uppercase;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-  .panel h3 .link{color:var(--violet2);font-size:12px;text-transform:none;letter-spacing:0;cursor:pointer;font-weight:500}
-  .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:13px;margin-bottom:16px}
-  .stat{background:var(--panel);border:1px solid var(--panel-line);border-radius:16px;padding:16px;backdrop-filter:blur(14px);position:relative;overflow:hidden}
-  .stat .lab{font-size:12px;color:var(--muted);font-weight:500}
-  .stat .big{font-size:30px;font-weight:700;margin-top:8px;letter-spacing:-.02em;line-height:1}
-  .stat .note{font-size:11.5px;margin-top:7px;color:var(--faint)}
-  .stat .ring{position:absolute;right:-30px;top:-30px;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.16),transparent 70%)}
-  .apps{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:13px}
-  .appcard{border:1px solid var(--panel-line);border-radius:15px;overflow:hidden;background:rgba(255,255,255,.02);transition:.2s}
-  .appcard:hover{transform:translateY(-3px);box-shadow:0 18px 40px -22px var(--glow);border-color:rgba(139,92,246,.4)}
-  .appcard .prev{height:135px;border:0;width:100%;background:#0c0913;display:block;pointer-events:none}
-  .appcard .thumb{height:135px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(124,58,237,.18),rgba(20,12,40,.4));color:var(--violet2);font-weight:600;text-align:center;padding:0 12px}
-  .appcard .meta{padding:12px 13px} .appcard .meta b{font-size:14px} .appcard .meta small{display:block;color:var(--faint);font-size:12px;margin-top:2px}
-  .appcard .meta a{color:var(--violet2);font-size:12px;text-decoration:none}
-  .appcard .acts{display:flex;gap:6px;padding:0 13px 13px}
-  .btn{flex:1;border:1px solid var(--panel-line);background:rgba(255,255,255,.03);color:var(--txt);padding:8px;border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s}
-  .btn:hover{background:rgba(255,255,255,.08)}
-  .btn.ok{background:linear-gradient(90deg,rgba(70,229,160,.18),rgba(70,229,160,.06));border-color:rgba(70,229,160,.3);color:#baf5da} .btn.ok:hover{background:rgba(70,229,160,.25)}
-  .btn.no:hover{background:rgba(255,107,129,.18);color:#ffc2cb}
-  .row{display:flex;align-items:center;gap:10px;padding:10px 2px;border-bottom:1px solid rgba(255,255,255,.05);font-size:13.5px}
-  .row:last-child{border:0}
-  .row .tag{margin-left:auto;font-size:11.5px;font-weight:600;padding:2px 9px;border-radius:999px}
-  .tag.run{background:rgba(124,58,237,.18);color:var(--violet2)} .tag.stall{background:rgba(255,207,107,.16);color:var(--amber)} .tag.block{background:rgba(255,107,129,.16);color:var(--red)}
-  .row small{color:var(--faint);font-size:12px;display:block}
-  .tl{display:flex;flex-direction:column;gap:1px;max-height:340px;overflow:auto}
-  .tl .ev{display:flex;gap:11px;padding:9px 4px;border-bottom:1px solid rgba(255,255,255,.04)}
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(900px 600px at 80% -10%,rgba(124,58,237,.18),transparent 60%),radial-gradient(700px 500px at 0% 110%,rgba(99,60,200,.14),transparent 60%),linear-gradient(180deg,#070509,#0a0710 60%,#070509)}
+  .wrap{position:relative;z-index:1;max-width:880px;margin:0 auto;padding:22px 18px 90px}
+  .sphere{width:34px;height:34px;border-radius:50%;flex:none;background:radial-gradient(circle at 34% 30%,#c7b3ff,#7c3aed 38%,#3a1d80 70%,#160b33);box-shadow:0 0 20px var(--glow),inset 0 0 12px rgba(255,255,255,.25);animation:pulse 5s ease-in-out infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 16px var(--glow),inset 0 0 12px rgba(255,255,255,.22)}50%{box-shadow:0 0 30px var(--glow),inset 0 0 14px rgba(255,255,255,.32)}}
+  .topbar{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+  .topbar b{font-weight:700;letter-spacing:.26em;font-size:14px}
+  .wpill{margin-left:auto;display:inline-flex;align-items:center;gap:7px;font-size:12.5px;background:var(--panel);border:1px solid var(--line);padding:7px 12px;border-radius:999px;backdrop-filter:blur(10px)}
+  .dot{width:8px;height:8px;border-radius:50%}
+  .dot.g{background:var(--green);box-shadow:0 0 9px var(--green)} .dot.a{background:var(--amber);box-shadow:0 0 9px var(--amber)} .dot.r{background:var(--red);box-shadow:0 0 9px var(--red)}
+  .hello{font-size:26px;font-weight:700;letter-spacing:-.02em;margin-bottom:3px}
+  .hello .s{display:block;font-size:13.5px;color:var(--muted);font-weight:400;margin-top:5px}
+  /* KPI strip */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}
+  .kpi{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:13px 14px;backdrop-filter:blur(12px)}
+  .kpi .n{font-size:24px;font-weight:700;line-height:1}
+  .kpi .l{font-size:11.5px;color:var(--muted);margin-top:5px}
+  /* sections */
+  .sec{margin:26px 0 10px;display:flex;align-items:center;gap:10px}
+  .sec h2{font-size:13px;font-weight:600;letter-spacing:.04em;color:var(--muted);text-transform:uppercase}
+  .sec .c{font-size:12px;color:var(--faint)}
+  .sec .r{margin-left:auto;font-size:12.5px;color:var(--violet2);cursor:pointer}
+  /* customer rows */
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);backdrop-filter:blur(14px);overflow:hidden}
+  .crow{display:flex;align-items:center;gap:13px;padding:15px 16px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.05);transition:.15s}
+  .crow:last-child{border-bottom:0}
+  .crow:hover,.crow:active{background:rgba(255,255,255,.04)}
+  .crow .ava{width:42px;height:42px;border-radius:12px;flex:none;display:grid;place-items:center;font-weight:700;font-size:16px;color:#fff;background:linear-gradient(140deg,#6d34d6,#3a1d80)}
+  .crow .nm{font-size:15px;font-weight:600;line-height:1.25}
+  .crow .mt{font-size:12.5px;color:var(--faint);margin-top:2px}
+  .crow .sig{margin-left:auto;text-align:right;flex:none}
+  .pill{display:inline-block;font-size:11.5px;font-weight:600;padding:3px 10px;border-radius:999px;white-space:nowrap}
+  .p-red{background:rgba(255,107,129,.16);color:var(--red)} .p-amber{background:rgba(255,207,107,.16);color:var(--amber)}
+  .p-violet{background:rgba(124,58,237,.2);color:var(--violet2)} .p-blue{background:rgba(124,197,255,.14);color:var(--blue)}
+  .p-green{background:rgba(70,229,160,.15);color:var(--green)} .p-muted{background:rgba(255,255,255,.05);color:var(--faint)}
+  .crow .chev{color:var(--faint);font-size:18px;margin-left:4px}
+  .needhero{border:1px solid rgba(255,107,129,.25);box-shadow:0 0 0 1px rgba(255,107,129,.06),0 22px 50px -34px rgba(0,0,0,.9)}
+  .empty{color:var(--faint);font-size:13.5px;text-align:center;padding:26px 0}
+  .search{width:100%;padding:12px 15px;border-radius:13px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:#fff;font-family:inherit;font-size:14px;margin-bottom:4px}
+  /* ---- customer workspace ---- */
+  #ws{display:none}
+  .back{display:inline-flex;align-items:center;gap:7px;color:var(--violet2);font-size:14px;cursor:pointer;margin-bottom:16px}
+  .wsHead{display:flex;align-items:flex-start;gap:15px;margin-bottom:6px}
+  .wsHead .ava{width:56px;height:56px;border-radius:16px;flex:none;display:grid;place-items:center;font-weight:700;font-size:22px;background:linear-gradient(140deg,#6d34d6,#3a1d80)}
+  .wsHead h1{font-size:23px;font-weight:700;letter-spacing:-.01em;line-height:1.15}
+  .wsHead .meta{font-size:13px;color:var(--muted);margin-top:4px}
+  .banner{margin:16px 0;padding:14px 16px;border-radius:14px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:10px}
+  .b-red{background:rgba(255,107,129,.12);border:1px solid rgba(255,107,129,.3);color:#ffd0d7}
+  .b-blue{background:rgba(124,197,255,.1);border:1px solid rgba(124,197,255,.25);color:#cfeaff}
+  .b-amber{background:rgba(255,207,107,.1);border:1px solid rgba(255,207,107,.28);color:#ffe9bd}
+  .b-violet{background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.3);color:#d9c9ff}
+  .acts{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0 6px}
+  .btn{border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--txt);padding:12px 16px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s;text-decoration:none;display:inline-flex;align-items:center;gap:7px}
+  .btn:hover{background:rgba(255,255,255,.09)}
+  .btn.primary{background:linear-gradient(90deg,var(--violet),#6d34d6);border-color:transparent;color:#fff;box-shadow:0 10px 26px -12px var(--glow)}
+  .btn.good{background:linear-gradient(90deg,rgba(70,229,160,.22),rgba(70,229,160,.08));border-color:rgba(70,229,160,.3);color:#c5f7e0}
+  .btn.ghost{background:transparent}
+  .wcard{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:17px;backdrop-filter:blur(14px);margin-top:14px}
+  .wcard h3{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:13px;display:flex;align-items:center;gap:8px}
+  .wcard h3 .soon{margin-left:auto;font-size:10.5px;color:var(--faint);text-transform:none;letter-spacing:0;font-weight:400}
+  .kv{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:14px}
+  .kv:last-child{border:0} .kv .k{color:var(--muted);width:96px;flex:none} .kv a{color:var(--violet2);text-decoration:none}
+  .prev{width:100%;height:260px;border:1px solid var(--line);border-radius:12px;background:#0c0913;display:block}
+  .tl .ev{display:flex;gap:12px;padding:11px 2px;border-bottom:1px solid rgba(255,255,255,.045)}
   .tl .ev:last-child{border:0}
-  .tl .tdot{width:28px;height:28px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:13px;background:rgba(124,58,237,.14);border:1px solid var(--panel-line)}
-  .tl .ev b{font-size:13px;font-weight:600;display:block} .tl .ev .t{margin-left:auto;font-size:11px;color:var(--faint);white-space:nowrap}
-  .hrow{display:flex;align-items:center;gap:10px;padding:10px 2px;border-bottom:1px solid rgba(255,255,255,.04);font-size:13.5px}
-  .hrow:last-child{border:0} .hrow .d{width:9px;height:9px;border-radius:50%;flex:none} .hrow .s{margin-left:auto;font-size:12.5px;font-weight:600}
-  .ok{color:var(--green)} .warn{color:var(--amber)} .bad{color:var(--red)}
-  .empty{color:var(--faint);font-size:13px;text-align:center;padding:22px 0}
+  .tl .tdot{width:30px;height:30px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:14px;background:rgba(124,58,237,.14);border:1px solid var(--line)}
+  .tl b{font-size:13.5px;display:block} .tl .t{margin-left:auto;font-size:11.5px;color:var(--faint);white-space:nowrap}
+  textarea{width:100%;min-height:90px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:12px;color:#fff;font-family:inherit;font-size:14px;padding:12px;resize:vertical}
+  .savebar{display:flex;align-items:center;gap:10px;margin-top:9px} .savebar .ok{font-size:12.5px;color:var(--green)}
+  .soonbox{color:var(--faint);font-size:13px;line-height:1.5}
+  /* login */
   .gate{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:radial-gradient(800px 600px at 50% 0%,rgba(124,58,237,.18),#070509)}
-  .gate .box{width:340px;max-width:90vw;text-align:center;background:var(--panel);border:1px solid var(--panel-line);border-radius:24px;padding:34px 28px;backdrop-filter:blur(18px)}
-  .gate .sphere{width:60px;height:60px;margin:0 auto 18px} .gate b{letter-spacing:.3em;font-size:17px} .gate p{color:var(--muted);font-size:13px;margin:8px 0 22px}
-  .gate input{width:100%;padding:13px 15px;border-radius:12px;border:1px solid var(--panel-line);background:rgba(255,255,255,.04);color:#fff;font-family:inherit;font-size:14px;margin-bottom:10px}
+  .gate .box{width:340px;max-width:90vw;text-align:center;background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:34px 28px;backdrop-filter:blur(18px)}
+  .gate .sphere{width:58px;height:58px;margin:0 auto 18px} .gate b{letter-spacing:.3em;font-size:17px} .gate p{color:var(--muted);font-size:13px;margin:8px 0 22px}
+  .gate input{width:100%;padding:13px 15px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:#fff;font-family:inherit;font-size:14px;margin-bottom:10px}
   .gate button{width:100%;padding:13px;border:0;border-radius:12px;cursor:pointer;font-weight:600;font-size:14px;background:linear-gradient(90deg,var(--violet),#6d34d6);color:#fff;font-family:inherit}
   .gate .msg{font-size:12.5px;color:var(--amber);margin-top:12px;min-height:16px}
-  .hamb{display:none}
-  @media(max-width:1100px){.stats{grid-template-columns:repeat(2,1fr)}}
-  @media(max-width:820px){
-    .side{position:fixed;left:0;top:0;z-index:40;transform:translateX(-100%);transition:.3s;box-shadow:0 0 60px rgba(0,0,0,.6)} .side.open{transform:none}
-    .main{padding:16px 14px 60px} .hi{font-size:21px} .stats{grid-template-columns:repeat(2,1fr);gap:9px} .stat .big{font-size:24px}
-    .hamb{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;border:1px solid var(--panel-line);background:var(--panel);color:#fff;font-size:20px;cursor:pointer}
-  }
-  .colspan{grid-column:1/-1}
+  @media(max-width:560px){.kpis{grid-template-columns:repeat(2,1fr)}.wrap{padding:18px 14px 90px}.hello{font-size:22px}}
 </style>
 </head>
 <body>
 
 <div class="gate" id="gate">
   <div class="box">
-    <div class="sphere"></div><b>UNVEILED</b><p>Executive Command Center</p>
+    <div class="sphere"></div><b>UNVEILED</b><p>Command Center</p>
     <input id="email" type="email" placeholder="you@email.com" autocomplete="username" />
     <input id="pass" type="password" placeholder="Password" autocomplete="current-password" />
     <button onclick="signIn()">Enter</button>
@@ -104,200 +110,224 @@
   </div>
 </div>
 
-<div class="app" id="app" style="display:none">
-  <aside class="side" id="side">
-    <div class="brand"><div class="sphere"></div><b>UNVEILED</b></div>
-    <nav class="nav">
-      <a class="on"><span>◎</span> Command Center</a>
-      <a><span>✓</span> Approvals <span class="badge" id="navAppr">0</span></a>
-      <a><span>⛓</span> Production</a>
-      <a><span>◍</span> Leads</a>
-      <a><span>✦</span> Outreach</a>
-      <a><span>⚙</span> Settings</a>
-    </nav>
-    <div class="me"><div class="av"></div><div><b style="font-size:14px">Moe</b><small>CEO · UNVEILED</small></div></div>
-  </aside>
+<div class="wrap" id="app" style="display:none">
+  <!-- HOME -->
+  <div id="home">
+    <div class="topbar"><div class="sphere"></div><b>UNVEILED</b><div class="wpill" id="wpill"><span class="dot a"></span><span id="wlbl">…</span></div></div>
+    <div class="hello">Good <span id="part">day</span>, Moe.<span class="s" id="sub">Loading your company…</span></div>
+    <div class="kpis" id="kpis"></div>
 
-  <main class="main">
-    <div class="top">
-      <div style="display:flex;gap:14px;align-items:center">
-        <div class="hamb" onclick="document.getElementById('side').classList.toggle('open')">☰</div>
-        <div class="hi">Good <span id="part">day</span>, Moe.<span class="sub" id="sub">Loading production…</span></div>
-      </div>
-      <div class="wpill" id="wpill"><span class="dot a"></span><span id="wlbl">Checking worker…</span></div>
-    </div>
+    <div class="sec"><h2>Needs you now</h2><span class="c" id="needCount"></span></div>
+    <div class="card needhero" id="need"><div class="empty">Loading…</div></div>
 
-    <!-- The seven KPIs you asked for -->
-    <div class="stats">
-      <div class="stat"><div class="ring"></div><div class="lab">Waiting Approval</div><div class="big" id="kAppr" style="color:var(--green)">—</div><div class="note">Completed, ready for your call</div></div>
-      <div class="stat"><div class="ring"></div><div class="lab">Building</div><div class="big" id="kBuild" style="color:var(--violet2)">—</div><div class="note" id="kBuildNote">In production now</div></div>
-      <div class="stat"><div class="ring"></div><div class="lab">Blocked</div><div class="big" id="kBlock" style="color:var(--amber)">—</div><div class="note">Need a fix or decision</div></div>
-      <div class="stat"><div class="ring"></div><div class="lab">Queue Waiting</div><div class="big" id="kQueue">—</div><div class="note">Pending, not yet started</div></div>
-      <div class="stat"><div class="ring"></div><div class="lab">Pipeline Value (est.)</div><div class="big" id="kPipe" style="font-size:22px">—</div><div class="note">Realized: $0 · estimate</div></div>
-    </div>
+    <input class="search" id="search" placeholder="Search customers…" oninput="renderHome()" />
+    <div id="groups"></div>
+  </div>
 
-    <div class="grid" style="grid-template-columns:1fr 320px">
-      <div class="grid" style="gap:16px">
-        <!-- APPROVALS -->
-        <div class="panel colspan">
-          <h3>Awaiting Your Approval <span class="link" onclick="load()">Refresh</span></h3>
-          <div class="apps" id="apps"><div class="empty">Loading…</div></div>
-        </div>
-        <!-- PRODUCTION (building + blocked) -->
-        <div class="grid" style="grid-template-columns:1fr 1fr;gap:16px" class="colspan">
-          <div class="panel">
-            <h3>In Production</h3>
-            <div id="building"><div class="empty">Loading…</div></div>
-          </div>
-          <div class="panel">
-            <h3>Blocked</h3>
-            <div id="blocked"><div class="empty">Loading…</div></div>
-          </div>
-        </div>
-      </div>
-      <div class="grid" style="gap:16px;align-content:start">
-        <div class="panel">
-          <h3>Activity <span class="link" onclick="load()">Refresh</span></h3>
-          <div class="tl" id="timeline"><div class="empty">Loading…</div></div>
-        </div>
-        <div class="panel">
-          <h3>System Health</h3>
-          <div id="health"></div>
-        </div>
-      </div>
-    </div>
-  </main>
+  <!-- CUSTOMER WORKSPACE -->
+  <div id="ws"></div>
 </div>
 
 <script>
 const CFG={url:'https://eosvftmiwndmctrqprtz.supabase.co',key:'sb_publishable_BYxqF1ViwTrfaI4RGhciVw_kgbt-pSA'};
-const SITE_VALUE_ONCE=2000, SITE_VALUE_MO=200; // ESTIMATE assumptions, not confirmed pricing
-const sb = supabase.createClient(CFG.url, CFG.key);
+const ONCE=2000, MO=200; // ESTIMATE assumptions — not confirmed pricing
+const sb=supabase.createClient(CFG.url,CFG.key);
 const $=id=>document.getElementById(id);
 const esc=s=>(s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const ago=d=>{const s=(Date.now()-new Date(d).getTime())/1000;if(s<60)return'just now';if(s<3600)return Math.floor(s/60)+'m';if(s<86400)return Math.floor(s/3600)+'h';return Math.floor(s/86400)+'d';};
-const clock=d=>new Date(d).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'});
+const ago=d=>{if(!d)return'';const s=(Date.now()-new Date(d).getTime())/1000;if(s<60)return'just now';if(s<3600)return Math.floor(s/60)+'m ago';if(s<86400)return Math.floor(s/3600)+'h ago';return Math.floor(s/86400)+'d ago';};
+const clock=d=>new Date(d).toLocaleString([], {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+const initials=n=>(n||'?').split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase();
+let LEADS=[], WQ=[], ACTS=[], BEAT=null;
 
-async function signIn(){
-  const email=$('email').value.trim(), password=$('pass').value;
-  $('gmsg').textContent='Signing in…';
-  const {error}=await sb.auth.signInWithPassword({email,password});
-  if(error){$('gmsg').textContent=error.message;return;} boot();
-}
+// ---- auth ----
+async function signIn(){const email=$('email').value.trim(),password=$('pass').value;$('gmsg').textContent='Signing in…';
+  const {error}=await sb.auth.signInWithPassword({email,password});if(error){$('gmsg').textContent=error.message;return;}boot();}
 $('magic').onclick=async()=>{const email=$('email').value.trim();if(!email){$('gmsg').textContent='Enter your email first.';return;}
-  const {error}=await sb.auth.signInWithOtp({email,options:{emailRedirectTo:location.href}});
-  $('gmsg').textContent=error?error.message:'Check your email for a sign-in link.';};
+  const {error}=await sb.auth.signInWithOtp({email,options:{emailRedirectTo:location.href.split('#')[0]}});$('gmsg').textContent=error?error.message:'Check your email for a sign-in link.';};
 $('pass').addEventListener('keydown',e=>{if(e.key==='Enter')signIn();});
 
-async function boot(){
-  const {data:{session}}=await sb.auth.getSession();
+async function boot(){const {data:{session}}=await sb.auth.getSession();
   if(!session){$('gate').style.display='grid';$('app').style.display='none';return;}
-  $('gate').style.display='none';$('app').style.display='flex';
+  $('gate').style.display='none';$('app').style.display='block';
   const h=new Date().getHours();$('part').textContent=h<12?'morning':h<18?'afternoon':'evening';
-  load(); setInterval(load,30000);
-}
+  await load(); route();}
 
-async function q(path){
-  const {data:{session}}=await sb.auth.getSession();
-  const r=await fetch(CFG.url+'/rest/v1/'+path,{headers:{apikey:CFG.key,Authorization:'Bearer '+session.access_token}});
-  return r.ok?r.json():[];
-}
+async function q(path){const {data:{session}}=await sb.auth.getSession();
+  const r=await fetch(CFG.url+'/rest/v1/'+path,{headers:{apikey:CFG.key,Authorization:'Bearer '+session.access_token}});return r.ok?r.json():[];}
 
-const ACTIONS={
-  build_started:b=>['🛠','Started building '+b],
-  homepage_complete:b=>['✨','Website draft ready for '+b],
-  qa_passed:b=>['✓','Passed quality checks: '+b],
-  deployed:b=>['🌐',b+' went live (preview)'],
-  job_completed:b=>['🎉',b+' is ready for your approval'],
-  build_blocked:b=>['⚠','Build blocked: '+b],
-  auto_enqueued:b=>['◍','New lead entered the pipeline: '+b],
-  worker_down_alert:_=>['⚠','Production worker needs attention'],
-};
+// ---- signal logic: turns status into a human decision ----
+function signal(l){
+  const s=l.status;
+  if(s==='PREVIEW READY') return {k:'approve',label:'Waiting on your approval',cls:'red',rank:0};
+  if(s==='CHANGES REQUESTED') return {k:'fix',label:'Needs changes',cls:'amber',rank:1};
+  if(s==='BUILDING') return {k:'build',label:'In production',cls:'violet',rank:3};
+  if(s==='PREVIEW DELIVERED') return {k:'wait',label:'Waiting on customer',cls:'blue',rank:4};
+  if(s==='APPROVED') return {k:'won',label:'Approved',cls:'green',rank:2};
+  if(s==='QUALIFIED') return {k:'ready',label:'Ready to build',cls:'violet',rank:5};
+  if(s==='NEW LEAD') return l.email?{k:'new',label:'New lead',cls:'muted',rank:6}:{k:'call',label:'Call to reach',cls:'amber',rank:6};
+  if(s==='LOST') return {k:'lost',label:'Archived',cls:'muted',rank:9};
+  return {k:'other',label:s||'—',cls:'muted',rank:8};
+}
 
 async function load(){
-  let leads=[], acts=[], beat=[], wq=[];
   try{
-    [leads,acts,beat,wq]=await Promise.all([
-      q('leads?select=id,business_name,status,source,preview_url,updated_at&order=updated_at.desc&limit=400'),
-      q("activity_log?select=action,meta,created_at&action=neq.heartbeat&order=created_at.desc&limit=16"),
-      q("activity_log?select=created_at&action=eq.heartbeat&order=created_at.desc&limit=1"),
-      q("work_queue?select=type,status,claimed_by,payload,result,blocker_reason,claimed_at,updated_at&order=updated_at.desc&limit=200"),
+    [LEADS,WQ,ACTS,BEAT]=await Promise.all([
+      q('leads?select=*&order=updated_at.desc&limit=500'),
+      q('work_queue?select=status,claimed_at,payload,blocker_reason,result&order=updated_at.desc&limit=200'),
+      q('activity_log?select=action,meta,created_at,entity_id&action=neq.heartbeat&order=created_at.desc&limit=400'),
+      q('activity_log?select=created_at&action=eq.heartbeat&order=created_at.desc&limit=1').then(r=>r[0]),
     ]);
-  }catch(e){ $('sub').textContent='Could not load data: '+e.message; }
-
-  // ---- worker status from heartbeat ----
-  const lastBeat=beat[0]?new Date(beat[0].created_at).getTime():0;
-  const beatAge=lastBeat?(Date.now()-lastBeat)/1000:1e9;
-  const pending=wq.filter(j=>j.status==='pending').length;
-  let wcls='r', wtxt='Worker offline';
-  if(beatAge<120){ if(pending>0){wcls='g';wtxt='Worker building';} else {wcls='a';wtxt='Worker idle (no queue)';} }
-  else if(beatAge<99999){ wcls='r'; wtxt='Worker silent '+Math.round(beatAge/60)+'m'; }
-  $('wpill').innerHTML='<span class="dot '+wcls+'"></span><span>'+wtxt+'</span>';
-
-  // ---- KPI tiles ----
-  const approvals=leads.filter(l=>l.status==='PREVIEW READY');
-  const building=wq.filter(j=>j.status==='running');
-  const blocked=wq.filter(j=>j.status==='blocked');
-  $('kAppr').textContent=approvals.length;
-  $('kBuild').textContent=building.length;
-  $('kBlock').textContent=blocked.length;
-  $('kQueue').textContent=pending;
-  $('navAppr').textContent=approvals.length;
-  // stalled detection: running but claimed long ago
-  const stalled=building.filter(j=>j.claimed_at && (Date.now()-new Date(j.claimed_at).getTime())>15*60000).length;
-  $('kBuildNote').textContent = stalled? (stalled+' stalled — not progressing') : (building.length?'In production now':'idle');
-  // pipeline estimate
-  const inFlight=approvals.length+building.length+pending+leads.filter(l=>l.status==='QUALIFIED').length;
-  $('kPipe').textContent='$'+(inFlight*SITE_VALUE_ONCE).toLocaleString();
-  $('sub').textContent=approvals.length+' waiting on you · '+building.length+' building · '+pending+' queued';
-
-  // ---- approvals cards ----
-  $('apps').innerHTML = approvals.length ? approvals.map(l=>`
-    <div class="appcard">
-      ${l.preview_url?`<iframe class="prev" src="${esc(l.preview_url)}" loading="lazy" scrolling="no"></iframe>`:`<div class="thumb">${esc(l.business_name||'Preview')}</div>`}
-      <div class="meta"><b>${esc(l.business_name||'Untitled')}</b><small>Ready ${ago(l.updated_at)} ago</small>${l.preview_url?`<a href="${esc(l.preview_url)}" target="_blank">Open full site ↗</a>`:''}</div>
-      <div class="acts">
-        <button class="btn ok" onclick="decide('${l.id}','APPROVED',this)">Approve</button>
-        <button class="btn" onclick="decide('${l.id}','CHANGES REQUESTED',this)">Revise</button>
-        <button class="btn no" onclick="decide('${l.id}','LOST',this)">Pass</button>
-      </div>
-    </div>`).join('') : `<div class="empty">Nothing waiting on you right now. Finished websites appear here for your decision.</div>`;
-
-  // ---- in production ----
-  $('building').innerHTML = building.length ? building.map(j=>{
-    const mins=j.claimed_at?Math.round((Date.now()-new Date(j.claimed_at).getTime())/60000):0;
-    const stall=mins>15;
-    return `<div class="row"><div><b>${esc((j.payload&&j.payload.business)||'—')}</b><small>${stall?'stuck '+mins+'m (orphaned)':'building · '+mins+'m'}</small></div><span class="tag ${stall?'stall':'run'}">${stall?'Stalled':'Building'}</span></div>`;
-  }).join('') : `<div class="empty">No active builds.</div>`;
-
-  // ---- blocked ----
-  $('blocked').innerHTML = blocked.length ? blocked.map(j=>`
-    <div class="row"><div><b>${esc((j.payload&&j.payload.business)||'—')}</b><small>${esc((j.blocker_reason||'').slice(0,70))}</small></div><span class="tag block">Blocked</span></div>`).join('')
-    : `<div class="empty">Nothing blocked.</div>`;
-
-  // ---- timeline ----
-  $('timeline').innerHTML = acts.length ? acts.map(a=>{
-    const biz=(a.meta&&(a.meta.business||a.meta.slug))||'';const f=ACTIONS[a.action];const [ic,txt]=f?f(biz):['•',a.action.replace(/_/g,' ')];
-    return `<div class="ev"><div class="tdot">${ic}</div><div><b>${esc(txt)}</b></div><div class="t">${clock(a.created_at)}</div></div>`;
-  }).join('') : `<div class="empty">No recent activity.</div>`;
-
-  // ---- system health ----
-  const rows=[
-    ['Website Builder', wcls==='g'?'ok':(wcls==='a'?'warn':'bad'), wcls==='g'?'Building':(wcls==='a'?'Idle':'Offline')],
-    ['Production Queue', pending>0?'ok':(stalled?'warn':'ok'), pending+' pending'],
-    ['Customer Records','ok','Healthy'],
-    ['Deployment','ok','Operational'],
-    ['Follow-up Engine','ok','Running'],
-  ];
-  $('health').innerHTML=rows.map(([n,c,s])=>`<div class="hrow"><span class="d ${c}"></span><span>${n}</span><span class="s ${c}">${s}</span></div>`).join('');
+  }catch(e){$('sub').textContent='Could not load: '+e.message;}
 }
 
-async function decide(id,status,btn){
-  const orig=btn.textContent; btn.textContent='…'; btn.disabled=true;
+function workerPill(){
+  const age=BEAT?(Date.now()-new Date(BEAT.created_at).getTime())/1000:1e9;
+  const pending=WQ.filter(j=>j.status==='pending').length;
+  let c='r',t='Worker offline';
+  if(age<120){ c=pending>0?'g':'a'; t=pending>0?'Production team working':'Production team idle'; }
+  else if(age<1e8){ c='r'; t='Worker silent '+Math.round(age/60)+'m'; }
+  $('wpill').innerHTML='<span class="dot '+c+'"></span><span>'+t+'</span>';
+}
+
+// ---- HOME ----
+function route(){ const h=location.hash;
+  if(h.startsWith('#c/')){ renderCustomer(h.slice(3)); }
+  else { $('ws').style.display='none'; $('home').style.display='block'; renderHome(); }
+}
+window.addEventListener('hashchange',route);
+
+function renderHome(){
+  workerPill();
+  const appr=LEADS.filter(l=>l.status==='PREVIEW READY');
+  const building=WQ.filter(j=>j.status==='running');
+  const pending=WQ.filter(j=>j.status==='pending').length;
+  const blocked=LEADS.filter(l=>l.status==='CHANGES REQUESTED');
+  const pipe=(appr.length+building.length+pending+LEADS.filter(l=>l.status==='QUALIFIED').length)*ONCE;
+  $('sub').textContent=appr.length+' waiting on you · '+building.length+' building · '+pending+' queued';
+  $('kpis').innerHTML=[
+    [appr.length,'Waiting approval'],[building.length,'Building'],[blocked.length,'Need changes'],['$'+(pipe/1000)+'k','Pipeline (est.)']
+  ].map(([n,l])=>`<div class="kpi"><div class="n">${n}</div><div class="l">${l}</div></div>`).join('');
+
+  // needs you = approvals + changes-needed (the truly actionable)
+  const need=[...appr,...blocked].sort((a,b)=>signal(a).rank-signal(b).rank);
+  $('needCount').textContent=need.length?need.length+' to decide':'all clear';
+  $('need').innerHTML = need.length ? need.map(rowHTML).join('')
+    : `<div class="empty">Nothing needs a decision right now. Finished sites and flagged customers show up here.</div>`;
+
+  // all customers grouped, filtered by search
+  const term=($('search').value||'').toLowerCase();
+  const visible=LEADS.filter(l=>!term || (l.business_name||'').toLowerCase().includes(term));
+  const groups=[
+    ['In production',l=>l.status==='BUILDING'],
+    ['Waiting on customer',l=>l.status==='PREVIEW DELIVERED'||l.status==='APPROVED'],
+    ['Ready to build',l=>l.status==='QUALIFIED'],
+    ['Outreach backlog',l=>l.status==='NEW LEAD'],
+    ['Archived',l=>l.status==='LOST'],
+  ];
+  let html='';
+  for(const [name,fn] of groups){
+    const rows=visible.filter(fn); if(!rows.length) continue;
+    html+=`<div class="sec"><h2>${name}</h2><span class="c">${rows.length}</span></div><div class="card">${rows.slice(0,40).map(rowHTML).join('')}</div>`;
+  }
+  $('groups').innerHTML=html||'';
+}
+
+function rowHTML(l){
+  const sg=signal(l);
+  return `<div class="crow" onclick="location.hash='#c/${l.id}'">
+    <div class="ava">${esc(initials(l.business_name))}</div>
+    <div><div class="nm">${esc(l.business_name||'Untitled')}</div><div class="mt">${esc(l.industry||l.source||'')} · ${ago(l.updated_at)}</div></div>
+    <div class="sig"><span class="pill p-${sg.cls}">${sg.label}</span></div><div class="chev">›</div>
+  </div>`;
+}
+
+// ---- CUSTOMER WORKSPACE ----
+function renderCustomer(id){
+  const l=LEADS.find(x=>x.id===id); if(!l){location.hash='';return;}
+  $('home').style.display='none'; $('ws').style.display='block'; window.scrollTo(0,0);
+  const sg=signal(l);
+  const myacts=ACTS.filter(a=>a.entity_id===id);
+  const job=WQ.find(j=>j.payload&&j.payload.lead_id===id);
+  const phone=l.phone||''; const email=l.email||'';
+
+  // decision banner
+  let banner='';
+  if(sg.k==='approve') banner=`<div class="banner b-red">⚑ This finished website is waiting on your approval. Approving sends the reveal to the customer.</div>`;
+  else if(sg.k==='wait') banner=`<div class="banner b-blue">⏳ Reveal sent — we're waiting on the customer to reply. ${l.reveal_sent_at?'Sent '+ago(l.reveal_sent_at):''}</div>`;
+  else if(sg.k==='fix') banner=`<div class="banner b-amber">✎ This build needs changes before it can go out.</div>`;
+  else if(sg.k==='build') banner=`<div class="banner b-violet">⚙ In production now. No action needed from you yet.</div>`;
+  else if(sg.k==='call') banner=`<div class="banner b-amber">📞 No email on file — this customer is best reached by phone.</div>`;
+
+  // contextual actions
+  let acts='';
+  if(sg.k==='approve'){ acts=`
+    <button class="btn good" onclick="decide('${id}','APPROVED',this)">Approve & send reveal</button>
+    <button class="btn" onclick="decide('${id}','CHANGES REQUESTED',this)">Request changes</button>
+    <button class="btn ghost" onclick="decide('${id}','LOST',this)">Pass</button>`;
+  }
+  if(l.preview_url) acts=`<a class="btn primary" href="${esc(l.preview_url)}" target="_blank">Open website ↗</a>`+acts;
+  if(phone) acts+=`<a class="btn" href="tel:${esc(phone.replace(/[^0-9+]/g,''))}">📞 Call</a>`;
+  if(email) acts+=`<a class="btn" href="mailto:${esc(email)}">✉ Email</a>`;
+
+  $('ws').innerHTML=`
+    <div class="back" onclick="location.hash=''">‹ All customers</div>
+    <div class="wsHead">
+      <div class="ava">${esc(initials(l.business_name))}</div>
+      <div><h1>${esc(l.business_name||'Untitled')}</h1>
+      <div class="meta">${[l.industry,l.location,l.source].filter(Boolean).map(esc).join(' · ')||'—'}</div></div>
+    </div>
+    ${banner}
+    <div class="acts">${acts}</div>
+
+    ${l.preview_url?`<div class="wcard"><h3>Website</h3><iframe class="prev" src="${esc(l.preview_url)}" loading="lazy"></iframe>
+      <div style="margin-top:10px"><a class="btn" href="${esc(l.preview_url)}" target="_blank">Open full site ↗</a></div></div>`:''}
+
+    <div class="wcard"><h3>Production</h3>
+      ${job?`<div class="kv"><span class="k">Status</span><span>${esc(job.status)}${job.status==='running'&&job.claimed_at?' · '+ago(job.claimed_at).replace(' ago',' in build'):''}</span></div>
+      ${job.blocker_reason?`<div class="kv"><span class="k">Blocked</span><span>${esc(job.blocker_reason)}</span></div>`:''}
+      ${job.result&&job.result.preview_url?`<div class="kv"><span class="k">Delivered</span><a href="${esc(job.result.preview_url)}" target="_blank">live link ↗</a></div>`:''}`
+      :`<div class="soonbox">No build job on record for this customer yet.</div>`}
+    </div>
+
+    <div class="wcard"><h3>Contact</h3>
+      <div class="kv"><span class="k">Email</span><span>${email?`<a href="mailto:${esc(email)}">${esc(email)}</a>`:'<span style="color:var(--faint)">none on file</span>'}</span></div>
+      <div class="kv"><span class="k">Phone</span><span>${phone?`<a href="tel:${esc(phone)}">${esc(phone)}</a>`:'<span style="color:var(--faint)">none on file</span>'}</span></div>
+      ${l.contact_name?`<div class="kv"><span class="k">Contact</span><span>${esc(l.contact_name)}</span></div>`:''}
+      ${l.website?`<div class="kv"><span class="k">Old site</span><a href="${esc(l.website)}" target="_blank">${esc(l.website)} ↗</a></div>`:''}
+      <div class="kv"><span class="k">Source</span><span>${esc(l.source||'—')}</span></div>
+    </div>
+
+    <div class="wcard"><h3>History</h3>
+      <div class="tl">${myacts.length?myacts.map(a=>`<div class="ev"><div class="tdot">•</div><div><b>${esc(humanAction(a))}</b></div><div class="t">${clock(a.created_at)}</div></div>`).join('')
+        :`<div class="soonbox">No recorded interactions yet. Build steps, reveals, and replies will appear here.</div>`}</div>
+    </div>
+
+    <div class="wcard"><h3>Notes</h3>
+      <textarea id="notes" placeholder="Your private notes on this customer…">${esc(l.cc_notes||'')}</textarea>
+      <div class="savebar"><button class="btn" onclick="saveNotes('${id}',this)">Save note</button><span class="ok" id="noteok"></span></div>
+    </div>
+
+    <div class="wcard"><h3>Files & assets <span class="soon">not tracked yet</span></h3><div class="soonbox">File and brand-asset storage isn't wired in yet. When it is, logos, photos, and brand files for this customer will live here.</div></div>
+    <div class="wcard"><h3>Emails & engagement <span class="soon">not tracked yet</span></h3><div class="soonbox">Per-customer email threads and open/click tracking aren't connected yet, so I can't honestly show "opened 3 times" — I won't fake it. This lights up when reply + open tracking ships.</div></div>
+    <div class="wcard"><h3>Meetings & invoices <span class="soon">not tracked yet</span></h3><div class="soonbox">No calendar or billing integration yet. Meetings, calls, and invoices will gather here once connected.</div></div>
+  `;
+}
+
+function humanAction(a){
+  const b=(a.meta&&(a.meta.business||a.meta.slug))||'';
+  const m={build_started:'Started building the website',homepage_complete:'Website draft completed',qa_passed:'Passed quality checks',deployed:'Website went live (preview)',job_completed:'Ready for your approval',build_blocked:'Build blocked: '+((a.meta&&a.meta.reason)||''),auto_enqueued:'Entered the production pipeline',reveal_sent:'Reveal sent to customer'};
+  return m[a.action]||a.action.replace(/_/g,' ');
+}
+
+async function decide(id,status,btn){const t=btn.textContent;btn.textContent='…';btn.disabled=true;
   const {error}=await sb.from('leads').update({status,updated_at:new Date().toISOString()}).eq('id',id);
   if(error){btn.textContent='!';alert('Could not save: '+error.message);btn.disabled=false;return;}
-  load();
-}
+  await load(); route();}
+
+async function saveNotes(id,btn){const v=$('notes').value;btn.textContent='Saving…';
+  const {error}=await sb.from('leads').update({cc_notes:v,updated_at:new Date().toISOString()}).eq('id',id);
+  btn.textContent='Save note';$('noteok').textContent=error?('Error: '+error.message):'Saved ✓';
+  const li=LEADS.find(x=>x.id===id);if(li)li.cc_notes=v;setTimeout(()=>$('noteok').textContent='',2500);}
 
 sb.auth.onAuthStateChange((_e,s)=>{if(s)boot();});
 boot();
