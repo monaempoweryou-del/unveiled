@@ -94,7 +94,7 @@ def generate_site(lead, slug):
         f"- Wants: {lead.get('needs','')}\n- Canonical URL (use for canonical/og:url): {canon}\n"
         f"- For og:image/twitter:image use an absolute https Unsplash URL relevant to the industry.\n"
     )
-    body = {"model": MODEL, "max_tokens": 8000,
+    body = {"model": MODEL, "max_tokens": 20000,
             "messages": [{"role": "user", "content": prompt}]}
     req = urllib.request.Request(
         "https://api.anthropic.com/v1/messages", data=json.dumps(body).encode(),
@@ -111,6 +111,19 @@ def generate_site(lead, slug):
 # ---------- inline QA (mirrors the locked standards) ----------
 def qa(html):
     issues = []
+    # 1. COMPLETENESS first — a truncated page is the worst failure (renders blank).
+    if "<!DOCTYPE" not in html: issues.append("no doctype")
+    if "<body" not in html.lower(): issues.append("no <body> tag")
+    if "</body>" not in html.lower() or "</html>" not in html.lower():
+        issues.append("incomplete HTML — page was truncated (no closing body/html)")
+    # body must contain real, visible content (catches blank/empty-body pages)
+    m = re.search(r"<body[^>]*>(.*)</body>", html, re.S | re.I)
+    body = m.group(1) if m else ""
+    visible = re.sub(r"<(script|style)[^>]*>.*?</\1>", " ", body, flags=re.S | re.I)
+    visible = re.sub(r"<[^>]+>", " ", visible)
+    if len(visible.split()) < 80:
+        issues.append("body has too little visible content (blank/near-empty page)")
+    # 2. Standards
     if "—" in html: issues.append("contains em dash (LS-AITELLS)")
     needs = ['og:title', 'og:description', 'og:image', 'og:url', 'og:type',
              'twitter:card', 'twitter:image', 'application/ld+json',
@@ -119,8 +132,7 @@ def qa(html):
         if n not in html: issues.append(f"missing {n}")
     for m in re.findall(r'(og:image|twitter:image)"[^>]*content="([^"]*)"', html):
         if not m[1].startswith("https://"): issues.append(f"{m[0]} not absolute https")
-    if "<!DOCTYPE" not in html: issues.append("no doctype")
-    if len(html) < 1500: issues.append("html suspiciously short")
+    if len(html) < 4000: issues.append("html suspiciously short")
     return (len(issues) == 0, issues)
 
 
