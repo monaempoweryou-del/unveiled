@@ -184,13 +184,15 @@
   .skel{background:#ece9f4;background-image:linear-gradient(90deg,#ece9f4,#f5f3fb,#ece9f4);background-size:600px 100%;border-radius:8px;animation:shimmer 1.25s linear infinite}
   #toast{position:fixed;left:50%;bottom:max(22px,env(safe-area-inset-bottom));transform:translate(-50%,16px);background:#211c34;color:#fff;padding:13px 20px;border-radius:14px;font-size:14px;font-weight:500;box-shadow:0 18px 44px -14px rgba(60,40,120,.5);opacity:0;pointer-events:none;transition:.3s cubic-bezier(.2,.7,.3,1);z-index:60;max-width:90vw;text-align:center}
   #toast.show{opacity:1;transform:translate(-50%,0)}
-  .modal{position:fixed;inset:0;z-index:55;display:none;place-items:center;background:rgba(20,12,40,.38);backdrop-filter:blur(3px);padding:18px}
+  .modal{position:fixed;inset:0;z-index:55;display:none;place-items:center;background:rgba(20,12,40,.38);backdrop-filter:blur(3px);padding:14px;box-sizing:border-box;overflow-y:auto}
   .modal.show{display:grid}
-  .mbox{width:460px;max-width:100%;background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 30px 70px -24px rgba(70,45,130,.4);animation:fadeUp .2s ease both}
+  .mbox{width:460px;max-width:100%;min-width:0;box-sizing:border-box;background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:0 30px 70px -24px rgba(70,45,130,.4);animation:fadeUp .2s ease both}
+  .mbox *{max-width:100%;box-sizing:border-box}
   .mbox h3{font-size:17px;font-weight:700;margin-bottom:6px;text-transform:none;letter-spacing:0;color:var(--txt)}
   .mbox .sub{font-size:13.5px;color:var(--muted);margin-bottom:14px;line-height:1.5}
-  .mbox textarea{min-height:120px;font-size:15px}
-  .mrow{display:flex;gap:10px;justify-content:flex-end;margin-top:14px}
+  .mbox textarea{width:100%;min-height:120px;font-size:15px}
+  .mrow{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end;margin-top:14px}
+  .mrow .btn{flex:0 1 auto}
   .rev{display:flex;gap:11px;align-items:flex-start;padding:11px 2px;border-bottom:1px solid #f1eff7}
   .rev:last-child{border:0}
   .rev .rthumb{width:46px;height:34px;border-radius:8px;object-fit:cover;flex:none;border:1px solid var(--line)}
@@ -585,7 +587,7 @@ function revisionsHTML(id){
 }
 async function createRevision(payload,label){
   const ins=await sb.from('work_queue').insert({type:'revision',priority:2,status:'pending',payload,idempotency_key:'rev:'+payload.lead_id+':'+Date.now()});
-  if(ins.error){ toast('Could not queue revision — '+ins.error.message); return false; }
+  if(ins.error){ console.error('revision insert failed:',ins.error); toast('That didn’t go through — nothing was sent. Give it another try in a moment.'); return false; }
   try{ await sb.from('activity_log').insert({entity_type:'lead',entity_id:payload.lead_id,action:'revision_requested',meta:{kind:payload.kind,instruction:payload.instruction||''}}); }catch(e){}
   await sb.from('leads').update({status:'CHANGES REQUESTED',updated_at:new Date().toISOString()}).eq('id',payload.lead_id);
   await load(); renderCustomer(payload.lead_id);
@@ -605,14 +607,14 @@ async function submitRevision(){
 async function decide(id,status,btn){btn.textContent='…';btn.disabled=true;
   const nm=(LEADS.find(x=>x.id===id)||{}).business_name||'Customer';
   const {error}=await sb.from('leads').update({status,updated_at:new Date().toISOString()}).eq('id',id);
-  if(error){btn.textContent='!';toast('Could not save — '+error.message);btn.disabled=false;return;}
+  if(error){console.error('decide failed:',error);btn.textContent='Try again';toast('That didn’t save — nothing changed. Tap to try once more.');btn.disabled=false;return;}
   await load(); route();
   toast({APPROVED:'Approved ✓   The reveal is on its way to '+nm+'.','CHANGES REQUESTED':'Sent back for changes — '+nm+' left your approval queue.',LOST:nm+' passed — moved to Archived.'}[status]||'Saved.');
 }
 
 async function saveNotes(id,btn){const v=$('notes').value;btn.textContent='Saving…';
   const {error}=await sb.from('leads').update({cc_notes:v,updated_at:new Date().toISOString()}).eq('id',id);
-  btn.textContent='Save note';$('noteok').textContent=error?('Error: '+error.message):'Saved ✓';
+  btn.textContent='Save note';if(error)console.error('notes save failed:',error);$('noteok').textContent=error?'Didn’t save — try again':'Saved ✓';
   const li=LEADS.find(x=>x.id===id);if(li)li.cc_notes=v;setTimeout(()=>$('noteok').textContent='',2500);}
 
 $('fileinput').addEventListener('change',async(e)=>{
@@ -622,7 +624,7 @@ $('fileinput').addEventListener('change',async(e)=>{
   const safe=f.name.replace(/[^a-zA-Z0-9._-]/g,'_');
   const path=CURLEAD+'/'+Date.now()+'-'+safe;
   const up=await sb.storage.from('revisions').upload(path,f,{contentType:f.type,upsert:false});
-  if(up.error){ toast('Upload failed — '+up.error.message); return; }
+  if(up.error){ console.error('image upload failed:',up.error); toast('That image didn’t upload — nothing was changed. Try again, or pick a different file.'); return; }
   const pub=sb.storage.from('revisions').getPublicUrl(path).data.publicUrl;
   await createRevision({lead_id:CURLEAD,kind:'replace_image',original_url:PENDING_REPLACE,new_image_url:pub,instruction:'Swap the existing image for this newly uploaded one.'},'Image uploaded — revision is now in production ✓');
   PENDING_REPLACE=null;
