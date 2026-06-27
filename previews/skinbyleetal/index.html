@@ -173,14 +173,12 @@
 
   /* gallery */
   .gallery{background:linear-gradient(180deg,var(--lav-50),var(--lav-100))}
-  .gal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-  .gal{border-radius:18px;overflow:hidden;aspect-ratio:1/1;box-shadow:0 14px 34px rgba(90,69,129,.10);
-    background-size:cover;background-position:center}
-  .gal.g1{background:linear-gradient(160deg,var(--lilac),var(--lav-200))}
-  .gal.g2{background:linear-gradient(160deg,var(--rose),var(--lav-300))}
-  .gal.g3{background:linear-gradient(160deg,var(--lav-300),var(--plum) 130%)}
-  .gal.g4{background:linear-gradient(160deg,var(--lav-200),var(--rose))}
-  @media(max-width:900px){.gal-grid{grid-template-columns:1fr 1fr}}
+  .gal-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+  .gal{width:100%;height:auto;display:block;border-radius:18px;box-shadow:0 14px 34px rgba(90,69,129,.10)}
+  @media(max-width:900px){
+    .gallery .gal-grid{grid-template-columns:1fr;gap:10px;margin-left:-26px;margin-right:-26px}
+    .gal{border-radius:0}
+  }
 
   /* quote */
   .quote{text-align:center;background:radial-gradient(120% 100% at 50% 0%,var(--lav-200),var(--lav-50))}
@@ -373,10 +371,10 @@
       <p>A look at the calm, elegant care behind every SkinByLeetal facial.</p>
     </div>
     <div class="gal-grid reveal">
-      <div class="gal g1" style="background-image:url('assets/facial-geneo.jpg')"></div>
-      <div class="gal g2" style="background-image:url('assets/led-red.jpg')"></div>
-      <div class="gal g3" style="background-image:url('assets/facial-glo2.jpg')"></div>
-      <div class="gal g4" style="background-image:url('assets/product-biopeptix.jpg')"></div>
+      <img class="gal" src="assets/facial-geneo.jpg" alt="Custom facial treatment in progress" loading="lazy">
+      <img class="gal" src="assets/led-red.jpg" alt="LED light therapy facial" loading="lazy">
+      <img class="gal" src="assets/facial-glo2.jpg" alt="Oxygen glow facial" loading="lazy">
+      <img class="gal" src="assets/product-biopeptix.jpg" alt="Professional skincare products" loading="lazy">
     </div>
   </div>
 </section>
