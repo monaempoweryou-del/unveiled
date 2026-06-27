@@ -97,6 +97,15 @@
   .jstep i{font-style:normal;font-size:8.5px;color:var(--faint);display:block}
   .jline{flex:none;width:18px;height:2px;background:rgba(255,255,255,.08);margin-top:7px}
   .jline.on{background:var(--violet)}
+  .vtog{display:inline-flex;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px;margin-bottom:14px}
+  .vtog button{border:0;background:transparent;color:var(--muted);font-family:inherit;font-size:12.5px;font-weight:600;padding:6px 14px;border-radius:999px;cursor:pointer}
+  .vtog button.sel{background:var(--violet);color:#fff}
+  .inttag{margin-left:auto;font-size:9.5px;color:var(--faint);text-transform:none;letter-spacing:0;border:1px solid var(--line);padding:1px 8px;border-radius:999px}
+  .custbanner{background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.3);color:#d9c9ff;padding:11px 15px;border-radius:13px;font-size:13px;margin-bottom:14px;display:none}
+  #ws.ascust .custbanner{display:block}
+  .custonly{display:none}
+  #ws.ascust .int{display:none!important}
+  #ws.ascust .acts.custonly{display:flex}
   /* login */
   .gate{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:radial-gradient(800px 600px at 50% 0%,rgba(124,58,237,.18),#070509)}
   .gate .box{width:340px;max-width:90vw;text-align:center;background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:34px 28px;backdrop-filter:blur(18px)}
@@ -268,39 +277,43 @@ function renderCustomer(id){
   else if(sg.k==='build') banner=`<div class="banner b-violet">⚙ In production now. No action needed from you yet.</div>`;
   else if(sg.k==='call') banner=`<div class="banner b-amber">📞 No email on file — this customer is best reached by phone.</div>`;
 
-  // contextual actions
-  let acts='';
-  if(sg.k==='approve'){ acts=`
-    <button class="btn good" onclick="decide('${id}','APPROVED',this)">Approve & send reveal</button>
+  // contextual actions — team sees internal controls; customer sees only their own
+  let teamActs='', custActs='';
+  if(l.preview_url){ const open=`<a class="btn primary" href="${esc(l.preview_url)}" target="_blank">Open website ↗</a>`; teamActs+=open; custActs+=open; }
+  if(sg.k==='approve'){ teamActs+=`
+    <button class="btn good" onclick="decide('${id}','APPROVED',this)">Approve &amp; send reveal</button>
     <button class="btn" onclick="decide('${id}','CHANGES REQUESTED',this)">Request changes</button>
     <button class="btn ghost" onclick="decide('${id}','LOST',this)">Pass</button>`;
   }
-  if(l.preview_url) acts=`<a class="btn primary" href="${esc(l.preview_url)}" target="_blank">Open website ↗</a>`+acts;
-  if(phone) acts+=`<a class="btn" href="tel:${esc(phone.replace(/[^0-9+]/g,''))}">📞 Call</a>`;
-  if(email) acts+=`<a class="btn" href="mailto:${esc(email)}">✉ Email</a>`;
+  if(phone) teamActs+=`<a class="btn" href="tel:${esc(phone.replace(/[^0-9+]/g,''))}">📞 Call</a>`;
+  if(email) teamActs+=`<a class="btn" href="mailto:${esc(email)}">✉ Email</a>`;
+  custActs+=`<button class="btn" onclick="alert('Change requests route to your team once customer login ships.')">Request a change</button>`;
 
   $('ws').innerHTML=`
     <div class="back" onclick="location.hash=''">‹ All customers</div>
+    <div class="vtog"><button class="sel" onclick="setView('team',this)">Team view</button><button onclick="setView('customer',this)">Customer view</button></div>
+    <div class="custbanner">👁 Customer view — this is exactly what <b>${esc(l.business_name||'this customer')}</b> will see when they log in. Same workspace, fewer doors.</div>
     <div class="wsHead">
       <div class="ava">${esc(initials(l.business_name))}</div>
       <div><h1>${esc(l.business_name||'Untitled')}</h1>
       <div class="meta">${[l.industry,l.location,l.source].filter(Boolean).map(esc).join(' · ')||'—'}</div></div>
     </div>
     ${banner}
-    <div class="acts">${acts}</div>
+    <div class="acts int">${teamActs}</div>
+    <div class="acts custonly">${custActs}</div>
     ${journeyHTML(l)}
 
     ${l.preview_url?`<div class="wcard"><h3>Website</h3><iframe class="prev" src="${esc(l.preview_url)}" loading="lazy"></iframe>
       <div style="margin-top:10px"><a class="btn" href="${esc(l.preview_url)}" target="_blank">Open full site ↗</a></div></div>`:''}
 
-    <div class="wcard"><h3>Production</h3>
+    <div class="wcard int"><h3>Production <span class="inttag">Team only</span></h3>
       ${job?`<div class="kv"><span class="k">Status</span><span>${esc(job.status)}${job.status==='running'&&job.claimed_at?' · '+ago(job.claimed_at).replace(' ago',' in build'):''}</span></div>
       ${job.blocker_reason?`<div class="kv"><span class="k">Blocked</span><span>${esc(job.blocker_reason)}</span></div>`:''}
       ${job.result&&job.result.preview_url?`<div class="kv"><span class="k">Delivered</span><a href="${esc(job.result.preview_url)}" target="_blank">live link ↗</a></div>`:''}`
       :`<div class="soonbox">No build job on record for this customer yet.</div>`}
     </div>
 
-    <div class="wcard"><h3>Contact</h3>
+    <div class="wcard int"><h3>Contact <span class="inttag">Team only</span></h3>
       <div class="kv"><span class="k">Email</span><span>${email?`<a href="mailto:${esc(email)}">${esc(email)}</a>`:'<span style="color:var(--faint)">none on file</span>'}</span></div>
       <div class="kv"><span class="k">Phone</span><span>${phone?`<a href="tel:${esc(phone)}">${esc(phone)}</a>`:'<span style="color:var(--faint)">none on file</span>'}</span></div>
       ${l.contact_name?`<div class="kv"><span class="k">Contact</span><span>${esc(l.contact_name)}</span></div>`:''}
@@ -313,15 +326,21 @@ function renderCustomer(id){
         :`<div class="soonbox">No recorded interactions yet. Build steps, reveals, and replies will appear here.</div>`}</div>
     </div>
 
-    <div class="wcard"><h3>Notes</h3>
+    <div class="wcard int"><h3>Notes <span class="inttag">Team only · private</span></h3>
       <textarea id="notes" placeholder="Your private notes on this customer…">${esc(l.cc_notes||'')}</textarea>
       <div class="savebar"><button class="btn" onclick="saveNotes('${id}',this)">Save note</button><span class="ok" id="noteok"></span></div>
     </div>
 
     <div class="wcard"><h3>Files & assets <span class="soon">not tracked yet</span></h3><div class="soonbox">File and brand-asset storage isn't wired in yet. When it is, logos, photos, and brand files for this customer will live here.</div></div>
-    <div class="wcard"><h3>Emails & engagement <span class="soon">not tracked yet</span></h3><div class="soonbox">Per-customer email threads and open/click tracking aren't connected yet, so I can't honestly show "opened 3 times" — I won't fake it. This lights up when reply + open tracking ships.</div></div>
+    <div class="wcard int"><h3>Emails & engagement <span class="inttag">Team only</span><span class="soon" style="margin-left:8px">not tracked yet</span></h3><div class="soonbox">Per-customer email threads and open/click tracking aren't connected yet, so I can't honestly show "opened 3 times" — I won't fake it. This lights up when reply + open tracking ships.</div></div>
     <div class="wcard"><h3>Meetings & invoices <span class="soon">not tracked yet</span></h3><div class="soonbox">No calendar or billing integration yet. Meetings, calls, and invoices will gather here once connected.</div></div>
   `;
+}
+
+function setView(v,btn){
+  $('ws').classList.toggle('ascust', v==='customer');
+  document.querySelectorAll('.vtog button').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel'); window.scrollTo(0,0);
 }
 
 function journeyHTML(l){
