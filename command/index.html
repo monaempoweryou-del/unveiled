@@ -60,7 +60,18 @@
   .p-green{background:rgba(70,229,160,.15);color:var(--green)} .p-muted{background:rgba(255,255,255,.05);color:var(--faint)}
   .crow .chev{color:var(--faint);font-size:18px;margin-left:4px}
   .needhero{border:1px solid rgba(255,107,129,.25);box-shadow:0 0 0 1px rgba(255,107,129,.06),0 22px 50px -34px rgba(0,0,0,.9)}
-  .empty{color:var(--faint);font-size:13.5px;text-align:center;padding:26px 0}
+  .empty{color:var(--faint);font-size:13.5px;text-align:center;padding:28px 18px;line-height:1.55}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  @keyframes breathe{0%,100%{opacity:.55}50%{opacity:1}}
+  .kpi,.wcard,.appcard,.card{animation:fadeUp .34s cubic-bezier(.2,.7,.3,1) both}
+  #home,#ws{animation:fadeUp .28s ease both}
+  .crow{transition:background .15s ease, transform .12s ease}
+  .crow:active{transform:scale(.992)}
+  .kpi{transition:transform .12s ease, border-color .2s ease}
+  .kpi:active{transform:scale(.97)}
+  #loader{position:fixed;inset:0;z-index:45;display:none;place-items:center;background:radial-gradient(700px 500px at 50% 30%,rgba(124,58,237,.12),var(--bg))}
+  #loader .sphere{width:52px;height:52px;margin:0 auto 18px}
+  #loader p{color:var(--muted);font-size:13.5px;letter-spacing:.02em;animation:breathe 2s ease-in-out infinite}
   .search{width:100%;padding:12px 15px;border-radius:13px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:#fff;font-family:inherit;font-size:14px;margin-bottom:4px}
   /* ---- customer workspace ---- */
   #ws{display:none}
@@ -137,6 +148,8 @@
   </div>
 </div>
 
+<div id="loader"><div style="text-align:center"><div class="sphere"></div><p>Bringing your company online…</p></div></div>
+
 <div class="wrap" id="app" style="display:none">
   <!-- HOME -->
   <div id="home">
@@ -174,10 +187,12 @@ $('magic').onclick=async()=>{const email=$('email').value.trim();if(!email){$('g
 $('pass').addEventListener('keydown',e=>{if(e.key==='Enter')signIn();});
 
 async function boot(){const {data:{session}}=await sb.auth.getSession();
-  if(!session){$('gate').style.display='grid';$('app').style.display='none';return;}
-  $('gate').style.display='none';$('app').style.display='block';
+  if(!session){$('gate').style.display='grid';$('app').style.display='none';$('loader').style.display='none';return;}
+  $('gate').style.display='none';$('app').style.display='block';$('loader').style.display='grid';
   const h=new Date().getHours();$('part').textContent=h<12?'morning':h<18?'afternoon':'evening';
-  await load(); route();}
+  await load(); route(); $('loader').style.display='none';
+  if(!window._cc_iv){ window._cc_iv=setInterval(()=>{ if(!location.hash){ load().then(()=>{ if(!location.hash) renderHome(); }); } },45000); }
+}
 
 async function q(path){const {data:{session}}=await sb.auth.getSession();
   const r=await fetch(CFG.url+'/rest/v1/'+path,{headers:{apikey:CFG.key,Authorization:'Bearer '+session.access_token}});return r.ok?r.json():[];}
@@ -211,9 +226,9 @@ async function load(){
 function workerPill(){
   const age=BEAT?(Date.now()-new Date(BEAT.created_at).getTime())/1000:1e9;
   const pending=WQ.filter(j=>j.status==='pending').length;
-  let c='r',t='Worker offline';
-  if(age<120){ c=pending>0?'g':'a'; t=pending>0?'Production team working':'Production team idle'; }
-  else if(age<1e8){ c='r'; t='Worker silent '+Math.round(age/60)+'m'; }
+  let c='g',t='All caught up';
+  if(age<120){ if(pending>0){c='g';t='Production team working';} }
+  else { c='a'; t='Production paused'; }
   $('wpill').innerHTML='<span class="dot '+c+'"></span><span>'+t+'</span>';
 }
 
@@ -232,7 +247,7 @@ function renderHome(){
   const pending=WQ.filter(j=>j.status==='pending').length;
   const blocked=LEADS.filter(l=>l.status==='CHANGES REQUESTED');
   const pipe=(appr.length+building.length+pending+LEADS.filter(l=>l.status==='QUALIFIED').length)*ONCE;
-  $('sub').textContent=appr.length+' waiting on you · '+building.length+' building · '+pending+' queued';
+  $('sub').textContent = (appr.length+building.length+pending) ? (appr.length+' waiting on you · '+building.length+' building · '+pending+' queued') : "You're all caught up. Here's the state of the company.";
   $('kpis').innerHTML=[
     [appr.length,'Waiting approval','approve'],[building.length,'Building','building'],[blocked.length,'Need changes','changes'],['$'+(pipe/1000)+'k','Pipeline (est.)','pipeline']
   ].map(([n,l,f])=>`<div class="kpi" style="cursor:pointer" onclick="setFilter('${f}')"><div class="n">${n}</div><div class="l">${l} ›</div></div>`).join('');
@@ -254,7 +269,7 @@ function renderHome(){
   const need=[...appr,...blocked].sort((a,b)=>signal(a).rank-signal(b).rank);
   $('needCount').textContent=need.length?need.length+' to decide':'all clear';
   $('need').innerHTML = need.length ? need.map(needRow).join('')
-    : `<div class="empty">Nothing needs a decision right now. Finished sites and flagged customers show up here.</div>`;
+    : `<div class="empty">You're all caught up — nothing needs a decision right now.<br>Finished websites and anything that needs your call will land right here.</div>`;
 
   // all customers grouped, filtered by search
   const term=($('search').value||'').toLowerCase();
