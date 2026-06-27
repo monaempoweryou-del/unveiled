@@ -354,7 +354,9 @@ function renderCustomer(id){
       <div class="kv"><span class="k">Phone</span><span>${phone?`<a href="tel:${esc(phone)}">${esc(phone)}</a>`:'<span style="color:var(--faint)">none on file</span>'}</span></div>
       ${l.contact_name?`<div class="kv"><span class="k">Contact</span><span>${esc(l.contact_name)}</span></div>`:''}
       ${l.website?`<div class="kv"><span class="k">Old site</span><a href="${esc(l.website)}" target="_blank">${esc(l.website)} ↗</a></div>`:''}
-      <div class="kv"><span class="k">Source</span><span>${esc(l.source||'—')}</span></div>
+      <div class="kv"><span class="k">Came from</span><span>${esc(l.channel||l.source||'—')}${l.campaign?' · '+esc(l.campaign):''}</span></div>
+      ${l.offer?`<div class="kv"><span class="k">Offer</span><span>${esc(l.offer)}</span></div>`:''}
+      ${l.package?`<div class="kv"><span class="k">Package</span><span style="text-transform:capitalize">${esc(l.package)}</span></div>`:''}
     </div>
 
     <div class="wcard"><h3>History</h3>
