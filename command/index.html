@@ -87,6 +87,16 @@
   textarea{width:100%;min-height:90px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:12px;color:#fff;font-family:inherit;font-size:14px;padding:12px;resize:vertical}
   .savebar{display:flex;align-items:center;gap:10px;margin-top:9px} .savebar .ok{font-size:12.5px;color:var(--green)}
   .soonbox{color:var(--faint);font-size:13px;line-height:1.5}
+  .journey{display:flex;align-items:flex-start;gap:0;overflow-x:auto;padding-bottom:4px}
+  .jstep{display:flex;flex-direction:column;align-items:center;gap:7px;min-width:62px;flex:none}
+  .jstep .jd{width:15px;height:15px;border-radius:50%;background:rgba(255,255,255,.07);border:1px solid var(--line)}
+  .jstep.on .jd{background:var(--violet);box-shadow:0 0 11px var(--glow);border-color:transparent}
+  .jstep.cur .jd{background:var(--green);box-shadow:0 0 12px var(--green);border-color:transparent}
+  .jstep .jl{font-size:10.5px;color:var(--faint);text-align:center;line-height:1.25}
+  .jstep.on .jl,.jstep.cur .jl{color:var(--txt)}
+  .jstep i{font-style:normal;font-size:8.5px;color:var(--faint);display:block}
+  .jline{flex:none;width:18px;height:2px;background:rgba(255,255,255,.08);margin-top:7px}
+  .jline.on{background:var(--violet)}
   /* login */
   .gate{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:radial-gradient(800px 600px at 50% 0%,rgba(124,58,237,.18),#070509)}
   .gate .box{width:340px;max-width:90vw;text-align:center;background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:34px 28px;backdrop-filter:blur(18px)}
@@ -278,6 +288,7 @@ function renderCustomer(id){
     </div>
     ${banner}
     <div class="acts">${acts}</div>
+    ${journeyHTML(l)}
 
     ${l.preview_url?`<div class="wcard"><h3>Website</h3><iframe class="prev" src="${esc(l.preview_url)}" loading="lazy"></iframe>
       <div style="margin-top:10px"><a class="btn" href="${esc(l.preview_url)}" target="_blank">Open full site ↗</a></div></div>`:''}
@@ -311,6 +322,28 @@ function renderCustomer(id){
     <div class="wcard"><h3>Emails & engagement <span class="soon">not tracked yet</span></h3><div class="soonbox">Per-customer email threads and open/click tracking aren't connected yet, so I can't honestly show "opened 3 times" — I won't fake it. This lights up when reply + open tracking ships.</div></div>
     <div class="wcard"><h3>Meetings & invoices <span class="soon">not tracked yet</span></h3><div class="soonbox">No calendar or billing integration yet. Meetings, calls, and invoices will gather here once connected.</div></div>
   `;
+}
+
+function journeyHTML(l){
+  const s=l.status;
+  const built=['BUILDING','QA','PREVIEW READY','PREVIEW DELIVERED','APPROVED'].includes(s)||!!l.preview_url;
+  const preview=!!l.preview_url||['PREVIEW READY','PREVIEW DELIVERED','APPROVED'].includes(s);
+  const sent=['PREVIEW DELIVERED','APPROVED'].includes(s)||!!l.reveal_sent_at;
+  const approved=s==='APPROVED';
+  const steps=[
+    {l:'Lead',on:true},{l:'Built',on:built},{l:'Preview',on:preview},{l:'Reveal sent',on:sent},
+    {l:'Opened',soon:true},{l:'Replied',soon:true},{l:'Approved',on:approved},{l:'Paid',soon:true},{l:'Live client',soon:true}
+  ];
+  // current = last "on" step
+  let cur=-1; steps.forEach((st,i)=>{if(st.on)cur=i;});
+  let out='';
+  steps.forEach((st,i)=>{
+    if(i>0) out+=`<span class="jline ${steps[i-1].on&&st.on?'on':''}"></span>`;
+    const cls=i===cur?'cur':(st.on?'on':'');
+    out+=`<div class="jstep ${cls}"><span class="jd"></span><span class="jl">${st.l}${st.soon?'<i>not tracked</i>':''}</span></div>`;
+  });
+  return `<div class="wcard"><h3>Customer journey</h3><div class="journey">${out}</div>
+    <div class="soonbox" style="margin-top:11px">Greyed steps (opened, replied, paid, live) aren't instrumented yet. I won't light them up until we can measure them honestly — see the blind-spot report for how we wire each one.</div></div>`;
 }
 
 function humanAction(a){
