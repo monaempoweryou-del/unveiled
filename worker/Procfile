@@ -1,1 +1,1 @@
-worker: python heartbeat.py
+worker: python worker_main.py
