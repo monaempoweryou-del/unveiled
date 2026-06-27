@@ -16,10 +16,11 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root{
-    --bg:#070509; --panel:rgba(28,22,40,.55); --panel2:rgba(255,255,255,.025); --line:rgba(150,120,220,.14);
-    --violet:#8b5cf6; --violet2:#a78bfa; --glow:rgba(124,58,237,.5);
-    --txt:#f4f1fb; --muted:#9b93b4; --faint:#6c647f;
-    --green:#46e5a0; --amber:#ffcf6b; --red:#ff6b81; --blue:#7cc5ff; --radius:18px;
+    --bg:#f5f4fb; --panel:#ffffff; --panel2:#faf9fe; --line:#e8e5f2;
+    --violet:#7c3aed; --violet2:#6d34d6; --glow:rgba(124,58,237,.22);
+    --txt:#211c34; --muted:#6b6580; --faint:#9c96ad;
+    --green:#0f9d63; --amber:#b67c08; --red:#dc3b4b; --blue:#2f7fd6; --radius:18px;
+    --sh:0 1px 2px rgba(40,25,80,.04), 0 14px 34px -20px rgba(70,45,130,.22);
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   html,body{height:100%}
@@ -132,7 +133,51 @@
   .gate input{width:100%;padding:13px 15px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:#fff;font-family:inherit;font-size:14px;margin-bottom:10px}
   .gate button{width:100%;padding:13px;border:0;border-radius:12px;cursor:pointer;font-weight:600;font-size:14px;background:linear-gradient(90deg,var(--violet),#6d34d6);color:#fff;font-family:inherit}
   .gate .msg{font-size:12.5px;color:var(--amber);margin-top:12px;min-height:16px}
-  @media(max-width:560px){.kpis{grid-template-columns:repeat(2,1fr)}.wrap{padding:18px 14px 90px}.hello{font-size:22px}}
+  @media(max-width:560px){.kpis{grid-template-columns:repeat(2,1fr)}.wrap{padding:18px 14px 96px}.hello{font-size:22px}.btn{padding:13px 16px}.crow{padding:16px 15px}}
+  /* ===== Premium light theme ===== */
+  body{background:var(--bg);color:var(--txt)}
+  body::before{background:radial-gradient(900px 620px at 82% -12%,rgba(124,58,237,.07),transparent 60%),radial-gradient(720px 520px at -5% 108%,rgba(99,60,200,.06),transparent 60%),linear-gradient(180deg,#f7f6fc,#f3f1fa 60%,#f5f4fb)}
+  .panel,.card,.kpi,.wcard{background:#fff;border:1px solid var(--line);box-shadow:var(--sh);backdrop-filter:none}
+  .wpill{background:#fff;border:1px solid var(--line);box-shadow:var(--sh);backdrop-filter:none}
+  .crow{border-bottom:1px solid #f0eef7}
+  .crow:hover,.crow:active{background:#f8f6fe}
+  .kpi:hover{border-color:#d9d3ee}
+  .p-muted{background:#f0eef6;color:var(--faint)}
+  .p-red{background:#fdeaec;color:#c5303f} .p-amber{background:#fcf2dd;color:#9a6a06}
+  .p-violet{background:#f1ebff;color:var(--violet2)} .p-blue{background:#e8f2fc;color:#1f6cc0} .p-green{background:#e3f6ee;color:#0c7a4c}
+  .needhero{border:1px solid #f6d2d7;box-shadow:0 1px 2px rgba(40,25,80,.04),0 18px 40px -24px rgba(220,60,75,.32)}
+  .search{background:#fff;border:1px solid var(--line);color:var(--txt);box-shadow:var(--sh)}
+  .search::placeholder{color:var(--faint)}
+  .btn{background:#fff;border:1px solid var(--line);color:var(--txt);box-shadow:0 1px 2px rgba(40,25,80,.04)}
+  .btn:hover{background:#f6f4fc}
+  .btn.primary{background:linear-gradient(92deg,var(--violet),#6d34d6);border-color:transparent;color:#fff;box-shadow:0 12px 26px -12px var(--glow)}
+  .btn.good{background:#e7f7ef;border-color:#bce7d4;color:#0c7a4c} .btn.good:hover{background:#dcf3e7}
+  .btn.ghost{background:transparent;box-shadow:none}
+  .b-red{background:#fdecee;border:1px solid #f6cdd2;color:#a8313d}
+  .b-blue{background:#eaf3fc;border:1px solid #cfe3f6;color:#1d5e9e}
+  .b-amber{background:#fcf4e2;border:1px solid #f0e0b8;color:#8a6206}
+  .b-violet{background:#f2ecff;border:1px solid #e0d2fb;color:#5a36b0}
+  .kv{border-bottom:1px solid #f1eff7} .kv a,.back,.sec .r{color:var(--violet2)}
+  .prev{background:#fff;border:1px solid var(--line)}
+  .tl .ev{border-bottom:1px solid #f1eff7}
+  .tl .tdot{background:#f1ebff;border:1px solid var(--line)}
+  textarea{background:#faf9fe;border:1px solid var(--line);color:var(--txt)}
+  .jstep .jd{background:#e9e5f3;border:1px solid var(--line)}
+  .jline{background:#e6e2f0}
+  .vtog{background:#efecf8;border:1px solid var(--line)}
+  .inttag{border:1px solid var(--line);color:var(--faint)}
+  .custbanner{background:#f2ecff;border:1px solid #e0d2fb;color:#5a36b0}
+  .obx{background:#fff;border:1px solid var(--line);color:var(--violet)}
+  .obx.on{background:var(--green);border-color:transparent;color:#fff}
+  .gate{background:radial-gradient(800px 600px at 50% -5%,rgba(124,58,237,.1),#f4f3fb)}
+  .gate .box{background:#fff;border:1px solid var(--line);box-shadow:0 30px 70px -30px rgba(70,45,130,.35);backdrop-filter:none}
+  .gate input{background:#faf9fe;border:1px solid var(--line);color:var(--txt)} .gate b{color:var(--txt)}
+  #loader{background:radial-gradient(700px 500px at 50% 30%,rgba(124,58,237,.08),#f5f4fb)} #loader p{color:var(--muted)}
+  .crow .ava,.wsHead .ava{box-shadow:0 8px 18px -8px var(--glow)}
+  @keyframes shimmer{0%{background-position:-320px 0}100%{background-position:320px 0}}
+  .skel{background:#ece9f4;background-image:linear-gradient(90deg,#ece9f4,#f5f3fb,#ece9f4);background-size:600px 100%;border-radius:8px;animation:shimmer 1.25s linear infinite}
+  #toast{position:fixed;left:50%;bottom:max(22px,env(safe-area-inset-bottom));transform:translate(-50%,16px);background:#211c34;color:#fff;padding:13px 20px;border-radius:14px;font-size:14px;font-weight:500;box-shadow:0 18px 44px -14px rgba(60,40,120,.5);opacity:0;pointer-events:none;transition:.3s cubic-bezier(.2,.7,.3,1);z-index:60;max-width:90vw;text-align:center}
+  #toast.show{opacity:1;transform:translate(-50%,0)}
 </style>
 </head>
 <body>
@@ -149,6 +194,7 @@
 </div>
 
 <div id="loader"><div style="text-align:center"><div class="sphere"></div><p>Bringing your company online…</p></div></div>
+<div id="toast"></div>
 
 <div class="wrap" id="app" style="display:none">
   <!-- HOME -->
@@ -188,9 +234,10 @@ $('pass').addEventListener('keydown',e=>{if(e.key==='Enter')signIn();});
 
 async function boot(){const {data:{session}}=await sb.auth.getSession();
   if(!session){$('gate').style.display='grid';$('app').style.display='none';$('loader').style.display='none';return;}
-  $('gate').style.display='none';$('app').style.display='block';$('loader').style.display='grid';
+  $('gate').style.display='none';$('app').style.display='block';
   const h=new Date().getHours();$('part').textContent=h<12?'morning':h<18?'afternoon':'evening';
-  await load(); route(); $('loader').style.display='none';
+  if(!location.hash) renderSkeleton();
+  await load(); route();
   if(!window._cc_iv){ window._cc_iv=setInterval(()=>{ if(!location.hash){ load().then(()=>{ if(!location.hash) renderHome(); }); } },45000); }
 }
 
@@ -290,6 +337,13 @@ function renderHome(){
   $('groups').innerHTML=html||'';
 }
 
+function renderSkeleton(){
+  $('kpis').innerHTML=[0,0,0,0].map(()=>`<div class="kpi"><div class="skel" style="height:24px;width:42%"></div><div class="skel" style="height:11px;width:74%;margin-top:10px"></div></div>`).join('');
+  $('need').innerHTML=[0,0].map(()=>`<div class="crow" style="pointer-events:none"><div class="skel" style="width:42px;height:42px;border-radius:12px;flex:none"></div><div style="flex:1"><div class="skel" style="height:15px;width:46%"></div><div class="skel" style="height:11px;width:28%;margin-top:8px"></div></div></div>`).join('');
+  $('groups').innerHTML='';
+  document.querySelector('#home .sec h2').textContent='Needs you now'; $('needCount').textContent='';
+}
+function toast(msg){ const t=$('toast'); if(!t)return; t.textContent=msg; t.classList.add('show'); clearTimeout(window._tt); window._tt=setTimeout(()=>t.classList.remove('show'),3400); }
 function needRow(l){
   const sg=signal(l);
   let quick='<div class="chev">›</div>';
@@ -443,10 +497,13 @@ function humanAction(a){
   return m[a.action]||a.action.replace(/_/g,' ');
 }
 
-async function decide(id,status,btn){const t=btn.textContent;btn.textContent='…';btn.disabled=true;
+async function decide(id,status,btn){btn.textContent='…';btn.disabled=true;
+  const nm=(LEADS.find(x=>x.id===id)||{}).business_name||'Customer';
   const {error}=await sb.from('leads').update({status,updated_at:new Date().toISOString()}).eq('id',id);
-  if(error){btn.textContent='!';alert('Could not save: '+error.message);btn.disabled=false;return;}
-  await load(); route();}
+  if(error){btn.textContent='!';toast('Could not save — '+error.message);btn.disabled=false;return;}
+  await load(); route();
+  toast({APPROVED:'Approved ✓   The reveal is on its way to '+nm+'.','CHANGES REQUESTED':'Sent back for changes — '+nm+' left your approval queue.',LOST:nm+' passed — moved to Archived.'}[status]||'Saved.');
+}
 
 async function saveNotes(id,btn){const v=$('notes').value;btn.textContent='Saving…';
   const {error}=await sb.from('leads').update({cc_notes:v,updated_at:new Date().toISOString()}).eq('id',id);
