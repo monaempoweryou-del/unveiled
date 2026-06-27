@@ -1075,10 +1075,31 @@ function revisionsHTML(id){
     return `<div class="rev">${img}<div><b>${esc(title)}</b>${p.kind==='replace_image'&&p.instruction&&p.instruction!==title?`<small>${esc(p.instruction)}</small>`:''}<small>${r.created_at?ago(r.created_at):''}</small></div><span class="rstat">${esc(revStatusLabel(r.status))}</span></div>`;
   }).join('')}</div>`;
 }
+// LS-SUPERVISED-APPROVAL: every approval/revision is training data. Classify the
+// area a revision touches so recurring corrections can become build defaults.
+function targetArea(kind,instruction){
+  if(kind==='replace_image') return 'imagery';
+  if(kind==='visual_refresh') return 'branding';
+  const s=(instruction||'').toLowerCase();
+  if(/\b(headline|copy|text|word|wording|paragraph|sentence|spelling|grammar|tagline)\b/.test(s)) return 'copy';
+  if(/\b(color|colour|font|typeface|typography|logo|brand)\b/.test(s)) return 'branding';
+  if(/\b(image|photo|picture|hero|gallery|img)\b/.test(s)) return 'imagery';
+  if(/\b(layout|section|order|move|spacing|align|column|grid|stack)\b/.test(s)) return 'layout';
+  if(/\b(button|cta|nav|menu|link|click|scroll|form|tap)\b/.test(s)) return 'ux';
+  return 'other';
+}
+async function emitSignal(sig){
+  try{ await sb.from('learning_signals').insert(sig); }
+  catch(e){ console.error('learning signal failed:',e); }  // never block the action
+}
 async function createRevision(payload,label){
   const ins=await sb.from('work_queue').insert({type:'revision',priority:2,status:'pending',payload,idempotency_key:'rev:'+payload.lead_id+':'+Date.now()});
   if(ins.error){ console.error('revision insert failed:',ins.error); toast('That didn’t go through — nothing was sent. Give it another try in a moment.'); return false; }
   try{ await sb.from('activity_log').insert({entity_type:'lead',entity_id:payload.lead_id,action:'revision_requested',meta:{kind:payload.kind,instruction:payload.instruction||''}}); }catch(e){}
+  const lead=LEADS.find(x=>x.id===payload.lead_id)||{};
+  emitSignal({lead_id:payload.lead_id,industry:lead.industry||null,decision:'revision',
+    revision_kind:payload.kind,target_area:targetArea(payload.kind,payload.instruction),
+    instruction:payload.instruction||'',first_pass:false});
   await sb.from('leads').update({status:'CHANGES REQUESTED',updated_at:new Date().toISOString()}).eq('id',payload.lead_id);
   await load(); renderCustomer(payload.lead_id);
   toast(label||'Revision sent to production ✓');
@@ -1113,8 +1134,19 @@ async function decide(id,status,btn){
   if(!data||!data.length){ if(btn){btn.textContent='Try again';btn.disabled=false;}
     console.error('decide no-op: update matched 0 rows for',id,'status',status);
     toast('Nothing changed: the database accepted the request but updated 0 rows — a security policy is filtering this record, so it was NOT approved. (Apply Backend/cc-approval-rls-fix.sql.)'); return; }
-  // STEP 3 — confirmed the status changed. Refresh the view.
+  // STEP 3 — confirmed the status changed. Emit the learning signal
+  // (LS-SUPERVISED-APPROVAL): an approval with zero prior revisions = first-pass.
   const row=data[0];
+  const lead=LEADS.find(x=>x.id===id)||{};
+  let firstPass=null;
+  if(status==='APPROVED'){
+    try{ const {count}=await sb.from('learning_signals')
+      .select('id',{count:'exact',head:true}).eq('lead_id',id).eq('decision','revision');
+      firstPass=(count||0)===0;
+    }catch(e){ firstPass=null; }
+  }
+  emitSignal({lead_id:id,industry:lead.industry||null,decision:status,
+    revision_kind:null,target_area:null,instruction:null,first_pass:firstPass});
   await load(); route();
   if(status==='APPROVED'){
     // STEP 4/5 — the reveal email (trigger -> tasks -> email worker) and the
