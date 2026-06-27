@@ -31,8 +31,12 @@
   @keyframes pulse{0%,100%{box-shadow:0 0 16px var(--glow),inset 0 0 12px rgba(255,255,255,.22)}50%{box-shadow:0 0 30px var(--glow),inset 0 0 14px rgba(255,255,255,.32)}}
   .topbar{display:flex;align-items:center;gap:12px;margin-bottom:20px}
   .topbar b{font-weight:700;letter-spacing:.26em;font-size:14px}
-  .wordmark{height:21px;width:auto;display:block}
-  .wordmark-lg{height:30px;width:auto;margin:0 auto 20px;display:block}
+  .wordmark{height:20px;width:auto;display:block}
+  .wordmark-lg{height:27px;width:auto;display:block}
+  .logo-sphere{height:28px;width:28px;object-fit:contain;display:block;flex:none;filter:drop-shadow(0 2px 9px rgba(124,58,237,.28))}
+  .logo-sphere-lg{height:82px;width:82px;object-fit:contain;margin:0 auto 16px;display:block;filter:drop-shadow(0 8px 26px rgba(124,58,237,.32))}
+  .gate .lockup,.tb-lock{display:flex;align-items:center;gap:10px}
+  .gate .lockup{flex-direction:column;gap:14px;margin-bottom:18px}
   .wpill{margin-left:auto;display:inline-flex;align-items:center;gap:7px;font-size:12.5px;background:var(--panel);border:1px solid var(--line);padding:7px 12px;border-radius:999px;backdrop-filter:blur(10px)}
   .dot{width:8px;height:8px;border-radius:50%}
   .dot.g{background:var(--green);box-shadow:0 0 9px var(--green)} .dot.a{background:var(--amber);box-shadow:0 0 9px var(--amber)} .dot.r{background:var(--red);box-shadow:0 0 9px var(--red)}
@@ -205,7 +209,7 @@
 
 <div class="gate" id="gate">
   <div class="box">
-    <img class="wordmark-lg" src="/command/wordmark.png" alt="UNVEILED" /><p>Command Center</p>
+    <span class="lockup"><img class="logo-sphere-lg" src="/command/sphere.png" alt="" /><img class="wordmark-lg" src="/command/wordmark.png" alt="UNVEILED" /></span><p>Command Center</p>
     <input id="email" type="email" placeholder="you@email.com" autocomplete="username" />
     <input id="pass" type="password" placeholder="Password" autocomplete="current-password" />
     <button onclick="signIn()">Enter</button>
@@ -214,13 +218,13 @@
   </div>
 </div>
 
-<div id="loader"><div style="text-align:center"><img class="wordmark-lg" src="/command/wordmark.png" alt="UNVEILED" style="animation:breathe 2s ease-in-out infinite" /><p>Bringing your company online…</p></div></div>
+<div id="loader"><div style="text-align:center"><img class="logo-sphere-lg" src="/command/sphere.png" alt="UNVEILED" style="animation:breathe 2.4s ease-in-out infinite" /><p>Bringing your company online…</p></div></div>
 <div id="toast"></div>
 
 <div class="wrap" id="app" style="display:none">
   <!-- HOME -->
   <div id="home">
-    <div class="topbar"><img class="wordmark" src="/command/wordmark.png" alt="UNVEILED" /><div class="wpill" id="wpill"><span class="dot a"></span><span id="wlbl">…</span></div></div>
+    <div class="topbar"><span class="tb-lock"><img class="logo-sphere" src="/command/sphere.png" alt="" /><img class="wordmark" src="/command/wordmark.png" alt="UNVEILED" /></span><div class="wpill" id="wpill"><span class="dot a"></span><span id="wlbl">…</span></div></div>
     <div class="hello">Good <span id="part">day</span>, Moe.<span class="s" id="sub">Loading your company…</span></div>
     <div class="kpis" id="kpis"></div>
 
