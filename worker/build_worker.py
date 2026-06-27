@@ -60,6 +60,14 @@ def claim_job():
     rows = _sb("POST", "/rest/v1/rpc/claim_build_job", {"p_worker": WORKER_ID})
     return rows[0] if rows else None
 
+def claim_revision():
+    rows = _sb("POST", "/rest/v1/rpc/claim_revision_job", {"p_worker": WORKER_ID})
+    return rows[0] if rows else None
+
+def get_lead(lead_id):
+    rows = _sb("GET", f"/rest/v1/leads?id=eq.{lead_id}&select=business_name,preview_url")
+    return rows[0] if rows else {}
+
 def update_lead(lead_id, fields):
     _sb("PATCH", f"/rest/v1/leads?id=eq.{lead_id}", fields, {"Prefer": "return=minimal"})
 
@@ -210,6 +218,106 @@ def process(job):
         activity(lead_id, "build_blocked", {"reason": repr(e)[:400]})
 
 
+# ---------- revisions (Replace Image + text Request a revision) ----------
+REVISE = (
+    "You are UNVEILED's senior web designer. Apply the single change requested below to this existing "
+    "single-file HTML page, and return the COMPLETE updated HTML only, starting with <!DOCTYPE html>. "
+    "Change ONLY what is asked; keep all other content, structure, and head metadata intact. "
+    "Never use an em dash. Ensure every tag is closed and the document ends with </html>. "
+    "If you are running long, do not truncate — keep the page complete. Return ONLY the HTML, "
+    "no commentary, no markdown fences."
+)
+
+def fetch_deployed(slug):
+    path = f"/repos/{GITHUB_REPO}/contents/previews/{slug}/index.html"
+    existing = _gh("GET", path)
+    if not existing or not existing.get("content"):
+        return None
+    return base64.b64decode(existing["content"]).decode("utf-8", "replace")
+
+def apply_edit(html, instruction):
+    prompt = f"{REVISE}\n\nCHANGE REQUESTED:\n{instruction}\n\nCURRENT HTML:\n{html}"
+    body = {"model": MODEL, "max_tokens": 16000,
+            "messages": [{"role": "user", "content": prompt}]}
+    req = urllib.request.Request(
+        "https://api.anthropic.com/v1/messages", data=json.dumps(body).encode(),
+        method="POST", headers={"x-api-key": ANTHROPIC_API_KEY,
+        "anthropic-version": "2023-06-01", "content-type": "application/json"})
+    with urllib.request.urlopen(req, timeout=420) as r:
+        out = json.loads(r.read().decode())
+    new = "".join(b.get("text", "") for b in out.get("content", []))
+    i = new.find("<!DOCTYPE")
+    if i > 0: new = new[i:]
+    return new.strip()
+
+def slug_from(lead, payload):
+    pu = (lead.get("preview_url") or "").rstrip("/")
+    if pu:
+        return pu.split("/")[-1]
+    return slugify(payload.get("business") or lead.get("business_name"))
+
+def process_revision(job):
+    payload = job.get("payload") or {}
+    lead_id = payload.get("lead_id")
+    kind = payload.get("kind")
+    lead = get_lead(lead_id) if lead_id else {}
+    slug = slug_from(lead, payload)
+    activity(lead_id, "revision_started", {"job": job["id"], "kind": kind})
+    if lead_id: update_lead(lead_id, {"status": "BUILDING", "updated_at": now()})
+    try:
+        html = fetch_deployed(slug)
+        if not html:
+            finish_job(job["id"], "blocked", blocker=f"could not fetch deployed site for slug '{slug}'")
+            activity(lead_id, "revision_blocked", {"reason": "site not found"})
+            return
+
+        if kind == "replace_image":
+            orig = payload.get("original_url") or ""
+            new = payload.get("new_image_url") or ""
+            if not (orig and new):
+                finish_job(job["id"], "blocked", blocker="replace_image missing original/new url")
+                return
+            if orig in html:
+                html = html.replace(orig, new)
+            else:
+                # fallback: match by path (ignore query string / host variations)
+                base = orig.split("?")[0]
+                tail = "/".join(base.split("/")[-2:])
+                if tail and tail in html:
+                    html = re.sub(re.escape(tail) + r'[^"\')\s]*', new, html)
+                else:
+                    finish_job(job["id"], "blocked",
+                               blocker="original image not found on the live page (it may already have changed)")
+                    activity(lead_id, "revision_blocked", {"reason": "original image not found"})
+                    if lead_id: update_lead(lead_id, {"status": "PREVIEW READY", "updated_at": now()})
+                    return
+        else:
+            instruction = payload.get("instruction") or ""
+            if not instruction:
+                finish_job(job["id"], "blocked", blocker="revision missing instruction")
+                return
+            html = apply_edit(html, instruction)
+
+        ok, issues = qa(html)
+        if not ok:
+            finish_job(job["id"], "blocked", blocker=f"QA failed: {issues}")
+            activity(lead_id, "revision_blocked", {"reason": issues})
+            if lead_id: update_lead(lead_id, {"status": "PREVIEW READY", "updated_at": now()})
+            return
+
+        url = deploy(slug, html)
+        finish_job(job["id"], "completed", result={"preview_url": url, "kind": kind})
+        if lead_id:
+            update_lead(lead_id, {"preview_url": url, "status": "PREVIEW READY", "updated_at": now()})
+        activity(lead_id, "revision_complete", {"kind": kind, "preview_url": url})
+        log_line(f"REVISION done ({kind}) -> {url}")
+    except Exception as e:
+        log_line(f"revision {job.get('id')} FAILED: {e!r}")
+        finish_job(job["id"], "blocked", blocker=repr(e)[:400])
+        activity(lead_id, "revision_blocked", {"reason": repr(e)[:400]})
+        if lead_id: update_lead(lead_id, {"status": "PREVIEW READY", "updated_at": now()})
+
+
 def builder_keys_present():
     return all([SUPABASE_URL, SERVICE_KEY, ANTHROPIC_API_KEY, GITHUB_TOKEN])
 
@@ -227,10 +335,15 @@ def run_builder():
         try:
             job = claim_job()
             if job:
-                log_line(f"claimed job {job['id']}")
+                log_line(f"claimed build job {job['id']}")
                 process(job)
-            else:
-                time.sleep(POLL)
+                continue
+            rev = claim_revision()
+            if rev:
+                log_line(f"claimed revision {rev['id']}")
+                process_revision(rev)
+                continue
+            time.sleep(POLL)
         except Exception as e:
             log_line(f"loop error: {e!r}")
             time.sleep(POLL)
