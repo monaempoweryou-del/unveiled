@@ -187,6 +187,11 @@
   /* live website thumbnail in approval rows */
   .thumb{width:88px;height:60px;border-radius:11px;overflow:hidden;border:1px solid var(--line);flex:none;background:#fff;position:relative;box-shadow:0 1px 2px rgba(40,25,80,.05)}
   .thumb iframe{width:314px;height:214px;border:0;transform:scale(.28);transform-origin:top left;pointer-events:none;position:absolute;top:0;left:0}
+  .assetgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(116px,1fr));gap:11px}
+  .asset{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 1px 2px rgba(40,25,80,.05)}
+  .asset .ph{width:100%;height:84px;object-fit:cover;display:block;background:#f1eff8}
+  .asset .arow{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;font-size:12px;color:var(--muted)}
+  .asset button{border:0;background:transparent;color:var(--violet2);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;padding:0}
   /* typography & rhythm pass — nothing should strain to read */
   body{font-size:15px;line-height:1.5}
   .hello{font-size:27px} .hello .s{font-size:14px;line-height:1.45}
@@ -464,10 +469,13 @@ function renderCustomer(id){
       <div class="savebar"><button class="btn" onclick="saveNotes('${id}',this)">Save note</button><span class="ok" id="noteok"></span></div>
     </div>
 
-    <div class="wcard"><h3>Files & assets <span class="inttag int">not instrumented</span></h3><div class="soonbox">No files yet.<span class="int"> Storage isn't wired in yet — logos, photos, and brand files will live here once connected.</span></div></div>
+    <div class="wcard"><h3>Website assets</h3>
+      <div class="assetgrid" id="assetgrid"><div class="soonbox">Loading your website's images…</div></div>
+      <div class="soonbox int" style="margin-top:11px">Live images from the deployed site. Uploading a replacement needs file storage (next step) — for now "Replace" logs a change request for the team.</div></div>
     <div class="wcard int"><h3>Emails & engagement <span class="inttag">Team only</span><span class="soon" style="margin-left:8px">not instrumented</span></h3><div class="soonbox">Per-customer email threads and open/click tracking aren't connected yet, so I won't show "opened 3 times" until we can measure it. Lights up with the email-tracking instrumentation.</div></div>
     <div class="wcard"><h3>Invoices & subscription <span class="inttag int">not instrumented</span></h3><div class="soonbox">No invoices yet.<span class="int"> Billing (Stripe) isn't connected yet; invoices and subscription status will appear here once it is.</span></div></div>
   `;
+  loadAssets(l);
 }
 
 function onboardingHTML(l){
@@ -515,6 +523,23 @@ function journeyHTML(l){
   });
   return `<div class="wcard"><h3>Customer journey</h3><div class="journey">${out}</div>
     <div class="soonbox int" style="margin-top:11px">Greyed steps (opened, replied, paid, live) aren't instrumented yet. I won't light them up until we can measure them honestly — see the blind-spot report for how we wire each one.</div></div>`;
+}
+
+async function loadAssets(l){
+  const box=document.getElementById('assetgrid'); if(!box) return;
+  if(!l.preview_url){ box.innerHTML='<div class="soonbox">Your website is still being built — its images will appear here once it\'s ready.</div>'; return; }
+  try{
+    const r=await fetch(l.preview_url); const html=await r.text();
+    const doc=new DOMParser().parseFromString(html,'text/html');
+    const urls=new Set();
+    doc.querySelectorAll('img').forEach(i=>{const s=i.getAttribute('src'); if(s) urls.add(s);});
+    const styleText=[...doc.querySelectorAll('[style]')].map(e=>e.getAttribute('style')).join(';')+' '+[...doc.querySelectorAll('style')].map(e=>e.textContent).join(' ');
+    [...styleText.matchAll(/url\(\s*['"]?([^'")]+)['"]?\s*\)/g)].forEach(m=>urls.add(m[1]));
+    const abs=[...urls].map(u=>{try{return new URL(u,l.preview_url).href;}catch(e){return null;}}).filter(u=>u && /^https?:/i.test(u) && !/\.svg(\?|$)/i.test(u) && !/data:/i.test(u));
+    const uniq=[...new Set(abs)].slice(0,18);
+    if(!uniq.length){ box.innerHTML='<div class="soonbox">No images detected on this site.</div>'; return; }
+    box.innerHTML=uniq.map((u,i)=>`<div class="asset"><img class="ph" src="${esc(u)}" loading="lazy" onerror="this.closest('.asset').remove()"/><div class="arow"><span>Image ${i+1}</span><button onclick="toast('Change request noted — your team will swap this image.')">Replace</button></div></div>`).join('');
+  }catch(e){ box.innerHTML='<div class="soonbox">Could not load assets right now.</div>'; }
 }
 
 function humanAction(a){
