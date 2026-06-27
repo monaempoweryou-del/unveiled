@@ -82,7 +82,11 @@ BRAND = (
     "og:image and twitter:image MUST be absolute https URLs. (4) Real, specific copy about THIS "
     "business — no lorem, no placeholder. (5) A clear booking/contact call to action. "
     "Use tasteful imagery via https://images.unsplash.com source URLs relevant to the industry. "
-    "Return ONLY the HTML, starting with <!DOCTYPE html>. No commentary."
+    "Produce ONE focused, cohesive page with about 5 to 6 sections (hero, services, why-us/trust, "
+    "a gallery or proof, and a contact/booking CTA). Keep the CSS efficient: reuse classes, avoid bloat. "
+    "CRITICAL: the page MUST be COMPLETE — every tag closed, ending with </html>. If you are running long, "
+    "tighten the content rather than leaving the page unfinished. Finishing the whole page matters more than "
+    "adding more. Return ONLY the HTML, starting with <!DOCTYPE html>. No commentary, no markdown fences."
 )
 
 def generate_site(lead, slug):
@@ -94,7 +98,7 @@ def generate_site(lead, slug):
         f"- Wants: {lead.get('needs','')}\n- Canonical URL (use for canonical/og:url): {canon}\n"
         f"- For og:image/twitter:image use an absolute https Unsplash URL relevant to the industry.\n"
     )
-    body = {"model": MODEL, "max_tokens": 14000,
+    body = {"model": MODEL, "max_tokens": 16000,
             "messages": [{"role": "user", "content": prompt}]}
     req = urllib.request.Request(
         "https://api.anthropic.com/v1/messages", data=json.dumps(body).encode(),
