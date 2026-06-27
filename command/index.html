@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>UNVEILED — Command Center</title>
 <meta name="robots" content="noindex" />
+<meta name="theme-color" content="#070509" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="UNVEILED" />
+<link rel="manifest" href="/command/manifest.json" />
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23130a26'/><circle cx='50' cy='50' r='30' fill='%237c3aed'/></svg>" />
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%237c3aed'/></svg>" />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -233,7 +239,7 @@ function renderHome(){
   // needs you = approvals + changes-needed (the truly actionable)
   const need=[...appr,...blocked].sort((a,b)=>signal(a).rank-signal(b).rank);
   $('needCount').textContent=need.length?need.length+' to decide':'all clear';
-  $('need').innerHTML = need.length ? need.map(rowHTML).join('')
+  $('need').innerHTML = need.length ? need.map(needRow).join('')
     : `<div class="empty">Nothing needs a decision right now. Finished sites and flagged customers show up here.</div>`;
 
   // all customers grouped, filtered by search
@@ -241,7 +247,8 @@ function renderHome(){
   const visible=LEADS.filter(l=>!term || (l.business_name||'').toLowerCase().includes(term));
   const groups=[
     ['In production',l=>l.status==='BUILDING'],
-    ['Waiting on customer',l=>l.status==='PREVIEW DELIVERED'||l.status==='APPROVED'],
+    ['Won — onboarding',l=>l.status==='APPROVED'],
+    ['Waiting on customer',l=>l.status==='PREVIEW DELIVERED'],
     ['Ready to build',l=>l.status==='QUALIFIED'],
     ['Outreach backlog',l=>l.status==='NEW LEAD'],
     ['Archived',l=>l.status==='LOST'],
@@ -254,6 +261,16 @@ function renderHome(){
   $('groups').innerHTML=html||'';
 }
 
+function needRow(l){
+  const sg=signal(l);
+  let quick='<div class="chev">›</div>';
+  if(sg.k==='approve') quick=`<button class="btn good" style="padding:8px 14px;font-size:12.5px;flex:none" onclick="event.stopPropagation();decide('${l.id}','APPROVED',this)">Approve</button>`;
+  return `<div class="crow" onclick="location.hash='#c/${l.id}'">
+    <div class="ava">${esc(initials(l.business_name))}</div>
+    <div><div class="nm">${esc(l.business_name||'Untitled')}</div><div class="mt">${esc(l.industry||l.source||'')} · ${ago(l.updated_at)}</div></div>
+    <div class="sig"><span class="pill p-${sg.cls}">${sg.label}</span></div>${quick}
+  </div>`;
+}
 function rowHTML(l){
   const sg=signal(l);
   return `<div class="crow" onclick="location.hash='#c/${l.id}'">
@@ -299,7 +316,7 @@ function renderCustomer(id){
     <div class="wsHead">
       <div class="ava">${esc(initials(l.business_name))}</div>
       <div><h1>${esc(l.business_name||'Untitled')}</h1>
-      <div class="meta">${[l.industry,l.location,l.source].filter(Boolean).map(esc).join(' · ')||'—'}</div></div>
+      <div class="meta">${[l.industry,l.location].filter(Boolean).map(esc).join(' · ')||'—'}</div></div>
     </div>
     ${banner}
     <div class="acts int">${teamActs}</div>
@@ -336,9 +353,9 @@ function renderCustomer(id){
       <div class="savebar"><button class="btn" onclick="saveNotes('${id}',this)">Save note</button><span class="ok" id="noteok"></span></div>
     </div>
 
-    <div class="wcard"><h3>Files & assets <span class="soon">not tracked yet</span></h3><div class="soonbox">File and brand-asset storage isn't wired in yet. When it is, logos, photos, and brand files for this customer will live here.</div></div>
-    <div class="wcard int"><h3>Emails & engagement <span class="inttag">Team only</span><span class="soon" style="margin-left:8px">not tracked yet</span></h3><div class="soonbox">Per-customer email threads and open/click tracking aren't connected yet, so I can't honestly show "opened 3 times" — I won't fake it. This lights up when reply + open tracking ships.</div></div>
-    <div class="wcard"><h3>Meetings & invoices <span class="soon">not tracked yet</span></h3><div class="soonbox">No calendar or billing integration yet. Meetings, calls, and invoices will gather here once connected.</div></div>
+    <div class="wcard"><h3>Files & assets <span class="inttag int">not instrumented</span></h3><div class="soonbox">No files yet.<span class="int"> Storage isn't wired in yet — logos, photos, and brand files will live here once connected.</span></div></div>
+    <div class="wcard int"><h3>Emails & engagement <span class="inttag">Team only</span><span class="soon" style="margin-left:8px">not instrumented</span></h3><div class="soonbox">Per-customer email threads and open/click tracking aren't connected yet, so I won't show "opened 3 times" until we can measure it. Lights up with the email-tracking instrumentation.</div></div>
+    <div class="wcard"><h3>Invoices & subscription <span class="inttag int">not instrumented</span></h3><div class="soonbox">No invoices yet.<span class="int"> Billing (Stripe) isn't connected yet; invoices and subscription status will appear here once it is.</span></div></div>
   `;
 }
 
@@ -407,6 +424,7 @@ async function saveNotes(id,btn){const v=$('notes').value;btn.textContent='Savin
 
 sb.auth.onAuthStateChange((_e,s)=>{if(s)boot();});
 boot();
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('/command/sw.js').catch(()=>{}); }
 </script>
 </body>
 </html>
