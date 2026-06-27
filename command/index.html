@@ -193,6 +193,20 @@
   .mbox textarea{width:100%;min-height:120px;font-size:15px}
   .mrow{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end;margin-top:14px}
   .mrow .btn{flex:0 1 auto}
+  .donecard{border:1px solid #cdeede;background:linear-gradient(180deg,#f3fbf6,#ffffff)}
+  .drow{display:flex;align-items:center;gap:12px;padding:13px 14px;border-bottom:1px solid #eef4f0;cursor:pointer;position:relative}
+  .drow:last-child{border-bottom:0}
+  .drow:hover{background:#f5fbf8}
+  .drow.fresh{box-shadow:inset 3px 0 0 #16a34a}
+  .dcheck{width:34px;height:34px;border-radius:11px;background:#dcf5e6;color:#15803d;display:flex;align-items:center;justify-content:center;font-size:16px;flex:none}
+  .drow .dn{font-weight:650;font-size:14.5px;color:var(--txt)}
+  .drow .dm{font-size:12.5px;color:var(--faint);margin-top:2px}
+  .dnew{margin-left:auto;font-size:10.5px;font-weight:800;letter-spacing:.4px;color:#fff;background:#16a34a;padding:3px 8px;border-radius:999px;flex:none}
+  .dgo{margin-left:auto;color:var(--faint);font-size:18px;flex:none}
+  .drow.fresh .dgo{margin-left:8px}
+  .doneclear{cursor:pointer;color:var(--violet2);font-weight:600}
+  .tb-bell{position:relative;margin-left:8px;font-size:18px;cursor:pointer;line-height:1}
+  .tb-bell .bdot{position:absolute;top:-6px;right:-8px;min-width:16px;height:16px;padding:0 4px;border-radius:999px;background:#16a34a;color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center}
   .rev{display:flex;gap:11px;align-items:flex-start;padding:11px 2px;border-bottom:1px solid #f1eff7}
   .rev:last-child{border:0}
   .rev .rthumb{width:46px;height:34px;border-radius:8px;object-fit:cover;flex:none;border:1px solid var(--line)}
@@ -252,9 +266,12 @@
 <div class="wrap" id="app" style="display:none">
   <!-- HOME -->
   <div id="home">
-    <div class="topbar"><span class="tb-lock"><img class="logo-sphere" src="/command/sphere.png" alt="" /><img class="wordmark" src="/command/wordmark.png" alt="UNVEILED" /></span><div class="wpill" id="wpill"><span class="dot a"></span><span id="wlbl">…</span></div></div>
+    <div class="topbar"><span class="tb-lock"><img class="logo-sphere" src="/command/sphere.png" alt="" /><img class="wordmark" src="/command/wordmark.png" alt="UNVEILED" /></span><span class="tb-bell" id="bell" style="display:none" onclick="scrollToDone()">🔔<span class="bdot" id="bdot">0</span></span><div class="wpill" id="wpill"><span class="dot a"></span><span id="wlbl">…</span></div></div>
     <div class="hello">Good <span id="part">day</span>, Moe.<span class="s" id="sub">Loading your company…</span></div>
     <div class="kpis" id="kpis"></div>
+
+    <div class="sec donesec" id="doneSec" style="display:none"><h2>Just completed</h2><span class="c" id="doneCount"></span></div>
+    <div class="card donecard" id="doneList" style="display:none"></div>
 
     <div class="sec"><h2>Needs you now</h2><span class="c" id="needCount"></span></div>
     <div class="card needhero" id="need"><div class="empty">Loading…</div></div>
@@ -315,7 +332,7 @@ async function load(){
   try{
     [LEADS,WQ,ACTS,BEAT,PKGS]=await Promise.all([
       q('leads?select=*&order=updated_at.desc&limit=500'),
-      q('work_queue?select=id,type,status,claimed_at,created_at,payload,blocker_reason,result&order=updated_at.desc&limit=200'),
+      q('work_queue?select=id,type,status,claimed_at,created_at,updated_at,payload,blocker_reason,result&order=updated_at.desc&limit=200'),
       q('activity_log?select=action,meta,created_at,entity_id&action=neq.heartbeat&order=created_at.desc&limit=400'),
       q('activity_log?select=created_at&action=eq.heartbeat&order=created_at.desc&limit=1').then(r=>r[0]),
       q('service_packages?select=*'),
@@ -340,8 +357,48 @@ function route(){ const h=location.hash;
 window.addEventListener('hashchange',route);
 function setFilter(f){ FILTER=(FILTER===f?null:f); if(FILTER==='pipeline')FILTER=null; renderHome(); window.scrollTo({top:0,behavior:'smooth'}); }
 
+// ---- "Just completed" awareness: finished work announces itself ----
+const DONE_SEEN_KEY='cc_done_seen';
+function getSeen(){ try{return localStorage.getItem(DONE_SEEN_KEY)||'';}catch(e){return '';} }
+function setSeen(ts){ try{localStorage.setItem(DONE_SEEN_KEY,ts);}catch(e){} }
+function completedRevisions(){
+  const wk=Date.now()-7*864e5;
+  return WQ.filter(j=>j.type==='revision' && j.status==='completed' && j.payload && new Date(j.updated_at||j.created_at).getTime()>wk)
+    .sort((a,b)=>new Date(b.updated_at||b.created_at)-new Date(a.updated_at||a.created_at));
+}
+function leadName(id){ const l=LEADS.find(x=>x.id===id); return (l&&l.business_name)||'A customer'; }
+function whatDone(r){ const p=r.payload||{}; if(r.result&&r.result.action==='restored_approved_version')return 'Approved version restored'; if(p.kind==='replace_image')return 'Image replaced on the site'; return 'Revision completed'; }
+function renderDone(){
+  const revs=completedRevisions(); const seen=getSeen();
+  const fresh=revs.filter(r=>{const t=r.updated_at||r.created_at; return !seen || t>seen;});
+  const bell=$('bell'), bdot=$('bdot');
+  if(revs.length){
+    $('doneSec').style.display=''; $('doneList').style.display='';
+    $('doneCount').innerHTML = fresh.length ? (fresh.length+' new · <span class="doneclear" onclick="event.stopPropagation();markDoneSeen()">mark seen</span>') : 'all seen';
+    $('doneList').innerHTML = revs.slice(0,8).map(r=>{
+      const p=r.payload||{}; const t=r.updated_at||r.created_at; const isNew=!seen || t>seen;
+      return `<div class="drow ${isNew?'fresh':''}" onclick="openDone('${p.lead_id}')">
+        <div class="dcheck">✓</div>
+        <div><div class="dn">${esc(leadName(p.lead_id))}</div><div class="dm">${esc(whatDone(r))} · ${ago(t)}</div></div>
+        ${isNew?'<span class="dnew">NEW</span>':'<span class="dgo">›</span>'}
+      </div>`;
+    }).join('');
+  } else { $('doneSec').style.display='none'; $('doneList').style.display='none'; }
+  if(bell&&bdot){ if(fresh.length){ bell.style.display=''; bdot.textContent=fresh.length>9?'9+':fresh.length; } else { bell.style.display='none'; } }
+  const newestTs = revs.length?(revs[0].updated_at||revs[0].created_at):'';
+  if(fresh.length && window._lastDoneToast!==newestTs){
+    window._lastDoneToast=newestTs;
+    const nm=leadName((fresh[0].payload||{}).lead_id);
+    toast('✓ '+(fresh.length===1?(nm+' — your revision is done'):(fresh.length+' revisions complete')));
+  }
+}
+function openDone(id){ markDoneSeen(true); if(id && id!=='undefined') location.hash='#c/'+id; }
+function markDoneSeen(silent){ setSeen(new Date().toISOString()); const b=$('bell'); if(b)b.style.display='none'; if(!silent) renderDone(); }
+function scrollToDone(){ const el=$('doneSec'); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); }
+
 function renderHome(){
   workerPill();
+  renderDone();
   const appr=LEADS.filter(l=>l.status==='PREVIEW READY');
   const building=WQ.filter(j=>j.status==='running');
   const pending=WQ.filter(j=>j.status==='pending').length;
