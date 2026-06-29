@@ -937,6 +937,8 @@ function renderCustomer(id){
     <button class="btn good" onclick="decide('${id}','APPROVED',this)">Approve &amp; send reveal</button>
     <button class="btn ghost" onclick="decide('${id}','LOST',this)">Pass</button>`;
   }
+  const wasApproved = ['APPROVED','PREVIEW DELIVERED'].includes(l.status) || !!l.reveal_sent_at;
+  if(wasApproved && l.preview_url && email) teamActs+=`<button class="btn" onclick="resendReveal('${id}',this)">📤 Resend reveal to customer</button>`;
   if(l.preview_url) teamActs+=`<button class="btn" onclick="openRevisionModal()">✎ Request a revision</button>`;
   if(phone) teamActs+=`<a class="btn" href="tel:${esc(phone.replace(/[^0-9+]/g,''))}">📞 Call</a>`;
   if(email) teamActs+=`<a class="btn" href="mailto:${esc(email)}">✉ Email</a>`;
@@ -1179,6 +1181,26 @@ async function submitRevision(){
   const ok=await createRevision({lead_id:CURLEAD,kind:'edit',instruction:t},'Revision sent to production ✓  It\'s now tracked below.');
   btn.textContent='Send to production'; btn.disabled=false;
   if(ok) closeRev();
+}
+async function resendReveal(id,btn){
+  const l=LEADS.find(x=>x.id===id)||{};
+  const to=l.email, url=l.preview_url||'', nm=l.business_name||'there';
+  if(!to){ toast('No email on file for this customer, so there is nothing to send to.'); return; }
+  if(!confirm('Re-send the reveal email to '+to+'?\n\nThe customer will receive their preview link from unveiled@monadigitalmarketing.com.')) return;
+  if(btn){btn.textContent='Queuing…';btn.disabled=true;}
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){ if(btn){btn.textContent='📤 Resend reveal to customer';btn.disabled=false;} toast('Sign in first — sending needs a signed-in staff session.'); return; }
+  // de-dupe: cancel any still-pending reveal to this customer so we never double-send
+  try{ await sb.from('tasks').update({status:'cancelled'}).eq('status','pending').ilike('prompt','%'+to+'%'); }catch(e){}
+  const first=l.first_name||nm;
+  const body='Hi '+first+',\n\nYour website preview is ready to see: '+url+'\n\nTake a look, click around, and tell us what you think. No cost, no obligation.\n\nUNVEILED · Build First. Decide Later. · unveiled@monadigitalmarketing.com';
+  const prompt=JSON.stringify({type:'email',from:'unveiled@monadigitalmarketing.com',to:to,subject:'Your website is ready to see, '+nm,body:body,lead_id:id});
+  const ins=await sb.from('tasks').insert({prompt:prompt,status:'pending'});
+  if(ins.error){ console.error('resend failed:',ins.error); if(btn){btn.textContent='📤 Resend reveal to customer';btn.disabled=false;}
+    toast('Could not queue it: '+(ins.error.message||ins.error.code||'unknown error')); return; }
+  try{ await sb.from('activity_log').insert({entity_type:'lead',entity_id:id,action:'reveal_resent',meta:{to:to}}); }catch(e){}
+  if(btn){btn.textContent='Queued ✓';}
+  toast('Reveal queued for '+nm+' ✓  It sends within a minute once the email sender is live, and the delivery log will confirm it landed.');
 }
 async function decide(id,status,btn){
   const nm=(LEADS.find(x=>x.id===id)||{}).business_name||'Customer';
