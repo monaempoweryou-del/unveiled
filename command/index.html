@@ -691,12 +691,12 @@ function projStatusList(){
 function goProjects(status){ PROJFILTER=status||'all'; go('allprojects'); }
 function goSource(src){ SRCFILTER=src||'all'; PROJFILTER='all'; go('allprojects'); }
 function srcLabel(s){
-  const m={'outbound':'We found','website-onboarding':'Website','website-onboarding-he':'Hebrew website','manual':'Manual','referral':'Referral'};
+  const m={'outbound':'We found','website-onboarding':'Website','website-onboarding-he':'Hebrew website','facebook':'Facebook ad','facebook-ad':'Facebook ad','manual':'Manual','referral':'Referral'};
   return m[(s||'').toLowerCase()] || (s||'Unknown');
 }
 function srcList(){
   const counts={}; LEADS.forEach(l=>{const s=(l.source||'unknown').toLowerCase(); counts[s]=(counts[s]||0)+1;});
-  const order=['outbound','website-onboarding','website-onboarding-he'];
+  const order=['outbound','website-onboarding','website-onboarding-he','facebook'];
   const extras=Object.keys(counts).filter(s=>!order.includes(s));
   return [['all','All sources',LEADS.length]].concat(order.filter(s=>counts[s]).map(s=>[s,srcLabel(s),counts[s]])).concat(extras.map(s=>[s,srcLabel(s),counts[s]]));
 }
