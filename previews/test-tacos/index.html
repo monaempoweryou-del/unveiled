@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test Tacos | Family Recipes & Fast Delivery</title>
+<meta name="description" content="Test Tacos serves authentic family recipes crafted with love and delivers them fast to your door. Real flavors, real fast.">
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://unveiled.pro/previews/test-tacos/">
+<meta property="og:title" content="Test Tacos | Family Recipes & Fast Delivery">
+<meta property="og:description" content="Authentic family recipes delivered fast. Test Tacos brings generations of flavor straight to your door.">
+<meta property="og:image" content="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=1200&q=80">
+<meta property="og:url" content="https://unveiled.pro/previews/test-tacos/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Test Tacos | Family Recipes & Fast Delivery">
+<meta name="twitter:description" content="Authentic family recipes delivered fast. Test Tacos brings generations of flavor straight to your door.">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=1200&q=80">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌮</text></svg>">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Test Tacos",
+  "description": "Family recipes and fast delivery",
+  "url": "https://unveiled.pro/previews/test-tacos/",
+  "image": "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=1200&q=80",
+  "servesCuisine": "Mexican",
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Taco Menu"
+  }
+}
+</script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --orange: #E8470A;
+    --orange-dark: #C03A06;
+    --orange-light: #FF6B35;
+    --cream: #FDF6EC;
+    --brown: #3B1F0E;
+    --brown-mid: #6B3A20;
+    --gray: #F5F0EB;
+    --text: #2A1508;
+    --text-light: #7A5C45;
+    --white: #FFFFFF;
+    --radius: 16px;
+    --radius-sm: 8px;
+    --shadow: 0 4px 24px rgba(59,31,14,0.10);
+    --shadow-lg: 0 12px 48px rgba(59,31,14,0.16);
+    --transition: 0.25s ease;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(253,246,236,0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(232,71,10,0.10);
+    padding: 0 20px;
+    height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo {
+    font-size: 1.25rem; font-weight: 800;
+    color: var(--orange); letter-spacing: -0.02em;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .nav-logo span { font-size: 1.4rem; }
+  .nav-cta {
+    background: var(--orange); color: var(--white);
+    padding: 8px 20px; border-radius: 50px;
+    font-size: 0.875rem; font-weight: 700;
+    transition: background var(--transition), transform var(--transition);
+  }
+  .nav-cta:hover { background: var(--orange-dark); transform: scale(1.03); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 100px 20px 60px;
+    position: relative; overflow: hidden;
+    background: linear-gradient(160deg, #3B1F0E 0%, #6B3A20 60%, #E8470A 100%);
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: url('https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=1400&q=80') center/cover no-repeat;
+    opacity: 0.18;
+  }
+  .hero-content { position: relative; z-index: 2; max-width: 600px; margin: 0 auto; text-align: center; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25);
+    color: var(--white); font-size: 0.8rem; font-weight: 600;
+    padding: 5px 14px; border-radius: 50px; margin-bottom: 24px;
+    letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .hero h1 {
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    font-weight: 900; color: var(--white);
+    line-height: 1.05; letter-spacing: -0.03em;
+    margin-bottom: 20px;
+  }
+  .hero h1 .accent { color: var(--orange-light); }
+  .hero p {
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    color: rgba(255,255,255,0.80);
+    margin-bottom: 36px; max-width: 480px; margin-left: auto; margin-right: auto;
+  }
+  .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--orange); color: var(--white);
+    padding: 16px 32px; border-radius: 50px;
+    font-size: 1rem; font-weight: 700;
+    transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+    box-shadow: 0 4px 20px rgba(232,71,10,0.45);
+  }
+  .btn-primary:hover { background: var(--orange-dark); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(232,71,10,0.55); }
+  .btn-outline {
+    background: transparent; color: var(--white);
+    border: 2px solid rgba(255,255,255,0.5);
+    padding: 14px 28px; border-radius: 50px;
+    font-size: 1rem; font-weight: 600;
+    transition: border-color var(--transition), background var(--transition);
+  }
+  .btn-outline:hover { border-color: var(--white); background: rgba(255,255,255,0.10); }
+  .hero-stats {
+    display: flex; gap: 32px; justify-content: center; flex-wrap: wrap;
+    margin-top: 52px; position: relative; z-index: 2;
+  }
+  .stat { text-align: center; }
+  .stat-num { font-size: 1.8rem; font-weight: 900; color: var(--white); line-height: 1; }
+  .stat-label { font-size: 0.75rem; color: rgba(255,255,255,0.65); font-weight: 500; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* SECTION WRAPPER */
+  section { padding: 72px 20px; }
+  .container { max-width: 1080px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--orange);
+    margin-bottom: 10px;
+  }
+  .section-title {
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    font-weight: 900; letter-spacing: -0.02em;
+    color: var(--brown); line-height: 1.1;
+  }
+  .section-sub {
+    font-size: 1.05rem; color: var(--text-light);
+    margin-top: 14px; max-width: 520px;
+  }
+  .section-header { margin-bottom: 48px; }
+
+  /* MENU / SERVICES */
+  .menu-section { background: var(--white); }
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  .menu-card {
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--cream);
+    box-shadow: var(--shadow);
+    transition: transform var(--transition), box-shadow var(--transition);
+  }
+  .menu-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+  .menu-card-img {
+    width: 100%; height: 200px;
+    object-fit: cover;
+  }
+  .menu-card-body { padding: 20px; }
+  .menu-card-tag {
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--orange);
+    background: rgba(232,71,10,0.10);
+    display: inline-block; padding: 3px 10px; border-radius: 50px;
+    margin-bottom: 10px;
+  }
+  .menu-card h3 { font-size: 1.15rem; font-weight: 800; color: var(--brown); margin-bottom: 6px; }
+  .menu-card p { font-size: 0.9rem; color: var(--text-light); line-height: 1.55; }
+  .menu-card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; }
+  .price { font-size: 1.1rem; font-weight: 800; color: var(--orange); }
+  .order-btn {
+    background: var(--orange); color: var(--white);
+    border: none; cursor: pointer;
+    padding: 8px 18px; border-radius: 50px;
+    font-size: 0.8rem; font-weight: 700;
+    transition: background var(--transition);
+  }
+  .order-btn:hover { background: var(--orange-dark); }
+
+  /* WHY US */
+  .whyus-section { background: var(--cream); }
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 24px;
+  }
+  .why-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    box-shadow: var(--shadow);
+    transition: transform var(--transition);
+  }
+  .why-card:hover { transform: translateY(-3px); }
+  .why-icon {
+    font-size: 2.2rem; margin-bottom: 14px;
+    display: block;
+  }
+  .why-card h3 { font-size: 1rem; font-weight: 800; color: var(--brown); margin-bottom: 8px; }
+  .why-card p { font-size: 0.875rem; color: var(--text-light); line-height: 1.6; }
+
+  /* GALLERY */
+  .gallery-section { background: var(--brown); }
+  .gallery-section .section-title { color: var(--white); }
+  .gallery-section .section-label { color: var(--orange-light); }
+  .gallery-section .section-sub { color: rgba(255,255,255,0.65); }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .gallery-grid .wide { grid-column: span 2; }
+  .gallery-img {
+    width: 100%; border-radius: var(--radius-sm);
+    object-fit: cover;
+    transition: transform 0.35s ease, opacity 0.35s ease;
+    overflow: hidden;
+  }
+  .gallery-img:hover { transform: scale(1.02); opacity: 0.9; }
+  .gallery-item { overflow: hidden; border-radius: var(--radius-sm); }
+  .gallery-item.wide .gallery-img { height: 260px; }
+  .gallery-item:not(.wide) .gallery-img { height: 180px; }
+
+  @media (min-width: 640px) {
+    .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+    .gallery-grid .wide { grid-column: span 1; }
+    .gallery-item.wide .gallery-img, .gallery-item:not(.wide) .gallery-img { height: 220px; }
+    .gallery-grid .featured { grid-column: span 2; grid-row: span 2; }
+    .gallery-grid .featured .gallery-img { height: 452px; }
+  }
+
+  /* TESTIMONIALS */
+  .reviews-section { background: var(--gray); }
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .review-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+  }
+  .stars { color: var(--orange); font-size: 1rem; margin-bottom: 12px; }
+  .review-text { font-size: 0.9rem; color: var(--text); line-height: 1.65; font-style: italic; margin-bottom: 16px; }
+  .reviewer { display: flex; align-items: center; gap: 12px; }
+  .reviewer-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+    display: flex; align-items: center; justify-content: center;
+    color: var(--white); font-weight: 800; font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+  .reviewer-name { font-size: 0.875rem; font-weight: 700; color: var(--brown); }
+  .reviewer-meta { font-size: 0.75rem; color: var(--text-light); }
+
+  /* CONTACT / CTA */
+  .cta-section {
+    background: linear-gradient(135deg, var(--orange) 0%, var(--orange-dark) 100%);
+    position: relative; overflow: hidden;
+  }
+  .cta-section::before {
+    content: '🌮';
+    position: absolute; right: -20px; top: 50%;
+    transform: translateY(-50%) rotate(-15deg);
+    font-size: 18rem; opacity: 0.07; pointer-events: none;
+  }
+  .cta-inner { text-align: center; max-width: 640px; margin: 0 auto; position: relative; z-index: 2; }
+  .cta-inner h2 {
+    font-size: clamp(1.75rem, 5vw, 3rem);
+    font-weight: 900; color: var(--white);
+    letter-spacing: -0.025em; margin-bottom: 16px;
+  }
+  .cta-inner p { color: rgba(255,255,255,0.85); font-size: 1.05rem; margin-bottom: 36px; }
+  .cta-form { display: flex; flex-direction: column; gap: 14px; max-width: 480px; margin: 0 auto; }
+  .cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
+  .cta-row .field { flex: 1; min-width: 150px; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label { font-size: 0.8rem; font-weight: 700; color: rgba(255,255,255,0.80); text-transform: uppercase; letter-spacing: 0.06em; }
+  .field input, .field select, .field textarea {
+    background: rgba(255,255,255,0.15);
+    border: 1.5px solid rgba(255,255,255,0.30);
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    font-size: 0.95rem; color: var(--white);
+    outline: none;
+    transition: border-color var(--transition), background var(--transition);
+    font-family: inherit;
+    width: 100%;
+  }
+  .field input::placeholder, .field textarea::placeholder { color: rgba(255,255,255,0.55); }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    border-color: rgba(255,255,255,0.70);
+    background: rgba(255,255,255,0.22);
+  }
+  .field select option { color: var(--brown); background: var(--white); }
+  .field textarea { resize: vertical; min-height: 100px; }
+  .submit-btn {
+    background: var(--white); color: var(--orange-dark);
+    border: none; cursor: pointer;
+    padding: 16px 40px; border-radius: 50px;
+    font-size: 1rem; font-weight: 800;
+    transition: transform var(--transition), box-shadow var(--transition);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.20);
+    align-self: center; margin-top: 8px;
+  }
+  .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.28); }
+  .cta-note { font-size: 0.8rem; color: rgba(255,255,255,0.65); margin-top: 14px; }
+
+  /* FOOTER */
+  footer {
+    background: var(--brown);
+    padding: 36px 20px;
+    text-align: center;
+  }
+  .footer-logo { font-size: 1.4rem; font-weight: 900; color: var(--white); margin-bottom: 8px; }
+  .footer-tagline { font-size: 0.875rem; color: rgba(255,255,255,0.55); margin-bottom: 20px; }
+  .footer-links { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
+  .footer-links a { font-size: 0.85rem; color: rgba(255,255,255,0.60); transition: color var(--transition); }
+  .footer-links a:hover { color: var(--orange-light); }
+  .footer-copy { font-size: 0.78rem; color: rgba(255,255,255,0.35); }
+
+  @media (max-width: 480px) {
+    .hero-stats { gap: 20px; }
+    .why-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo"><span>🌮</span> Test Tacos</div>
+  <a href="#order" class="nav-cta">Order Now</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge">🔥 Fresh &bull; Fast &bull; Family-Made</div>
+    <h1>Recipes Built on <span class="accent">Generations</span> of Flavor</h1>
+    <p>Test Tacos brings you the same recipes our family has been perfecting for decades, delivered hot and fast right to your door.</p>
+    <div class="hero-btns">
+      <a href="#order" class="btn-primary">Order Delivery</a>
+      <a href="#menu" class="btn-outline">See Our Menu</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">3+</div><div class="stat-label">Generations of Recipes</div></div>
+    <div class="stat"><div class="stat-num">30 min</div><div class="stat-label">Average Delivery</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Made Fresh Daily</div></div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section class="menu-section" id="menu">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Our Menu</div>
+      <h2 class="section-title">Every Bite Tells a Story</h2>
+      <p class="section-sub">Each recipe comes straight from our family kitchen, using the same ingredients and techniques passed down through the years.</p>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-card">
+        <img class="menu-card-img" src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=600&q=80" alt="Classic Street Tacos" loading="lazy">
+        <div class="menu-card-body">
+          <span class="menu-card-tag">Fan Favorite</span>
+          <h3>Classic Street Tacos</h3>
+          <p>Our grandmother's original recipe: slow-braised seasoned meat, fresh cilantro, diced white onion, and a house-made salsa verde on warm corn tortillas.</p>
+          <div class="menu-card-footer">
+            <span class="price">$3.50 each</span>
+            <button class="order-btn">Add to Order</button>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <img class="menu-card-img" src="https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?w=600&q=80" alt="Birria Tacos" loading="lazy">
+        <div class="menu-card-body">
+          <span class="menu-card-tag">House Special</span>
+          <h3>Birria Tacos with Consomme</h3>
+          <p>Slow-cooked beef birria, cheese-crisped tortillas, and a rich consomme for dipping. A weekend staple in our family for over 30 years.</p>
+          <div class="menu-card-footer">
+            <span class="price">$5.75 each</span>
+            <button class="order-btn">Add to Order</button>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <img class="menu-card-img" src="https://images.unsplash.com/photo-1624300629298-e9de39c13be5?w=600&q=80" alt="Veggie Tacos" loading="lazy">
+        <div class="menu-card-body">
+          <span class="menu-card-tag">Plant-Based</span>
+          <h3>Roasted Veggie Tacos</h3>
+          <p>Chipotle-glazed seasonal vegetables, black beans, pickled red onion, cotija cheese, and our family's secret avocado crema.</p>
+          <div class="menu-card-footer">
+            <span class="price">$4.25 each</span>
+            <button class="order-btn">Add to Order</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="whyus-section" id="about">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Why Test Tacos</div>
+      <h2 class="section-title">Fast Delivery. Real Flavor. No Shortcuts.</h2>
+      <p class="section-sub">We refuse to compromise on the things that matter most: the quality of our food and the speed it reaches your door.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <span class="why-icon">👵</span>
+        <h3>Generational Recipes</h3>
+        <p>Every item on our menu is rooted in recipes that have been made by our family for decades. No shortcuts, no corporate playbook.</p>
+      </div>
+      <div class="why-card">
+        <span class="why-icon">⚡</span>
+        <h3>Fast Delivery</h3>
+        <p>We build our kitchen workflow around speed. Most orders arrive in under 30 minutes so your tacos reach you hot and fresh.</p>
+      </div>
+      <div class="why-card">
+        <span class="why-icon">🌽</span>
+        <h3>Fresh Ingredients Daily</h3>
+        <p>We prep every morning, source local produce when possible, and never serve anything we would not sit down and eat ourselves.</p>
+      </div>
+      <div class="why-card">
+        <span class="why-icon">💬</span>
+        <h3>Real Customer Care</h3>
+        <p>When you reach out, a real person responds. We stand behind every order and make things right if something ever goes wrong.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery-section" id="gallery">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">In the Kitchen</div>
+      <h2 class="section-title">Made with Care, Every Time</h2>
+      <p class="section-sub">A look at the food, the craft, and the family tradition behind every order.</p>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item featured">
+        <img class="gallery-img" src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=800&q=80" alt="Tacos close up" loading="lazy">
+      </div>
+      <div class="gallery-item">
+        <img class="gallery-img" src="https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?w=600&q=80" alt="Birria tacos" loading="lazy">
+      </div>
+      <div class="gallery-item">
+        <img class="gallery-img" src="https://images.unsplash.com/photo-1624300629298-e9de39c13be5?w=600&q=80" alt="Veggie tacos" loading="lazy">
+      </div>
+      <div class="gallery-item">
+        <img class="gallery-img" src="https://images.unsplash.com/photo-1615870216519-2f9fa575fa5c?w=600&q=80" alt="Fresh salsa ingredients" loading="lazy">
+      </div>
+      <div class="gallery-item">
+        <img class="gallery-img" src="https://images.unsplash.com/photo-1619631428091-1eaa03c3bdf1?w=600&q=80" alt="Taco spread" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Customer Love</div>
+      <h2 class="section-title">People Keep Coming Back</h2>
+      <p class="section-sub">We let the flavors speak for themselves, but we appreciate when our customers do too.</p>
+    </div>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="review-text">"These are the best tacos I have had outside of a home-cooked meal. The birria is absolutely incredible and arrived while still piping hot. I order at least twice a week now."</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">MR</div>
+          <div>
+            <div class="reviewer-name">Maria R.</div>
+            <div class="reviewer-meta">Loyal customer for 2 years</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="review-text">"Ordered for a family gathering and everyone was blown away. The street tacos taste exactly like the ones my grandmother used to make. Fast delivery, hot food, happy family."</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">JP</div>
+          <div>
+            <div class="reviewer-name">James P.</div>
+            <div class="reviewer-meta">First-time order turned regular</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="review-text">"The veggie tacos honestly surprised me. That avocado crema is something special. Delivery was 25 minutes flat. Test Tacos is our go-to for taco night every single week."</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">SL</div>
+          <div>
+            <div class="reviewer-name">Sofia L.</div>
+            <div class="reviewer-meta">Taco Tuesday devotee</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA / ORDER -->
+<section class="cta-section" id="order">
+  <div class="container">
+    <div class="cta-inner">
+      <h2>Ready to Order?</h2>
+      <p>Place your delivery order below and we will have hot, fresh tacos headed your way in no time. First order? We think you will be back.</p>
+      <form class="cta-form" onsubmit="event.preventDefault(); alert('Thanks! Your order request is received. We will confirm shortly.');">
+        <div class="cta-row">
+          <div class="field">
+            <label for="fname">Your Name</label>
+            <input type="text" id="fname" placeholder="Maria Garcia" required>
+          </div>
+          <div class="field">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" placeholder="(555) 000-1234" required>
+          </div>
+        </div>
+        <div class="field">
+          <label for="address">Delivery Address</label>
+          <input type="text" id="address" placeholder="123 Main Street, City, State" required>
+        </div>
+        <div class="field">
+          <label for="items">What Are You Ordering?</label>
+          <select id="items">
+            <option value="">Select a starting point...</option>
+            <option>Classic Street Tacos (3-pack)</option>
+            <option>Birria Tacos with Consomme (2-pack)</option>
+            <option>Roasted Veggie Tacos (3-pack)</option>
+            <option>Family Feast (mix of all)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="notes">Special Requests or Add-ons</label>
+          <textarea id="notes" placeholder="Extra salsa, no onions, add chips and guac..."></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Place My Order</button>
+        <p class="cta-note">We will confirm your order and estimated delivery time via text message.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">🌮 Test Tacos</div>
+  <div class="footer-tagline">Family recipes. Fast delivery. Always fresh.</div>
+  <div class="footer-links">
+    <a href="#menu">Menu</a>
+    <a href="#about">Our Story</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#order">Order Now</a>
+  </div>
+  <div class="footer-copy">&copy; 2025 Test Tacos. All rights reserved.</div>
+</footer>
+
+</body>
+</html>
