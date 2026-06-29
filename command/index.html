@@ -47,7 +47,10 @@
   .kpi{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:13px 14px;backdrop-filter:blur(12px)}
   .kpi .n{font-size:24px;font-weight:700;line-height:1}
   .kpi .l{font-size:11.5px;color:var(--muted);margin-top:5px}
-  .pchips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+  .pfilters{display:flex;align-items:flex-start;gap:10px;margin:12px 0}
+  .flab{font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--faint);min-width:52px;padding-top:9px;flex:none}
+  .pchips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0;flex:1}
+  .pfilters .pchips{margin:0}
   .pchip{font-size:12.5px;padding:6px 11px;border:1px solid var(--line);border-radius:999px;cursor:pointer;background:var(--panel);color:var(--muted);white-space:nowrap;transition:.15s}
   .pchip:hover{border-color:#b9a9ee}
   .pchip.on{background:#6d34d6;color:#fff;border-color:#6d34d6}
@@ -515,6 +518,7 @@ function workerPill(){
 const VIEWS=['exec','allprojects','production','comms','sales','marketing','customers','learning','settings'];
 const VTITLE={exec:'Executive',allprojects:'All Projects',production:'Production',comms:'Communication',sales:'Sales',marketing:'Marketing',customers:'Customers',learning:'Learning',settings:'System Health'};
 let PROJFILTER='all';
+let SRCFILTER='all';
 const DEPTS=[
   {v:'allprojects',i:'📁',t:'All Projects',d:'Every project from day one, searchable'},
   {v:'production',i:'🏭',t:'Production',d:'Builds, QA, approvals, worker health'},
@@ -685,13 +689,29 @@ function projStatusList(){
   return [['all','All',LEADS.length]].concat(order.filter(s=>counts[s]).map(s=>[s,s,counts[s]])).concat(extras.map(s=>[s,s,counts[s]]));
 }
 function goProjects(status){ PROJFILTER=status||'all'; go('allprojects'); }
+function goSource(src){ SRCFILTER=src||'all'; PROJFILTER='all'; go('allprojects'); }
+function srcLabel(s){
+  const m={'outbound':'We found','website-onboarding':'Website','website-onboarding-he':'Hebrew website','manual':'Manual','referral':'Referral'};
+  return m[(s||'').toLowerCase()] || (s||'Unknown');
+}
+function srcList(){
+  const counts={}; LEADS.forEach(l=>{const s=(l.source||'unknown').toLowerCase(); counts[s]=(counts[s]||0)+1;});
+  const order=['outbound','website-onboarding','website-onboarding-he'];
+  const extras=Object.keys(counts).filter(s=>!order.includes(s));
+  return [['all','All sources',LEADS.length]].concat(order.filter(s=>counts[s]).map(s=>[s,srcLabel(s),counts[s]])).concat(extras.map(s=>[s,srcLabel(s),counts[s]]));
+}
 function renderAllProjects(){
   $('v-allprojects').innerHTML=`
-    <div class="pulse" style="font-size:19px">All Projects<span class="s">Every project from day one — ${LEADS.length} total. Search, filter by stage, tap any to open. Nothing is hidden here.</span></div>
+    <div class="pulse" style="font-size:19px">All Projects<span class="s">Every project from day one — ${LEADS.length} total. Filter by where it came from and what stage it's in. Nothing is hidden here.</span></div>
     <input class="search" id="psearch" placeholder="Search all projects by name, status or source…" oninput="renderProjList()" />
-    <div class="pchips" id="pchips"></div>
+    <div class="pfilters"><span class="flab">Source</span><div class="pchips" id="schips"></div></div>
+    <div class="pfilters"><span class="flab">Stage</span><div class="pchips" id="pchips"></div></div>
     <div class="card" id="projlist"></div>`;
-  renderProjChips(); renderProjList();
+  renderSrcChips(); renderProjChips(); renderProjList();
+}
+function renderSrcChips(){
+  const el=$('schips'); if(!el)return;
+  el.innerHTML=srcList().map(([k,label,n])=>`<span class="pchip ${SRCFILTER===k?'on':''}" onclick="SRCFILTER='${k}';renderSrcChips();renderProjList()">${esc(label)} <b>${n}</b></span>`).join('');
 }
 function renderProjChips(){
   const el=$('pchips'); if(!el)return;
@@ -701,13 +721,14 @@ function renderProjList(){
   const el=$('projlist'); if(!el)return;
   const term=(($('psearch')&&$('psearch').value)||'').toLowerCase();
   let rows=LEADS.slice().sort((a,b)=>new Date(b.updated_at||b.created_at||0)-new Date(a.updated_at||a.created_at||0));
+  if(SRCFILTER!=='all') rows=rows.filter(l=>(l.source||'unknown').toLowerCase()===SRCFILTER);
   if(PROJFILTER!=='all') rows=rows.filter(l=>(l.status||'—').toUpperCase()===PROJFILTER);
   if(term) rows=rows.filter(l=>((l.business_name||'')+' '+(l.source||'')+' '+(l.status||'')).toLowerCase().includes(term));
   el.innerHTML = rows.length ? rows.map(l=>{const t=triage(l);
     return `<div class="crow" onclick="location.hash='#c/${l.id}'">
       <div class="ava">${esc(initials(l.business_name))}</div>
       <div style="flex:1;min-width:0"><div class="nm">${esc(l.business_name||'Untitled')}</div>
-        <div class="mt">${esc(l.status||'—')} · ${esc(l.source||'—')} · ${ago(l.updated_at||l.created_at)}</div></div>
+        <div class="mt">${esc(l.status||'—')} · ${esc(srcLabel(l.source))} · ${ago(l.updated_at||l.created_at)}</div></div>
       <span class="pill p-${t.color}">${esc(t.label)}</span><div class="chev">›</div>
     </div>`;}).join('') : '<div class="empty">No projects match that filter or search.</div>';
 }
