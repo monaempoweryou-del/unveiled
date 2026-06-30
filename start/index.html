@@ -4,172 +4,243 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Start your free website | UNVEILED</title>
-<meta name="description" content="Tell us a little about your business and we'll build you a complete website preview in 72 hours. No cost, no obligation.">
+<meta name="description" content="Tell us a little about your business and we'll create a custom website preview in 72 hours. No cost, no obligation.">
 <link rel="canonical" href="https://unveiled.pro/start/">
 <meta name="robots" content="noindex">
-<meta property="og:title" content="Start your free website | UNVEILED">
+<meta property="og:title" content="Let's build your next website — for free | UNVEILED">
 <meta property="og:description" content="We build your new website first, free, in 72 hours. You only pay if you love it.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://unveiled.pro/start/">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+<link rel="icon" href="https://unveiled.pro/sphere-core.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0e0a1c; --bg2:#171030; --card:rgba(255,255,255,.04); --line:rgba(255,255,255,.10);
-    --ink:#f4f1fb; --muted:#a99fc6; --faint:#776e96; --violet:#8b5cf6; --violet2:#a98bff;
-    --good:#34d399; --radius:16px;
+    --cream:#FAF8F5; --paper:#FFFFFF; --violet:#6C3CE0; --violet-l:#8B5CF6; --violet-lll:#A78BFA;
+    --indigo:#4338CA; --text:#1C1917; --muted:#78716C; --faint:#A8A29E; --border:#E7E2DA;
+    --green:#10B981; --green-l:#34D399;
+    --grad:linear-gradient(135deg,#6C3CE0 0%,#4338CA 100%);
+    --shadow:0 24px 60px -28px rgba(67,32,160,.30);
+    --radius:18px;
   }
   *{box-sizing:border-box}
   html,body{margin:0}
   body{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    color:var(--ink); background:
-      radial-gradient(900px 500px at 80% -10%, rgba(139,92,246,.22), transparent 60%),
-      radial-gradient(700px 500px at 0% 110%, rgba(99,102,241,.16), transparent 55%),
-      var(--bg);
-    min-height:100dvh; line-height:1.55; -webkit-font-smoothing:antialiased;
+    font-family:'Space Grotesk',-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    color:var(--text); -webkit-font-smoothing:antialiased; line-height:1.55;
+    background:
+      radial-gradient(800px 520px at 88% -8%, rgba(139,92,246,.16), transparent 60%),
+      radial-gradient(680px 520px at -5% 108%, rgba(99,102,241,.12), transparent 55%),
+      var(--cream);
+    min-height:100dvh;
   }
-  .wrap{max-width:540px;margin:0 auto;padding:34px 20px 60px}
-  .brand{font-weight:800;letter-spacing:.32em;font-size:14px;color:var(--violet2);text-align:center}
-  h1{font-size:27px;line-height:1.18;margin:18px 0 6px;text-align:center;font-weight:800;letter-spacing:-.01em}
-  .sub{color:var(--muted);text-align:center;font-size:15px;margin:0 auto 22px;max-width:430px}
-  .trust{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:26px}
-  .pill{font-size:12px;color:var(--violet2);background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.25);padding:5px 11px;border-radius:999px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 18px;backdrop-filter:blur(10px)}
-  label{display:block;font-size:13px;font-weight:600;color:var(--ink);margin:14px 0 6px}
+  a{color:var(--violet)}
+  .topbar{max-width:1120px;margin:0 auto;padding:22px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .logo{display:flex;align-items:center;gap:11px;font-weight:700;letter-spacing:.22em;font-size:18px;color:var(--text)}
+  .logo img{width:34px;height:34px;object-fit:contain}
+  .topbar .promo{font-size:12.5px;font-weight:600;color:var(--muted);background:var(--paper);border:1px solid var(--border);border-radius:999px;padding:9px 16px;letter-spacing:.02em}
+  .promo b{color:var(--violet)}
+
+  .grid{max-width:1120px;margin:0 auto;padding:8px 24px 70px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+
+  /* ---- left / hero ---- */
+  .badge{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--violet);background:rgba(108,60,224,.09);border:1px solid rgba(108,60,224,.18);padding:7px 13px;border-radius:999px}
+  h1{font-size:50px;line-height:1.04;letter-spacing:-.02em;font-weight:700;margin:20px 0 14px}
+  h1 .v{color:var(--violet)}
+  .lead{font-size:17px;color:var(--muted);max-width:430px;margin:0 0 26px}
+  .ticks{display:flex;flex-direction:column;gap:13px;margin-bottom:18px}
+  .tick{display:flex;align-items:center;gap:11px;font-size:15.5px;font-weight:500}
+  .tick .i{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:rgba(108,60,224,.10);color:var(--violet);flex:none}
+  .sphere{margin-top:8px}
+  .sphere img{width:min(100%,360px);filter:drop-shadow(0 30px 50px rgba(108,60,224,.28))}
+
+  /* ---- right / card ---- */
+  .card{background:var(--paper);border:1px solid var(--border);border-radius:24px;box-shadow:var(--shadow);padding:34px 32px}
+  .steptop{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px}
+  .stepn{font-size:13px;font-weight:600;color:var(--violet)}
+  .dots{display:flex;align-items:center;gap:7px}
+  .dots .d{width:26px;height:7px;border-radius:999px;background:#ECE7F8;transition:.3s}
+  .dots .d.on{background:var(--grad);width:30px}
+  h2{font-size:25px;font-weight:700;letter-spacing:-.01em;margin:0 0 4px}
+  .hand{font-family:'Caveat',cursive;font-size:21px;color:var(--violet);margin:0 0 20px;line-height:1.2}
+  label{display:block;font-size:13.5px;font-weight:600;margin:16px 0 7px}
   label .opt{color:var(--faint);font-weight:500}
   label:first-of-type{margin-top:0}
   input,textarea{
-    width:100%;font:inherit;font-size:16px;color:var(--ink);background:rgba(255,255,255,.04);
-    border:1px solid var(--line);border-radius:12px;padding:13px 14px;outline:none;transition:.15s;
+    width:100%;font:inherit;font-size:16px;color:var(--text);background:#FCFBFA;
+    border:1.5px solid var(--border);border-radius:12px;padding:14px 15px;outline:none;transition:.16s;
   }
   input::placeholder,textarea::placeholder{color:var(--faint)}
-  input:focus,textarea:focus{border-color:var(--violet);background:rgba(139,92,246,.07)}
-  textarea{resize:vertical;min-height:64px}
-  .row{display:flex;gap:12px}
-  .row>div{flex:1}
-  .btn{
-    width:100%;margin-top:22px;font:inherit;font-size:16px;font-weight:700;color:#fff;cursor:pointer;
-    background:linear-gradient(135deg,#8b5cf6,#6d34d6);border:0;border-radius:13px;padding:16px;
-    box-shadow:0 12px 30px -10px rgba(139,92,246,.7);transition:.15s;
+  input:focus,textarea:focus{border-color:var(--violet-l);background:#fff;box-shadow:0 0 0 4px rgba(139,92,246,.12)}
+  textarea{resize:vertical;min-height:150px;line-height:1.55}
+  .two{display:flex;gap:14px}.two>div{flex:1}
+  .btnrow{display:flex;gap:12px;align-items:center;margin-top:24px}
+  .btn{font:inherit;font-size:16px;font-weight:600;cursor:pointer;border-radius:13px;padding:15px 22px;border:0;transition:.16s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+  .btn-primary{flex:1;color:#fff;background:var(--grad);box-shadow:0 14px 30px -12px rgba(108,60,224,.6)}
+  .btn-primary:hover{filter:brightness(1.06)} .btn-primary:active{transform:scale(.99)}
+  .btn-primary:disabled{opacity:.6;cursor:default}
+  .btn-back{background:var(--paper);border:1.5px solid var(--border);color:var(--muted);flex:none;padding:15px 20px}
+  .btn-back:hover{border-color:var(--violet-l);color:var(--violet)}
+  .secure{display:flex;align-items:center;justify-content:center;gap:7px;color:var(--faint);font-size:13px;margin-top:16px}
+  .fineprint{text-align:center;color:var(--faint);font-size:13px;margin-top:16px}
+  .err{color:#dc2626;font-size:13.5px;margin-top:12px;display:none;text-align:center}
+  .step{display:none}.step.on{display:block;animation:fade .35s ease both}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  /* ---- confirmation ---- */
+  #done{display:none;max-width:620px;margin:10px auto;text-align:center;padding:24px}
+  #done .seal{width:118px;height:118px;margin:0 auto 8px;border-radius:50%;background:var(--grad);display:grid;place-items:center;color:#fff;font-size:58px;box-shadow:0 26px 60px -20px rgba(108,60,224,.55)}
+  #done h2{font-size:38px;margin:18px 0 4px}
+  #done .v{color:var(--violet)}
+  #done .big{font-size:22px;font-weight:700;color:var(--violet);margin:0 0 14px}
+  #done p{font-size:16.5px;color:var(--muted);max-width:480px;margin:0 auto}
+  #done .ticks3{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin-top:30px;color:var(--text);font-size:14.5px;font-weight:500}
+  #done .ticks3 span{display:flex;align-items:center;gap:8px}
+
+  @media(max-width:880px){
+    .grid{grid-template-columns:1fr;gap:26px;padding-top:0}
+    h1{font-size:38px} .lead{margin-bottom:18px}
+    .hero{order:1} .formcol{order:2}
+    .sphere{display:none}
+    .card{padding:26px 20px}
+    .topbar .promo{display:none}
   }
-  .btn:hover{filter:brightness(1.07)} .btn:active{transform:scale(.99)} .btn:disabled{opacity:.6;cursor:default}
-  .err{color:#fca5a5;font-size:13.5px;margin-top:12px;display:none}
-  .foot{text-align:center;color:var(--faint);font-size:12.5px;margin-top:20px}
-  .foot a{color:var(--muted)}
-  /* confirmation */
-  #done{display:none;text-align:center;padding:30px 6px}
-  #done .rocket{font-size:54px;line-height:1}
-  #done h2{font-size:26px;margin:14px 0 8px;font-weight:800}
-  #done p{color:var(--muted);font-size:15.5px;max-width:400px;margin:0 auto}
-  #done .steps{margin:26px auto 0;max-width:360px;text-align:left}
-  #done .step{display:flex;gap:11px;align-items:flex-start;padding:9px 0;color:var(--ink);font-size:14.5px}
-  #done .step .d{flex:none;width:22px;height:22px;border-radius:50%;background:rgba(52,211,153,.16);color:var(--good);display:grid;place-items:center;font-size:12px;margin-top:1px}
-  @media(max-width:430px){ .wrap{padding:26px 16px 50px} h1{font-size:24px} .row{flex-direction:column;gap:0} }
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <form id="f" class="" autocomplete="on" novalidate>
-    <div class="brand">UNVEILED</div>
-    <h1>Get your new website, built free</h1>
-    <p class="sub">Tell us a little about your business. We build a complete preview in 72 hours, and you only pay if you love it.</p>
-    <div class="trust">
-      <span class="pill">⚡ 72-hour preview</span>
-      <span class="pill">💳 No upfront payment</span>
-      <span class="pill">✅ No obligation</span>
-    </div>
+  <div class="topbar">
+    <div class="logo"><img src="https://unveiled.pro/sphere-core.png" alt="">UNVEILED</div>
+    <div class="promo">⏱ 72-HOUR PREVIEW &nbsp;·&nbsp; <b>$0 UPFRONT</b> &nbsp;·&nbsp; NO OBLIGATION</div>
+  </div>
 
-    <div class="card">
-      <label>Business name</label>
-      <input id="biz" name="organization" placeholder="e.g. Bella Hair Studio" required>
-
-      <div class="row">
-        <div><label>Your name</label><input id="name" name="name" placeholder="First and last"></div>
-        <div><label>Phone <span class="opt">· optional</span></label><input id="phone" name="tel" type="tel" placeholder="(555) 123-4567"></div>
+  <div class="grid" id="main">
+    <!-- hero -->
+    <div class="hero">
+      <span class="badge">WE BUILD FIRST. YOU DECIDE.</span>
+      <h1>Let's build your next website—<br><span class="v">for free.</span></h1>
+      <p class="lead">Tell us a little about your business and we'll create a custom website preview, designed just for you, in 72 hours.</p>
+      <div class="ticks">
+        <div class="tick"><span class="i">⚡</span> Your full preview in 72 hours</div>
+        <div class="tick"><span class="i">💳</span> No upfront payment, ever</div>
+        <div class="tick"><span class="i">✓</span> No obligation, you only pay if you love it</div>
       </div>
-
-      <label>Email</label>
-      <input id="email" name="email" type="email" placeholder="you@business.com" required>
-
-      <label>Current website <span class="opt">· if you have one</span></label>
-      <input id="url" name="url" placeholder="yourbusiness.com">
-
-      <label>Social links <span class="opt">· if any (Facebook, Instagram, Google, Yelp…)</span></label>
-      <input id="social" placeholder="paste any links, separated by spaces">
-
-      <label>Business type / service area</label>
-      <input id="type" placeholder="e.g. Hair salon in Austin, TX">
-
-      <label>What do you want your new website to help with?</label>
-      <textarea id="goal" placeholder="e.g. get more bookings, look more professional, show our work"></textarea>
-
-      <label>Anything important we should know? <span class="opt">· optional</span></label>
-      <textarea id="notes" placeholder="Colors you love, your best photos, what makes you different…"></textarea>
-
-      <button class="btn" id="submit" type="submit">Start my free website →</button>
-      <div class="err" id="err"></div>
+      <div class="sphere"><img src="https://unveiled.pro/sphere-core.png" alt="UNVEILED"></div>
     </div>
 
-    <div class="foot">Build First. Decide Later. · By submitting you agree to our <a href="/privacy/">Privacy Policy</a>.</div>
-  </form>
+    <!-- form -->
+    <div class="formcol">
+      <form id="f" class="card" autocomplete="on" novalidate>
+        <div class="steptop">
+          <span class="stepn" id="stepn">Step 1 of 3</span>
+          <span class="dots"><i class="d on" data-s="1"></i><i class="d" data-s="2"></i><i class="d" data-s="3"></i></span>
+        </div>
 
-  <div id="done">
-    <div class="rocket">🚀</div>
-    <h2>You're in.</h2>
-    <p>We're reviewing your business and preparing your website preview. You'll hear from us as soon as it's ready.</p>
-    <div class="steps">
-      <div class="step"><span class="d">✓</span><div>Your business has entered the UNVEILED production queue.</div></div>
-      <div class="step"><span class="d">✓</span><div>Our team is already researching your business.</div></div>
-      <div class="step"><span class="d">✓</span><div>Your custom preview is on its way, free, within 72 hours.</div></div>
+        <!-- step 1 -->
+        <div class="step on" data-step="1">
+          <h2>Great! Let's start simple.</h2>
+          <p class="hand">This will only take 60 seconds ✦</p>
+          <label>What's your business called?</label>
+          <input id="biz" name="organization" placeholder="e.g. Bella Hair Studio">
+          <label>And your name?</label>
+          <input id="name" name="name" placeholder="First and last">
+          <div class="two">
+            <div><label>Email</label><input id="email" name="email" type="email" placeholder="you@business.com"></div>
+            <div><label>Phone <span class="opt">· optional</span></label><input id="phone" name="tel" type="tel" placeholder="(555) 123-4567"></div>
+          </div>
+          <div class="btnrow"><button type="button" class="btn btn-primary" onclick="next(2)">Continue →</button></div>
+          <div class="secure">🔒 Your information is safe and secure.</div>
+        </div>
+
+        <!-- step 2 -->
+        <div class="step" data-step="2">
+          <h2>Awesome. A couple more quick ones.</h2>
+          <p class="hand">This helps us capture your real brand ✦</p>
+          <label>Your current website <span class="opt">· if you have one</span></label>
+          <input id="url" placeholder="yourbusiness.com">
+          <label>Social profiles <span class="opt">· optional, helps us learn your style</span></label>
+          <input id="social" placeholder="paste links: Facebook, Instagram, Google, Yelp…">
+          <div class="btnrow">
+            <button type="button" class="btn btn-back" onclick="next(1)">← Back</button>
+            <button type="button" class="btn btn-primary" onclick="next(3)">Continue →</button>
+          </div>
+        </div>
+
+        <!-- step 3 -->
+        <div class="step" data-step="3">
+          <h2>Tell us about your business.</h2>
+          <p class="hand">This is how we make it unmistakably yours ✦</p>
+          <label>In your own words…</label>
+          <textarea id="story" placeholder="What do you do? &#10;Who do you serve? &#10;What makes you different? &#10;Anything you'd love us to include?"></textarea>
+          <div class="btnrow">
+            <button type="button" class="btn btn-back" onclick="next(2)">← Back</button>
+            <button type="submit" class="btn btn-primary" id="submit">Submit my request 🚀</button>
+          </div>
+          <div class="fineprint">By submitting you agree to our <a href="/privacy/">Privacy Policy</a>.</div>
+          <div class="err" id="err"></div>
+        </div>
+      </form>
     </div>
   </div>
 
-</div>
+  <!-- confirmation -->
+  <div id="done">
+    <div class="seal">✓</div>
+    <h2>🎉 You're <span class="v">in.</span></h2>
+    <p class="big">We're already getting to work.</p>
+    <p>We'll review your business and start designing your custom website preview right away. Keep an eye on your inbox over the next 72 hours (peek at your spam folder too, just in case) — your new site is on its way.</p>
+    <div class="ticks3">
+      <span>⏱ Preview in 72 hours</span>
+      <span>💳 $0 upfront</span>
+      <span>✓ No obligation</span>
+    </div>
+  </div>
 
 <script>
-  // ---- Supabase (insert-only, anon publishable key — same engine as the main site) ----
   var SUPA_URL = 'https://eosvftmiwndmctrqprtz.supabase.co';
   var SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVvc3ZmdG1pd25kbWN0cnFwcnR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1MTcxMDYsImV4cCI6MjA5NjA5MzEwNn0.6Ep76e3vkck3uDOzn7x5fy0bABTHUhn0HmhPEeoeirM';
 
-  // ---- one engine, many entrances: capture where the lead came from ----
   var SRC_MAP = {facebook:'facebook', fb:'facebook', organic:'organic-post', 'organic-post':'organic-post',
     instagram:'instagram', ig:'instagram', referral:'referral', ref:'referral', linkedin:'linkedin',
     google:'google-business', gbp:'google-business', qr:'qr', email:'email-campaign', ads:'facebook-ads'};
   function param(n){ try{ return new URLSearchParams(location.search).get(n)||''; }catch(e){ return ''; } }
-  var rawSrc = (param('src')||param('utm_source')||'').toLowerCase().trim();
-  var SOURCE = SRC_MAP[rawSrc] || 'website-onboarding';
+  var SOURCE = SRC_MAP[(param('src')||param('utm_source')||'').toLowerCase().trim()] || 'website-onboarding';
   var CAMPAIGN = param('campaign')||param('utm_campaign')||'';
-  // carry over a website typed on the homepage hero (?url=)
   (function(){ var u=param('url'); if(u){ var el=document.getElementById('url'); if(el) el.value=u; } })();
 
-  function uuid(){ return (window.crypto&&crypto.randomUUID)?crypto.randomUUID():(Date.now()+'-'+Math.random().toString(36).slice(2)); }
   function val(id){ var e=document.getElementById(id); return e?e.value.trim():''; }
+  function showErr(m){ var e=document.getElementById('err'); e.textContent=m; e.style.display='block'; }
+  function go(step){
+    document.querySelectorAll('.step').forEach(function(s){ s.classList.toggle('on', +s.dataset.step===step); });
+    document.querySelectorAll('.dots .d').forEach(function(d){ d.classList.toggle('on', +d.dataset.s<=step); });
+    document.getElementById('stepn').textContent='Step '+step+' of 3';
+    try{ document.getElementById('f').scrollIntoView({behavior:'smooth',block:'nearest'}); }catch(e){}
+  }
+  window.next=function(step){
+    var e=document.getElementById('err'); e.style.display='none';
+    if(step===2){ // leaving step 1 -> validate
+      if(!val('biz')){ go(1); document.getElementById('biz').focus(); return; }
+      if(val('email').indexOf('@')<1){ go(1); document.getElementById('email').focus(); return; }
+    }
+    go(step);
+  };
+
+  function uuid(){ return (window.crypto&&crypto.randomUUID)?crypto.randomUUID():(Date.now()+'-'+Math.random().toString(36).slice(2)); }
 
   document.getElementById('f').addEventListener('submit', async function(ev){
     ev.preventDefault();
     var biz=val('biz'), email=val('email');
-    var err=document.getElementById('err');
-    if(!biz){ err.textContent='Please add your business name.'; err.style.display='block'; document.getElementById('biz').focus(); return; }
-    if(!email || email.indexOf('@')<1){ err.textContent='Please add a valid email so we can send your preview.'; err.style.display='block'; document.getElementById('email').focus(); return; }
-    err.style.display='none';
-    var btn=document.getElementById('submit'); btn.disabled=true; btn.textContent='Starting…';
-
+    if(!biz || email.indexOf('@')<1){ go(1); showErr('Just need your business name and a valid email to begin.'); return; }
+    var btn=document.getElementById('submit'); btn.disabled=true; btn.textContent='Sending…';
     var social=val('social'); var links=social?social.split(/[\s,]+/).filter(Boolean):[];
-    var about=val('type');
+    var story=val('story');
     var lead={
-      id: uuid(),
-      business_name: biz,
-      contact_name: val('name')||null,
-      email: email,
-      phone: val('phone')||null,
-      website: val('url')||null,
+      id: uuid(), business_name: biz, contact_name: val('name')||null, email: email,
+      phone: val('phone')||null, website: val('url')||null,
       social_profiles: links.length?{links:links}:{},
-      about: about||null,
-      requirements: val('goal')||null,
-      additional_notes: val('notes')||null,
-      status: 'NEW LEAD',
-      source: SOURCE,
+      about: story||null, requirements: story||null, additional_notes: null,
+      status:'NEW LEAD', source: SOURCE,
       discovery_method: CAMPAIGN ? ('unveiled-start:'+CAMPAIGN) : 'unveiled-start'
     };
     try{
@@ -178,16 +249,13 @@
         headers:{ apikey:SUPA_KEY, Authorization:'Bearer '+SUPA_KEY, 'Content-Type':'application/json', Prefer:'return=minimal' },
         body: JSON.stringify(lead)
       });
-      if(!r.ok){ throw new Error('insert failed '+r.status); }
-      // success -> the on_new_lead + leads_workorder triggers handle notifications + the work order.
-      document.getElementById('f').style.display='none';
+      if(!r.ok) throw new Error('insert '+r.status);
+      document.getElementById('main').style.display='none';
       document.getElementById('done').style.display='block';
       window.scrollTo(0,0);
     }catch(e){
-      console.warn(e);
-      btn.disabled=false; btn.textContent='Start my free website →';
-      err.textContent='Something went wrong sending that. Please try again, or email unveiled@monadigitalmarketing.com.';
-      err.style.display='block';
+      console.warn(e); btn.disabled=false; btn.textContent='Submit my request 🚀';
+      showErr('Something went wrong sending that. Please try again, or email unveiled@monadigitalmarketing.com.');
     }
   });
 </script>
