@@ -37,56 +37,93 @@
   .email .shot{margin-top:12px;border-radius:8px;border:1px solid var(--border);width:100%;height:120px;background:linear-gradient(135deg,#EFEAF8,#F3EFE8) center/cover;display:grid;place-items:center;color:var(--violet);font-weight:700;font-size:12px}
   .flow{text-align:center;color:var(--faint);font-size:18px;margin:2px 0}
   .foot{text-align:center;color:var(--faint);font-size:13px;margin-top:24px}
+  /* ---- RTL / Hebrew (same engine, mirrored presentation) ---- */
+  [dir="rtl"] .scene{text-align:right}
+  [dir="rtl"] .num{left:auto;right:16px}
+  [dir="rtl"] .qa{text-align:right}
+  [dir="rtl"] .blist li{flex-direction:row}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="top"><img src="https://unveiled.pro/sphere-core.png" alt=""><b>UNVEILED</b></div>
-  <h1>Walk the entire journey</h1>
-  <p class="intro">Experience UNVEILED exactly like a business owner discovering us for the first time. Tap through every step, open every live screen, read every word.</p>
-  <div class="qa"><b>At every screen, ask yourself:</b>Does this feel exciting? Does it reduce uncertainty and build confidence? Do I know what happens next? Am I ever confused, or asked to do work UNVEILED could do for me? If it's not "yes, effortless" — it's a bug.</div>
+  <h1 data-i18n="h1">Walk the entire journey</h1>
+  <p class="intro" data-i18n="intro">Experience UNVEILED exactly like a business owner discovering us for the first time. Tap through every step, open every live screen, read every word.</p>
+  <div class="qa" data-i18n-html="qa"><b>At every screen, ask yourself:</b>Does this feel exciting? Does it reduce uncertainty and build confidence? Do I know what happens next? Am I ever confused, or asked to do work UNVEILED could do for me? If it's not "yes, effortless" — it's a bug.</div>
 
-  <div class="scene"><div class="num">1</div><div class="who">How it begins</div><h3>You see a post 📱</h3><p>"We pick a local business, study it, and build them a brand-new website — free, before they pay a cent. Want yours?"</p></div>
+  <div class="scene"><div class="num">1</div><div class="who" data-i18n="s1who">How it begins</div><h3 data-i18n="s1h">You see a post 📱</h3><p data-i18n="s1p">"We pick a local business, study it, and build them a brand-new website — free, before they pay a cent. Want yours?"</p></div>
   <div class="flow">↓</div>
 
-  <div class="scene"><div class="num">2</div><div class="who">Tell us about your business</div><h3>A 60-second conversation</h3><p>Three light steps. Optionally drop a logo. That's all we ask up front — we'll find the rest ourselves.</p><a class="live" href="/start?src=tour" target="_blank">Open the live Front Door →</a></div>
+  <div class="scene"><div class="num">2</div><div class="who" data-i18n="s2who">Tell us about your business</div><h3 data-i18n="s2h">A 60-second conversation</h3><p data-i18n="s2p">Three light steps. Optionally drop a logo. That's all we ask up front — we'll find the rest ourselves.</p><a class="live" href="/start?src=tour" target="_blank" data-i18n="s2cta">Open the live Front Door →</a></div>
   <div class="flow">↓</div>
 
-  <div class="scene"><div class="num">3</div><div class="who">Right after you submit · what's in it for you</div><h3>Get your project companion 📲</h3><p>Not "download our app." Your project, in your pocket — so you always know what's happening without checking your email.</p>
-    <ul class="blist"><li>Follow your project in real time</li><li>Get notified the moment your website is ready</li><li>Talk to your team directly</li><li>Review &amp; approve with one tap</li></ul>
-    <a class="live" href="/app?biz=Bella%20Hair%20Studio&industry=salon" target="_blank">Open the live companion →</a></div>
+  <div class="scene"><div class="num">3</div><div class="who" data-i18n="s3who">Right after you submit · what's in it for you</div><h3 data-i18n="s3h">Get your project companion 📲</h3><p data-i18n="s3p">Not "download our app." Your project, in your pocket — so you always know what's happening without checking your email.</p>
+    <ul class="blist"><li data-i18n="s3l1">Follow your project in real time</li><li data-i18n="s3l2">Get notified the moment your website is ready</li><li data-i18n="s3l3">Talk to your team directly</li><li data-i18n-html="s3l4">Review &amp; approve with one tap</li></ul>
+    <a class="live" href="/app?biz=Bella%20Hair%20Studio&industry=salon&lang=he" target="_blank" data-i18n="s3cta">Open the live companion →</a></div>
   <div class="flow">↓</div>
 
-  <div class="scene"><div class="num">4</div><div class="who">Instantly</div><h3>"We're already on it" 🎉</h3>
-    <div class="email"><div class="eh">From UNVEILED · to you</div><div class="eb"><div class="elogo">UNVEILED</div><h4>We've got everything — and we're already on it.</h4><p>We're studying your business and designing your website now. Follow it live in your app — we'll take care of the rest.</p></div></div></div>
+  <div class="scene"><div class="num">4</div><div class="who" data-i18n="s4who">Instantly</div><h3 data-i18n="s4h">"We're already on it" 🎉</h3>
+    <div class="email"><div class="eh" data-i18n="emailFrom">From UNVEILED · to you</div><div class="eb"><div class="elogo">UNVEILED</div><h4 data-i18n="s4eh">We've got everything — and we're already on it.</h4><p data-i18n="s4ep">We're studying your business and designing your website now. Follow it live in your app — we'll take care of the rest.</p></div></div></div>
   <div class="flow">↓</div>
 
-  <div class="scene behind"><div class="num">5</div><div class="who">While you go back to your day · you do nothing</div><h3>We get to work</h3>
-    <ul class="blist"><li>Your project is assigned to our team</li><li>We study your business, competitors &amp; customers</li><li>We shape your positioning so it feels authentically you</li><li>Our designers + AI craft your website (never a template)</li><li>We quality-check everything before you ever see it</li></ul></div>
+  <div class="scene behind"><div class="num">5</div><div class="who" data-i18n="s5who">While you go back to your day · you do nothing</div><h3 data-i18n="s5h">We get to work</h3>
+    <ul class="blist"><li data-i18n="s5l1">Your project is assigned to our team</li><li data-i18n-html="s5l2">We study your business, competitors &amp; customers</li><li data-i18n="s5l3">We shape your positioning so it feels authentically you</li><li data-i18n="s5l4">Our designers + AI craft your website (never a template)</li><li data-i18n="s5l5">We quality-check everything before you ever see it</li></ul></div>
   <div class="flow">↓</div>
 
-  <div class="scene"><div class="num">6</div><div class="who">A few days later</div><h3>The present arrives 🎁</h3>
-    <div class="email"><div class="eh">From UNVEILED · to you</div><div class="eb"><div class="elogo">UNVEILED</div><h4>Meet your new website.</h4><p>We made something we think you're going to love. Tap to explore it live.</p><div class="shot">↗ your website</div><div class="ebtn">See my website →</div></div></div></div>
+  <div class="scene"><div class="num">6</div><div class="who" data-i18n="s6who">A few days later</div><h3 data-i18n="s6h">The present arrives 🎁</h3>
+    <div class="email"><div class="eh" data-i18n="emailFrom">From UNVEILED · to you</div><div class="eb"><div class="elogo">UNVEILED</div><h4 data-i18n="s6eh">Meet your new website.</h4><p data-i18n="s6ep">We made something we think you're going to love. Tap to explore it live.</p><div class="shot" data-i18n="s6shot">↗ your website</div><div class="ebtn" data-i18n="s6ebtn">See my website →</div></div></div></div>
   <div class="flow">↓</div>
 
-  <div class="scene"><div class="num">7</div><div class="who">Your website</div><h3>The Reveal</h3><p>The website is the hero — explore it, fall in love. Then "what's next" frames how we keep helping, a recommendation tailored to your business, and you choose.</p><a class="live" href="/reveal?biz=Bella%20Hair%20Studio&industry=salon&preview=https://unveiled.pro/" target="_blank">Open the live Reveal →</a></div>
+  <div class="scene"><div class="num">7</div><div class="who" data-i18n="s7who">Your website</div><h3 data-i18n="s7h">The Reveal</h3><p data-i18n="s7p">The website is the hero — explore it, fall in love. Then "what's next" frames how we keep helping, a recommendation tailored to your business, and you choose.</p><a class="live" href="/reveal?biz=Bella%20Hair%20Studio&industry=salon&preview=https://unveiled.pro/&lang=he" target="_blank" data-i18n="s7cta">Open the live Reveal →</a></div>
   <div class="flow">↓</div>
 
-  <div class="scene" style="text-align:center;background:var(--grad);color:#fff;border:none"><div class="num">8</div><div class="who" style="color:rgba(255,255,255,.85)">A breath</div><h3 style="font-size:21px">Imagine your business looking like this tomorrow.</h3><p style="color:rgba(255,255,255,.9)">A five-second pause — nothing else on screen — then: <b>Let's make it real.</b> This is the moment they become an owner.</p></div>
+  <div class="scene" style="text-align:center;background:var(--grad);color:#fff;border:none"><div class="num">8</div><div class="who" style="color:rgba(255,255,255,.85)" data-i18n="s8who">A breath</div><h3 style="font-size:21px" data-i18n="s8h">Imagine your business looking like this tomorrow.</h3><p style="color:rgba(255,255,255,.9)" data-i18n-html="s8p">A five-second pause — nothing else on screen — then: <b>Let's make it real.</b> This is the moment they become an owner.</p></div>
   <div class="flow">↓</div>
 
-  <div class="scene"><div class="num">9</div><div class="who">You're in</div><h3>Welcome to the team</h3><p>"From this point on, you're not doing this alone." Payment flows straight into a prefilled, passwordless account — and the <b>same app</b> they've had all along quietly unlocks their Customer Portal. No new app, no new login.</p><a class="live" href="/app?welcome=1&biz=Bella%20Hair%20Studio&package=growth" target="_blank">Open the live Welcome →</a></div>
+  <div class="scene"><div class="num">9</div><div class="who" data-i18n="s9who">You're in</div><h3 data-i18n="s9h">Welcome to the team</h3><p data-i18n-html="s9p">"From this point on, you're not doing this alone." Payment flows straight into a prefilled, passwordless account — and the <b>same app</b> they've had all along quietly unlocks their Customer Portal. No new app, no new login.</p><a class="live" href="/app?welcome=1&biz=Bella%20Hair%20Studio&package=growth&lang=he" target="_blank" data-i18n="s9cta">Open the live Welcome →</a></div>
   <div class="flow">↓</div>
 
-  <div class="scene"><div class="num">10</div><div class="who">We handle the technology</div><h3>White-glove onboarding</h3><p>"Do you have a domain?" · "Connect Google" — one secure tap, we do the rest. You never touch DNS or settings. Each item disappears when it's done.</p></div>
+  <div class="scene"><div class="num">10</div><div class="who" data-i18n="s10who">We handle the technology</div><h3 data-i18n="s10h">White-glove onboarding</h3><p data-i18n="s10p">"Do you have a domain?" · "Connect Google" — one secure tap, we do the rest. You never touch DNS or settings. Each item disappears when it's done.</p></div>
   <div class="flow">↓</div>
 
-  <div class="scene"><div class="num">11</div><div class="who">Graduation 🎉</div><h3>You're officially live</h3><p>Launch isn't another step — it's a celebration. Confetti, congratulations: <b>"Your business has a new home."</b> A moment they remember.</p></div>
+  <div class="scene"><div class="num">11</div><div class="who" data-i18n="s11who">Graduation 🎉</div><h3 data-i18n="s11h">You're officially live</h3><p data-i18n-html="s11p">Launch isn't another step — it's a celebration. Confetti, congratulations: <b>"Your business has a new home."</b> A moment they remember.</p></div>
   <div class="flow">↓</div>
 
-  <div class="scene"><div class="num">12</div><div class="who">Your digital partner</div><h3>We keep growing together</h3><p>"We noticed people searching 'balayage Austin' — we'd love to help you capture that opportunity." Never "buy another service." Always: <i>they're looking out for me.</i></p></div>
+  <div class="scene"><div class="num">12</div><div class="who" data-i18n="s12who">Your digital partner</div><h3 data-i18n="s12h">We keep growing together</h3><p data-i18n-html="s12p">"We noticed people searching 'balayage Austin' — we'd love to help you capture that opportunity." Never "buy another service." Always: <i>they're looking out for me.</i></p></div>
 
-  <p class="foot">One feeling, every screen: <b>you run your business, we'll handle the digital side.</b> Anywhere it didn't feel effortless — that's a bug to fix before we wire the backend.</p>
+  <p class="foot" data-i18n-html="foot">One feeling, every screen: <b>you run your business, we'll handle the digital side.</b> Anywhere it didn't feel effortless — that's a bug to fix before we wire the backend.</p>
 </div>
+<script>
+  function param(n){ try{return new URLSearchParams(location.search).get(n)||'';}catch(e){return '';} }
+  var LANG=(param('lang')||'').toLowerCase(); if(LANG!=='he') LANG='en';
+  var STRINGS={ en:{}, he:{
+    h1:'עברו את כל המסע',
+    intro:'חוו את UNVEILED בדיוק כמו בעל עסק שמגלה אותנו בפעם הראשונה. הקישו דרך כל שלב, פתחו כל מסך חי, קראו כל מילה.',
+    qa:'<b>בכל מסך, שאלו את עצמכם:</b>האם זה מרגיש מרגש? האם זה מפחית אי-ודאות ובונה ביטחון? האם אני יודע מה קורה עכשיו? האם אני מבולבל אי פעם, או מתבקש לעשות עבודה ש-UNVEILED יכלה לעשות בשבילי? אם זה לא "כן, ללא מאמץ" — זה באג.',
+    s1who:'איך זה מתחיל', s1h:'אתם רואים פוסט 📱', s1p:'"אנחנו בוחרים עסק מקומי, חוקרים אותו, ובונים לו אתר חדש לגמרי — בחינם, עוד לפני שהוא משלם שקל. רוצים אחד?"',
+    s2who:'ספרו לנו על העסק שלכם', s2h:'שיחה של 60 שניות', s2p:'שלושה שלבים קלים. אפשר להעלות לוגו. זה כל מה שאנחנו מבקשים בהתחלה — את השאר נמצא בעצמנו.', s2cta:'פתחו את הדלת הקדמית החיה →',
+    s3who:'מיד אחרי השליחה · מה יוצא לכם מזה', s3h:'קבלו את מלווה הפרויקט 📲', s3p:'לא "הורידו את האפליקציה שלנו". הפרויקט שלכם, בכיס — כך תמיד תדעו מה קורה בלי לבדוק את המייל.',
+    s3l1:'עקבו אחרי הפרויקט בזמן אמת', s3l2:'קבלו התראה ברגע שהאתר מוכן', s3l3:'דברו ישירות עם הצוות', s3l4:'סקרו ואשרו בלחיצה אחת', s3cta:'פתחו את המלווה החי →',
+    s4who:'באופן מיידי', s4h:'"אנחנו כבר על זה" 🎉', emailFrom:'מאת UNVEILED · אליכם',
+    s4eh:'קיבלנו הכול — ואנחנו כבר על זה.', s4ep:'אנחנו חוקרים את העסק שלכם ומעצבים את האתר עכשיו. עקבו אחריו חי באפליקציה — על השאר אנחנו נדאג.',
+    s5who:'בזמן שאתם חוזרים ליום שלכם · אתם לא עושים כלום', s5h:'אנחנו ניגשים לעבודה',
+    s5l1:'הפרויקט שלכם מוקצה לצוות שלנו', s5l2:'אנחנו חוקרים את העסק, המתחרים והלקוחות שלכם', s5l3:'אנחנו מעצבים את המיצוב שלכם כך שירגיש אותנטי לכם', s5l4:'המעצבים שלנו + AI יוצרים את האתר שלכם (אף פעם לא תבנית)', s5l5:'אנחנו בודקים איכות של הכול עוד לפני שאתם רואים אותו',
+    s6who:'כמה ימים לאחר מכן', s6h:'המתנה מגיעה 🎁', s6eh:'הכירו את האתר החדש שלכם.', s6ep:'יצרנו משהו שאנחנו בטוחים שתתאהבו בו. הקישו כדי לחקור אותו חי.', s6shot:'↗ האתר שלכם', s6ebtn:'ראו את האתר שלי →',
+    s7who:'האתר שלכם', s7h:'ה-Reveal', s7p:'האתר הוא הגיבור — חקרו אותו, התאהבו. אחר כך "מה הלאה" ממסגר איך אנחנו ממשיכים לעזור, המלצה מותאמת לעסק שלכם, ואתם בוחרים.', s7cta:'פתחו את ה-Reveal החי →',
+    s8who:'נשימה', s8h:'דמיינו את העסק שלכם נראה ככה כבר מחר.', s8p:'הפסקה של חמש שניות — שום דבר אחר על המסך — ואז: <b>בואו נהפוך את זה למציאות.</b> זה הרגע שבו הם הופכים לבעלים.',
+    s9who:'אתם בפנים', s9h:'ברוכים הבאים לצוות', s9p:'"מהרגע הזה, אתם לא לבד בזה." התשלום זורם ישר לחשבון ממולא מראש וללא סיסמה — ו<b>אותה אפליקציה</b> שאיתם כל הזמן פותחת בשקט את פורטל הלקוחות שלהם. בלי אפליקציה חדשה, בלי כניסה חדשה.', s9cta:'פתחו את מסך הברוכים הבאים החי →',
+    s10who:'אנחנו מטפלים בטכנולוגיה', s10h:'ליווי אישי (white-glove)', s10p:'"יש לכם דומיין?" · "התחברו ל-Google" — לחיצה מאובטחת אחת, את השאר אנחנו עושים. אתם אף פעם לא נוגעים ב-DNS או בהגדרות. כל פריט נעלם כשהוא מסתיים.',
+    s11who:'סיום 🎉', s11h:'אתם רשמית באוויר', s11p:'ההשקה היא לא עוד שלב — היא חגיגה. קונפטי, ברכות: <b>"לעסק שלכם יש בית חדש."</b> רגע שזוכרים.',
+    s12who:'השותף הדיגיטלי שלכם', s12h:'אנחנו ממשיכים לצמוח יחד', s12p:'"שמנו לב שאנשים מחפשים \'באלייאז׳ בתל אביב\' — נשמח לעזור לכם לתפוס את ההזדמנות הזו." אף פעם לא "קנו עוד שירות". תמיד: <i>הם דואגים לי.</i>',
+    foot:'תחושה אחת, בכל מסך: <b>אתם מנהלים את העסק, אנחנו נטפל בצד הדיגיטלי.</b> כל מקום שלא הרגיש ללא מאמץ — זה באג לתקן לפני שמחברים את הבקאנד.'
+  }};
+  (function(){
+    document.documentElement.lang=LANG; document.documentElement.dir=(LANG==='he'?'rtl':'ltr');
+    if(LANG==='en') return;
+    var d=STRINGS[LANG];
+    document.querySelectorAll('[data-i18n]').forEach(function(el){var k=el.getAttribute('data-i18n'); if(d[k]!=null) el.textContent=d[k];});
+    document.querySelectorAll('[data-i18n-html]').forEach(function(el){var k=el.getAttribute('data-i18n-html'); if(d[k]!=null) el.innerHTML=d[k];});
+  })();
+</script>
 </body>
 </html>

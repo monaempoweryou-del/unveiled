@@ -92,6 +92,11 @@
   .moment .mcta{display:inline-block;margin-top:22px;background:#fff;color:var(--indigo);font-weight:700;font-size:15.5px;text-decoration:none;padding:14px 26px;border-radius:13px;position:relative;cursor:pointer}
   @media(max-width:560px){ h1{font-size:30px} .heroframe iframe{height:300px} .wrap{padding:18px 14px 70px} .moment{padding:44px 20px} .moment .mt{font-size:23px} }
   @media(min-width:760px){ .plans{grid-template-columns:repeat(3,1fr)} .plan.rec{transform:translateY(-6px)} }
+  /* ---- RTL / Hebrew (same engine, mirrored presentation) ---- */
+  [dir="rtl"] .sub,[dir="rtl"] .reco,[dir="rtl"] .nextlist li,[dir="rtl"] .reassure[style]{text-align:right}
+  [dir="rtl"] .plan li,[dir="rtl"] .plan .why{text-align:right}
+  [dir="rtl"] .plan .recbadge{left:auto;right:18px}
+  [dir="rtl"] .modal p,[dir="rtl"] .modal h3{text-align:center}
 </style>
 </head>
 <body>
@@ -99,10 +104,10 @@
   <div class="topbar"><img src="https://unveiled.pro/sphere-core.png" alt=""><b>UNVEILED</b></div>
 
   <div class="center">
-    <span class="badge">MADE JUST FOR YOU</span>
+    <span class="badge" data-i18n="badge">MADE JUST FOR YOU</span>
     <h1 id="h1">Meet your new <span class="v">website.</span></h1>
-    <p class="sub" id="sub">We made something we think you're going to love. Take a look around.</p>
-    <p class="hand" id="note">Tap it to explore the live site ✦</p>
+    <p class="sub" id="sub" data-i18n="sub">We made something we think you're going to love. Take a look around.</p>
+    <p class="hand" id="note" data-i18n="note">Tap it to explore the live site ✦</p>
   </div>
 
   <!-- the website IS the hero -->
@@ -110,42 +115,42 @@
     <div class="heroload" id="heroload">
       <div>
         <img class="sph" src="https://unveiled.pro/sphere-core.png" alt="">
-        <div class="lt" id="loadt">Bringing your new website to life…</div>
-        <div class="ls" id="loads">One moment — this is the fun part ✦</div>
+        <div class="lt" id="loadt" data-i18n="loadt">Bringing your new website to life…</div>
+        <div class="ls" id="loads" data-i18n="loads">One moment — this is the fun part ✦</div>
       </div>
     </div>
     <iframe id="pv" src="about:blank" scrolling="no" tabindex="-1" title="Your website preview"></iframe>
-    <div class="open">↗ Tap to explore your live website</div>
+    <div class="open" data-i18n="openOverlay">↗ Tap to explore your live website</div>
   </div>
-  <div class="center"><a class="opennew" id="opena" href="#" target="_blank" rel="noopener">Open it in a new tab →</a></div>
+  <div class="center"><a class="opennew" id="opena" href="#" target="_blank" rel="noopener" data-i18n="openNew">Open it in a new tab →</a></div>
 
   <!-- the pause: a five-second moment where they become an owner -->
   <div class="moment">
-    <p class="mt" id="momenttext">Imagine your business looking like this tomorrow.</p>
-    <a class="mcta" onclick="makeItReal()">Let's make it real ↓</a>
+    <p class="mt" id="momenttext" data-i18n="moment">Imagine your business looking like this tomorrow.</p>
+    <a class="mcta" onclick="makeItReal()" data-i18n="momentCta">Let's make it real ↓</a>
   </div>
 
   <!-- continue the journey (not a sales page) -->
   <div class="card">
-    <h2>Love what you see? Here's what happens next…</h2>
+    <h2 data-i18n="nextH">Love what you see? Here's what happens next…</h2>
     <ul class="nextlist">
-      <li><span class="i">✎</span> We'll personalize every detail <b>with</b> you.</li>
-      <li><span class="i">🎨</span> We'll refine the design until it's exactly right.</li>
-      <li><span class="i">🌐</span> We'll connect your domain and handle the tech.</li>
-      <li><span class="i">🔍</span> We'll optimize it for Google &amp; AI search.</li>
-      <li><span class="i">🚀</span> We'll launch everything for you — and keep improving it.</li>
+      <li><span class="i">✎</span> <span data-i18n-html="next1">We'll personalize every detail <b>with</b> you.</span></li>
+      <li><span class="i">🎨</span> <span data-i18n="next2">We'll refine the design until it's exactly right.</span></li>
+      <li><span class="i">🌐</span> <span data-i18n="next3">We'll connect your domain and handle the tech.</span></li>
+      <li><span class="i">🔍</span> <span data-i18n-html="next4">We'll optimize it for Google &amp; AI search.</span></li>
+      <li><span class="i">🚀</span> <span data-i18n="next5">We'll launch everything for you — and keep improving it.</span></li>
     </ul>
-    <p class="reassure" style="margin-top:16px;text-align:left">You're not buying a finished file — you're getting a team that takes care of all of it. <b>We'll handle it.</b></p>
+    <p class="reassure" style="margin-top:16px;text-align:left" data-i18n-html="nextHandle">You're not buying a finished file — you're getting a team that takes care of all of it. <b>We'll handle it.</b></p>
   </div>
 
   <!-- guided recommendation + packages (DATA-DRIVEN; numbers are placeholders) -->
   <div class="card" id="plancard">
     <p class="reco-lead" id="recolead">Based on everything we've learned, here's the path we'd recommend.</p>
     <div id="heroPlan"></div>
-    <p class="reassure" style="margin-top:16px">Change or cancel anytime. We earn your business every month — no contracts.</p>
-    <div class="cmp-secondary"><a id="cmpToggle" onclick="toggleCompare()">Want to compare all options?</a></div>
+    <p class="reassure" style="margin-top:16px" data-i18n="changeCancel">Change or cancel anytime. We earn your business every month — no contracts.</p>
+    <div class="cmp-secondary"><a id="cmpToggle" onclick="toggleCompare()" data-i18n="compareAll">Want to compare all options?</a></div>
     <div class="plans hide" id="allPlans" style="margin-top:14px"></div>
-    <div class="changes"><a onclick="openChanges()">Want a few changes first?</a></div>
+    <div class="changes"><a onclick="openChanges()" data-i18n="wantChanges">Want a few changes first?</a></div>
   </div>
 </div>
 
@@ -154,8 +159,90 @@
 <script>
   /* ---------- params (safe display data passed by the reveal email; no PII fetch) ---------- */
   function param(n){ try{return new URLSearchParams(location.search).get(n)||'';}catch(e){return '';} }
-  var LEAD=param('lead'), BIZ=param('biz')||'your business', PREVIEW=param('preview')||param('url')||'', INDUSTRY=(param('industry')||'').toLowerCase();
-  if(BIZ && BIZ!=='your business'){ document.getElementById('h1').innerHTML = esc(BIZ)+", meet your new <span class=\"v\">website.</span>"; }
+
+  /* ===== ONE experience, many languages (LS-FRONT-DOOR / LS-EXPERIENCE). Same engine,
+     same flow — only language + RTL differ. English is the HTML default; Hebrew is
+     layered via STRINGS + applyI18n only. Pick via ?lang=he (or hebrew chars in biz). ===== */
+  var LANG=(param('lang')||'').toLowerCase();
+  if(LANG!=='he'){ if(/[֐-׿]/.test(param('biz')||'')) LANG='he'; }
+  if(LANG!=='he') LANG='en';
+
+  var STRINGS={
+    en:{}, // English lives in the HTML defaults; we only translate away from it
+    he:{
+      badge:'נוצר במיוחד בשבילכם',
+      sub:'יצרנו משהו שאנחנו בטוחים שתתאהבו בו. הציצו מסביב.',
+      note:'הקישו כדי לחקור את האתר החי ✦',
+      loadt:'מביאים את האתר החדש שלכם לחיים…',
+      loads:'רק רגע — זה החלק הכיפי ✦',
+      openOverlay:'↗ הקישו כדי לחקור את האתר החי שלכם',
+      openNew:'פתחו בכרטיסייה חדשה →',
+      moment:'דמיינו את העסק שלכם נראה ככה כבר מחר.',
+      momentCta:'בואו נהפוך את זה למציאות ↓',
+      nextH:'אוהבים את מה שאתם רואים? הנה מה שקורה עכשיו…',
+      next1:'נתאים אישית כל פרט <b>יחד</b> אתכם.',
+      next2:'נשכלל את העיצוב עד שהוא בדיוק נכון.',
+      next3:'נחבר את הדומיין שלכם ונטפל בכל הצד הטכני.',
+      next4:'נמטב אותו לחיפוש בגוגל וב-AI.',
+      next5:'נשיק עבורכם הכול — ונמשיך לשפר אותו.',
+      nextHandle:'אתם לא קונים קובץ מוגמר — אתם מקבלים צוות שמטפל בהכול. <b>אנחנו נדאג לזה.</b>',
+      changeCancel:'אפשר לשנות או לבטל בכל רגע. אנחנו מרוויחים את האמון שלכם כל חודש — בלי חוזים.',
+      compareAll:'רוצים להשוות את כל האפשרויות?',
+      hideOptions:'הסתירו אפשרויות אחרות',
+      wantChanges:'רוצים כמה שינויים קודם?',
+      recoLead:'בהתבסס על כל מה שלמדנו, הנה המסלול שנמליץ עליו.',
+      recoLeadBiz:'בהתבסס על כל מה שלמדנו על <b>{biz}</b>, זה המסלול שנמליץ עליו.',
+      h1Default:'הכירו את האתר <span class="v">החדש שלכם.</span>',
+      h1Biz:'{biz}, הכירו את האתר <span class="v">החדש שלכם.</span>',
+      momentBiz:'דמיינו את {biz} נראה ככה כבר מחר.',
+      loadtPending:'האתר שלכם כמעט מוכן',
+      loadsPending:'אנחנו מוסיפים את הנגיעות האחרונות — נעדכן אתכם ברגע שהוא באוויר.',
+      becausePrefix:'כי ',
+      ready:'אני מוכן/ה →',
+      perMo:'/חודש',
+      launchOnce:'+ {amt} השקה חד-פעמית',
+      launchIncluded:'השקה כלולה',
+      billedYearly:' · חיוב שנתי',
+      recBadge:'מומלץ עבורכם',
+      chooseFmt:'בחרו ב{name}',
+      annualSave:'מעדיפים שנתי? חסכו חודשיים',
+      switchMonthly:'למעבר לחיוב חודשי',
+      changesH3:'נשמח להתאים אותו אישית יחד אתכם',
+      changesBody:'אנחנו כל כך שמחים שהתלהבתם מהאתר. ברגע שתצטרפו, מתחיל הליווי האישי המלא שלנו — נשכלל יחד <b>כל</b> פרט עד שהוא מוכן להשקה.',
+      changesGo:'נשמע מצוין — הראו לי את האפשרויות',
+      // package engine — names/taglines/outcomes/recommendation reasons
+      pkg:{
+        presence:{ name:'נוכחות', tagline:'להיראות מקצועיים ולהימצא',
+          outcomes:['האתר שלכם חי, מאובטח ותמיד עדכני','להופיע כשמחפשים אתכם באזור','חיוג בלחיצה ויצירת קשר פשוטה'] },
+        growth:{ name:'צמיחה', tagline:'הפכו את האתר ללקוחות', badge:'הכי פופולרי',
+          outcomes:['כל מה שבנוכחות','SEO פעיל וגילוי בחיפושי AI','הזמנת תורים / לכידת לידים','המלצות צמיחה חודשיות','כ-3 עדכונים בכל חודש'] },
+        partner:{ name:'שותף', tagline:'הצוות הדיגיטלי המלא שלכם',
+          outcomes:['כל מה שבצמיחה','תוכן ופוסטים שנוצרים עבורכם','SEO מתקדם ותוכנית צמיחה ייעודית','תמיכת קונסיירז׳','אנחנו משכללים בחופשיות במסגרת ההיקף'] }
+      },
+      recoWhy:{
+        local:'אתם עסק מקומי מבוסס-תורים — צמיחה דואגת שימצאו אתכם והופכת מבקרים ללקוחות עם תור.',
+        competitive:'אתם בתחום תחרותי — שותף נותן לכם תוכן + SEO מתקדם וצוות שמניע צמיחה.',
+        def:'זה האיזון הנכון לרוב העסקים — כל מה שצריך כדי להשיק מקצועי ולהמשיך לצמוח.'
+      }
+    }
+  };
+  function T(k){ var d=STRINGS[LANG]||{}; return (d[k]!=null)?d[k]:''; }
+  function applyI18n(){
+    document.documentElement.lang=LANG; document.documentElement.dir=(LANG==='he'?'rtl':'ltr');
+    if(LANG==='en') return; // English is the HTML default
+    var d=STRINGS[LANG];
+    document.querySelectorAll('[data-i18n]').forEach(function(el){var k=el.getAttribute('data-i18n'); if(d[k]!=null) el.textContent=d[k];});
+    document.querySelectorAll('[data-i18n-html]').forEach(function(el){var k=el.getAttribute('data-i18n-html'); if(d[k]!=null) el.innerHTML=d[k];});
+  }
+  applyI18n();
+
+  var LEAD=param('lead'), BIZ=param('biz')||(LANG==='he'?'העסק שלכם':'your business'), PREVIEW=param('preview')||param('url')||'', INDUSTRY=(param('industry')||'').toLowerCase();
+  var BIZ_DEFAULT=(LANG==='he'?'העסק שלכם':'your business');
+  if(BIZ && BIZ!==BIZ_DEFAULT){
+    document.getElementById('h1').innerHTML = (LANG==='he') ? T('h1Biz').replace('{biz}',esc(BIZ)) : esc(BIZ)+", meet your new <span class=\"v\">website.</span>";
+  } else if(LANG==='he'){
+    document.getElementById('h1').innerHTML = T('h1Default');
+  }
   (function(){
     var hero=document.getElementById('hero'), pv=document.getElementById('pv'), a=document.getElementById('opena');
     function reveal(){ hero.classList.add('ready'); }
@@ -168,8 +255,8 @@
       setTimeout(function(){ if(!hero.classList.contains('ready')) reveal(); }, 6500);
     } else {
       // graceful fallback — a calm, intentional state, never a broken or empty frame
-      document.getElementById('loadt').textContent='Your website is almost ready';
-      document.getElementById('loads').textContent="We're putting the final touches on it — we'll let you know the moment it's live.";
+      document.getElementById('loadt').textContent=(LANG==='he'?T('loadtPending'):'Your website is almost ready');
+      document.getElementById('loads').textContent=(LANG==='he'?T('loadsPending'):"We're putting the final touches on it — we'll let you know the moment it's live.");
       var ov=hero.querySelector('.open'); if(ov) ov.style.display='none';
       document.querySelector('.opennew').style.display='none';
     }
@@ -194,38 +281,62 @@
   ];
   // recommendation logic = data-driven rules; first match wins, else default.
   var RECO_RULES=[
-    { when:function(ctx){ return /salon|spa|barber|clinic|dental|fitness|restaurant|cafe|law|realtor|contractor/.test(ctx.industry); }, pick:'growth',
+    { when:function(ctx){ return /salon|spa|barber|clinic|dental|fitness|restaurant|cafe|law|realtor|contractor/.test(ctx.industry); }, pick:'growth', whyKey:'local',
       why:function(ctx){ return "you're a local, appointment-driven business — Growth gets you found and turns visitors into booked customers."; } },
-    { when:function(ctx){ return /agency|studio|consult|tech|saas|ecommerce|shop|store/.test(ctx.industry); }, pick:'partner',
+    { when:function(ctx){ return /agency|studio|consult|tech|saas|ecommerce|shop|store/.test(ctx.industry); }, pick:'partner', whyKey:'competitive',
       why:function(){ return "you're in a competitive space — Partner gives you content + advanced SEO and a team driving growth."; } }
   ];
   function recommend(ctx){
-    for(var i=0;i<RECO_RULES.length;i++){ if(RECO_RULES[i].when(ctx)) return {id:RECO_RULES[i].pick, why:RECO_RULES[i].why(ctx)}; }
+    for(var i=0;i<RECO_RULES.length;i++){ if(RECO_RULES[i].when(ctx)) return {id:RECO_RULES[i].pick, why:(LANG==='he'?T('recoWhy')[RECO_RULES[i].whyKey]:RECO_RULES[i].why(ctx))}; }
     var def=PACKAGES.find(function(p){return p.recommendedDefault;})||PACKAGES[0];
-    return {id:def.id, why:"it's the right balance for most businesses — everything you need to launch professionally and keep growing."};
+    return {id:def.id, why:(LANG==='he'?T('recoWhy').def:"it's the right balance for most businesses — everything you need to launch professionally and keep growing.")};
   }
   var REC=recommend({industry:INDUSTRY, biz:BIZ});
+  // localized view of a package (name/tagline/badge/outcomes) — English data is the default
+  function locPkg(p){
+    if(LANG!=='he') return p;
+    var h=(T('pkg')||{})[p.id]; if(!h) return p;
+    return { id:p.id, name:h.name||p.name, tagline:h.tagline||p.tagline, badge:(p.badge?(h.badge||p.badge):p.badge),
+      monthly:p.monthly, annualMonthly:p.annualMonthly, launch:p.launch, recommendedDefault:p.recommendedDefault,
+      outcomes:h.outcomes||p.outcomes };
+  }
   function priceOf(p){ return BILLING==='annual'? p.annualMonthly : p.monthly; }
   function money(n){ return '$'+(Number(n)||0).toLocaleString(); }
 
   function planCardHTML(p, opts){
     opts=opts||{};
-    var rec=(p.id===REC.id);
-    return (rec?'<span class="recbadge">RECOMMENDED FOR YOU</span>':(p.badge?'<span class="recbadge" style="background:#78716C">'+esc(p.badge)+'</span>':''))+
-      '<div class="pname">'+esc(p.name)+'</div><div class="ptag">'+esc(p.tagline)+'</div>'+
+    var rec=(p.id===REC.id); var lp=locPkg(p);
+    var recBadgeTxt=(LANG==='he'?T('recBadge'):'RECOMMENDED FOR YOU');
+    var launchTxt = p.launch>0
+      ? (LANG==='he'? T('launchOnce').replace('{amt}',money(p.launch)) : '+ '+money(p.launch)+' one-time launch')
+      : (LANG==='he'? T('launchIncluded') : 'Launch included');
+    var yearlyTxt = BILLING==='annual' ? (LANG==='he'?T('billedYearly'):' · billed yearly') : '';
+    var perMo = LANG==='he'?T('perMo'):'/mo';
+    var chooseTxt = opts.cta || (LANG==='he'? T('chooseFmt').replace('{name}',esc(lp.name)) : 'Choose '+esc(lp.name));
+    var annualTxt = BILLING==='annual'
+      ? (LANG==='he'?T('switchMonthly'):'Switch to monthly billing')
+      : (LANG==='he'?T('annualSave'):'Prefer annual? Save 2 months');
+    return (rec?'<span class="recbadge">'+esc(recBadgeTxt)+'</span>':(lp.badge?'<span class="recbadge" style="background:#78716C">'+esc(lp.badge)+'</span>':''))+
+      '<div class="pname">'+esc(lp.name)+'</div><div class="ptag">'+esc(lp.tagline)+'</div>'+
       (opts.why?'<div class="why">'+esc(opts.why)+'</div>':'')+
-      '<div class="price">'+money(priceOf(p))+'<small>/mo</small></div>'+
-      '<div class="launch">'+(p.launch>0?('+ '+money(p.launch)+' one-time launch'):'Launch included')+(BILLING==='annual'?' · billed yearly':'')+'</div>'+
-      '<ul>'+p.outcomes.map(function(o){return '<li><span class="c">✓</span>'+esc(o)+'</li>';}).join('')+'</ul>'+
-      '<button class="choose" onclick="choose(\''+p.id+'\')">'+(opts.cta||('Choose '+esc(p.name)))+'</button>'+
-      (opts.annual?'<div class="annl"><a onclick="flipBilling()">'+(BILLING==='annual'?'Switch to monthly billing':'Prefer annual? Save 2 months')+'</a></div>':'');
+      '<div class="price">'+money(priceOf(p))+'<small>'+perMo+'</small></div>'+
+      '<div class="launch">'+launchTxt+yearlyTxt+'</div>'+
+      '<ul>'+lp.outcomes.map(function(o){return '<li><span class="c">✓</span>'+esc(o)+'</li>';}).join('')+'</ul>'+
+      '<button class="choose" onclick="choose(\''+p.id+'\')">'+chooseTxt+'</button>'+
+      (opts.annual?'<div class="annl"><a onclick="flipBilling()">'+annualTxt+'</a></div>':'');
   }
   // ONE confident recommendation — we've learned about their business, so we lead, not list.
   function renderHero(){
     var p=PACKAGES.find(function(x){return x.id===REC.id;})||PACKAGES[0];
-    document.getElementById('recolead').innerHTML='Based on everything we’ve learned about <b>'+esc(BIZ)+'</b>, this is the path we’d recommend.';
+    if(LANG==='he'){
+      document.getElementById('recolead').innerHTML = (BIZ && BIZ!==BIZ_DEFAULT) ? T('recoLeadBiz').replace('{biz}',esc(BIZ)) : T('recoLead');
+    } else {
+      document.getElementById('recolead').innerHTML='Based on everything we’ve learned about <b>'+esc(BIZ)+'</b>, this is the path we’d recommend.';
+    }
+    var because = (LANG==='he'? T('becausePrefix') : 'Because ')+REC.why;
+    var cta = (LANG==='he'? T('ready') : 'I’m ready →');
     var el=document.createElement('div'); el.className='plan hero';
-    el.innerHTML=planCardHTML(p,{why:'Because '+REC.why, cta:'I’m ready →', annual:true});
+    el.innerHTML=planCardHTML(p,{why:because, cta:cta, annual:true});
     var box=document.getElementById('heroPlan'); box.innerHTML=''; box.appendChild(el);
   }
   function renderAll(){
@@ -240,7 +351,9 @@
   function toggleCompare(){
     COMPARED=!COMPARED;
     document.getElementById('allPlans').classList.toggle('hide',!COMPARED);
-    document.getElementById('cmpToggle').textContent = COMPARED?'Hide other options':'Want to compare all options?';
+    document.getElementById('cmpToggle').textContent = COMPARED
+      ? (LANG==='he'?T('hideOptions'):'Hide other options')
+      : (LANG==='he'?T('compareAll'):'Want to compare all options?');
     if(COMPARED) renderAll();
   }
   function flipBilling(){ BILLING=(BILLING==='annual'?'monthly':'annual'); renderHero(); if(COMPARED) renderAll(); }
@@ -254,16 +367,21 @@
     location.href=q;
   }
   function openChanges(){
-    showModal('<div class="seal" style="font-size:32px">💜</div><h3>We’d love to personalize it with you</h3>'+
-      '<p>We’re so glad you’re excited about your website. Once you join, you get our full white-glove onboarding — we’ll refine <b>every</b> detail together until it’s ready to launch.</p>'+
-      '<button class="go" onclick="closeModal()">Sounds great — show me the options</button>');
+    var h3=(LANG==='he'?T('changesH3'):'We’d love to personalize it with you');
+    var body=(LANG==='he'?T('changesBody'):'We’re so glad you’re excited about your website. Once you join, you get our full white-glove onboarding — we’ll refine <b>every</b> detail together until it’s ready to launch.');
+    var go=(LANG==='he'?T('changesGo'):'Sounds great — show me the options');
+    showModal('<div class="seal" style="font-size:32px">💜</div><h3>'+h3+'</h3>'+
+      '<p>'+body+'</p>'+
+      '<button class="go" onclick="closeModal()">'+go+'</button>');
   }
   function makeItReal(){ var c=document.getElementById('plancard'); if(c) c.scrollIntoView({behavior:'smooth',block:'start'}); }
   function showModal(html){ document.getElementById('modalbox').innerHTML=html; document.getElementById('ov').classList.add('on'); }
   function closeModal(){ document.getElementById('ov').classList.remove('on'); }
   document.getElementById('ov').addEventListener('click',function(e){ if(e.target.id==='ov') closeModal(); });
 
-  if(BIZ && BIZ!=='your business'){ document.getElementById('momenttext').innerHTML='Imagine '+esc(BIZ)+' looking like this tomorrow.'; }
+  if(BIZ && BIZ!==BIZ_DEFAULT){
+    document.getElementById('momenttext').innerHTML = (LANG==='he') ? esc(T('momentBiz').replace('{biz}',BIZ)) : 'Imagine '+esc(BIZ)+' looking like this tomorrow.';
+  }
   renderHero();
 </script>
 </body>

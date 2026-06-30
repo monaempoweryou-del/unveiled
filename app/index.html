@@ -50,6 +50,13 @@
   .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#1C1917;color:#fff;font-size:14px;font-weight:600;padding:12px 18px;border-radius:999px;box-shadow:0 16px 40px -12px rgba(0,0,0,.5);opacity:0;transition:.25s;z-index:40}
   .toast.on{opacity:1}
   @media(max-width:560px){ h1{font-size:26px} }
+  /* ---- RTL / Hebrew (same engine, mirrored presentation) ---- */
+  [dir="rtl"] .top .biz{margin-left:0;margin-right:auto}
+  [dir="rtl"] .sec .c{margin-left:0;margin-right:auto}
+  [dir="rtl"] .lead,[dir="rtl"] .step .lbl,[dir="rtl"] .step .det,[dir="rtl"] .act .at,[dir="rtl"] .act .aw{text-align:right}
+  [dir="rtl"] #welcome,[dir="rtl"] #celebrate>div{text-align:center}
+  [dir="rtl"] #welcome input{text-align:right}
+  [dir="rtl"] .step.active .lbl::after{content:' · בעבודה'}
 </style>
 </head>
 <body>
@@ -60,13 +67,13 @@
   <div id="welcome" class="hide">
     <div class="seal">✓</div>
     <h1 id="wh1">Welcome to the team. <span class="v">🎉</span></h1>
-    <p class="lead" style="margin:0 auto 6px;font-weight:600;color:var(--text)">From this point on, you're not doing this alone.</p>
-    <p class="lead" style="margin:0 auto 14px">This is where the white-glove begins. It's the same app you've had since day one — now it quietly unlocks your full workspace. Nothing new to install, nothing to fill out.</p>
+    <p class="lead" style="margin:0 auto 6px;font-weight:600;color:var(--text)" data-i18n="wNotAlone">From this point on, you're not doing this alone.</p>
+    <p class="lead" style="margin:0 auto 14px" data-i18n="wWhiteGlove">This is where the white-glove begins. It's the same app you've had since day one — now it quietly unlocks your full workspace. Nothing new to install, nothing to fill out.</p>
     <div class="card" style="text-align:left">
-      <label style="font-size:13px;font-weight:700;color:var(--muted)">Your secure sign-in</label>
+      <label style="font-size:13px;font-weight:700;color:var(--muted)" data-i18n="wSignin">Your secure sign-in</label>
       <input id="wemail" type="email" placeholder="you@business.com" autocomplete="email">
-      <button class="big" onclick="sendLink()">Enter your workspace →</button>
-      <p class="reassure" style="margin-top:12px">No password to remember — we'll email you a one-tap secure link. (Passwordless, for your safety.)</p>
+      <button class="big" onclick="sendLink()" data-i18n="wEnter">Enter your workspace →</button>
+      <p class="reassure" style="margin-top:12px" data-i18n="wNoPass">No password to remember — we'll email you a one-tap secure link. (Passwordless, for your safety.)</p>
     </div>
   </div>
 
@@ -83,35 +90,35 @@
 
     <!-- companion-only: why this app makes their experience easier (benefit-first, never "we want you to install it") -->
     <div class="card hide" id="companionintro" style="background:linear-gradient(135deg,rgba(108,60,224,.06),#fff)">
-      <div style="font-weight:800;font-size:16px;margin-bottom:4px">📲 Your project, in your pocket</div>
-      <p style="font-size:14px;color:var(--muted);margin:0 0 10px">No need to keep checking your email — everything about your website lives right here.</p>
+      <div style="font-weight:800;font-size:16px;margin-bottom:4px" data-i18n="ciTitle">📲 Your project, in your pocket</div>
+      <p style="font-size:14px;color:var(--muted);margin:0 0 10px" data-i18n="ciSub">No need to keep checking your email — everything about your website lives right here.</p>
       <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;font-size:14px">
-        <li>✓ Follow your project in real time</li>
-        <li>✓ Get notified the moment your website is ready</li>
-        <li>✓ Message your team anytime</li>
-        <li>✓ Review &amp; approve with one tap</li>
+        <li data-i18n="ci1">✓ Follow your project in real time</li>
+        <li data-i18n="ci2">✓ Get notified the moment your website is ready</li>
+        <li data-i18n="ci3">✓ Message your team anytime</li>
+        <li data-i18n-html="ci4">✓ Review &amp; approve with one tap</li>
       </ul>
     </div>
 
-    <div class="sec" id="actsec"><h2>⚡ Action needed from you</h2><span class="c" id="actc"></span></div>
+    <div class="sec" id="actsec"><h2 data-i18n="actH">⚡ Action needed from you</h2><span class="c" id="actc"></span></div>
     <div class="card" id="actwrap"></div>
 
-    <div class="sec" id="stepsec"><h2>Your website</h2></div>
+    <div class="sec" id="stepsec"><h2 data-i18n="stepH">Your website</h2></div>
     <div class="card" id="steps"></div>
 
     <!-- growth-as-partner (post-launch): observation → offer, never "buy another service" -->
     <div class="hide" id="growthcard">
-      <div class="sec"><h2>💜 We're looking out for you</h2></div>
+      <div class="sec"><h2 data-i18n="gwSec">💜 We're looking out for you</h2></div>
       <div class="card">
-        <p style="font-size:15px;margin:0 0 6px"><b>We noticed people near you searching for "balayage Austin."</b></p>
-        <p style="font-size:14px;color:var(--muted);margin:0 0 12px">We'd love to help you capture that opportunity with a dedicated page — we'll take care of it. No pressure, only when you're ready.</p>
-        <button class="btn pri" onclick="showToast('We\\'ll put a plan together and check with you ✓')">Tell me more</button>
+        <p style="font-size:15px;margin:0 0 6px" data-i18n-html="gwHead"><b>We noticed people near you searching for "balayage Austin."</b></p>
+        <p style="font-size:14px;color:var(--muted);margin:0 0 12px" data-i18n="gwBody">We'd love to help you capture that opportunity with a dedicated page — we'll take care of it. No pressure, only when you're ready.</p>
+        <button class="btn pri" onclick="showToast(MSG('gwToast'))" data-i18n="gwBtn">Tell me more</button>
       </div>
     </div>
 
-    <div class="princip">🤝 You focus on your business. We'll handle the technology.</div>
-    <p class="reassure" id="lastnote">We're already working on it — we'll let you know the moment there's progress.</p>
-    <div id="msgteam" class="hide" style="text-align:center;margin-top:14px"><button class="btn" onclick="showToast('Your team will reply right here ✓')">💬 Message your team</button></div>
+    <div class="princip" data-i18n="princip">🤝 You focus on your business. We'll handle the technology.</div>
+    <p class="reassure" id="lastnote" data-i18n="lastnote">We're already working on it — we'll let you know the moment there's progress.</p>
+    <div id="msgteam" class="hide" style="text-align:center;margin-top:14px"><button class="btn" onclick="showToast(MSG('msgToast'))" data-i18n="msgTeam">💬 Message your team</button></div>
   </div>
 </div>
 
@@ -119,9 +126,9 @@
 <div id="celebrate" class="hide" style="position:fixed;inset:0;background:rgba(28,25,23,.6);backdrop-filter:blur(4px);display:grid;place-items:center;z-index:50;padding:20px">
   <div style="background:var(--paper);border-radius:24px;max-width:440px;width:100%;padding:34px 26px;text-align:center;box-shadow:var(--shadow);animation:pop .55s cubic-bezier(.18,1.25,.4,1) both">
     <div style="font-size:56px;line-height:1">🎉</div>
-    <h1 style="font-size:28px;margin:8px 0 6px">You're officially live.</h1>
-    <p class="lead" style="margin:0 auto 16px">Your business has a new home on the internet. Congratulations — this is yours.</p>
-    <button class="btn pri" style="width:100%" onclick="closeCelebrate()">See it live →</button>
+    <h1 style="font-size:28px;margin:8px 0 6px" data-i18n="celH1">You're officially live.</h1>
+    <p class="lead" style="margin:0 auto 16px" data-i18n="celBody">Your business has a new home on the internet. Congratulations — this is yours.</p>
+    <button class="btn pri" style="width:100%" onclick="closeCelebrate()" data-i18n="celBtn">See it live →</button>
   </div>
 </div>
 <div class="toast" id="toast"></div>
@@ -129,10 +136,113 @@
 <script>
   function param(n){ try{return new URLSearchParams(location.search).get(n)||'';}catch(e){return '';} }
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
-  var BIZ=param('biz')||'your business', PACKAGE=param('package')||'', EMAIL=param('email')||'';
+
+  /* ===== ONE app, many languages (LS-EXPERIENCE). Same modes, same flow — only
+     language + RTL differ. English is the HTML default; Hebrew layers via STRINGS. ===== */
+  var LANG=(param('lang')||'').toLowerCase();
+  if(LANG!=='he'){ if(/[֐-׿]/.test(param('biz')||'')) LANG='he'; }
+  if(LANG!=='he') LANG='en';
+
+  var STRINGS={
+    en:{},
+    he:{
+      // welcome
+      wNotAlone:'מהרגע הזה, אתם לא לבד בזה.',
+      wWhiteGlove:'כאן מתחיל הליווי האישי. זו אותה אפליקציה שאיתכם מהיום הראשון — עכשיו היא פותחת בשקט את כל סביבת העבודה שלכם. אין מה להתקין, אין מה למלא.',
+      wSignin:'הכניסה המאובטחת שלכם',
+      wEnter:'היכנסו לסביבת העבודה →',
+      wNoPass:'אין סיסמה לזכור — נשלח לכם במייל קישור מאובטח בלחיצה אחת. (ללא סיסמה, לביטחונכם.)',
+      // companion intro
+      ciTitle:'📲 הפרויקט שלכם, בכיס',
+      ciSub:'אין צורך לבדוק כל הזמן את המייל — כל מה שקשור לאתר שלכם נמצא כאן.',
+      ci1:'✓ עקבו אחרי הפרויקט בזמן אמת',
+      ci2:'✓ קבלו התראה ברגע שהאתר מוכן',
+      ci3:'✓ התכתבו עם הצוות בכל עת',
+      ci4:'✓ סקרו ואשרו בלחיצה אחת',
+      // sections
+      actH:'⚡ נדרשת פעולה מצדכם',
+      stepH:'האתר שלכם',
+      gwSec:'💜 אנחנו דואגים לכם',
+      gwHead:'<b>שמנו לב שאנשים באזורכם מחפשים "באלייאז׳ בתל אביב".</b>',
+      gwBody:'נשמח לעזור לכם לתפוס את ההזדמנות הזו עם עמוד ייעודי — אנחנו נדאג לזה. בלי לחץ, רק כשתהיו מוכנים.',
+      gwBtn:'ספרו לי עוד',
+      princip:'🤝 אתם מתמקדים בעסק. אנחנו נטפל בטכנולוגיה.',
+      lastnote:'אנחנו כבר עובדים על זה — נעדכן אתכם ברגע שיש התקדמות.',
+      msgTeam:'💬 שלחו הודעה לצוות',
+      // celebration
+      celH1:'אתם רשמית באוויר.',
+      celBody:'לעסק שלכם יש עכשיו בית חדש באינטרנט. מזל טוב — זה שלכם.',
+      celBtn:'ראו אותו חי →',
+      // dynamic headers / hands
+      bizDefault:'העסק שלכם',
+      whTeamFmt:'ברוכים הבאים לצוות, {biz}. <span class="v">🎉</span>',
+      dhStandsFmt:'{biz} — הנה איפה האתר שלכם עומד.',
+      dhStandsDefault:'הנה איפה האתר שלכם עומד.',
+      dhand:'אתם מתמקדים בעסק — אנחנו נדאג לשאר ✦',
+      dhCompanionFmt:'{biz} — אנחנו על זה. ✨',
+      handCompanion:'מלווה הפרויקט שלכם ✦',
+      dhLaunchedFmt:'{biz} באוויר. 🎉',
+      handLaunched:'השותף הדיגיטלי שלכם ✦',
+      // "since you last opened"
+      sinceLabel:'✨ מאז שנכנסתם לאחרונה',
+      latestCompanion:'בזמן שאתם ניהלתם את העסק, התאמנו את צבעי המותג שלכם ואספנו תמונות מהעבודה שלכם.',
+      latestLaunched:'בזמן שאתם ניהלתם את העסק, שיפרנו את מהירות האתר ואת האופן שבו אתם מופיעים בגוגל.',
+      latestPortal:'בזמן שאתם ניהלתם את העסק, שכללנו את עמוד הבית והכנו את ההשקה.',
+      // reassurance lines
+      relaxCompanion:'תירגעו — אנחנו מטפלים בזה. התצוגה שלכם בדרך כלל מוכנה תוך 72 שעות, ונעדכן אתכם ברגע שהיא באוויר.',
+      lastLaunched:'האתר שלכם חי ואנחנו ממשיכים לשפר אותו עבורכם.',
+      // actions empty state
+      actEmpty:'🎉 לא צריך כלום כרגע — אנחנו על זה. נבקש רק כשבאמת נצטרך משהו.',
+      lastAllClear:'הכול מסודר מבחינתכם — אנחנו עובדים בפועל על האתר שלכם.',
+      actCountFmt:'{n} לביצוע',
+      // toasts
+      gwToast:'נכין תוכנית ונחזור אליכם ✓',
+      msgToast:'הצוות שלכם יענה כאן ✓',
+      doneToast:'מצוין — נמשיך מכאן ✓',
+      needEmail:'הזינו את האימייל ונשלח לכם את הקישור.',
+      linkSent:'קישור כניסה מאובטח נשלח ✓',
+      // step labels — PORTAL
+      pSteps:[
+        {lbl:'למדנו על העסק שלכם', det:'חקרנו את המותג, השוק והלקוחות שלכם.'},
+        {lbl:'יצרנו את האתר שלכם', det:'עוצב סביב המותג האמיתי שלכם — אף פעם לא תבנית.'},
+        {lbl:'הופכים אותו לשלכם', det:'אנחנו משכללים כל פרט יחד אתכם. השבוע.'},
+        {lbl:'מתכוננים להשקה', det:'אנחנו מחברים את הדומיין ומטפלים בכל ההגדרות הטכניות. בדרך כלל כמה ימים.'},
+        {lbl:'יום ההשקה', det:'אנחנו מעלים את העסק שלכם לאוויר, לעיני כולם.'}
+      ],
+      // step labels — COMPANION
+      cSteps:[
+        {lbl:'הבקשה התקבלה', det:'קיבלנו הכול — הפרויקט שלכם הוקצה לצוות שלנו. ממש עכשיו.'},
+        {lbl:'אנחנו לומדים על העסק שלכם', det:'חוקרים את המותג, המתחרים והלקוחות שלכם. קורה היום.'},
+        {lbl:'אנחנו יוצרים את האתר שלכם', det:'עוצב סביב המותג האמיתי שלכם — אף פעם לא תבנית. במהלך היום-יומיים הקרובים.'},
+        {lbl:'התצוגה שלכם מוכנה לצפייה', det:'בדרך כלל תוך 72 שעות — נעדכן אתכם ברגע שהיא באוויר.'}
+      ],
+      // onboarding actions (portal)
+      actDomainTitle:'כבר יש לכם דומיין?',
+      actDomainWhy:'אנחנו כמעט מוכנים לחבר את האתר שלכם. אם יש לכם דומיין נחבר אותו; אם לא, נעזור לכם לבחור את המושלם — ונטפל בכל ההגדרות.',
+      actDomainYes:'כן, יש לי',
+      actDomainNo:'לא — עזרו לי לבחור',
+      actGbpTitle:'חברו את פרופיל Google העסקי שלכם',
+      actGbpWhy:'אנחנו מוכנים למטב איך אתם מופיעים בגוגל. לחיצה מאובטחת אחת — את השאר אנחנו עושים. לעולם לא נצטרך את הסיסמה שלכם.',
+      actGbpCta:'התחברו ל-Google'
+    }
+  };
+  function T(k){ var d=STRINGS[LANG]||{}; return (d[k]!=null)?d[k]:''; }
+  function MSG(k){ return (LANG==='he'? T(k):'') || ({gwToast:"We'll put a plan together and check with you ✓", msgToast:'Your team will reply right here ✓'})[k] || ''; }
+  function applyI18n(){
+    document.documentElement.lang=LANG; document.documentElement.dir=(LANG==='he'?'rtl':'ltr');
+    if(LANG==='en') return;
+    var d=STRINGS[LANG];
+    document.querySelectorAll('[data-i18n]').forEach(function(el){var k=el.getAttribute('data-i18n'); if(d[k]!=null) el.textContent=d[k];});
+    document.querySelectorAll('[data-i18n-html]').forEach(function(el){var k=el.getAttribute('data-i18n-html'); if(d[k]!=null) el.innerHTML=d[k];});
+  }
+  applyI18n();
+
+  var BIZ_DEFAULT=(LANG==='he'?T('bizDefault'):'your business');
+  var BIZ=param('biz')||BIZ_DEFAULT, PACKAGE=param('package')||'', EMAIL=param('email')||'';
   document.getElementById('bizlbl').textContent=BIZ;
-  document.getElementById('wh1').innerHTML='Welcome to the team, '+esc(BIZ)+'. <span class="v">🎉</span>';
-  document.getElementById('dh1').innerHTML=esc(BIZ)+" — here's where your website stands.";
+  document.getElementById('wh1').innerHTML=(LANG==='he'? T('whTeamFmt').replace('{biz}',esc(BIZ)) : 'Welcome to the team, '+esc(BIZ)+'. <span class="v">🎉</span>');
+  document.getElementById('dh1').innerHTML=(LANG==='he'? (BIZ!==BIZ_DEFAULT? T('dhStandsFmt').replace('{biz}',esc(BIZ)) : T('dhStandsDefault')) : esc(BIZ)+" — here's where your website stands.");
+  if(LANG==='he'){ var _dh=document.getElementById('dhand'); if(_dh) _dh.textContent=T('dhand'); }
   if(EMAIL) document.getElementById('wemail').value=EMAIL;
 
   /* ---------- MODE ---------- one app, evolving with the relationship.
@@ -158,13 +268,21 @@
   ];
   var LAUNCHED_STEPS = PORTAL_STEPS.map(function(s){return {lbl:s.lbl,det:s.det,status:'done'};});
 
+  // overlay Hebrew labels/details (status logic stays English-data driven)
+  if(LANG==='he'){
+    var _ps=T('pSteps'), _cs=T('cSteps');
+    if(_ps) PORTAL_STEPS.forEach(function(s,i){ if(_ps[i]){ s.lbl=_ps[i].lbl; s.det=_ps[i].det; } });
+    if(_cs) COMPANION_STEPS.forEach(function(s,i){ if(_cs[i]){ s.lbl=_cs[i].lbl; s.det=_cs[i].det; } });
+    LAUNCHED_STEPS = PORTAL_STEPS.map(function(s){return {lbl:s.lbl,det:s.det,status:'done'};});
+  }
+
   var STATE = {
     steps: MODE==='companion'? COMPANION_STEPS : MODE==='launched'? LAUNCHED_STEPS : PORTAL_STEPS,
     // Onboarding asks appear ONLY after payment, and ONLY when we're ready to use them (concierge, not a wizard).
     actions: MODE==='portal' ? [
-      {id:'domain', title:'Do you already have a domain?', why:"We're almost ready to connect your website. If you have one we'll connect it; if not, we'll help you choose the perfect one — and handle all the setup.", type:'choice',
-        options:['Yes, I have one','No — help me choose']},
-      {id:'gbp', title:'Connect your Google Business Profile', why:"We're ready to optimize how you show up on Google. One secure tap — we do the rest. We never need your password.", type:'oauth', cta:'Connect Google'}
+      {id:'domain', title:(LANG==='he'?T('actDomainTitle'):'Do you already have a domain?'), why:(LANG==='he'?T('actDomainWhy'):"We're almost ready to connect your website. If you have one we'll connect it; if not, we'll help you choose the perfect one — and handle all the setup."), type:'choice',
+        options:(LANG==='he'?[T('actDomainYes'),T('actDomainNo')]:['Yes, I have one','No — help me choose']), yesIdx:0},
+      {id:'gbp', title:(LANG==='he'?T('actGbpTitle'):'Connect your Google Business Profile'), why:(LANG==='he'?T('actGbpWhy'):"We're ready to optimize how you show up on Google. One secure tap — we do the rest. We never need your password."), type:'oauth', cta:(LANG==='he'?T('actGbpCta'):'Connect Google')}
     ] : []
   };
 
@@ -177,11 +295,14 @@
   }
   function renderActions(){
     var wrap=document.getElementById('actwrap'), open=STATE.actions.filter(function(a){return !a.done;});
-    document.getElementById('actc').textContent = open.length? (open.length+' to do') : '';
-    if(!open.length){ wrap.innerHTML='<div class="empty">🎉 Nothing needed right now — we\'re on it. We\'ll only ask when we truly need something.</div>'; document.getElementById('lastnote').textContent='All clear on your side — we\'re actively working on your website.'; return; }
+    document.getElementById('actc').textContent = open.length? (LANG==='he'? T('actCountFmt').replace('{n}',open.length) : (open.length+' to do')) : '';
+    if(!open.length){
+      wrap.innerHTML='<div class="empty">'+(LANG==='he'?esc(T('actEmpty')):'🎉 Nothing needed right now — we\'re on it. We\'ll only ask when we truly need something.')+'</div>';
+      document.getElementById('lastnote').textContent=(LANG==='he'?T('lastAllClear'):'All clear on your side — we\'re actively working on your website.'); return;
+    }
     wrap.innerHTML = open.map(function(a){
       var btns;
-      if(a.type==='choice'){ btns=a.options.map(function(o){return '<button class="btn'+(o.indexOf('Yes')===0?' pri':'')+'" onclick="doAction(\''+a.id+'\',this)">'+esc(o)+'</button>';}).join(''); }
+      if(a.type==='choice'){ btns=a.options.map(function(o,i){return '<button class="btn'+((a.yesIdx!=null? i===a.yesIdx : o.indexOf('Yes')===0)?' pri':'')+'" onclick="doAction(\''+a.id+'\',this)">'+esc(o)+'</button>';}).join(''); }
       else if(a.type==='oauth'){ btns='<button class="btn pri" onclick="doAction(\''+a.id+'\',this)">'+esc(a.cta||'Connect')+'</button>'; }
       else { btns='<button class="btn pri" onclick="doAction(\''+a.id+'\',this)">'+esc(a.cta||'Do it')+'</button>'; }
       return '<div class="act"><div class="at">⚡ '+esc(a.title)+'</div><div class="aw">'+esc(a.why)+'</div><div class="arow">'+btns+'</div></div>';
@@ -190,39 +311,42 @@
   function doAction(id, btn){
     // TODO(secure backend): real OAuth grant / domain flow / Supabase write. Placeholder completes the item.
     var a=STATE.actions.find(function(x){return x.id===id;}); if(a) a.done=true;
-    showToast('Perfect — we\'ll take it from here ✓');
+    showToast(LANG==='he'?T('doneToast'):'Perfect — we\'ll take it from here ✓');
     renderActions();
   }
   function sendLink(){
     var e=document.getElementById('wemail').value.trim();
-    if(e.indexOf('@')<1){ showToast('Enter your email and we\'ll send your link.'); return; }
+    if(e.indexOf('@')<1){ showToast(LANG==='he'?T('needEmail'):'Enter your email and we\'ll send your link.'); return; }
     // TODO(secure backend): Supabase passwordless OTP magic link. Placeholder → enter app.
-    showToast('Secure sign-in link sent ✓');
+    showToast(LANG==='he'?T('linkSent'):'Secure sign-in link sent ✓');
     setTimeout(enterApp, 700);
   }
   function show(id,on){ document.getElementById(id).classList.toggle('hide',!on); }
   // representative "what got better since last open" — real project events wire in with customer-scoped data.
-  function setLatest(txt){ var t=document.getElementById('latesttext'); if(t){ t.textContent=txt; show('latest',true); } }
+  function setLatest(txt){
+    var t=document.getElementById('latesttext'); if(t){ t.textContent=txt; show('latest',true); }
+    if(LANG==='he'){ var lbl=document.querySelector('#latest > div'); if(lbl) lbl.textContent=T('sinceLabel'); }
+  }
   function enterApp(){
     document.getElementById('welcome').classList.add('hide');
     document.getElementById('dash').classList.remove('hide');
     // mode-specific framing
     if(MODE==='companion'){
-      document.getElementById('dh1').innerHTML=esc(BIZ)+" — we're on it. ✨";
-      document.getElementById('dhand').textContent='Your project companion ✦';
+      document.getElementById('dh1').innerHTML=(LANG==='he'? T('dhCompanionFmt').replace('{biz}',esc(BIZ)) : esc(BIZ)+" — we're on it. ✨");
+      document.getElementById('dhand').textContent=(LANG==='he'?T('handCompanion'):'Your project companion ✦');
       show('companionintro',true); show('actsec',false); show('actwrap',false); show('msgteam',true);
       // every open feels like progress (Constitution §3)
-      setLatest("While you were running your business, we matched your brand colors and gathered photos of your work.");
+      setLatest(LANG==='he'?T('latestCompanion'):"While you were running your business, we matched your brand colors and gathered photos of your work.");
       // nothing needed from them → reassure plainly + answer "when" (Constitution §2, time)
-      document.getElementById('lastnote').textContent="Relax — we're taking care of it. Your preview is typically ready within 72 hours, and we'll let you know the moment it's live.";
+      document.getElementById('lastnote').textContent=(LANG==='he'?T('relaxCompanion'):"Relax — we're taking care of it. Your preview is typically ready within 72 hours, and we'll let you know the moment it's live.");
     } else if(MODE==='launched'){
-      document.getElementById('dh1').innerHTML=esc(BIZ)+" is live. 🎉";
-      document.getElementById('dhand').textContent='Your digital partner ✦';
+      document.getElementById('dh1').innerHTML=(LANG==='he'? T('dhLaunchedFmt').replace('{biz}',esc(BIZ)) : esc(BIZ)+" is live. 🎉");
+      document.getElementById('dhand').textContent=(LANG==='he'?T('handLaunched'):'Your digital partner ✦');
       show('actsec',false); show('actwrap',false); show('growthcard',true); show('msgteam',true);
-      setLatest("While you were running your business, we improved your site's speed and how you show up on Google.");
-      document.getElementById('lastnote').textContent='Your website is live and we keep improving it for you.';
+      setLatest(LANG==='he'?T('latestLaunched'):"While you were running your business, we improved your site's speed and how you show up on Google.");
+      document.getElementById('lastnote').textContent=(LANG==='he'?T('lastLaunched'):'Your website is live and we keep improving it for you.');
     } else { // portal
-      setLatest("While you were running your business, we refined your homepage and prepared your launch.");
+      setLatest(LANG==='he'?T('latestPortal'):"While you were running your business, we refined your homepage and prepared your launch.");
     }
     renderSteps(); if(MODE==='portal'){ renderActions(); } window.scrollTo(0,0);
     if(MODE==='launched'){ setTimeout(function(){ show('celebrate',true); confetti(); },400); }
