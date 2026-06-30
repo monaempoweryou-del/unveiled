@@ -5,6 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Your new website is ready | UNVEILED</title>
 <meta name="robots" content="noindex">
+<!-- Open Graph / share preview. WORKER: replace {{preview_image_url}} with the customer's real preview screenshot and {{biz}} with the business name so a shared Reveal previews as THEIR site. Falls back to og-start if unset. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="UNVEILED">
+<meta property="og:title" content="{{biz}}, here is your new website.">
+<meta property="og:description" content="We built it for you. Take a look, no commitment, just see it.">
+<meta property="og:image" content="{{preview_image_url}}">
+<meta property="og:image:secure_url" content="{{preview_image_url}}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{biz}}, here is your new website.">
+<meta name="twitter:description" content="We built it for you. Take a look, no commitment, just see it.">
+<meta name="twitter:image" content="{{preview_image_url}}">
 <link rel="icon" href="https://unveiled.pro/sphere-core.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
