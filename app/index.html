@@ -46,7 +46,7 @@
   #welcome input{width:100%;font:inherit;font-size:16px;background:#FCFBFA;border:1.5px solid var(--border);border-radius:12px;padding:14px 15px;margin:8px 0;outline:none}
   #welcome input:focus{border-color:var(--violet-l);background:#fff;box-shadow:0 0 0 4px rgba(139,92,246,.12)}
   #welcome .big{width:100%;background:var(--grad);color:#fff;border:0;border-radius:13px;padding:15px;font:inherit;font-size:16px;font-weight:700;cursor:pointer;margin-top:6px}
-  .hide{display:none}
+  .hide{display:none!important}
   .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#1C1917;color:#fff;font-size:14px;font-weight:600;padding:12px 18px;border-radius:999px;box-shadow:0 16px 40px -12px rgba(0,0,0,.5);opacity:0;transition:.25s;z-index:40}
   .toast.on{opacity:1}
   @media(max-width:560px){ h1{font-size:26px} }
@@ -65,10 +65,9 @@
     <div class="card" style="text-align:left">
       <label style="font-size:13px;font-weight:700;color:var(--muted)">Your secure sign-in</label>
       <input id="wemail" type="email" placeholder="you@business.com" autocomplete="email">
-      <button class="big" onclick="sendLink()">Send my secure sign-in link →</button>
+      <button class="big" onclick="sendLink()">Enter your workspace →</button>
       <p class="reassure" style="margin-top:12px">No password to remember — we'll email you a one-tap secure link. (Passwordless, for your safety.)</p>
     </div>
-    <p class="reassure"><a href="#" onclick="enterApp();return false;" style="color:var(--violet);font-weight:600">Continue to your workspace →</a></p>
   </div>
 
   <!-- ===== DASHBOARD (confidence-first) — serves both the project companion (pre-payment) and the portal (after) ===== -->
