@@ -287,56 +287,69 @@
     <div class="formcol">
       <form id="f" class="card" autocomplete="on" novalidate>
         <div class="steptop">
-          <span class="stepn" id="stepn">Step 1 of 3</span>
-          <span class="dots"><i class="d on" data-s="1"></i><i class="d" data-s="2"></i><i class="d" data-s="3"></i></span>
+          <span class="stepn" id="stepn">Step 1 of 4</span>
+          <span class="dots"><i class="d on" data-s="1"></i><i class="d" data-s="2"></i><i class="d" data-s="3"></i><i class="d" data-s="4"></i></span>
         </div>
         <div class="reassure" id="reassure"></div>
 
-        <!-- step 1 — one question -->
+        <!-- step 1 — business name -->
         <div class="step on" data-step="1">
           <h2 data-i18n="s1h">What's your business called?</h2>
-          <p class="hand" data-i18n="s1hand">Let's begin — about 30 seconds ✦</p>
+          <p class="hand" data-i18n="s1hand">Let's begin — about a minute ✦</p>
           <label for="biz" class="sr-only" data-i18n="lblBiz">What's your business called?</label>
           <input id="biz" name="organization" autocomplete="organization" autocapitalize="words" enterkeyhint="next" data-i18n-ph="phBiz" placeholder="e.g. Bella Hair Studio">
           <div class="btnrow"><button type="button" class="btn btn-primary" onclick="next(2)"><span data-i18n="btnContinue">Continue</span> <span class="arr">→</span></button></div>
           <div class="secure" data-i18n="secure">🔒 Your information is safe and secure.</div>
         </div>
 
-        <!-- step 2 — one question -->
+        <!-- step 2 — how we reach you (all required) -->
         <div class="step" data-step="2">
-          <h2 data-i18n="s2h">Where should we send your new website?</h2>
-          <p class="hand" data-i18n="s2hand">We'll send your free preview here ✦</p>
-          <label for="email" class="sr-only" data-i18n="lblEmail">Email</label>
+          <h2 data-i18n="s2h">How can we reach you?</h2>
+          <p class="hand" data-i18n="s2hand">So we can send your Reveal and keep you in the loop ✦</p>
+          <label for="name" data-i18n="lblName">Your name</label>
+          <input id="name" name="name" autocomplete="name" autocapitalize="words" enterkeyhint="next" data-i18n-ph="phName" placeholder="First and last">
+          <label for="email" data-i18n="lblEmail">Email</label>
           <input id="email" name="email" type="email" inputmode="email" autocomplete="email" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="next" placeholder="you@business.com">
+          <label for="phone" data-i18n="lblPhone">Phone</label>
+          <input id="phone" name="tel" type="tel" inputmode="tel" autocomplete="tel" enterkeyhint="next" data-i18n-ph="phPhone" placeholder="(555) 123-4567">
           <div class="btnrow">
             <button type="button" class="btn btn-back" onclick="next(1)"><span class="arr">←</span> <span data-i18n="btnBack">Back</span></button>
             <button type="button" class="btn btn-primary" onclick="next(3)"><span data-i18n="btnContinue">Continue</span> <span class="arr">→</span></button>
           </div>
+          <div class="err" id="err2" role="alert" aria-live="assertive"></div>
         </div>
 
-        <!-- step 3 — one optional question, then submit. Skipping is fine: discovery finds the rest. -->
+        <!-- step 3 — where can we learn about you (at least one required) -->
         <div class="step" data-step="3">
-          <h2 data-i18n="s3h">Last thing — where can people find you now?</h2>
-          <p class="hand" data-i18n="s3hand">Optional — it helps us find your brand faster ✦</p>
-          <label for="url" class="sr-only" data-i18n="lblUrl">Your current website</label>
-          <input id="url" type="url" inputmode="url" autocapitalize="off" autocorrect="off" spellcheck="false" autocomplete="url" enterkeyhint="done" placeholder="yourbusiness.com  ·  or @instagram">
-          <p class="grouphint" data-i18n="s3hint">A website or a social link — Instagram, Facebook, Google. Don't have one handy? Just skip it — we'll find you.</p>
+          <h2 data-i18n="s3h">Where can we learn about your business?</h2>
+          <p class="hand" data-i18n="s3hand">Add at least one — it's how we make it authentically yours ✦</p>
+          <label for="url"><span data-i18n="lblUrl">Your current website</span> <span class="opt" data-i18n="optIfHave">· if you have one</span></label>
+          <input id="url" type="url" inputmode="url" autocapitalize="off" autocorrect="off" spellcheck="false" autocomplete="url" enterkeyhint="next" placeholder="yourbusiness.com">
+          <label><span data-i18n="lblSocial">Or tap where you're active online</span></label>
+          <p class="grouphint" data-i18n="groupHint">Tap a platform and type your @username or business name — no links to hunt for. We find the rest. ✨</p>
+          <div class="plats" id="plats"></div>
+          <div class="platfields" id="platfields"></div>
           <div class="btnrow">
             <button type="button" class="btn btn-back" onclick="next(2)"><span class="arr">←</span> <span data-i18n="btnBack">Back</span></button>
+            <button type="button" class="btn btn-primary" onclick="next(4)"><span data-i18n="btnContinue">Continue</span> <span class="arr">→</span></button>
+          </div>
+          <div class="err" id="err3" role="alert" aria-live="assertive"></div>
+        </div>
+
+        <!-- step 4 — optional but encouraged: make it yours (higher engagement = higher intent) -->
+        <div class="step" data-step="4">
+          <span class="optbadge" data-i18n="optBadge">Optional, but encouraged</span>
+          <h2 data-i18n="s4h">Help us make it feel like your website.</h2>
+          <p class="hand" data-i18n="s4hand">The more you share, the more personalized your first Reveal ✦</p>
+          <div class="uploads" id="uploads"></div>
+          <label for="story" data-i18n="lblStory">Anything you'd love us to know?</label>
+          <textarea id="story" data-i18n-ph="phStory" placeholder="What makes you different? A signature service, your style, something you're proud of…"></textarea>
+          <div class="btnrow">
+            <button type="button" class="btn btn-back" onclick="next(3)"><span class="arr">←</span> <span data-i18n="btnBack">Back</span></button>
             <button type="submit" class="btn btn-primary" id="submit" data-i18n="btnSubmit">Build my free website 🚀</button>
           </div>
           <div class="fineprint" data-i18n-html="fineprint">By submitting you agree to our <a href="/privacy/">Privacy Policy</a>.</div>
           <div class="err" id="err" role="alert" aria-live="assertive"></div>
-        </div>
-
-        <!-- deferred fields — collected later by discovery + onboarding; kept in the DOM so the pipeline is untouched -->
-        <div id="deferred" style="display:none" aria-hidden="true">
-          <input id="name" name="name" autocomplete="name" value="">
-          <input id="phone" name="tel" type="tel" value="">
-          <textarea id="story"></textarea>
-          <div id="plats"></div>
-          <div id="platfields"></div>
-          <div id="uploads"></div>
         </div>
       </form>
     </div>
@@ -400,20 +413,24 @@
       mockTitle:'העסק שלכם, ברמה אחרת',
       mockSub:'אתר מודרני שסוף סוף נראה טוב כמו העבודה שלכם.',
       mockBtn:'מתחילים →',
-      s1h:'איך קוראים לעסק שלכם?', s1hand:'בואו נתחיל — כ-30 שניות ✦',
+      s1h:'איך קוראים לעסק שלכם?', s1hand:'בואו נתחיל — כדקה ✦',
       lblBiz:'איך קוראים לעסק שלכם?', phBiz:'לדוגמה: מספרת בֶּלָה',
-      lblName:'ואיך קוראים לכם?', phName:'שם פרטי ומשפחה',
+      lblName:'איך קוראים לכם?', phName:'שם פרטי ומשפחה',
       lblEmail:'אימייל',
       lblPhone:'טלפון', optOptional:'· אופציונלי', phPhone:'050-123-4567',
       btnContinue:'המשך', secure:'🔒 המידע שלכם בטוח ומאובטח.',
-      s2h:'לאן לשלוח את האתר החדש שלכם?', s2hand:'נשלח לכאן את התצוגה החינמית ✦',
+      s2h:'איך נוכל ליצור איתכם קשר?', s2hand:'כדי שנשלח לכם את ה-Reveal ונעדכן אתכם ✦',
       lblUrl:'האתר הנוכחי שלכם', optIfHave:'· אם יש לכם',
-      lblSocial:'איפה אפשר למצוא אתכם ברשת?', optAll:'· הכול אופציונלי',
-      groupHint:'פשוט הקישו על פלטפורמה והקלידו @שם־משתמש או שם העסק — בלי לחפש קישורים. אנחנו נמצא את השאר. ✨',
+      lblSocial:'או הקישו איפה אתם פעילים אונליין', optAll:'· הכול אופציונלי',
+      groupHint:'הקישו על פלטפורמה והקלידו @שם־משתמש או שם העסק — בלי לחפש קישורים. אנחנו נמצא את השאר. ✨',
       btnBack:'חזרה',
-      s3h:'דבר אחרון — איפה אפשר למצוא אתכם היום?', s3hand:'אופציונלי — זה עוזר לנו למצוא את המותג שלכם מהר יותר ✦',
-      s3hint:'אתר או קישור לרשת חברתית — אינסטגרם, פייסבוק, גוגל. אין לכם כרגע? פשוט דלגו, אנחנו נמצא אתכם.',
-      lblStory:'במילים שלכם…',
+      s3h:'איפה נוכל ללמוד על העסק שלכם?', s3hand:'הוסיפו לפחות אחד — ככה נהפוך אותו לאותנטי שלכם ✦',
+      s3hint:'אתר או קישור לרשת חברתית — אינסטגרם, פייסבוק, גוגל.',
+      errName:'הוסיפו את שמכם כדי שנדע למי אנחנו בונים.',
+      errEmail:'הזינו אימייל תקין — לשם יגיע ה-Reveal שלכם.',
+      errPhone:'מספר טלפון מאפשר לנו ליצור איתכם קשר לגבי האתר.',
+      errSource:'הוסיפו לפחות קישור או פרופיל אחד כדי שנוכל ללמוד על העסק.',
+      lblStory:'משהו שתשמחו שנדע?',
       phStory:'מה אתם עושים?\nאת מי אתם משרתים?\nמה מייחד אתכם?\nמשהו שתשמחו שנכלול?',
       btnSubmit:'בנו לי אתר בחינם 🚀',
       fineprint:'בשליחה אתם מסכימים ל<a href="/privacy/">מדיניות הפרטיות</a> שלנו.',
@@ -425,10 +442,10 @@
       compBody:'הדרך הכי קלה להישאר מחוברים לאתר שלכם בזמן שאנחנו בונים — בלי לבדוק את המייל.',
       comp1:'עקבו אחרי הפרויקט בזמן אמת', comp2:'קבלו התראה ברגע שהאתר מוכן', comp3:'התכתבו עם הצוות ואשרו בלחיצה אחת',
       compBtn:'פתחו את מלווה הפרויקט →',
-      stepFmt:'שלב {n} מתוך 3', loading:'מתחילים בבנייה…',
-optBadge:'אופציונלי',
-s4h:'הוסיפו נגיעה אישית.',
-s4hand:'הראו לנו במה אתם גאים ✦',
+      stepFmt:'שלב {n} מתוך 4', loading:'מתחילים בבנייה…',
+optBadge:'אופציונלי אך מומלץ',
+s4h:'עזרו לנו לגרום לזה להרגיש כמו האתר שלכם.',
+s4hand:'ככל שתשתפו יותר, ה-Reveal הראשון יהיה אישי יותר ✦',
 s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה תמונות שאתם אוהבים. אם לא — נמצא אוטומטית את התמונות הציבוריות הטובות ביותר לעסק שלכם.',
       errReq:'צריך רק את שם העסק ואימייל תקין כדי להתחיל.',
       errFail:'משהו השתבש בשליחה. נסו שוב, או כתבו לנו ל-unveiled@monadigitalmarketing.com.'
@@ -447,12 +464,13 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
   function showErr(m){ var e=document.getElementById('err'); e.textContent=m; e.style.display='block'; }
   function curStep(){ var c=document.querySelector('.step.on'); return c?+c.dataset.step:1; }
   // subtle reassurance after committing (not celebration — just "you're moving")
-  var REASSURE={2:{en:'✓ Nice — almost there.',he:'✓ יופי — כמעט סיימנו.'},
-                3:{en:'Last thing — and it’s optional.',he:'דבר אחרון — והוא אופציונלי.'}};
+  var REASSURE={2:{en:'✓ Great — now, how do we reach you?',he:'✓ יופי — איך ניצור איתכם קשר?'},
+                3:{en:'Almost there — show us where you live online.',he:'כמעט סיימנו — איפה אתם נמצאים אונליין?'},
+                4:{en:'Last step — and it’s optional, but it makes your Reveal shine.',he:'שלב אחרון — אופציונלי, אבל הוא גורם ל-Reveal לזרוח.'}};
   function go(step, noFocus){
     document.querySelectorAll('.step').forEach(function(s){ s.classList.toggle('on', +s.dataset.step===step); });
     document.querySelectorAll('.dots .d').forEach(function(d){ d.classList.toggle('on', +d.dataset.s<=step); });
-    document.getElementById('stepn').textContent=(LANG==='he'?T('stepFmt').replace('{n}',step):'Step '+step+' of 3');
+    document.getElementById('stepn').textContent=(LANG==='he'?T('stepFmt').replace('{n}',step):'Step '+step+' of 4');
     var main=document.getElementById('main'); if(main) main.classList.toggle('beyond1', step>1);
     var re=document.getElementById('reassure');
     if(re){ var r=REASSURE[step]; var msg=r?(r[LANG]||r.en):''; re.textContent=msg; re.style.display=msg?'block':'none'; }
@@ -602,13 +620,25 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
   document.getElementById('f').addEventListener('keydown', function(e){
     if(e.key==='Enter' && e.target && e.target.tagName==='INPUT'){
       e.preventDefault();
-      if(curStep()<3) window.next(curStep()+1);
+      if(curStep()<4) window.next(curStep()+1);
     }
   });
+  function hideStepErrs(){ ['err','err2','err3'].forEach(function(i){ var e=document.getElementById(i); if(e) e.style.display='none'; }); }
+  function stepErr(id,msg,focusId){ var e=document.getElementById(id); if(e){ e.textContent=msg; e.style.display='block'; } if(focusId){ var f=document.getElementById(focusId); if(f) f.focus(); } }
+  function M(k,en){ return (LANG==='he'? T(k):'') || en; }
   window.next=function(step){
-    var e=document.getElementById('err'); if(e) e.style.display='none';
-    if(step===2){ if(!val('biz')){ go(1); document.getElementById('biz').focus(); return; } }       // leaving step 1
-    if(step===3){ if(val('email').indexOf('@')<1){ go(2); document.getElementById('email').focus(); return; } } // leaving step 2
+    hideStepErrs();
+    if(step===2){ // leaving step 1
+      if(!val('biz')){ go(1); document.getElementById('biz').focus(); return; }
+    }
+    if(step===3){ // leaving step 2 — name, email, phone all required
+      if(!val('name')){ go(2); stepErr('err2', M('errName','Please add your name so we know who we’re building for.'), 'name'); return; }
+      if(val('email').indexOf('@')<1){ go(2); stepErr('err2', M('errEmail','Please enter a valid email — it’s where your Reveal arrives.'), 'email'); return; }
+      if(!val('phone')){ go(2); stepErr('err2', M('errPhone','A phone number lets us reach you about your website.'), 'phone'); return; }
+    }
+    if(step===4){ // leaving step 3 — at least one source required
+      if(!val('url') && collectSocial().length===0){ go(3); stepErr('err3', M('errSource','Add at least one link or profile so we can learn about your business.'), 'url'); return; }
+    }
     go(step);
   };
 
@@ -620,7 +650,7 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
   // init: resume any in-progress session, then apply ?url= prefill, then render the pickers
   (function init(){
     applyI18n();
-    document.getElementById('stepn').textContent=(LANG==='he'?T('stepFmt').replace('{n}','1'):'Step 1 of 3');
+    document.getElementById('stepn').textContent=(LANG==='he'?T('stepFmt').replace('{n}','1'):'Step 1 of 4');
     var s=restoreState();
     if(!s){ renderPlats(); renderPlatFields(); renderUploads(); }
     var u=param('url'); if(u){ var el=document.getElementById('url'); if(el && !el.value) el.value=u; }
@@ -640,11 +670,17 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
     if(UPLOADS.logo||UPLOADS.hero||(UPLOADS.gallery&&UPLOADS.gallery.length)){
       sp.uploads={logo:UPLOADS.logo||null, hero:UPLOADS.hero||null, gallery:UPLOADS.gallery||[]}; }
     var story=val('story');
+    // engagement = intent signal. The more they invest before submitting, the more likely they convert →
+    // production priority should reflect this. Stored in social_profiles (jsonb) so no schema change / no broken insert.
+    var gallN=(UPLOADS.gallery&&UPLOADS.gallery.length)||0;
+    var eng = (val('url')?1:0) + collectSocial().length + (UPLOADS.logo?2:0) + (UPLOADS.hero?2:0) + gallN + (story?2:0);
+    var tier = eng>=5?'high':(eng>=2?'medium':'standard');
+    sp.engagement = { score:eng, tier:tier, signals:{ website:!!val('url'), socials:collectSocial().length, logo:!!UPLOADS.logo, hero:!!UPLOADS.hero, gallery:gallN, notes:!!story } };
     var lead={
       id: LEADID, business_name: biz, contact_name: val('name')||null, email: email,
       phone: val('phone')||null, website: val('url')||null,
       social_profiles: sp,
-      about: story||null, requirements: story||null, additional_notes: null,
+      about: story||null, requirements: story||null, additional_notes: 'Engagement: '+eng+' ('+tier+' intent)',
       status:'NEW LEAD', source: SOURCE,
       discovery_method: 'unveiled-start'+(LANG==='he'?'-he':'')+(CAMPAIGN?(':'+CAMPAIGN):'')
     };
