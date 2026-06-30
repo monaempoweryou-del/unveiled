@@ -426,6 +426,7 @@
       <a class="sb-item" data-v="exec" onclick="go('exec')"><span class="ic">🧭</span><span>Executive</span></a>
       <a class="sb-item" data-v="allprojects" onclick="go('allprojects')"><span class="ic">📁</span><span>All Projects</span></a>
       <a class="sb-item" data-v="production" onclick="go('production')"><span class="ic">🏭</span><span>Production</span><span class="sb-badge" id="sbb-prod"></span></a>
+      <a class="sb-item" data-v="research" onclick="go('research')"><span class="ic">🔎</span><span>Brand Review</span><span class="sb-badge" id="sbb-research"></span></a>
       <a class="sb-item" data-v="comms" onclick="go('comms')"><span class="ic">💬</span><span>Communication</span></a>
       <a class="sb-item" data-v="sales" onclick="go('sales')"><span class="ic">📈</span><span>Sales</span></a>
       <a class="sb-item" data-v="marketing" onclick="go('marketing')"><span class="ic">📣</span><span>Marketing</span></a>
@@ -445,6 +446,7 @@
     <div class="view" id="v-exec"></div>
     <div class="view" id="v-allprojects"></div>
     <div class="view" id="v-production"></div>
+    <div class="view" id="v-research"></div>
     <div class="view" id="v-comms"></div>
     <div class="view" id="v-sales"></div>
     <div class="view" id="v-marketing"></div>
@@ -465,7 +467,7 @@ const esc=s=>(s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;
 const ago=d=>{if(!d)return'';const s=(Date.now()-new Date(d).getTime())/1000;if(s<60)return'just now';if(s<3600)return Math.floor(s/60)+'m ago';if(s<86400)return Math.floor(s/3600)+'h ago';return Math.floor(s/86400)+'d ago';};
 const clock=d=>new Date(d).toLocaleString([], {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
 const initials=n=>(n||'?').split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase();
-let LEADS=[], WQ=[], ACTS=[], BEAT=null, PKGS=[], FILTER=null, CURLEAD=null, PENDING_REPLACE=null;
+let LEADS=[], WQ=[], ACTS=[], BEAT=null, PKGS=[], DISC=[], FILTER=null, CURLEAD=null, PENDING_REPLACE=null;
 
 // ---- auth ----
 async function signIn(){const email=$('email').value.trim(),password=$('pass').value;$('gmsg').textContent='Signing in…';
@@ -501,12 +503,13 @@ function signal(l){
 
 async function load(){
   try{
-    [LEADS,WQ,ACTS,BEAT,PKGS]=await Promise.all([
+    [LEADS,WQ,ACTS,BEAT,PKGS,DISC]=await Promise.all([
       q('leads?select=*&order=updated_at.desc&limit=500'),
       q('work_queue?select=id,type,status,claimed_at,created_at,updated_at,payload,blocker_reason,result&order=updated_at.desc&limit=200'),
       q('activity_log?select=action,meta,created_at,entity_id&action=neq.heartbeat&order=created_at.desc&limit=400'),
       q('activity_log?select=created_at&action=eq.heartbeat&order=created_at.desc&limit=1').then(r=>r[0]),
       q('service_packages?select=*'),
+      q('brand_discovery?select=lead_id,overall_confidence,needs_review,report,created_at&order=created_at.desc&limit=300'),
     ]);
   }catch(e){ console.error('load failed:',e); toast('Could not load your company data. Pull to refresh in a moment.'); }
 }
@@ -521,13 +524,14 @@ function workerPill(){
 }
 
 // ===== Company OS navigation =====
-const VIEWS=['exec','allprojects','production','comms','sales','marketing','customers','learning','settings'];
-const VTITLE={exec:'Executive',allprojects:'All Projects',production:'Production',comms:'Communication',sales:'Sales',marketing:'Marketing',customers:'Customers',learning:'Learning',settings:'System Health'};
+const VIEWS=['exec','allprojects','production','research','comms','sales','marketing','customers','learning','settings'];
+const VTITLE={exec:'Executive',allprojects:'All Projects',production:'Production',research:'Brand Review',comms:'Communication',sales:'Sales',marketing:'Marketing',customers:'Customers',learning:'Learning',settings:'System Health'};
 let PROJFILTER='all';
 let SRCFILTER='all';
 const DEPTS=[
   {v:'allprojects',i:'📁',t:'All Projects',d:'Every project from day one, searchable'},
   {v:'production',i:'🏭',t:'Production',d:'Builds, QA, approvals, worker health'},
+  {v:'research',i:'🔎',t:'Brand Review',d:'Profiles the AI flagged below 90%'},
   {v:'comms',i:'💬',t:'Communication',d:'Every email, reply, call & follow-up'},
   {v:'sales',i:'📈',t:'Sales',d:'Pipeline, packages, next best offer'},
   {v:'marketing',i:'📣',t:'Marketing',d:'Lead sources & what converts'},
@@ -690,6 +694,101 @@ function renderProduction(){
     <div class="card">${buildingLeads.length?buildingLeads.map(rowHTML).join(''):'<div class="empty">Nothing building right now.</div>'}</div>
     <div class="sec"><h2>Recently shipped</h2></div>
     <div class="card">${recent.length?recent.map(j=>{const nm=leadName((j.payload||{}).lead_id);const url=(j.result||{}).preview_url;return `<div class="crow" ${url?`onclick="window.open('${esc(url)}','_blank')"`:'style="cursor:default"'}><div class="dcheck">✓</div><div><div class="nm">${esc(nm)}</div><div class="mt">Built & deployed · ${ago(j.updated_at||j.created_at)}</div></div>${url?'<div class="chev">↗</div>':''}</div>`;}).join(''):'<div class="empty">Completed builds will appear here.</div>'}</div>`;
+}
+
+// ===== Brand Research review queue (LS-BRAND-RESEARCH) =====
+// Every profile the AI resolved BELOW 90% confidence, surfaced for a human call.
+// The pipeline keeps moving; this is where you see exactly where the AI was unsure.
+function brFlags(){
+  const out=[];
+  (DISC||[]).forEach(d=>{
+    const rep=d.report||{}; const profs=rep.profiles||{}; const decided=rep.review_decisions||{};
+    Object.keys(profs).forEach(pl=>{
+      const p=profs[pl]||{};
+      if(p.status!=='review' || decided[pl]) return;          // open items only
+      out.push({lead_id:d.lead_id, business:rep.business||leadName(d.lead_id), platform:pl,
+        input:p.input, url:p.candidate_url||'', conf:(p.confidence||0),
+        reason:(p.reasons&&p.reasons[0])||'Below the 90% confidence threshold',
+        evidence:(p.evidence||[]).join(' · ')});
+    });
+  });
+  return out.sort((a,b)=>a.conf-b.conf);                       // most uncertain first
+}
+function brCard(f){
+  const pct=Math.round(f.conf*100);
+  const col=pct<70?'red':(pct<90?'amber':'green');
+  const suggested=f.url?`<a href="${esc(f.url)}" target="_blank" rel="noopener">${esc(f.url)}</a>`
+                       :'<span style="color:var(--muted)">no suggestion yet — name needs a search backend</span>';
+  const approve=f.url?`<button class="btn good" style="padding:8px 14px;font-size:12.5px" onclick="brAct('${f.lead_id}','${esc(f.platform)}','approve')">Approve</button>`:'';
+  return `<div class="crow" style="cursor:default;flex-direction:column;align-items:stretch;gap:7px;padding:14px 16px">
+    <div style="display:flex;align-items:center;gap:9px">
+      <span class="srctag src-out" style="text-transform:capitalize">${esc(f.platform)}</span>
+      <span class="nm" style="flex:1;min-width:0">${esc(f.business)}</span>
+      <span class="pill p-${col}">${pct}%</span>
+    </div>
+    <div class="mt">Submitted: <b>${esc(f.input||'—')}</b></div>
+    <div class="mt">Suggested: ${suggested}</div>
+    <div class="mt" style="color:#9a3412">Why flagged: ${esc(f.reason)}</div>
+    ${f.evidence?`<div class="mt" style="color:var(--muted);font-size:11.5px">${esc(f.evidence)}</div>`:''}
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:5px">
+      ${approve}
+      <button class="btn" style="padding:8px 14px;font-size:12.5px;background:#fff;border:1.5px solid var(--line)" onclick="brAct('${f.lead_id}','${esc(f.platform)}','replace')">Replace</button>
+      <button class="btn" style="padding:8px 14px;font-size:12.5px;background:#fff;border:1.5px solid var(--line);color:#b91c1c" onclick="brAct('${f.lead_id}','${esc(f.platform)}','reject')">Reject</button>
+    </div></div>`;
+}
+function renderResearch(){
+  const flags=brFlags(); const total=(DISC||[]).length;
+  const sbb=$('sbb-research'); if(sbb){ if(flags.length){sbb.textContent=flags.length;sbb.classList.add('show');} else sbb.classList.remove('show'); }
+  const list=flags.length?flags.map(brCard).join('')
+    :'<div class="empty">Nothing to review. When Brand Research is unsure about a profile (below 90% confidence) it lands here for your call — the pipeline keeps moving in the meantime.</div>';
+  $('v-research').innerHTML=`
+    <div class="wcard" style="display:flex;align-items:center;gap:14px;margin-top:0">
+      <div class="dcheck" style="width:42px;height:42px;border-radius:12px;background:rgba(124,58,237,.12);color:var(--violet2);font-size:19px">🔎</div>
+      <div><div style="font-weight:700;font-size:15px">Brand Research review</div>
+      <div class="soonbox">${flags.length?(flags.length+' profile'+(flags.length>1?'s':'')+' the AI flagged below 90% — your call.'):'All clear — resolved profiles meet the confidence bar.'}${total?(' · '+total+' lead'+(total>1?'s':'')+' researched'):''}</div></div></div>
+    <div class="sec"><h2>Needs your review</h2><span class="c">${flags.length||'none'}</span></div>
+    <div class="card">${list}</div>`;
+}
+async function brAct(lead_id, platform, action){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){ toast('Sign in first — review actions need a signed-in staff session.'); return; }
+  let url=null;
+  if(action==='replace'){
+    url=prompt('Paste the correct '+platform+' profile — a link, @handle, or business name:');
+    if(url==null) return; url=url.trim(); if(!url) return;
+  }
+  const d=(DISC||[]).find(x=>x.lead_id===lead_id); if(!d){ toast('Could not find that record — pull to refresh.'); return; }
+  const rep=JSON.parse(JSON.stringify(d.report||{}));
+  rep.profiles=rep.profiles||{}; rep.accepted=rep.accepted||{}; rep.review_decisions=rep.review_decisions||{};
+  const prof=rep.profiles[platform]||{};
+  if(action==='approve'){
+    if(!prof.candidate_url){ toast('No suggested profile to approve — use Replace to add the correct link.'); return; }
+    url=prof.candidate_url; rep.accepted[platform]=url; prof.status='accepted';
+  } else if(action==='replace'){
+    rep.accepted[platform]=url; prof.candidate_url=url; prof.status='accepted';
+  } else { // reject
+    prof.status='rejected'; delete rep.accepted[platform];
+  }
+  rep.profiles[platform]=prof;
+  rep.review_decisions[platform]={decision:action, url:url||null, by:(session.user&&session.user.email)||'staff', at:new Date().toISOString()};
+  const stillReview=Object.keys(rep.profiles).some(k=>rep.profiles[k].status==='review' && !rep.review_decisions[k]);
+  // persist the decision on the discovery report (authenticated update; service worker bypasses RLS)
+  const upd=await sb.from('brand_discovery').update({report:rep,needs_review:stillReview,updated_at:new Date().toISOString()}).eq('lead_id',lead_id).select('lead_id');
+  if(upd.error){ toast('Could not save: '+(upd.error.message||upd.error.code||'unknown')+(upd.error.code==='42501'?' — needs the brand_discovery update policy (re-run Backend/brand-discovery.sql).':'')); return; }
+  if(!upd.data||!upd.data.length){ toast('Nothing saved — a security policy blocked the write. Re-run Backend/brand-discovery.sql to add the staff update policy.'); return; }
+  // approve/replace -> feed the verified profile to production via the lead
+  if(action!=='reject' && url){
+    const lead=LEADS.find(x=>x.id===lead_id)||{};
+    let sp=lead.social_profiles||{}; if(typeof sp==='string'){ try{sp=JSON.parse(sp);}catch(e){sp={};} }
+    if(typeof sp!=='object'||!sp) sp={};
+    sp.resolved=sp.resolved||{}; sp.resolved[platform]=url;
+    sp.links=Array.isArray(sp.links)?sp.links:[]; if(/^https?:/i.test(url)&&!sp.links.includes(url)) sp.links.push(url);
+    try{ await sb.from('leads').update({social_profiles:sp,updated_at:new Date().toISOString()}).eq('id',lead_id); if(lead)lead.social_profiles=sp; }catch(e){ console.error('lead social merge failed',e); }
+  }
+  const lead=LEADS.find(x=>x.id===lead_id)||{};
+  emitSignal({lead_id, industry:lead.industry||null, decision:'brand_review_'+action, revision_kind:null, target_area:platform, instruction:url||null, first_pass:null});
+  toast({approve:'Profile approved ✓  Production will use it.',replace:'Profile replaced ✓  Saved for production.',reject:'Profile rejected — it won’t be used.'}[action]);
+  await load(); renderResearch();
 }
 
 // ===== All Projects (master list — every lead from day one, nothing hidden) =====
@@ -868,7 +967,7 @@ function renderSettings(){
     <div class="card" style="padding:2px 16px">${autos.map(([n,d,on])=>`<div class="conn"><div class="ci">${on?'⚡':'○'}</div><div><div class="cn">${esc(n)}</div><div class="cs">${esc(d)}</div></div><span class="cst ${on?'ok':'idle'}">${on?'On':'Off'}</span></div>`).join('')}</div>`;
 }
 
-Object.assign(RENDER,{exec:renderExec,allprojects:renderAllProjects,production:renderProduction,comms:renderComms,sales:renderSales,marketing:renderMarketing,customers:renderCustomers,learning:renderLearning,settings:renderSettings});
+Object.assign(RENDER,{exec:renderExec,allprojects:renderAllProjects,production:renderProduction,research:renderResearch,comms:renderComms,sales:renderSales,marketing:renderMarketing,customers:renderCustomers,learning:renderLearning,settings:renderSettings});
 
 function renderSkeleton(){
   const el=$('v-exec'); if(!el)return; el.style.display='block';

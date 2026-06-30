@@ -21,7 +21,7 @@
     --indigo:#4338CA; --text:#1C1917; --muted:#78716C; --faint:#A8A29E; --border:#E7E2DA;
     --green:#10B981; --green-l:#34D399;
     --grad:linear-gradient(135deg,#6C3CE0 0%,#4338CA 100%);
-    --shadow:0 24px 60px -28px rgba(67,32,160,.30);
+    --shadow:0 50px 110px -42px rgba(67,32,160,.34), 0 14px 40px -28px rgba(67,32,160,.16);
     --radius:18px;
   }
   *{box-sizing:border-box}
@@ -49,14 +49,42 @@
   h1{font-size:50px;line-height:1.04;letter-spacing:-.02em;font-weight:700;margin:20px 0 14px}
   h1 .v{color:var(--violet)}
   .lead{font-size:17px;color:var(--muted);max-width:430px;margin:0 0 26px}
-  .ticks{display:flex;flex-direction:column;gap:13px;margin-bottom:18px}
-  .tick{display:flex;align-items:center;gap:11px;font-size:15.5px;font-weight:500}
-  .tick .i{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:rgba(108,60,224,.10);color:var(--violet);flex:none}
-  .sphere{margin-top:8px}
-  .sphere img{width:min(100%,360px);filter:drop-shadow(0 30px 50px rgba(108,60,224,.28))}
+  .ticks{display:flex;flex-direction:column;gap:15px;margin-bottom:22px}
+  .tick{display:flex;align-items:center;gap:13px;font-size:15.5px;font-weight:500;color:#2A2622}
+  .tick .i{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-size:15px;flex:none;
+    color:var(--violet);background:linear-gradient(135deg,rgba(108,60,224,.14),rgba(67,56,202,.09));
+    border:1px solid rgba(108,60,224,.16);box-shadow:0 1px 0 rgba(255,255,255,.7) inset,0 8px 16px -10px rgba(108,60,224,.55)}
+  .diff{display:flex;align-items:center;gap:10px;font-size:14.5px;font-weight:500;color:var(--indigo);
+    background:linear-gradient(135deg,rgba(108,60,224,.07),rgba(67,56,202,.05));border:1px solid rgba(108,60,224,.14);
+    border-radius:13px;padding:13px 16px;max-width:440px;margin:0 0 4px}
+  .diff .s{font-size:16px;flex:none}
+
+  /* ---- floating preview (show, don't tell) ---- */
+  .showcase{position:relative;margin-top:34px;max-width:430px}
+  .mock{background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;
+    box-shadow:0 46px 90px -34px rgba(67,32,160,.42),0 12px 30px -22px rgba(67,32,160,.3);
+    transform:rotate(-1.4deg);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+  .showcase:hover .mock{transform:rotate(0) translateY(-5px)}
+  .mock .bar{display:flex;gap:7px;align-items:center;padding:12px 15px;background:#F6F3EE;border-bottom:1px solid var(--border)}
+  .mock .bar i{width:10px;height:10px;border-radius:50%;background:#E0D9CE}
+  .mock .bar i:nth-child(1){background:#FF5F57}.mock .bar i:nth-child(2){background:#FEBC2E}.mock .bar i:nth-child(3){background:#28C840}
+  .mock .bar .u{margin-left:8px;height:16px;flex:1;border-radius:5px;background:#ECE7DF}
+  .mhero{padding:22px 22px 20px;background:var(--grad);color:#fff;position:relative}
+  .mhero b{font-size:17px;font-weight:700;letter-spacing:-.01em}
+  .mhero p{font-size:11px;opacity:.9;margin:5px 0 0;line-height:1.45}
+  .mhero .mbtn{display:inline-block;margin-top:12px;background:#fff;color:var(--violet);font-size:10px;font-weight:700;padding:7px 13px;border-radius:7px}
+  .mbody{display:flex;gap:16px;padding:18px 22px 22px}
+  .mbody .col{flex:1}
+  .mbody .ph{height:46px;border-radius:8px;background:linear-gradient(135deg,#EFEAF8,#F3EFE8);margin-bottom:10px}
+  .mbody .ln{height:7px;border-radius:4px;background:#ECE7DF;margin-bottom:8px}
+  .mbody .ln.s{width:55%}
+  .showcase .sphere{position:absolute;right:-26px;bottom:-30px;margin:0;pointer-events:none}
+  .showcase .sphere img{width:118px;filter:drop-shadow(0 24px 36px rgba(108,60,224,.4))}
+  @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+  .showcase .sphere{animation:floaty 5.5s ease-in-out infinite}
 
   /* ---- right / card ---- */
-  .card{background:var(--paper);border:1px solid var(--border);border-radius:24px;box-shadow:var(--shadow);padding:34px 32px}
+  .card{background:var(--paper);border:1px solid rgba(231,226,218,.7);border-radius:28px;box-shadow:var(--shadow);padding:40px 38px}
   .steptop{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px}
   .stepn{font-size:13px;font-weight:600;color:var(--violet)}
   .dots{display:flex;align-items:center;gap:7px}
@@ -76,21 +104,55 @@
   textarea{resize:vertical;min-height:150px;line-height:1.55}
   .two{display:flex;gap:14px}.two>div{flex:1}
   .btnrow{display:flex;gap:12px;align-items:center;margin-top:24px}
-  .btn{font:inherit;font-size:16px;font-weight:600;cursor:pointer;border-radius:13px;padding:15px 22px;border:0;transition:.16s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
-  .btn-primary{flex:1;color:#fff;background:var(--grad);box-shadow:0 14px 30px -12px rgba(108,60,224,.6)}
-  .btn-primary:hover{filter:brightness(1.06)} .btn-primary:active{transform:scale(.99)}
-  .btn-primary:disabled{opacity:.6;cursor:default}
-  .btn-back{background:var(--paper);border:1.5px solid var(--border);color:var(--muted);flex:none;padding:15px 20px}
-  .btn-back:hover{border-color:var(--violet-l);color:var(--violet)}
+  .btn{font:inherit;font-size:16px;font-weight:600;cursor:pointer;border-radius:13px;padding:15.5px 22px;min-height:54px;border:0;display:inline-flex;align-items:center;justify-content:center;gap:9px;-webkit-tap-highlight-color:transparent;
+    transition:transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .2s,filter .2s,border-color .16s,color .16s}
+  .btn .arr{transition:transform .2s cubic-bezier(.2,.8,.2,1)}
+  .btn-primary{flex:1;color:#fff;background:var(--grad);box-shadow:0 14px 28px -12px rgba(108,60,224,.55)}
+  .btn-primary:hover{filter:brightness(1.04);transform:translateY(-2px);box-shadow:0 22px 42px -14px rgba(108,60,224,.72)}
+  .btn-primary:hover .arr{transform:translateX(4px)}
+  .btn-primary:active{transform:translateY(0) scale(.992)}
+  .btn-primary:focus-visible{outline:none;box-shadow:0 0 0 4px rgba(139,92,246,.35),0 18px 36px -14px rgba(108,60,224,.6)}
+  .btn-primary:disabled{opacity:.72;cursor:default;transform:none;filter:saturate(.9);box-shadow:0 8px 18px -12px rgba(108,60,224,.5)}
+  .spin{width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;display:inline-block;animation:spin .7s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .btn-back{background:var(--paper);border:1.5px solid var(--border);color:var(--muted);flex:none;padding:15.5px 20px}
+  .btn-back:hover{border-color:var(--violet-l);color:var(--violet);transform:translateY(-1px)}
+  .btn-back:active{transform:translateY(0)}
   .secure{display:flex;align-items:center;justify-content:center;gap:7px;color:var(--faint);font-size:13px;margin-top:16px}
   .fineprint{text-align:center;color:var(--faint);font-size:13px;margin-top:16px}
   .err{color:#dc2626;font-size:13.5px;margin-top:12px;display:none;text-align:center}
-  .step{display:none}.step.on{display:block;animation:fade .35s ease both}
-  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .step{display:none}.step.on{display:block;animation:fade .42s cubic-bezier(.2,.8,.2,1) both}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  input:hover:not(:focus),textarea:hover:not(:focus){border-color:#DAD2C6}
+  .dots .d.on{box-shadow:0 2px 8px -2px rgba(108,60,224,.5)}
+  @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+
+  /* ---- social platform picker ---- */
+  .plats{display:flex;flex-wrap:wrap;gap:9px;margin-top:2px}
+  .plat{display:inline-flex;align-items:center;gap:8px;font:inherit;font-size:14px;font-weight:600;color:var(--text);
+    background:#FCFBFA;border:1.5px solid var(--border);border-radius:999px;padding:10px 15px;min-height:44px;cursor:pointer;
+    -webkit-tap-highlight-color:transparent;transition:border-color .16s,background .16s,color .16s,transform .12s}
+  .plat:hover{border-color:var(--violet-l)} .plat:active{transform:scale(.97)}
+  .plat.on{border-color:var(--violet);background:rgba(108,60,224,.08);color:var(--violet)}
+  .plat .pi{display:grid;place-items:center;flex:none}
+  .plat .pi svg{width:18px;height:18px;display:block}
+  .plat .chk{opacity:0;width:0;overflow:hidden;font-weight:700;transition:.16s}
+  .plat.on .chk{opacity:1;width:14px}
+  .grouphint{font-size:13px;color:var(--muted);font-weight:500;margin:0 0 12px;line-height:1.45}
+  .platfields{margin-top:2px}
+  .prow{margin-top:14px;animation:fade .3s ease both}
+  .prow .plab{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--violet);margin:0 0 7px}
+  .prow .plab .pi{display:grid;place-items:center}
+  .prow .plab .pi svg{width:16px;height:16px;display:block}
+  .prow input{width:100%}
 
   /* ---- confirmation ---- */
   #done{display:none;max-width:620px;margin:10px auto;text-align:center;padding:24px}
-  #done .seal{width:118px;height:118px;margin:0 auto 8px;border-radius:50%;background:var(--grad);display:grid;place-items:center;color:#fff;font-size:58px;box-shadow:0 26px 60px -20px rgba(108,60,224,.55)}
+  #done .seal{width:118px;height:118px;margin:0 auto 8px;border-radius:50%;background:var(--grad);display:grid;place-items:center;color:#fff;font-size:58px;box-shadow:0 26px 60px -20px rgba(108,60,224,.55);animation:pop .55s cubic-bezier(.18,1.25,.4,1) both}
+  @keyframes pop{from{opacity:0;transform:scale(.55)}to{opacity:1;transform:scale(1)}}
+  #done.on h2,#done.on .big,#done.on>p,#done.on .ticks3{animation:rise .5s cubic-bezier(.2,.8,.2,1) both}
+  #done.on h2{animation-delay:.12s} #done.on .big{animation-delay:.2s} #done.on>p{animation-delay:.28s} #done.on .ticks3{animation-delay:.36s}
+  @keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
   #done h2{font-size:38px;margin:18px 0 4px}
   #done .v{color:var(--violet)}
   #done .big{font-size:22px;font-weight:700;color:var(--violet);margin:0 0 14px}
@@ -99,34 +161,73 @@
   #done .ticks3 span{display:flex;align-items:center;gap:8px}
 
   @media(max-width:880px){
-    .grid{grid-template-columns:1fr;gap:26px;padding-top:0}
-    h1{font-size:38px} .lead{margin-bottom:18px}
+    .grid{grid-template-columns:1fr;gap:22px;padding:4px 18px 56px}
+    h1{font-size:38px;margin-top:14px} .lead{margin-bottom:16px}
     .hero{order:1} .formcol{order:2}
-    .sphere{display:none}
-    .card{padding:26px 20px}
+    .showcase{display:none}
+    .card{padding:26px 20px;border-radius:24px}
+    .diff{font-size:14px;padding:12px 14px;max-width:none}
+    .topbar{padding:18px}
     .topbar .promo{display:none}
   }
+  @media(max-width:480px){
+    .grid{padding:0 14px 48px;gap:18px}
+    .topbar{padding:16px 14px}
+    h1{font-size:31px;line-height:1.07;margin:10px 0 12px}
+    .lead{font-size:15.5px}
+    .ticks{gap:12px;margin-bottom:18px} .tick{font-size:15px}
+    .card{padding:22px 17px;border-radius:22px}
+    h2{font-size:21px} .hand{font-size:19px;margin-bottom:16px}
+    label{font-size:13px}
+    .two{flex-direction:column;gap:0} /* stack email + phone for full-width thumb targets */
+    .btnrow{margin-top:20px} .btn{font-size:15.5px}
+    .plat{font-size:13.5px;padding:11px 14px}
+    #done h2{font-size:30px} #done .seal{width:96px;height:96px;font-size:46px}
+    #done .ticks3{gap:14px;font-size:13.5px}
+  }
+
+  /* ---- RTL / Hebrew (same engine, mirrored presentation) ---- */
+  [dir="rtl"] h1,[dir="rtl"] h2,[dir="rtl"] .lead,[dir="rtl"] .hand,[dir="rtl"] .diff,[dir="rtl"] label{text-align:right}
+  [dir="rtl"] input,[dir="rtl"] textarea{text-align:right}
+  [dir="rtl"] .arr{display:inline-block;transform:scaleX(-1)}
+  [dir="rtl"] .btn-primary:hover .arr{transform:scaleX(-1) translateX(4px)}
+  [dir="rtl"] .plab .pi,[dir="rtl"] .tick .i{transform:none}
 </style>
 </head>
 <body>
 
   <div class="topbar">
     <div class="logo"><img src="https://unveiled.pro/sphere-core.png" alt="">UNVEILED</div>
-    <div class="promo">⏱ 72-HOUR PREVIEW &nbsp;·&nbsp; <b>$0 UPFRONT</b> &nbsp;·&nbsp; NO OBLIGATION</div>
+    <div class="promo" data-i18n-html="promo">⏱ 72-HOUR PREVIEW &nbsp;·&nbsp; <b>$0 UPFRONT</b> &nbsp;·&nbsp; NO OBLIGATION</div>
   </div>
 
   <div class="grid" id="main">
     <!-- hero -->
     <div class="hero">
-      <span class="badge">WE BUILD FIRST. YOU DECIDE.</span>
-      <h1>Let's build your next website—<br><span class="v">for free.</span></h1>
-      <p class="lead">Tell us a little about your business and we'll create a custom website preview, designed just for you, in 72 hours.</p>
+      <span class="badge" data-i18n="badge">WE BUILD FIRST. YOU DECIDE.</span>
+      <h1 data-i18n-html="h1">The website your business <span class="v">deserves.</span></h1>
+      <p class="lead" data-i18n="lead">We design it custom and build it in 72 hours — completely free. You only pay if you love it.</p>
       <div class="ticks">
-        <div class="tick"><span class="i">⚡</span> Your full preview in 72 hours</div>
-        <div class="tick"><span class="i">💳</span> No upfront payment, ever</div>
-        <div class="tick"><span class="i">✓</span> No obligation, you only pay if you love it</div>
+        <div class="tick"><span class="i">⚡</span> <span data-i18n="tick1">Your full preview in 72 hours</span></div>
+        <div class="tick"><span class="i">💳</span> <span data-i18n="tick2">No upfront payment, ever</span></div>
+        <div class="tick"><span class="i">✓</span> <span data-i18n="tick3">No obligation — you only pay if you love it</span></div>
       </div>
-      <div class="sphere"><img src="https://unveiled.pro/sphere-core.png" alt="UNVEILED"></div>
+      <p class="diff"><span class="s">✨</span> <span data-i18n="diff">Every website is designed specifically for your business — never from a template.</span></p>
+      <div class="showcase">
+        <div class="mock" aria-hidden="true">
+          <div class="bar"><i></i><i></i><i></i><span class="u"></span></div>
+          <div class="mhero">
+            <b data-i18n="mockTitle">Your Business, Elevated</b>
+            <p data-i18n="mockSub">A modern site that finally looks as good as the work you do.</p>
+            <span class="mbtn" data-i18n="mockBtn">Get Started →</span>
+          </div>
+          <div class="mbody">
+            <div class="col"><div class="ph"></div><div class="ln"></div><div class="ln s"></div></div>
+            <div class="col"><div class="ph"></div><div class="ln"></div><div class="ln s"></div></div>
+          </div>
+        </div>
+        <div class="sphere"><img src="https://unveiled.pro/sphere-core.png" alt="UNVEILED"></div>
+      </div>
     </div>
 
     <!-- form -->
@@ -139,46 +240,48 @@
 
         <!-- step 1 -->
         <div class="step on" data-step="1">
-          <h2>Great! Let's start simple.</h2>
-          <p class="hand">This will only take 60 seconds ✦</p>
-          <label>What's your business called?</label>
-          <input id="biz" name="organization" placeholder="e.g. Bella Hair Studio">
-          <label>And your name?</label>
-          <input id="name" name="name" placeholder="First and last">
+          <h2 data-i18n="s1h">Let's start with the basics.</h2>
+          <p class="hand" data-i18n="s1hand">Takes about 60 seconds ✦</p>
+          <label for="biz" data-i18n="lblBiz">What's your business called?</label>
+          <input id="biz" name="organization" autocomplete="organization" autocapitalize="words" enterkeyhint="next" data-i18n-ph="phBiz" placeholder="e.g. Bella Hair Studio">
+          <label for="name" data-i18n="lblName">And your name?</label>
+          <input id="name" name="name" autocomplete="name" autocapitalize="words" enterkeyhint="next" data-i18n-ph="phName" placeholder="First and last">
           <div class="two">
-            <div><label>Email</label><input id="email" name="email" type="email" placeholder="you@business.com"></div>
-            <div><label>Phone <span class="opt">· optional</span></label><input id="phone" name="tel" type="tel" placeholder="(555) 123-4567"></div>
+            <div><label for="email" data-i18n="lblEmail">Email</label><input id="email" name="email" type="email" inputmode="email" autocomplete="email" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="next" placeholder="you@business.com"></div>
+            <div><label for="phone"><span data-i18n="lblPhone">Phone</span> <span class="opt" data-i18n="optOptional">· optional</span></label><input id="phone" name="tel" type="tel" inputmode="tel" autocomplete="tel" enterkeyhint="next" data-i18n-ph="phPhone" placeholder="(555) 123-4567"></div>
           </div>
-          <div class="btnrow"><button type="button" class="btn btn-primary" onclick="next(2)">Continue →</button></div>
-          <div class="secure">🔒 Your information is safe and secure.</div>
+          <div class="btnrow"><button type="button" class="btn btn-primary" onclick="next(2)"><span data-i18n="btnContinue">Continue</span> <span class="arr">→</span></button></div>
+          <div class="secure" data-i18n="secure">🔒 Your information is safe and secure.</div>
         </div>
 
         <!-- step 2 -->
         <div class="step" data-step="2">
-          <h2>Awesome. A couple more quick ones.</h2>
-          <p class="hand">This helps us capture your real brand ✦</p>
-          <label>Your current website <span class="opt">· if you have one</span></label>
-          <input id="url" placeholder="yourbusiness.com">
-          <label>Social profiles <span class="opt">· optional, helps us learn your style</span></label>
-          <input id="social" placeholder="paste links: Facebook, Instagram, Google, Yelp…">
+          <h2 data-i18n="s2h">A couple more, so it feels like you.</h2>
+          <p class="hand" data-i18n="s2hand">This helps us capture your real brand ✦</p>
+          <label for="url"><span data-i18n="lblUrl">Your current website</span> <span class="opt" data-i18n="optIfHave">· if you have one</span></label>
+          <input id="url" type="url" inputmode="url" autocapitalize="off" autocorrect="off" spellcheck="false" autocomplete="url" enterkeyhint="next" placeholder="yourbusiness.com">
+          <label><span data-i18n="lblSocial">Where can we find your brand online?</span> <span class="opt" data-i18n="optAll">· all optional</span></label>
+          <p class="grouphint" data-i18n="groupHint">Just tap a platform and type your @username or business name — no links to hunt for. Our team finds the rest. ✨</p>
+          <div class="plats" id="plats"></div>
+          <div class="platfields" id="platfields"></div>
           <div class="btnrow">
-            <button type="button" class="btn btn-back" onclick="next(1)">← Back</button>
-            <button type="button" class="btn btn-primary" onclick="next(3)">Continue →</button>
+            <button type="button" class="btn btn-back" onclick="next(1)"><span class="arr">←</span> <span data-i18n="btnBack">Back</span></button>
+            <button type="button" class="btn btn-primary" onclick="next(3)"><span data-i18n="btnContinue">Continue</span> <span class="arr">→</span></button>
           </div>
         </div>
 
         <!-- step 3 -->
         <div class="step" data-step="3">
-          <h2>Tell us about your business.</h2>
-          <p class="hand">This is how we make it unmistakably yours ✦</p>
-          <label>In your own words…</label>
-          <textarea id="story" placeholder="What do you do? &#10;Who do you serve? &#10;What makes you different? &#10;Anything you'd love us to include?"></textarea>
+          <h2 data-i18n="s3h">Now tell us about your business.</h2>
+          <p class="hand" data-i18n="s3hand">This is how we make it unmistakably yours ✦</p>
+          <label for="story" data-i18n="lblStory">In your own words…</label>
+          <textarea id="story" data-i18n-ph="phStory" placeholder="What do you do? &#10;Who do you serve? &#10;What makes you different? &#10;Anything you'd love us to include?"></textarea>
           <div class="btnrow">
-            <button type="button" class="btn btn-back" onclick="next(2)">← Back</button>
-            <button type="submit" class="btn btn-primary" id="submit">Submit my request 🚀</button>
+            <button type="button" class="btn btn-back" onclick="next(2)"><span class="arr">←</span> <span data-i18n="btnBack">Back</span></button>
+            <button type="submit" class="btn btn-primary" id="submit" data-i18n="btnSubmit">Build my free website 🚀</button>
           </div>
-          <div class="fineprint">By submitting you agree to our <a href="/privacy/">Privacy Policy</a>.</div>
-          <div class="err" id="err"></div>
+          <div class="fineprint" data-i18n-html="fineprint">By submitting you agree to our <a href="/privacy/">Privacy Policy</a>.</div>
+          <div class="err" id="err" role="alert" aria-live="assertive"></div>
         </div>
       </form>
     </div>
@@ -187,13 +290,13 @@
   <!-- confirmation -->
   <div id="done">
     <div class="seal">✓</div>
-    <h2>🎉 You're <span class="v">in.</span></h2>
-    <p class="big">We're already getting to work.</p>
-    <p>We'll review your business and start designing your custom website preview right away. Keep an eye on your inbox over the next 72 hours (peek at your spam folder too, just in case) — your new site is on its way.</p>
+    <h2 data-i18n-html="doneH2">🎉 You're <span class="v">in.</span></h2>
+    <p class="big" data-i18n="doneBig">We're already getting to work.</p>
+    <p data-i18n="doneBody">We'll review your business and start designing your custom website preview right away. Keep an eye on your inbox over the next 72 hours (peek at your spam folder too, just in case) — your new site is on its way.</p>
     <div class="ticks3">
-      <span>⏱ Preview in 72 hours</span>
-      <span>💳 $0 upfront</span>
-      <span>✓ No obligation</span>
+      <span data-i18n="doneT1">⏱ Preview in 72 hours</span>
+      <span data-i18n="doneT2">💳 $0 upfront</span>
+      <span data-i18n="doneT3">✓ No obligation</span>
     </div>
   </div>
 
@@ -207,16 +310,157 @@
   function param(n){ try{ return new URLSearchParams(location.search).get(n)||''; }catch(e){ return ''; } }
   var SOURCE = SRC_MAP[(param('src')||param('utm_source')||'').toLowerCase().trim()] || 'website-onboarding';
   var CAMPAIGN = param('campaign')||param('utm_campaign')||'';
-  (function(){ var u=param('url'); if(u){ var el=document.getElementById('url'); if(el) el.value=u; } })();
 
+  /* ===== ONE Front Door, many languages (LS-FRONT-DOOR). Same engine, same
+     pipeline, same backend — only language + RTL differ. Pick via ?lang=he or a
+     hebrew src; default English. ===== */
+  var LANG=(param('lang')||'').toLowerCase();
+  if(LANG!=='he'){ var _sc=(param('src')||'').toLowerCase(); if(_sc==='he'||_sc==='hebrew'||_sc.indexOf('-he')>-1) LANG='he'; }
+  if(LANG!=='he') LANG='en';
+  if(LANG==='he' && SOURCE==='website-onboarding') SOURCE='website-onboarding-he';  // matches Command Center src chip
+
+  var STRINGS={
+    en:{}, // English lives in the HTML defaults; we only translate away from it
+    he:{
+      promo:'⏱ תצוגה תוך 72 שעות &nbsp;·&nbsp; <b>$0 מראש</b> &nbsp;·&nbsp; ללא התחייבות',
+      badge:'בונים קודם. אתם מחליטים.',
+      h1:'האתר שהעסק שלכם <span class="v">ראוי לו.</span>',
+      lead:'נעצב אותו בהתאמה אישית ונבנה אותו תוך 72 שעות — בחינם לגמרי. משלמים רק אם אתם מתאהבים.',
+      tick1:'התצוגה המלאה שלכם תוך 72 שעות',
+      tick2:'בלי תשלום מראש, אף פעם',
+      tick3:'בלי התחייבות — משלמים רק אם אהבתם',
+      diff:'כל אתר מעוצב במיוחד עבור העסק שלכם — אף פעם לא מתבנית.',
+      mockTitle:'העסק שלכם, ברמה אחרת',
+      mockSub:'אתר מודרני שסוף סוף נראה טוב כמו העבודה שלכם.',
+      mockBtn:'מתחילים →',
+      s1h:'נתחיל מהבסיס.', s1hand:'לוקח בערך 60 שניות ✦',
+      lblBiz:'איך קוראים לעסק שלכם?', phBiz:'לדוגמה: מספרת בֶּלָה',
+      lblName:'ואיך קוראים לכם?', phName:'שם פרטי ומשפחה',
+      lblEmail:'אימייל',
+      lblPhone:'טלפון', optOptional:'· אופציונלי', phPhone:'050-123-4567',
+      btnContinue:'המשך', secure:'🔒 המידע שלכם בטוח ומאובטח.',
+      s2h:'עוד כמה פרטים, שזה ירגיש כמוכם.', s2hand:'זה עוזר לנו לתפוס את המותג האמיתי שלכם ✦',
+      lblUrl:'האתר הנוכחי שלכם', optIfHave:'· אם יש לכם',
+      lblSocial:'איפה אפשר למצוא אתכם ברשת?', optAll:'· הכול אופציונלי',
+      groupHint:'פשוט הקישו על פלטפורמה והקלידו @שם־משתמש או שם העסק — בלי לחפש קישורים. אנחנו נמצא את השאר. ✨',
+      btnBack:'חזרה',
+      s3h:'עכשיו ספרו לנו על העסק שלכם.', s3hand:'ככה אנחנו עושים את זה ייחודי לכם ✦',
+      lblStory:'במילים שלכם…',
+      phStory:'מה אתם עושים?\nאת מי אתם משרתים?\nמה מייחד אתכם?\nמשהו שתשמחו שנכלול?',
+      btnSubmit:'בנו לי אתר בחינם 🚀',
+      fineprint:'בשליחה אתם מסכימים ל<a href="/privacy/">מדיניות הפרטיות</a> שלנו.',
+      doneH2:'🎉 אתם <span class="v">בפנים.</span>',
+      doneBig:'אנחנו כבר ניגשים לעבודה.',
+      doneBody:'נסקור את העסק שלכם ונתחיל לעצב את האתר המותאם אישית מיד. עקבו אחרי תיבת המייל ב-72 השעות הקרובות (הציצו גם בתיקיית הספאם, ליתר ביטחון) — האתר החדש שלכם בדרך.',
+      doneT1:'⏱ תצוגה תוך 72 שעות', doneT2:'💳 $0 מראש', doneT3:'✓ ללא התחייבות',
+      stepFmt:'שלב {n} מתוך 3', loading:'מתחילים בבנייה…',
+      errReq:'צריך רק את שם העסק ואימייל תקין כדי להתחיל.',
+      errFail:'משהו השתבש בשליחה. נסו שוב, או כתבו לנו ל-unveiled@monadigitalmarketing.com.'
+    }
+  };
+  function T(k){ var d=STRINGS[LANG]||{}; if(d[k]!=null) return d[k]; var el=document.querySelector('[data-i18n="'+k+'"],[data-i18n-html="'+k+'"]'); return el?el.textContent:''; }
+  function applyI18n(){
+    document.documentElement.lang=LANG; document.documentElement.dir=(LANG==='he'?'rtl':'ltr');
+    if(LANG==='en') return; // English is the HTML default
+    var d=STRINGS[LANG];
+    document.querySelectorAll('[data-i18n]').forEach(function(el){var k=el.getAttribute('data-i18n'); if(d[k]!=null) el.textContent=d[k];});
+    document.querySelectorAll('[data-i18n-html]').forEach(function(el){var k=el.getAttribute('data-i18n-html'); if(d[k]!=null) el.innerHTML=d[k];});
+    document.querySelectorAll('[data-i18n-ph]').forEach(function(el){var k=el.getAttribute('data-i18n-ph'); if(d[k]!=null) el.setAttribute('placeholder',d[k]);});
+  }
   function val(id){ var e=document.getElementById(id); return e?e.value.trim():''; }
   function showErr(m){ var e=document.getElementById('err'); e.textContent=m; e.style.display='block'; }
-  function go(step){
+  function curStep(){ var c=document.querySelector('.step.on'); return c?+c.dataset.step:1; }
+  function go(step, noFocus){
     document.querySelectorAll('.step').forEach(function(s){ s.classList.toggle('on', +s.dataset.step===step); });
     document.querySelectorAll('.dots .d').forEach(function(d){ d.classList.toggle('on', +d.dataset.s<=step); });
-    document.getElementById('stepn').textContent='Step '+step+' of 3';
+    document.getElementById('stepn').textContent=(LANG==='he'?T('stepFmt').replace('{n}',step):'Step '+step+' of 3');
     try{ document.getElementById('f').scrollIntoView({behavior:'smooth',block:'nearest'}); }catch(e){}
+    if(!noFocus){ try{ var f=document.querySelector('.step.on input, .step.on textarea'); if(f) f.focus({preventScroll:true}); }catch(e){} }
+    saveState();
   }
+
+  /* ---------- social platform picker: tap a platform, hop to grab the link, come back ---------- */
+  var PLATFORMS=[
+    {k:'instagram',n:'Instagram',ph:'@username or your profile link',he:'@שם־משתמש או קישור לפרופיל',
+      svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>'},
+    {k:'facebook',n:'Facebook',ph:'Your Page name or link',he:'שם העמוד או קישור',
+      svg:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.7l-.4 2.9h-2.3v7A10 10 0 0 0 22 12z"/></svg>'},
+    {k:'google',n:'Google',ph:'Business name + city, or Maps link',he:'שם העסק + עיר, או קישור Maps',
+      svg:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 10.9v2.9h4c-.2 1.1-1.4 3.1-4 3.1a4.4 4.4 0 0 1 0-8.8c1.2 0 2.1.5 2.7 1l2-2A7.3 7.3 0 0 0 12 4.7a7.3 7.3 0 1 0 0 14.6c4.2 0 7-3 7-7.1 0-.5 0-.9-.1-1.3H12z"/></svg>'},
+    {k:'tiktok',n:'TikTok',ph:'@username or your profile link',he:'@שם־משתמש או קישור',
+      svg:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.3 2.1 1.6 3.5 3.5 3.7v2.6c-1.3.1-2.5-.3-3.6-1v5.9c0 3.4-2.7 5.9-5.9 5.4A5.2 5.2 0 0 1 6 14.2c.3-2.4 2.4-4.1 4.8-4v2.8c-.3-.1-.7-.2-1-.2-1.2 0-2.1 1-2 2.2 0 1.1 1 2 2.1 2 1.2 0 2.2-.9 2.2-2.1V3h2.4z"/></svg>'},
+    {k:'linkedin',n:'LinkedIn',ph:'Company name or link',he:'שם החברה או קישור',
+      svg:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.9 8.9H4.2V20h2.7V8.9zM5.5 4a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2zM20 20h-2.7v-5.6c0-1.4-.5-2.3-1.7-2.3-.9 0-1.5.6-1.7 1.2-.1.2-.1.5-.1.8V20H11s0-9.4 0-11.1h2.7v1.6c.4-.6 1-1.4 2.5-1.4 1.9 0 3.3 1.2 3.3 3.9V20z"/></svg>'},
+    {k:'youtube',n:'YouTube',ph:'Channel name or link',he:'שם הערוץ או קישור',
+      svg:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 12s0-3.2-.4-4.7c-.2-.9-.9-1.5-1.7-1.8C19.4 5.2 12 5.2 12 5.2s-7.4 0-8.9.3c-.8.3-1.5.9-1.7 1.8C1 8.8 1 12 1 12s0 3.2.4 4.7c.2.9.9 1.5 1.7 1.8 1.5.3 8.9.3 8.9.3s7.4 0 8.9-.3c.8-.3 1.5-.9 1.7-1.8.4-1.5.4-4.7.4-4.7zM9.8 15.3V8.7l5.7 3.3-5.7 3.3z"/></svg>'}
+  ];
+  function platPh(p){ return (LANG==='he'&&p.he)?p.he:p.ph; }
+  var PLATSEL={};
+  function renderPlats(){
+    var wrap=document.getElementById('plats'); if(!wrap) return; wrap.innerHTML='';
+    PLATFORMS.forEach(function(p){
+      var b=document.createElement('button');
+      b.type='button'; b.className='plat'+(PLATSEL[p.k]?' on':''); b.setAttribute('aria-pressed', PLATSEL[p.k]?'true':'false');
+      b.innerHTML='<span class="pi">'+p.svg+'</span>'+p.n+'<span class="chk">✓</span>';
+      b.addEventListener('click', function(){ togglePlat(p.k); });
+      wrap.appendChild(b);
+    });
+  }
+  function renderPlatFields(){
+    var box=document.getElementById('platfields'); if(!box) return;
+    var vals={}; box.querySelectorAll('.prow input').forEach(function(i){ vals[i.getAttribute('data-k')]=i.value; });
+    box.innerHTML='';
+    PLATFORMS.forEach(function(p){
+      if(!PLATSEL[p.k]) return;
+      var row=document.createElement('div'); row.className='prow'; row.setAttribute('data-k',p.k);
+      row.innerHTML='<span class="plab"><span class="pi">'+p.svg+'</span>'+p.n+'</span>'+
+        '<input data-k="'+p.k+'" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done" placeholder="'+platPh(p)+'">';
+      box.appendChild(row);
+      var inp=row.querySelector('input'); if(vals[p.k]) inp.value=vals[p.k];
+      inp.addEventListener('input', saveState);
+    });
+  }
+  function togglePlat(k){
+    PLATSEL[k]=!PLATSEL[k]; renderPlats(); renderPlatFields(); saveState();
+    if(PLATSEL[k]){ setTimeout(function(){ var i=document.querySelector('.prow[data-k="'+k+'"] input'); if(i) i.focus({preventScroll:true}); }, 80); }
+  }
+  function collectSocial(){
+    var pairs=[];
+    document.querySelectorAll('#platfields .prow input').forEach(function(i){
+      var v=i.value.trim(); if(v) pairs.push({platform:i.getAttribute('data-k'), url:v});
+    });
+    return pairs;
+  }
+
+  /* ---------- form-state preservation (survives a hop to Instagram/Facebook and back) ---------- */
+  var LSKEY='uv_frontdoor_v1';
+  function saveState(){
+    try{
+      var s={biz:val('biz'),name:val('name'),email:val('email'),phone:val('phone'),url:val('url'),story:val('story'),plats:PLATSEL,plinks:{},step:curStep()};
+      document.querySelectorAll('#platfields .prow input').forEach(function(i){ s.plinks[i.getAttribute('data-k')]=i.value; });
+      localStorage.setItem(LSKEY, JSON.stringify(s));
+    }catch(e){}
+  }
+  function restoreState(){
+    try{
+      var raw=localStorage.getItem(LSKEY); if(!raw) return null;
+      var s=JSON.parse(raw); if(!s) return null;
+      ['biz','name','email','phone','url','story'].forEach(function(k){ var el=document.getElementById(k); if(el && s[k]) el.value=s[k]; });
+      if(s.plats && typeof s.plats==='object') PLATSEL=s.plats;
+      renderPlats(); renderPlatFields();
+      if(s.plinks){ Object.keys(s.plinks).forEach(function(k){ var i=document.querySelector('.prow[data-k="'+k+'"] input'); if(i) i.value=s.plinks[k]; }); }
+      return s;
+    }catch(e){ return null; }
+  }
+  function clearState(){ try{ localStorage.removeItem(LSKEY); }catch(e){} }
+
+  // Enter advances instead of submitting early (textarea keeps newlines)
+  document.getElementById('f').addEventListener('keydown', function(e){
+    if(e.key==='Enter' && e.target && e.target.tagName==='INPUT'){
+      e.preventDefault();
+      if(curStep()<3) window.next(curStep()+1);
+    }
+  });
   window.next=function(step){
     var e=document.getElementById('err'); e.style.display='none';
     if(step===2){ // leaving step 1 -> validate
@@ -228,20 +472,34 @@
 
   function uuid(){ return (window.crypto&&crypto.randomUUID)?crypto.randomUUID():(Date.now()+'-'+Math.random().toString(36).slice(2)); }
 
+  // autosave the simple fields too, so nothing is ever lost on a tab switch / app hop
+  ['biz','name','email','phone','url','story'].forEach(function(k){ var el=document.getElementById(k); if(el) el.addEventListener('input', saveState); });
+
+  // init: resume any in-progress session, then apply ?url= prefill, then render the pickers
+  (function init(){
+    applyI18n();
+    var s=restoreState();
+    if(!s){ renderPlats(); renderPlatFields(); }
+    var u=param('url'); if(u){ var el=document.getElementById('url'); if(el && !el.value) el.value=u; }
+    if(s && s.step>1){ go(s.step, true); } // land them back where they left off, without grabbing focus on load
+  })();
+
   document.getElementById('f').addEventListener('submit', async function(ev){
     ev.preventDefault();
     var biz=val('biz'), email=val('email');
-    if(!biz || email.indexOf('@')<1){ go(1); showErr('Just need your business name and a valid email to begin.'); return; }
-    var btn=document.getElementById('submit'); btn.disabled=true; btn.textContent='Sending…';
-    var social=val('social'); var links=social?social.split(/[\s,]+/).filter(Boolean):[];
+    if(!biz || email.indexOf('@')<1){ go(1); showErr(LANG==='he'?T('errReq'):'Just need your business name and a valid email to begin.'); return; }
+    var btn=document.getElementById('submit'); btn.disabled=true; btn.classList.add('loading'); btn.innerHTML='<span class="spin"></span> '+(LANG==='he'?T('loading'):'Starting your build…');
+    var pairs=collectSocial();
+    var links=pairs.map(function(x){ return x.url; });
+    var byPlat={}; pairs.forEach(function(x){ byPlat[x.platform]=x.url; });
     var story=val('story');
     var lead={
       id: uuid(), business_name: biz, contact_name: val('name')||null, email: email,
       phone: val('phone')||null, website: val('url')||null,
-      social_profiles: links.length?{links:links}:{},
+      social_profiles: links.length?{links:links, by_platform:byPlat}:{},
       about: story||null, requirements: story||null, additional_notes: null,
       status:'NEW LEAD', source: SOURCE,
-      discovery_method: CAMPAIGN ? ('unveiled-start:'+CAMPAIGN) : 'unveiled-start'
+      discovery_method: 'unveiled-start'+(LANG==='he'?'-he':'')+(CAMPAIGN?(':'+CAMPAIGN):'')
     };
     try{
       var r = await fetch(SUPA_URL+'/rest/v1/leads', {
@@ -250,12 +508,13 @@
         body: JSON.stringify(lead)
       });
       if(!r.ok) throw new Error('insert '+r.status);
+      clearState();
       document.getElementById('main').style.display='none';
-      document.getElementById('done').style.display='block';
+      var d=document.getElementById('done'); d.style.display='block'; d.classList.add('on');
       window.scrollTo(0,0);
     }catch(e){
-      console.warn(e); btn.disabled=false; btn.textContent='Submit my request 🚀';
-      showErr('Something went wrong sending that. Please try again, or email unveiled@monadigitalmarketing.com.');
+      console.warn(e); btn.disabled=false; btn.classList.remove('loading'); btn.innerHTML=(LANG==='he'?T('btnSubmit'):'Build my free website 🚀');
+      showErr(LANG==='he'?T('errFail'):'Something went wrong sending that. Please try again, or email unveiled@monadigitalmarketing.com.');
     }
   });
 </script>

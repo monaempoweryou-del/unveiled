@@ -2736,9 +2736,10 @@ heroOut.observe(hero);
   document.getElementById('onb-close').addEventListener('click', close);
   onb.addEventListener('keydown', e=>{ if(e.key==='Escape') close(); });
 
-  // expose opener + wire launch buttons
-  window.openOnboarding = open;
-  document.querySelectorAll('.onb-launch').forEach(b=>b.addEventListener('click', ()=>open()));
+  // ONE Front Door (LS-FRONT-DOOR): the Hebrew homepage routes every CTA to the
+  // SAME /start engine — Hebrew + RTL — so English and Hebrew never drift apart.
+  window.openOnboarding = function(val){ location.href='/start?lang=he&src=website-he' + (val?('&url='+encodeURIComponent(val)):''); };
+  document.querySelectorAll('.onb-launch').forEach(b=>b.addEventListener('click', function(e){ if(e&&e.preventDefault)e.preventDefault(); window.openOnboarding(); }));
 })();
 
 // ── Smooth anchor links ───────────────────────────────────────────────
