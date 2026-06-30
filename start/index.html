@@ -140,6 +140,8 @@
   var rawSrc = (param('src')||param('utm_source')||'').toLowerCase().trim();
   var SOURCE = SRC_MAP[rawSrc] || 'website-onboarding';
   var CAMPAIGN = param('campaign')||param('utm_campaign')||'';
+  // carry over a website typed on the homepage hero (?url=)
+  (function(){ var u=param('url'); if(u){ var el=document.getElementById('url'); if(el) el.value=u; } })();
 
   function uuid(){ return (window.crypto&&crypto.randomUUID)?crypto.randomUUID():(Date.now()+'-'+Math.random().toString(36).slice(2)); }
   function val(id){ var e=document.getElementById(id); return e?e.value.trim():''; }

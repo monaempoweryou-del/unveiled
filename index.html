@@ -2718,9 +2718,9 @@ heroOut.observe(hero);
   document.getElementById('onb-close').addEventListener('click', close);
   onb.addEventListener('keydown', e=>{ if(e.key==='Escape') close(); });
 
-  // expose opener + wire launch buttons
-  window.openOnboarding = open;
-  document.querySelectorAll('.onb-launch').forEach(b=>b.addEventListener('click', ()=>open()));
+  // One front door: every CTA now routes to the central /start onboarding page.
+  window.openOnboarding = function(val){ location.href = '/start?src=website' + (val ? ('&url=' + encodeURIComponent(val)) : ''); };
+  document.querySelectorAll('.onb-launch').forEach(b=>b.addEventListener('click', function(e){ if(e&&e.preventDefault)e.preventDefault(); window.openOnboarding(); }));
 })();
 
 // ── Smooth anchor links ───────────────────────────────────────────────
