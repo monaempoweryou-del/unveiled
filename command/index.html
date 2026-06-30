@@ -1087,19 +1087,43 @@ function renderMarketing(){
       'The goal: tell you exactly which channels and offers deserve more budget, backed by real conversion data, never guesses.')}`;
 }
 
-// ===== Learning =====
+// ===== Learning ===== (live: reads attribution + engagement captured on every lead)
 function renderLearning(){
-  const completed=WQ.filter(j=>j.status==='completed').length;
-  const revs=WQ.filter(j=>j.type==='revision').length;
+  const sp=l=>_sp(l);
+  let hi=0,med=0,std=0,scored=0,scoreSum=0;
+  LEADS.forEach(l=>{const e=sp(l).engagement; if(e&&typeof e==='object'){let t=e.tier; if(!t){const s=+e.score||0; t=s>=5?'high':s>=2?'medium':'standard';} if(t==='high')hi++; else if(t==='medium')med++; else std++; if(typeof e.score==='number'){scored++;scoreSum+=e.score;}}});
+  const engTotal=hi+med+std;
+  const avg=scored?(scoreSum/scored).toFixed(1):null;
+  let mob=0,desk=0;
+  LEADS.forEach(l=>{const d=((sp(l).meta||{}).device)||''; if(d==='mobile')mob++; else if(d==='desktop')desk++;});
+  const devTotal=mob+desk;
+  const attr={};
+  LEADS.forEach(l=>{const m=sp(l).meta||{}; const k=((m.campaign||l.source||'untagged')+'').trim()||'untagged'; attr[k]=(attr[k]||0)+1;});
+  const attrRows=Object.entries(attr).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  let withAssets=0, withNotes=0;
+  LEADS.forEach(l=>{const s=(sp(l).engagement||{}).signals||{}; if(s.logo||s.hero||s.gallery)withAssets++; if(s.notes)withNotes++;});
+  const bar=rows=>{const max=Math.max(1,...rows.map(r=>r[1]));return '<div class="bars">'+rows.map(([k,n])=>'<div class="barrow"><span class="bk">'+esc(k)+'</span><span class="bt"><span class="bf" style="width:'+Math.round(n/max*100)+'%"></span></span><span class="bn">'+n+'</span></div>').join('')+'</div>';};
+  const pct=(n,t)=>t?Math.round(n/t*100)+'%':'.';
+  const captured = engTotal>0 || devTotal>0;
+  const headline = captured
+    ? `<div class="statrow" style="margin-bottom:14px">
+        <div class="stat"><div class="sn">${hi}</div><div class="sl">High-intent leads</div></div>
+        <div class="stat"><div class="sn">${avg!=null?avg:'.'}</div><div class="sl">Avg engagement</div></div>
+        <div class="stat"><div class="sn">${pct(mob,devTotal)}</div><div class="sl">On mobile</div></div></div>`
+    : `<div class="card"><div class="empty">Learning begins with your first Front Door lead. Every one will land here with where it came from, what device they used, and how much effort they invested. Nothing is fabricated. The numbers fill in as real owners arrive.</div></div>`;
   $('v-learning').innerHTML=`
-    <div class="pulse" style="font-size:19px">Learning<span class="s">Every lead, build, and revision is a lesson. This is where the company compounds what it learns into better defaults, automatically.</span></div>
-    <div class="statrow" style="margin-bottom:14px">
-      <div class="stat"><div class="sn">${completed}</div><div class="sl">Jobs completed</div></div>
-      <div class="stat"><div class="sn">${revs}</div><div class="sl">Revisions observed</div></div>
-      <div class="stat"><div class="sn">${LEADS.length}</div><div class="sl">Leads in the system</div></div></div>
-    ${instr('Learning','violet','Self-Improving System','As volume grows, the platform turns recurring signals into locked standards: <b>which templates convert, which offers win, which industries get easier, which revisions repeat</b>. A change requested 3+ times becomes a default, so we solve it once, not every time.',
-      [{label:'Every project & revision recorded',done:true},{label:'Build & QA standards enforced on every deploy',done:true},{label:'Outcome metrics (open / convert / retain) instrumented',done:false},{label:'Auto-promote recurring fixes into defaults',done:false}],
-      'Once outcomes are measured, this page will show what changed week over week: templates that improved, emails that converted better, industries getting easier. The company becoming measurably smarter.')}`;
+    <div class="pulse" style="font-size:19px">Learning<span class="s">Nothing happens inside UNVEILED without making tomorrow better. Every lead arrives tagged with where it came from, what device, and how invested they are, so we learn from lead one.</span></div>
+    ${headline}
+    ${attrRows.length?`<div class="sec"><h2>Where leads come from</h2><span class="c">${LEADS.length} total</span></div>
+      <div class="card" style="padding:16px">${bar(attrRows)}</div>`:''}
+    ${engTotal?`<div class="sec"><h2>Intent (engagement tiers)</h2></div>
+      <div class="card" style="padding:16px">${bar([['High intent',hi],['Medium',med],['Standard',std]])}
+        <div class="meta" style="margin-top:10px">${withAssets} shared photos or a logo. ${withNotes} wrote notes. The more they invest before submitting, the more likely they convert, so high-intent leads should be served first.</div></div>`:''}
+    ${devTotal?`<div class="sec"><h2>Device</h2></div>
+      <div class="card" style="padding:16px">${bar([['Mobile',mob],['Desktop',desk]])}</div>`:''}
+    ${instr('Learning','violet','Self-Improving System','Attribution, device, and engagement are live now. As outcomes accumulate (which leads convert, which posts produce subscribers, which industries get easier), recurring signals become locked defaults. A pattern seen 3+ times becomes the default, so we solve it once.',
+      [{label:'Source, campaign, device, engagement captured on every lead',done:true},{label:'Outcomes (Reveal opens, payments, retention) instrumented',done:false},{label:'Enough volume per channel to compare fairly',done:false},{label:'Auto-promote recurring wins into defaults',done:false}],
+      'Tonight this answers which post, which device, and which intent level is arriving. As outcomes connect, it will answer which of them become happy subscribers.')}`;
 }
 
 // ===== Settings & Integrations =====
