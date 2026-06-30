@@ -31,8 +31,8 @@
   @keyframes pulse{0%,100%{box-shadow:0 0 16px var(--glow),inset 0 0 12px rgba(255,255,255,.22)}50%{box-shadow:0 0 30px var(--glow),inset 0 0 14px rgba(255,255,255,.32)}}
   .topbar{display:flex;align-items:center;gap:12px;margin-bottom:20px}
   .topbar b{font-weight:700;letter-spacing:.26em;font-size:14px}
-  .wordmark{height:20px;width:auto;display:block}
-  .wordmark-lg{height:27px;width:auto;display:block}
+  .wordmark{font-weight:700;letter-spacing:.22em;font-size:15px;color:#1C1917;display:block;line-height:1}
+  .wordmark-lg{font-weight:700;letter-spacing:.24em;font-size:20px;color:#1C1917;display:block;line-height:1}
   .logo-sphere{height:28px;width:28px;object-fit:contain;display:block;flex:none;filter:drop-shadow(0 2px 9px rgba(124,58,237,.28))}
   .logo-sphere-lg{height:82px;width:82px;object-fit:contain;margin:0 auto 16px;display:block;filter:drop-shadow(0 8px 26px rgba(124,58,237,.32))}
   .gate .lockup,.tb-lock{display:flex;align-items:center;gap:10px}
@@ -149,7 +149,7 @@
   .appshell{position:relative;z-index:1;display:flex;min-height:100vh}
   .sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;background:rgba(255,255,255,.72);backdrop-filter:blur(18px);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:18px 14px;z-index:30;transition:transform .26s cubic-bezier(.3,.7,.3,1)}
   .sb-brand{display:flex;align-items:center;gap:9px;padding:4px 8px 16px}
-  .sb-brand .logo-sphere{height:26px;width:26px} .sb-brand .wordmark{height:17px}
+  .sb-brand .logo-sphere{height:26px;width:26px} .sb-brand .wordmark{font-size:13.5px}
   .sb-cap{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);padding:0 10px 8px;font-weight:600}
   .sb-nav{display:flex;flex-direction:column;gap:2px;overflow-y:auto;flex:1}
   .sb-item{display:flex;align-items:center;gap:11px;padding:10px 11px;border-radius:11px;cursor:pointer;color:var(--muted);font-size:14px;font-weight:550;text-decoration:none;transition:.14s;position:relative}
@@ -457,7 +457,7 @@
 
 <div class="gate" id="gate">
   <div class="box">
-    <span class="lockup"><img class="logo-sphere-lg" src="/command/sphere.png" alt="" /><img class="wordmark-lg" src="/command/wordmark.png" alt="UNVEILED" /></span><p>Command Center</p>
+    <span class="lockup"><img class="logo-sphere-lg" src="https://unveiled.pro/sphere-core.png" alt="" /><span class="wordmark-lg">UNVEILED</span></span><p>Command Center</p>
     <input id="email" type="email" placeholder="you@email.com" autocomplete="username" />
     <input id="pass" type="password" placeholder="Password" autocomplete="current-password" />
     <button onclick="signIn()">Enter</button>
@@ -466,7 +466,7 @@
   </div>
 </div>
 
-<div id="loader"><div style="text-align:center"><img class="logo-sphere-lg" src="/command/sphere.png" alt="UNVEILED" style="animation:breathe 2.4s ease-in-out infinite" /><p>Bringing your company online…</p></div></div>
+<div id="loader"><div style="text-align:center"><img class="logo-sphere-lg" src="https://unveiled.pro/sphere-core.png" alt="UNVEILED" style="animation:breathe 2.4s ease-in-out infinite" /><p>Bringing your company online…</p></div></div>
 <div id="toast"></div>
 <input type="file" id="fileinput" accept="image/*" style="display:none" />
 <input type="file" id="assetinput" accept="image/*" multiple style="display:none" />
@@ -482,7 +482,7 @@
 <div id="app" style="display:none">
  <div class="appshell">
   <aside class="sidebar" id="sidebar">
-    <div class="sb-brand"><img class="logo-sphere" src="/command/sphere.png" alt="" /><img class="wordmark" src="/command/wordmark.png" alt="UNVEILED" /></div>
+    <div class="sb-brand"><img class="logo-sphere" src="https://unveiled.pro/sphere-core.png" alt="" /><span class="wordmark">UNVEILED</span></div>
     <div class="sb-cap">Your company</div>
     <nav class="sb-nav" id="sbnav">
       <div class="sb-group">Run the business</div>
