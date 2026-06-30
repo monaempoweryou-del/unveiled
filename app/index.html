@@ -146,15 +146,15 @@
   var PORTAL_STEPS = [
     {lbl:'We learned about your business', det:'We studied your brand, market, and customers.', status:'done'},
     {lbl:'We crafted your website', det:'Designed around your real brand — never a template.', status:'done'},
-    {lbl:"We're making it yours", det:"We're refining every detail with you.", status:'active'},
-    {lbl:'Getting ready to launch', det:'We connect your domain and handle the technical setup.', status:'next'},
+    {lbl:"We're making it yours", det:"We're refining every detail with you. This week.", status:'active'},
+    {lbl:'Getting ready to launch', det:'We connect your domain and handle the technical setup. Usually a few days.', status:'next'},
     {lbl:'Launch day', det:'We take your business live for the world.', status:'next'}
   ];
   var COMPANION_STEPS = [
-    {lbl:'Request received', det:"We've got everything — your project is assigned to our team.", status:'done'},
-    {lbl:"We're learning about your business", det:'Studying your brand, competitors, and customers.', status:'active'},
-    {lbl:'Your website is being crafted', det:'Built around your real brand — never a template.', status:'next'},
-    {lbl:'Your preview will be ready', det:"We'll notify you the moment it's ready to see.", status:'next'}
+    {lbl:'Request received', det:"We've got everything — your project is assigned to our team. Just now.", status:'done'},
+    {lbl:"We're learning about your business", det:'Studying your brand, competitors, and customers. Happening today.', status:'active'},
+    {lbl:'We craft your website', det:'Designed around your real brand — never a template. Over the next day or two.', status:'next'},
+    {lbl:'Your preview is ready to see', det:"Typically within 72 hours — we'll notify you the moment it's live.", status:'next'}
   ];
   var LAUNCHED_STEPS = PORTAL_STEPS.map(function(s){return {lbl:s.lbl,det:s.det,status:'done'};});
 
@@ -213,8 +213,8 @@
       show('companionintro',true); show('actsec',false); show('actwrap',false); show('msgteam',true);
       // every open feels like progress (Constitution §3)
       setLatest("While you were running your business, we matched your brand colors and gathered photos of your work.");
-      // nothing needed from them → reassure plainly (Constitution §2)
-      document.getElementById('lastnote').textContent="Relax — we're taking care of it. We'll notify you the moment your website is ready.";
+      // nothing needed from them → reassure plainly + answer "when" (Constitution §2, time)
+      document.getElementById('lastnote').textContent="Relax — we're taking care of it. Your preview is typically ready within 72 hours, and we'll let you know the moment it's live.";
     } else if(MODE==='launched'){
       document.getElementById('dh1').innerHTML=esc(BIZ)+" is live. 🎉";
       document.getElementById('dhand').textContent='Your digital partner ✦';
