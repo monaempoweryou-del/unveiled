@@ -389,6 +389,26 @@
     .btn{font-size:15px;padding:13px 16px} .kv{font-size:15px} .banner{font-size:15px}
     .thumb{width:74px;height:51px} .thumb iframe{transform:scale(.235)}
   }
+
+  /* ===== Executive cockpit (mobile-first) ===== */
+  .opgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;margin:16px 0}
+  .optile{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:15px 15px;cursor:pointer;
+    -webkit-tap-highlight-color:transparent;transition:transform .12s ease,border-color .18s ease,box-shadow .18s ease;backdrop-filter:blur(12px);min-height:92px;display:flex;flex-direction:column;gap:2px;position:relative;overflow:hidden}
+  .optile:active{transform:scale(.98)}
+  .optile .oi{font-size:18px;line-height:1}
+  .optile .on{font-size:30px;font-weight:800;letter-spacing:-.02em;margin-top:6px;line-height:1}
+  .optile .ol{font-size:12.5px;color:var(--muted);font-weight:600}
+  .optile.hot{border-color:rgba(124,58,237,.5);background:linear-gradient(150deg,rgba(124,58,237,.14),var(--panel) 60%);box-shadow:0 10px 26px -16px rgba(124,58,237,.6)}
+  .optile.hot .on{color:var(--violet2)}
+  .lrow{display:flex;align-items:center;gap:12px;padding:14px 15px;border-bottom:1px solid var(--line);cursor:pointer}
+  .lrow:last-child{border-bottom:0}
+  .lrow .lhot{font-size:18px;flex:none}
+  .lrow .lmain{flex:1;min-width:0}
+  .lrow .ln{font-weight:700;font-size:15px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+  .lrow .lmeta{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .hotbadge{font-size:9.5px;font-weight:800;letter-spacing:.08em;color:#fff;background:linear-gradient(135deg,#7c3aed,#4338ca);border-radius:999px;padding:3px 8px}
+  .newbadge{font-size:9.5px;font-weight:800;letter-spacing:.06em;color:var(--violet2);background:rgba(124,58,237,.14);border-radius:999px;padding:3px 7px}
+  @media(min-width:720px){ .opgrid{grid-template-columns:repeat(4,1fr)} }
 </style>
 </head>
 <body>
@@ -636,38 +656,79 @@ function openDone(id){ markDoneSeen(true); if(id&&id!=='undefined') location.has
 function markDoneSeen(silent){ setSeen(new Date().toISOString()); const b=$('bell'); if(b)b.style.display='none'; if(!silent) renderExecDone(); }
 
 // ===== Executive Home =====
+// ----- high-intent (they came to us) vs sourced (we found them) -----
+function highIntent(l){
+  const dm=(l.discovery_method||'').toLowerCase();
+  if(dm.indexOf('unveiled-start')===0) return true;            // submitted via the Front Door
+  const s=(l.source||'').toLowerCase();
+  return !!s && s!=='unknown' && !s.startsWith('outbound') && !s.startsWith('scraper') && !s.startsWith('sourced');
+}
+function hotLeads(){ return LEADS.filter(l=>['NEW LEAD','QUALIFIED'].includes(l.status)&&highIntent(l))
+  .sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0)); }
+function opCounts(){
+  const c=counts();
+  const recent=WQ.filter(j=>(j.type==='build_website'||j.type==='revision')&&j.status==='completed'&&(Date.now()-new Date(j.updated_at||j.created_at||0).getTime())<7*864e5);
+  const revQ=c.blocked.length+WQ.filter(j=>j.type==='revision'&&(j.status==='pending'||j.status==='running')).length;
+  return {hot:hotLeads().length, approval:c.appr.length, prod:c.building.length+c.pending.length,
+          waiting:c.delivered.length, revision:revQ, delivery:c.approved.length, completed:recent.length};
+}
+function leadRow(l){
+  const fresh=(Date.now()-new Date(l.created_at||0).getTime())<86400000;
+  return `<div class="lrow" onclick="location.hash='#c/${l.id}'">
+    <div class="lhot">🔥</div>
+    <div class="lmain"><div class="ln">${esc(l.business_name||'New lead')} <span class="hotbadge">HIGH INTENT</span>${fresh?'<span class="newbadge">NEW</span>':''}</div>
+      <div class="lmeta">${esc(srcLabel(l.source))}${l.contact_name?' · '+esc(l.contact_name):''} · ${ago(l.created_at)}</div></div>
+    <button class="btn good" style="padding:9px 13px;font-size:12.5px;flex:none" onclick="event.stopPropagation();promoteLead('${l.id}',this)">Promote ›</button>
+  </div>`;
+}
+// Sales → Production handoff. Idempotent: never duplicates an existing build order.
+async function promoteLead(id, btn){
+  const l=LEADS.find(x=>x.id===id)||{}; const nm=l.business_name||'this lead';
+  if(!confirm('Promote '+nm+' to Production?\n\nThis creates the build work order and starts the production pipeline.')) return;
+  if(btn){btn.textContent='Promoting…';btn.disabled=true;}
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){ toast('Sign in first — promoting needs a signed-in staff session.'); if(btn){btn.disabled=false;btn.textContent='Promote ›';} return; }
+  try{
+    const {data:exist}=await sb.from('work_queue').select('id').eq('type','build_website').contains('payload',{lead_id:id}).limit(1);
+    if(!exist||!exist.length){
+      await sb.from('work_queue').insert({type:'build_website',status:'pending',payload:{business:nm,lead_id:id},idempotency_key:'promote-'+id});
+    }
+  }catch(e){ console.warn('work order insert skipped:',e); }
+  const {data,error}=await sb.from('leads').update({status:'QUALIFIED',updated_at:new Date().toISOString()}).eq('id',id).select('id');
+  if(error||!data||!data.length){ if(btn){btn.disabled=false;btn.textContent='Promote ›';}
+    toast('Could not promote: '+((error&&(error.message||error.code))||'no rows updated — your account may lack permission')); return; }
+  emitSignal({lead_id:id,industry:l.industry||null,decision:'promoted',revision_kind:null,target_area:null,instruction:null,first_pass:null});
+  toast('✓ '+nm+' promoted to Production — build queued. Production takes it from here.');
+  await load(); route();
+}
+
+// ===== Executive cockpit (mobile-first operating system) =====
 function renderExec(){
-  const c=counts(), wh=workerHealth(), stuck=stuckJobs();
-  const waiting=c.appr.length, building=c.building.length, queued=c.pending.length, needfix=c.blocked.length;
-  const pulse=(waiting+building+queued)?`${waiting} waiting on you · ${building} building now · ${queued} queued`:"Everything's handled — no decisions pending right now.";
-  const kpis=[[waiting,'Waiting on you',"goProjects('PREVIEW READY')"],[building,'Building now',"goProjects('BUILDING')"],[needfix,'Need changes',"goProjects('CHANGES REQUESTED')"],[wh.live?'● Live':'● Paused','Worker',"go('settings')"]];
-  const prios=[];
-  if(waiting) prios.push({t:`Approve ${waiting} finished ${waiting>1?'websites':'website'}`,s:'Each approval sends the customer their reveal.',go:'production'});
-  if(needfix) prios.push({t:`${needfix} ${needfix>1?'sites need':'site needs'} changes`,s:'Revisions are waiting to go back into production.',go:'production'});
-  if(stuck.length) prios.push({t:`${stuck.length} build ${stuck.length>1?'jobs':'job'} stuck over 30 min`,s:'Likely orphaned by a restart — clearing them frees the queue.',go:'production'});
-  if(!wh.live) prios.push({t:'Production worker is paused',s:'No heartbeat in over 2 minutes — nothing is building.',go:'settings'});
-  if(c.qualified.length) prios.push({t:`${c.qualified.length} ${c.qualified.length>1?'leads':'lead'} ready to build`,s:'Queue them into production whenever you are ready.',go:'production'});
-  if(!prios.length) prios.push({t:'Nothing needs you right now',s:'The company is healthy and moving on its own.',go:'production'});
-  const oppN=waiting+c.qualified.length;
-  const opp=oppN?`${oppN} ${oppN>1?'customers are':'customer is'} one step from a live site`:'Add leads to grow the pipeline';
-  const oppSm=waiting?`${waiting} ready to approve, ${c.qualified.length} ready to build. Approvals move customers toward becoming paying clients.`:`${c.qualified.length} qualified and waiting to enter production.`;
-  let risk='Nothing urgent',riskSm='No blocked work, and the worker is live.';
-  if(!wh.live){risk='Production is paused';riskSm='The worker has no recent heartbeat, so builds and revisions are not running.';}
-  else if(stuck.length){risk=`${stuck.length} stuck build ${stuck.length>1?'jobs':'job'}`;riskSm='Jobs claimed but not finishing — they hold up the queue until cleared.';}
-  else if(needfix){risk=`${needfix} ${needfix>1?'sites':'site'} awaiting changes`;riskSm='Customers are waiting on revisions before they can approve.';}
+  const wh=workerHealth(), stuck=stuckJobs(), op=opCounts(), hot=hotLeads();
+  const pulse=(op.hot+op.approval+op.prod)?`${op.hot} high-intent ${op.hot===1?'lead':'leads'} · ${op.approval} waiting your approval · ${op.prod} in production`:"Everything's handled — no decisions pending right now.";
+  const tiles=[
+    ['🔥','High-intent leads',op.hot,"go('customers')",op.hot>0],
+    ['📥','Waiting approval',op.approval,"goProjects('PREVIEW READY')",op.approval>0],
+    ['🏭','Production queue',op.prod,"go('production')",false],
+    ['⏳','Customers waiting',op.waiting,"goProjects('PREVIEW DELIVERED')",false],
+    ['✎','Revision queue',op.revision,"goProjects('CHANGES REQUESTED')",op.revision>0],
+    ['🚀','Ready to deliver',op.delivery,"goProjects('APPROVED')",false],
+    ['✓','Completed · 7d',op.completed,"go('production')",false],
+    [wh.live?'🟢':'🔴','Automation',wh.live?'Live':'Paused',"go('settings')",!wh.live]
+  ];
+  const needNow=LEADS.filter(l=>triage(l).rank<=1).sort((a,b)=>triage(a).rank-triage(b).rank);
+  const healthMsg=(!wh.live?'⚠ Production worker paused — no heartbeat in 2+ minutes. ':'')+(stuck.length?('⚠ '+stuck.length+' build job'+(stuck.length>1?'s':'')+' stuck >30 min (orphaned).'):'');
   $('v-exec').innerHTML=`
     <div class="pulse">Good ${dayPart()}, Moe.<span class="s">${esc(pulse)}</span></div>
-    <div class="kpis">${kpis.map(([n,l,v])=>`<div class="kpi" onclick="${v}" style="cursor:pointer"><div class="n">${n}</div><div class="l">${l} ›</div></div>`).join('')}</div>
-    <div class="sec donesec" id="doneSec" style="display:none"><h2>Just completed</h2><span class="c" id="doneCount"></span></div>
+    <div class="opgrid">${tiles.map(([i,l,n,v,hl])=>`<div class="optile${hl?' hot':''}" onclick="${v}"><div class="oi">${i}</div><div class="on">${n}</div><div class="ol">${esc(l)} ›</div></div>`).join('')}</div>
+    ${hot.length?`<div class="sec"><h2>🔥 High-intent leads</h2><span class="c">${hot.length}</span></div>
+      <div class="soonbox" style="margin:-4px 0 8px">They came to UNVEILED and asked us to build — top priority. Prep runs automatically; promote when you're ready.</div>
+      <div class="card">${hot.slice(0,8).map(leadRow).join('')}</div>`:''}
+    <div class="sec donesec" id="doneSec" style="display:none"><h2>Just completed overnight</h2><span class="c" id="doneCount"></span></div>
     <div class="card donecard" id="doneList" style="display:none"></div>
-    <div class="sec"><h2>Needs you now</h2><span class="c">${(()=>{const n=LEADS.filter(l=>triage(l).rank<=1).length;return n||'all clear';})()}</span></div>
-    <div class="card needhero">${(()=>{const a=LEADS.filter(l=>triage(l).rank<=1).sort((x,y)=>triage(x).rank-triage(y).rank).slice(0,5);return a.length?a.map(triageRow).join(''):`<div class="empty">You're all caught up — nothing needs a decision right now.</div>`;})()}</div>
-    <div class="twocol" style="margin-top:14px">
-      <div class="briefcard opp"><h4>📈 Biggest opportunity</h4><div class="big">${esc(opp)}</div><div class="sm">${esc(oppSm)}</div></div>
-      <div class="briefcard risk"><h4>⚠️ Biggest risk</h4><div class="big">${esc(risk)}</div><div class="sm">${esc(riskSm)}</div></div>
-    </div>
-    <div class="sec"><h2>Top priorities</h2></div>
-    <div class="card" style="padding:2px 16px">${prios.slice(0,4).map((p,i)=>`<div class="prio" onclick="go('${p.go}')"><div class="pnum">${i+1}</div><div><div class="pt">${esc(p.t)}</div><div class="ps">${esc(p.s)}</div></div><div class="pgo">›</div></div>`).join('')}</div>
+    <div class="sec"><h2>Needs you now</h2><span class="c">${needNow.length||'all clear'}</span></div>
+    <div class="card needhero">${needNow.length?needNow.slice(0,6).map(triageRow).join(''):`<div class="empty">You're all caught up — nothing needs a decision right now.</div>`}</div>
+    ${healthMsg?`<div class="sec"><h2>Operations health</h2></div><div class="card"><div class="soonbox">${esc(healthMsg)}</div></div>`:''}
     <div class="sec"><h2>Departments</h2></div>
     <div class="deptgrid">${DEPTS.map(d=>`<a class="deptcard" onclick="go('${d.v}')"><div class="di">${d.i}</div><div class="dt">${d.t}</div><div class="dd">${esc(d.d)}</div></a>`).join('')}</div>`;
   renderExecDone();
