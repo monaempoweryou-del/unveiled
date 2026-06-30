@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Your new website is ready | UNVEILED</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="https://unveiled.pro/sphere-core.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root{--cream:#FAF8F5;--paper:#fff;--violet:#6C3CE0;--violet-l:#8B5CF6;--indigo:#4338CA;--text:#1C1917;--muted:#78716C;--faint:#A8A29E;--border:#E7E2DA;--green:#10B981;
+    --grad:linear-gradient(135deg,#6C3CE0,#4338CA);--shadow:0 50px 110px -42px rgba(67,32,160,.34),0 14px 40px -28px rgba(67,32,160,.16)}
+  *{box-sizing:border-box} html,body{margin:0}
+  body{font-family:'Space Grotesk',-apple-system,BlinkMacSystemFont,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.55;
+    background:radial-gradient(800px 520px at 88% -8%,rgba(139,92,246,.16),transparent 60%),radial-gradient(680px 520px at -5% 108%,rgba(99,102,241,.12),transparent 55%),var(--cream);min-height:100dvh}
+  .wrap{max-width:760px;margin:0 auto;padding:22px 18px 80px}
+  .topbar{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:18px}
+  .topbar img{width:30px;height:30px} .topbar b{font-weight:700;letter-spacing:.22em;font-size:16px}
+  .badge{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.12em;color:var(--violet);background:rgba(108,60,224,.09);border:1px solid rgba(108,60,224,.18);padding:6px 13px;border-radius:999px}
+  h1{font-size:38px;line-height:1.06;letter-spacing:-.02em;font-weight:700;margin:14px 0 10px} h1 .v{color:var(--violet)}
+  .sub{font-size:17px;color:var(--muted);margin:0 0 8px;max-width:560px}
+  .hand{font-family:'Caveat',cursive;font-size:22px;color:var(--violet);margin:6px 0 18px}
+  .center{text-align:center}
+  /* the website IS the hero */
+  .heroframe{position:relative;border-radius:20px;overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow);cursor:pointer;background:#fff;margin:6px 0 8px}
+  .heroframe iframe{width:100%;height:420px;border:0;display:block;pointer-events:none;background:#fff}
+  .heroframe .open{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(0deg,rgba(28,25,23,.78),transparent);color:#fff;font-weight:700;font-size:15px;padding:30px 16px 16px;display:flex;align-items:center;justify-content:center;gap:8px}
+  .heroframe:hover .open{background:linear-gradient(0deg,rgba(108,60,224,.85),transparent)}
+  .opennew{display:inline-block;margin:2px 0 26px;color:var(--violet);font-weight:600;font-size:14px;text-decoration:none}
+  .card{background:var(--paper);border:1px solid rgba(231,226,218,.7);border-radius:22px;box-shadow:var(--shadow);padding:26px 22px;margin:16px 0}
+  .card h2{font-size:23px;font-weight:700;letter-spacing:-.01em;margin:0 0 4px}
+  .nextlist{list-style:none;padding:0;margin:14px 0 0;display:flex;flex-direction:column;gap:12px}
+  .nextlist li{display:flex;gap:11px;align-items:flex-start;font-size:15.5px}
+  .nextlist .i{width:28px;height:28px;border-radius:8px;flex:none;display:grid;place-items:center;background:rgba(108,60,224,.1);color:var(--violet)}
+  .reco{display:flex;gap:10px;align-items:flex-start;background:linear-gradient(135deg,rgba(108,60,224,.08),rgba(67,56,202,.05));border:1px solid rgba(108,60,224,.16);border-radius:14px;padding:14px 16px;font-size:15px;margin:8px 0 4px}
+  .reco .s{font-size:18px;flex:none}
+  .toggle{display:flex;justify-content:center;gap:0;margin:18px auto 4px;background:#F1ECE4;border-radius:999px;padding:4px;width:max-content}
+  .toggle button{font:inherit;font-size:13.5px;font-weight:600;border:0;background:none;color:var(--muted);padding:8px 16px;border-radius:999px;cursor:pointer}
+  .toggle button.on{background:#fff;color:var(--text);box-shadow:0 2px 8px -3px rgba(0,0,0,.2)}
+  .toggle .save{color:var(--green);font-weight:700}
+  .plans{display:grid;grid-template-columns:1fr;gap:14px;margin-top:14px}
+  .plan{border:1.5px solid var(--border);border-radius:18px;padding:20px 18px;background:#FCFBFA;position:relative;transition:.18s}
+  .plan.rec{border-color:var(--violet);box-shadow:0 18px 40px -22px rgba(108,60,224,.5);background:#fff}
+  .plan .recbadge{position:absolute;top:-11px;left:18px;background:var(--grad);color:#fff;font-size:10.5px;font-weight:800;letter-spacing:.05em;padding:4px 11px;border-radius:999px}
+  .plan .pname{font-size:19px;font-weight:800}
+  .plan .ptag{font-size:13.5px;color:var(--muted);margin-top:2px}
+  .plan .price{margin:12px 0 2px;font-size:32px;font-weight:800;letter-spacing:-.02em} .plan .price small{font-size:14px;font-weight:600;color:var(--muted)}
+  .plan .launch{font-size:12.5px;color:var(--muted);margin-bottom:12px}
+  .plan ul{list-style:none;padding:0;margin:8px 0 16px;display:flex;flex-direction:column;gap:9px}
+  .plan li{display:flex;gap:9px;font-size:14px;align-items:flex-start} .plan li .c{color:var(--green);flex:none;font-weight:700}
+  .choose{width:100%;font:inherit;font-size:15.5px;font-weight:700;border:0;border-radius:13px;padding:14px;cursor:pointer;background:#fff;border:1.5px solid var(--violet);color:var(--violet);transition:.16s}
+  .plan.rec .choose{background:var(--grad);color:#fff;border:0;box-shadow:0 14px 30px -12px rgba(108,60,224,.6)}
+  .choose:active{transform:scale(.99)}
+  .reassure{text-align:center;color:var(--faint);font-size:13px;margin-top:16px}
+  .changes{text-align:center;margin:22px 0 0} .changes a{color:var(--violet);font-weight:600;font-size:14.5px;cursor:pointer}
+  .est{font-size:10px;font-weight:700;color:#b45309;background:rgba(245,158,11,.16);border-radius:999px;padding:2px 7px;letter-spacing:.03em;vertical-align:middle}
+  /* modal */
+  .ov{position:fixed;inset:0;background:rgba(28,25,23,.55);backdrop-filter:blur(3px);display:none;place-items:center;z-index:30;padding:18px}
+  .ov.on{display:grid}
+  .modal{background:var(--paper);border-radius:22px;max-width:460px;width:100%;padding:28px 24px;box-shadow:var(--shadow);text-align:center;animation:pop .4s cubic-bezier(.18,1.2,.4,1) both}
+  @keyframes pop{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:none}}
+  .modal .seal{width:84px;height:84px;border-radius:50%;background:var(--grad);display:grid;place-items:center;margin:0 auto 12px;color:#fff;font-size:40px}
+  .modal h3{font-size:24px;margin:6px 0 6px} .modal p{color:var(--muted);font-size:15px;margin:0 0 8px}
+  .modal .x{margin-top:16px;background:none;border:1.5px solid var(--border);border-radius:12px;padding:11px 18px;font:inherit;font-weight:600;color:var(--muted);cursor:pointer}
+  .modal .go{width:100%;margin-top:14px;background:var(--grad);color:#fff;border:0;border-radius:13px;padding:14px;font:inherit;font-size:15.5px;font-weight:700;cursor:pointer}
+  /* the pause — they become an owner here */
+  .moment{margin:30px 0;border-radius:24px;background:var(--grad);color:#fff;text-align:center;padding:54px 26px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .moment::after{content:'';position:absolute;inset:0;background:radial-gradient(420px 260px at 80% -10%,rgba(255,255,255,.18),transparent 60%);pointer-events:none}
+  .moment .mt{font-size:27px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin:0 auto;max-width:440px;position:relative}
+  .moment .mcta{display:inline-block;margin-top:22px;background:#fff;color:var(--indigo);font-weight:700;font-size:15.5px;text-decoration:none;padding:14px 26px;border-radius:13px;position:relative;cursor:pointer}
+  @media(max-width:560px){ h1{font-size:30px} .heroframe iframe{height:300px} .wrap{padding:18px 14px 70px} .moment{padding:44px 20px} .moment .mt{font-size:23px} }
+  @media(min-width:760px){ .plans{grid-template-columns:repeat(3,1fr)} .plan.rec{transform:translateY(-6px)} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar"><img src="https://unveiled.pro/sphere-core.png" alt=""><b>UNVEILED</b></div>
+
+  <div class="center">
+    <span class="badge">MADE JUST FOR YOU</span>
+    <h1 id="h1">Meet your new <span class="v">website.</span></h1>
+    <p class="sub" id="sub">We made something we think you're going to love. Take a look around.</p>
+    <p class="hand" id="note">Tap it to explore the live site ✦</p>
+  </div>
+
+  <!-- the website IS the hero -->
+  <div class="heroframe" id="hero" onclick="openSite()">
+    <iframe id="pv" src="about:blank" scrolling="no" tabindex="-1" title="Your website preview"></iframe>
+    <div class="open">↗ Tap to explore your live website</div>
+  </div>
+  <div class="center"><a class="opennew" id="opena" href="#" target="_blank" rel="noopener">Open it in a new tab →</a></div>
+
+  <!-- the pause: a five-second moment where they become an owner -->
+  <div class="moment">
+    <p class="mt" id="momenttext">Imagine your business looking like this tomorrow.</p>
+    <a class="mcta" onclick="makeItReal()">Let's make it real ↓</a>
+  </div>
+
+  <!-- continue the journey (not a sales page) -->
+  <div class="card">
+    <h2>Love what you see? Here's what happens next…</h2>
+    <ul class="nextlist">
+      <li><span class="i">✎</span> We'll personalize every detail <b>with</b> you.</li>
+      <li><span class="i">🎨</span> We'll refine the design until it's exactly right.</li>
+      <li><span class="i">🌐</span> We'll connect your domain and handle the tech.</li>
+      <li><span class="i">🔍</span> We'll optimize it for Google &amp; AI search.</li>
+      <li><span class="i">🚀</span> We'll launch everything for you — and keep improving it.</li>
+    </ul>
+    <p class="reassure" style="margin-top:16px;text-align:left">You're not buying a finished file — you're getting a team that takes care of all of it. <b>We'll handle it.</b></p>
+  </div>
+
+  <!-- guided recommendation + packages (DATA-DRIVEN; numbers are placeholders) -->
+  <div class="card" id="plancard">
+    <h2>Choose how we keep helping you</h2>
+    <div class="reco" id="reco"><span class="s">✨</span><span id="recotext">Loading your recommendation…</span></div>
+    <div class="toggle"><button id="tm" class="on" onclick="setBilling('monthly')">Monthly</button><button id="ta" onclick="setBilling('annual')">Annual <span class="save">· save 2 months</span></button></div>
+    <div class="plans" id="plans"></div>
+    <p class="reassure">Change or cancel anytime. We earn your business every month. <span class="est">placeholder pricing</span></p>
+    <div class="changes"><a onclick="openChanges()">Want a few changes first?</a></div>
+  </div>
+</div>
+
+<div class="ov" id="ov"><div class="modal" id="modalbox"></div></div>
+
+<script>
+  /* ---------- params (safe display data passed by the reveal email; no PII fetch) ---------- */
+  function param(n){ try{return new URLSearchParams(location.search).get(n)||'';}catch(e){return '';} }
+  var LEAD=param('lead'), BIZ=param('biz')||'your business', PREVIEW=param('preview')||param('url')||'', INDUSTRY=(param('industry')||'').toLowerCase();
+  if(BIZ && BIZ!=='your business'){ document.getElementById('h1').innerHTML = esc(BIZ)+", meet your new <span class=\"v\">website.</span>"; }
+  (function(){ var pv=document.getElementById('pv'), a=document.getElementById('opena');
+    if(PREVIEW){ pv.src=PREVIEW; a.href=PREVIEW; } else { document.getElementById('hero').style.display='none'; document.querySelector('.opennew').style.display='none'; } })();
+  function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function openSite(){ if(PREVIEW) window.open(PREVIEW,'_blank','noopener'); }
+
+  /* ---------- PACKAGE ENGINE — fully data-driven & swappable. Edit data, not the flow. ---------- */
+  /* Names, prices, launch fees, annual, benefits, recommendation rules are all config.
+     Replace these placeholders (or load from service_packages later) without touching the experience. */
+  var BILLING='monthly';
+  var PACKAGES=[
+    { id:'presence', name:'Presence', tagline:'Look professional & get found',
+      monthly:97, annualMonthly:80, launch:295,
+      outcomes:['Your site live, secure & always current','Show up when locals search for you','Click-to-call & easy contact'] },
+    { id:'growth', name:'Growth', tagline:'Turn your website into customers', recommendedDefault:true, badge:'Most popular',
+      monthly:197, annualMonthly:164, launch:0,
+      outcomes:['Everything in Presence','Active SEO + AI-search discoverability','Online booking / lead capture','Monthly growth recommendations','~3 updates every month'] },
+    { id:'partner', name:'Partner', tagline:'Your full digital team',
+      monthly:397, annualMonthly:330, launch:0,
+      outcomes:['Everything in Growth','Content & posts created for you','Advanced SEO + a dedicated growth plan','Concierge support','We refine freely within scope'] }
+  ];
+  // recommendation logic = data-driven rules; first match wins, else default.
+  var RECO_RULES=[
+    { when:function(ctx){ return /salon|spa|barber|clinic|dental|fitness|restaurant|cafe|law|realtor|contractor/.test(ctx.industry); }, pick:'growth',
+      why:function(ctx){ return "you're a local, appointment-driven business — Growth gets you found and turns visitors into booked customers."; } },
+    { when:function(ctx){ return /agency|studio|consult|tech|saas|ecommerce|shop|store/.test(ctx.industry); }, pick:'partner',
+      why:function(){ return "you're in a competitive space — Partner gives you content + advanced SEO and a team driving growth."; } }
+  ];
+  function recommend(ctx){
+    for(var i=0;i<RECO_RULES.length;i++){ if(RECO_RULES[i].when(ctx)) return {id:RECO_RULES[i].pick, why:RECO_RULES[i].why(ctx)}; }
+    var def=PACKAGES.find(function(p){return p.recommendedDefault;})||PACKAGES[0];
+    return {id:def.id, why:"it's the right balance for most businesses — everything you need to launch professionally and keep growing."};
+  }
+  var REC=recommend({industry:INDUSTRY, biz:BIZ});
+  function priceOf(p){ return BILLING==='annual'? p.annualMonthly : p.monthly; }
+  function money(n){ return '$'+(Number(n)||0).toLocaleString(); }
+
+  function renderReco(){
+    var r=PACKAGES.find(function(p){return p.id===REC.id;})||PACKAGES[0];
+    document.getElementById('recotext').innerHTML='For <b>'+esc(BIZ)+'</b>, I’d recommend <b>'+esc(r.name)+'</b> — '+esc(REC.why);
+  }
+  function renderPlans(){
+    var box=document.getElementById('plans'); box.innerHTML='';
+    PACKAGES.forEach(function(p){
+      var rec=(p.id===REC.id);
+      var el=document.createElement('div'); el.className='plan'+(rec?' rec':'');
+      el.innerHTML=(rec?'<span class="recbadge">RECOMMENDED FOR YOU</span>':(p.badge?'<span class="recbadge" style="background:#78716C">'+esc(p.badge)+'</span>':''))+
+        '<div class="pname">'+esc(p.name)+'</div><div class="ptag">'+esc(p.tagline)+'</div>'+
+        '<div class="price">'+money(priceOf(p))+'<small>/mo</small></div>'+
+        '<div class="launch">'+(p.launch>0?('+ '+money(p.launch)+' one-time launch'):'Launch included')+(BILLING==='annual'?' · billed yearly':'')+'</div>'+
+        '<ul>'+p.outcomes.map(function(o){return '<li><span class="c">✓</span>'+esc(o)+'</li>';}).join('')+'</ul>'+
+        '<button class="choose" onclick="choose(\''+p.id+'\')">Choose '+esc(p.name)+'</button>';
+      box.appendChild(el);
+    });
+  }
+  function setBilling(b){ BILLING=b; document.getElementById('tm').classList.toggle('on',b==='monthly'); document.getElementById('ta').classList.toggle('on',b==='annual'); renderPlans(); }
+
+  /* ---------- commit (payment + lead write are wired via a secure Edge Function later) ---------- */
+  function choose(id){
+    // One continuous journey: Reveal → (secure payment) → Welcome Experience.
+    // TODO(secure backend): Square checkout for {lead:LEAD, package:id, billing:BILLING} via Edge Function;
+    // on success redirect to the Welcome Experience below. For now we continue straight through.
+    var q='/app?welcome=1&biz='+encodeURIComponent(BIZ)+'&package='+encodeURIComponent(id)+(BILLING?('&billing='+BILLING):'')+(LEAD?('&lead='+encodeURIComponent(LEAD)):'');
+    location.href=q;
+  }
+  function openChanges(){
+    showModal('<div class="seal" style="font-size:32px">💜</div><h3>We’d love to personalize it with you</h3>'+
+      '<p>We’re so glad you’re excited about your website. Once you join, you get our full white-glove onboarding — we’ll refine <b>every</b> detail together until it’s ready to launch.</p>'+
+      '<button class="go" onclick="closeModal()">Sounds great — show me the options</button>');
+  }
+  function makeItReal(){ var c=document.getElementById('plancard'); if(c) c.scrollIntoView({behavior:'smooth',block:'start'}); }
+  function showModal(html){ document.getElementById('modalbox').innerHTML=html; document.getElementById('ov').classList.add('on'); }
+  function closeModal(){ document.getElementById('ov').classList.remove('on'); }
+  document.getElementById('ov').addEventListener('click',function(e){ if(e.target.id==='ov') closeModal(); });
+
+  if(BIZ && BIZ!=='your business'){ document.getElementById('momenttext').innerHTML='Imagine '+esc(BIZ)+' looking like this tomorrow.'; }
+  renderReco(); renderPlans();
+</script>
+</body>
+</html>

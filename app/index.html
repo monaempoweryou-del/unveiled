@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Your UNVEILED workspace</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="https://unveiled.pro/sphere-core.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root{--cream:#FAF8F5;--paper:#fff;--violet:#6C3CE0;--violet-l:#8B5CF6;--indigo:#4338CA;--text:#1C1917;--muted:#78716C;--faint:#A8A29E;--border:#E7E2DA;--green:#10B981;
+    --grad:linear-gradient(135deg,#6C3CE0,#4338CA);--shadow:0 50px 110px -42px rgba(67,32,160,.34),0 14px 40px -28px rgba(67,32,160,.16)}
+  *{box-sizing:border-box} html,body{margin:0}
+  body{font-family:'Space Grotesk',-apple-system,BlinkMacSystemFont,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.55;
+    background:radial-gradient(800px 520px at 88% -8%,rgba(139,92,246,.16),transparent 60%),radial-gradient(680px 520px at -5% 108%,rgba(99,102,241,.12),transparent 55%),var(--cream);min-height:100dvh}
+  .wrap{max-width:680px;margin:0 auto;padding:20px 16px 80px}
+  .top{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+  .top img{width:28px;height:28px}.top b{font-weight:700;letter-spacing:.2em;font-size:15px}.top .biz{margin-left:auto;font-size:13px;color:var(--muted);font-weight:600}
+  h1{font-size:30px;line-height:1.08;letter-spacing:-.02em;font-weight:700;margin:6px 0 8px} h1 .v{color:var(--violet)}
+  .lead{font-size:16px;color:var(--muted);margin:0 0 18px;max-width:520px}
+  .hand{font-family:'Caveat',cursive;font-size:21px;color:var(--violet);margin:4px 0 16px}
+  .card{background:var(--paper);border:1px solid rgba(231,226,218,.7);border-radius:20px;box-shadow:var(--shadow);padding:22px 20px;margin:14px 0}
+  .sec{display:flex;align-items:center;gap:8px;margin:24px 4px 10px} .sec h2{font-size:14px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0} .sec .c{margin-left:auto;font-size:12px;font-weight:700;color:var(--violet)}
+  /* progress steps */
+  .step{display:flex;gap:13px;padding:13px 0;border-bottom:1px solid var(--border)} .step:last-child{border-bottom:0}
+  .step .dot{width:26px;height:26px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:13px;font-weight:800}
+  .step.done .dot{background:rgba(16,185,129,.15);color:var(--green)} .step.active .dot{background:var(--grad);color:#fff} .step.next .dot{background:#F1ECE4;color:var(--faint)}
+  .step .lbl{font-weight:700;font-size:15px} .step.next .lbl{color:var(--muted)} .step .det{font-size:13px;color:var(--muted);margin-top:2px}
+  .step.active .lbl::after{content:' · in progress';color:var(--violet);font-weight:600;font-size:12.5px}
+  .spin{width:13px;height:13px;border:2px solid rgba(255,255,255,.5);border-top-color:#fff;border-radius:50%;display:inline-block;animation:sp .7s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
+  /* action required */
+  .act{border:1.5px solid rgba(108,60,224,.25);border-radius:16px;padding:16px;margin-bottom:12px;background:linear-gradient(135deg,rgba(108,60,224,.05),#fff)}
+  .act .at{font-weight:800;font-size:15.5px;display:flex;align-items:center;gap:8px}
+  .act .aw{font-size:13.5px;color:var(--muted);margin:5px 0 12px}
+  .act .arow{display:flex;gap:8px;flex-wrap:wrap}
+  .btn{font:inherit;font-size:14px;font-weight:700;border-radius:12px;padding:11px 16px;cursor:pointer;border:1.5px solid var(--border);background:#fff;color:var(--text);-webkit-tap-highlight-color:transparent;transition:.15s}
+  .btn.pri{background:var(--grad);color:#fff;border:0;box-shadow:0 12px 26px -12px rgba(108,60,224,.55)} .btn:active{transform:scale(.98)}
+  .empty{color:var(--muted);font-size:14.5px;text-align:center;padding:18px}
+  .reassure{font-size:13.5px;color:var(--muted);text-align:center;margin-top:14px}
+  .princip{display:flex;gap:10px;align-items:center;background:rgba(108,60,224,.06);border:1px solid rgba(108,60,224,.14);border-radius:14px;padding:13px 15px;font-size:14px;font-weight:600;color:var(--indigo);margin-top:16px}
+  /* welcome */
+  #welcome{text-align:center;padding-top:20px}
+  #welcome .seal{width:96px;height:96px;border-radius:50%;background:var(--grad);display:grid;place-items:center;margin:8px auto 12px;color:#fff;font-size:46px;box-shadow:0 26px 60px -20px rgba(108,60,224,.55);animation:pop .55s cubic-bezier(.18,1.25,.4,1) both}
+  @keyframes pop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:scale(1)}}
+  #welcome input{width:100%;font:inherit;font-size:16px;background:#FCFBFA;border:1.5px solid var(--border);border-radius:12px;padding:14px 15px;margin:8px 0;outline:none}
+  #welcome input:focus{border-color:var(--violet-l);background:#fff;box-shadow:0 0 0 4px rgba(139,92,246,.12)}
+  #welcome .big{width:100%;background:var(--grad);color:#fff;border:0;border-radius:13px;padding:15px;font:inherit;font-size:16px;font-weight:700;cursor:pointer;margin-top:6px}
+  .hide{display:none}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#1C1917;color:#fff;font-size:14px;font-weight:600;padding:12px 18px;border-radius:999px;box-shadow:0 16px 40px -12px rgba(0,0,0,.5);opacity:0;transition:.25s;z-index:40}
+  .toast.on{opacity:1}
+  @media(max-width:560px){ h1{font-size:26px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><img src="https://unveiled.pro/sphere-core.png" alt=""><b>UNVEILED</b><span class="biz" id="bizlbl"></span></div>
+
+  <!-- ===== WELCOME (post-payment, one continuous experience) ===== -->
+  <div id="welcome" class="hide">
+    <div class="seal">✓</div>
+    <h1 id="wh1">Welcome to the team. <span class="v">🎉</span></h1>
+    <p class="lead" style="margin:0 auto 6px;font-weight:600;color:var(--text)">From this point on, you're not doing this alone.</p>
+    <p class="lead" style="margin:0 auto 14px">This is where the white-glove begins. It's the same app you've had since day one — now it quietly unlocks your full workspace. Nothing new to install, nothing to fill out.</p>
+    <div class="card" style="text-align:left">
+      <label style="font-size:13px;font-weight:700;color:var(--muted)">Your secure sign-in</label>
+      <input id="wemail" type="email" placeholder="you@business.com" autocomplete="email">
+      <button class="big" onclick="sendLink()">Send my secure sign-in link →</button>
+      <p class="reassure" style="margin-top:12px">No password to remember — we'll email you a one-tap secure link. (Passwordless, for your safety.)</p>
+    </div>
+    <p class="reassure"><a href="#" onclick="enterApp();return false;" style="color:var(--violet);font-weight:600">Continue to your workspace →</a></p>
+  </div>
+
+  <!-- ===== DASHBOARD (confidence-first) — serves both the project companion (pre-payment) and the portal (after) ===== -->
+  <div id="dash" class="hide">
+    <h1 id="dh1">Here's where your website stands.</h1>
+    <p class="hand" id="dhand">You focus on your business — we'll handle the rest ✦</p>
+
+    <!-- opening the app should always feel like progress (something got better) -->
+    <div class="card hide" id="latest" style="background:linear-gradient(135deg,rgba(16,185,129,.08),#fff);border-color:rgba(16,185,129,.25)">
+      <div style="font-weight:800;font-size:14px;color:var(--green);letter-spacing:.02em">✨ SINCE YOU LAST OPENED</div>
+      <p id="latesttext" style="font-size:15px;margin:6px 0 0"></p>
+    </div>
+
+    <!-- companion-only: why this app makes their experience easier (benefit-first, never "we want you to install it") -->
+    <div class="card hide" id="companionintro" style="background:linear-gradient(135deg,rgba(108,60,224,.06),#fff)">
+      <div style="font-weight:800;font-size:16px;margin-bottom:4px">📲 Your project, in your pocket</div>
+      <p style="font-size:14px;color:var(--muted);margin:0 0 10px">No need to keep checking your email — everything about your website lives right here.</p>
+      <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;font-size:14px">
+        <li>✓ Follow your project in real time</li>
+        <li>✓ Get notified the moment your website is ready</li>
+        <li>✓ Message your team anytime</li>
+        <li>✓ Review &amp; approve with one tap</li>
+      </ul>
+    </div>
+
+    <div class="sec" id="actsec"><h2>⚡ Action needed from you</h2><span class="c" id="actc"></span></div>
+    <div class="card" id="actwrap"></div>
+
+    <div class="sec" id="stepsec"><h2>Your website</h2></div>
+    <div class="card" id="steps"></div>
+
+    <!-- growth-as-partner (post-launch): observation → offer, never "buy another service" -->
+    <div class="hide" id="growthcard">
+      <div class="sec"><h2>💜 We're looking out for you</h2></div>
+      <div class="card">
+        <p style="font-size:15px;margin:0 0 6px"><b>We noticed people near you searching for "balayage Austin."</b></p>
+        <p style="font-size:14px;color:var(--muted);margin:0 0 12px">We'd love to help you capture that opportunity with a dedicated page — we'll take care of it. No pressure, only when you're ready.</p>
+        <button class="btn pri" onclick="showToast('We\\'ll put a plan together and check with you ✓')">Tell me more</button>
+      </div>
+    </div>
+
+    <div class="princip">🤝 You focus on your business. We'll handle the technology.</div>
+    <p class="reassure" id="lastnote">We're already working on it — we'll let you know the moment there's progress.</p>
+    <div id="msgteam" class="hide" style="text-align:center;margin-top:14px"><button class="btn" onclick="showToast('Your team will reply right here ✓')">💬 Message your team</button></div>
+  </div>
+</div>
+
+<!-- ===== LAUNCH CELEBRATION (graduation) ===== -->
+<div id="celebrate" class="hide" style="position:fixed;inset:0;background:rgba(28,25,23,.6);backdrop-filter:blur(4px);display:grid;place-items:center;z-index:50;padding:20px">
+  <div style="background:var(--paper);border-radius:24px;max-width:440px;width:100%;padding:34px 26px;text-align:center;box-shadow:var(--shadow);animation:pop .55s cubic-bezier(.18,1.25,.4,1) both">
+    <div style="font-size:56px;line-height:1">🎉</div>
+    <h1 style="font-size:28px;margin:8px 0 6px">You're officially live.</h1>
+    <p class="lead" style="margin:0 auto 16px">Your business has a new home on the internet. Congratulations — this is yours.</p>
+    <button class="btn pri" style="width:100%" onclick="closeCelebrate()">See it live →</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+  function param(n){ try{return new URLSearchParams(location.search).get(n)||'';}catch(e){return '';} }
+  function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  var BIZ=param('biz')||'your business', PACKAGE=param('package')||'', EMAIL=param('email')||'';
+  document.getElementById('bizlbl').textContent=BIZ;
+  document.getElementById('wh1').innerHTML='Welcome to the team, '+esc(BIZ)+'. <span class="v">🎉</span>';
+  document.getElementById('dh1').innerHTML=esc(BIZ)+" — here's where your website stands.";
+  if(EMAIL) document.getElementById('wemail').value=EMAIL;
+
+  /* ---------- MODE ---------- one app, evolving with the relationship.
+     companion = before payment (project companion) · portal = after payment · launched = celebration */
+  var MODE = param('launched')==='1' ? 'launched'
+           : (param('welcome')==='1' || PACKAGE) ? 'portal'
+           : 'companion';
+
+  /* ---------- STATE (data-driven; real customer data wires in via customer-scoped auth later) ---------- */
+  /* Progress shown as a STORY, never an internal process. Steps speak the customer's language. */
+  var PORTAL_STEPS = [
+    {lbl:'We learned about your business', det:'We studied your brand, market, and customers.', status:'done'},
+    {lbl:'We crafted your website', det:'Designed around your real brand — never a template.', status:'done'},
+    {lbl:"We're making it yours", det:"We're refining every detail with you.", status:'active'},
+    {lbl:'Getting ready to launch', det:'We connect your domain and handle the technical setup.', status:'next'},
+    {lbl:'Launch day', det:'We take your business live for the world.', status:'next'}
+  ];
+  var COMPANION_STEPS = [
+    {lbl:'Request received', det:"We've got everything — your project is assigned to our team.", status:'done'},
+    {lbl:"We're learning about your business", det:'Studying your brand, competitors, and customers.', status:'active'},
+    {lbl:'Your website is being crafted', det:'Built around your real brand — never a template.', status:'next'},
+    {lbl:'Your preview will be ready', det:"We'll notify you the moment it's ready to see.", status:'next'}
+  ];
+  var LAUNCHED_STEPS = PORTAL_STEPS.map(function(s){return {lbl:s.lbl,det:s.det,status:'done'};});
+
+  var STATE = {
+    steps: MODE==='companion'? COMPANION_STEPS : MODE==='launched'? LAUNCHED_STEPS : PORTAL_STEPS,
+    // Onboarding asks appear ONLY after payment, and ONLY when we're ready to use them (concierge, not a wizard).
+    actions: MODE==='portal' ? [
+      {id:'domain', title:'Do you already have a domain?', why:"We're almost ready to connect your website. If you have one we'll connect it; if not, we'll help you choose the perfect one — and handle all the setup.", type:'choice',
+        options:['Yes, I have one','No — help me choose']},
+      {id:'gbp', title:'Connect your Google Business Profile', why:"We're ready to optimize how you show up on Google. One secure tap — we do the rest. We never need your password.", type:'oauth', cta:'Connect Google'}
+    ] : []
+  };
+
+  function showToast(m){ var t=document.getElementById('toast'); t.textContent=m; t.classList.add('on'); setTimeout(function(){t.classList.remove('on');},2600); }
+  function renderSteps(){
+    document.getElementById('steps').innerHTML = STATE.steps.map(function(s){
+      var icon = s.status==='done'?'✓': s.status==='active'?'<span class="spin"></span>':'•';
+      return '<div class="step '+s.status+'"><div class="dot">'+icon+'</div><div><div class="lbl">'+esc(s.lbl)+'</div><div class="det">'+esc(s.det)+'</div></div></div>';
+    }).join('');
+  }
+  function renderActions(){
+    var wrap=document.getElementById('actwrap'), open=STATE.actions.filter(function(a){return !a.done;});
+    document.getElementById('actc').textContent = open.length? (open.length+' to do') : '';
+    if(!open.length){ wrap.innerHTML='<div class="empty">🎉 Nothing needed right now — we\'re on it. We\'ll only ask when we truly need something.</div>'; document.getElementById('lastnote').textContent='All clear on your side — we\'re actively working on your website.'; return; }
+    wrap.innerHTML = open.map(function(a){
+      var btns;
+      if(a.type==='choice'){ btns=a.options.map(function(o){return '<button class="btn'+(o.indexOf('Yes')===0?' pri':'')+'" onclick="doAction(\''+a.id+'\',this)">'+esc(o)+'</button>';}).join(''); }
+      else if(a.type==='oauth'){ btns='<button class="btn pri" onclick="doAction(\''+a.id+'\',this)">'+esc(a.cta||'Connect')+'</button>'; }
+      else { btns='<button class="btn pri" onclick="doAction(\''+a.id+'\',this)">'+esc(a.cta||'Do it')+'</button>'; }
+      return '<div class="act"><div class="at">⚡ '+esc(a.title)+'</div><div class="aw">'+esc(a.why)+'</div><div class="arow">'+btns+'</div></div>';
+    }).join('');
+  }
+  function doAction(id, btn){
+    // TODO(secure backend): real OAuth grant / domain flow / Supabase write. Placeholder completes the item.
+    var a=STATE.actions.find(function(x){return x.id===id;}); if(a) a.done=true;
+    showToast('Perfect — we\'ll take it from here ✓');
+    renderActions();
+  }
+  function sendLink(){
+    var e=document.getElementById('wemail').value.trim();
+    if(e.indexOf('@')<1){ showToast('Enter your email and we\'ll send your link.'); return; }
+    // TODO(secure backend): Supabase passwordless OTP magic link. Placeholder → enter app.
+    showToast('Secure sign-in link sent ✓');
+    setTimeout(enterApp, 700);
+  }
+  function show(id,on){ document.getElementById(id).classList.toggle('hide',!on); }
+  // representative "what got better since last open" — real project events wire in with customer-scoped data.
+  function setLatest(txt){ var t=document.getElementById('latesttext'); if(t){ t.textContent=txt; show('latest',true); } }
+  function enterApp(){
+    document.getElementById('welcome').classList.add('hide');
+    document.getElementById('dash').classList.remove('hide');
+    // mode-specific framing
+    if(MODE==='companion'){
+      document.getElementById('dh1').innerHTML=esc(BIZ)+" — we're on it. ✨";
+      document.getElementById('dhand').textContent='Your project companion ✦';
+      show('companionintro',true); show('actsec',false); show('actwrap',false); show('msgteam',true);
+      // every open feels like progress (Constitution §3)
+      setLatest("While you were running your business, we matched your brand colors and gathered photos of your work.");
+      // nothing needed from them → reassure plainly (Constitution §2)
+      document.getElementById('lastnote').textContent="Relax — we're taking care of it. We'll notify you the moment your website is ready.";
+    } else if(MODE==='launched'){
+      document.getElementById('dh1').innerHTML=esc(BIZ)+" is live. 🎉";
+      document.getElementById('dhand').textContent='Your digital partner ✦';
+      show('actsec',false); show('actwrap',false); show('growthcard',true); show('msgteam',true);
+      setLatest("While you were running your business, we improved your site's speed and how you show up on Google.");
+      document.getElementById('lastnote').textContent='Your website is live and we keep improving it for you.';
+    } else { // portal
+      setLatest("While you were running your business, we refined your homepage and prepared your launch.");
+    }
+    renderSteps(); if(MODE==='portal'){ renderActions(); } window.scrollTo(0,0);
+    if(MODE==='launched'){ setTimeout(function(){ show('celebrate',true); confetti(); },400); }
+  }
+  function closeCelebrate(){ show('celebrate',false); }
+  function confetti(){
+    var C=['#6C3CE0','#4338CA','#8B5CF6','#10B981','#F59E0B'];
+    for(var i=0;i<70;i++){ (function(){ var d=document.createElement('div');
+      d.style.cssText='position:fixed;z-index:60;top:-12px;width:9px;height:9px;border-radius:2px;pointer-events:none;'+
+        'left:'+Math.random()*100+'vw;background:'+C[i%C.length]+';opacity:.95;'+
+        'transform:rotate('+Math.random()*360+'deg)';
+      document.body.appendChild(d);
+      var fall=2200+Math.random()*1600, drift=(Math.random()*2-1)*120;
+      d.animate([{transform:d.style.transform,top:'-12px'},{top:'105vh',left:'calc('+d.style.left+' + '+drift+'px)'}],
+        {duration:fall,easing:'cubic-bezier(.2,.6,.4,1)'});
+      setTimeout(function(){d.remove();},fall);
+    })(); }
+  }
+
+  /* entry: ?welcome=1 (just paid) → welcome sequence; otherwise → dashboard (companion / portal / launched) */
+  if(MODE==='portal' && param('welcome')==='1'){ document.getElementById('welcome').classList.remove('hide'); }
+  else { enterApp(); }
+</script>
+</body>
+</html>
