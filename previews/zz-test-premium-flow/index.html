@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>ZZ Test Premium Flow | Handmade Tacos & Fresh Salsa Bar in Sacramento</title>
+  <meta name="description" content="Sacramento's favorite family taco shop. Handmade tortillas, a fresh salsa bar, and real flavors made with love. Serving locals and the downtown lunch crowd daily.">
+  <link rel="canonical" href="https://unveiled.pro/previews/zz-test-premium-flow/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ZZ Test Premium Flow | Handmade Tacos in Sacramento">
+  <meta property="og:description" content="Family-owned taco shop in Sacramento. Handmade tortillas, a vibrant salsa bar, and bold flavors served fresh every day.">
+  <meta property="og:url" content="https://unveiled.pro/previews/zz-test-premium-flow/">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=1200&q=80">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ZZ Test Premium Flow | Handmade Tacos in Sacramento">
+  <meta name="twitter:description" content="Family-owned taco shop in Sacramento. Handmade tortillas, a vibrant salsa bar, and bold flavors served fresh every day.">
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=1200&q=80">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌮</text></svg>">
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "ZZ Test Premium Flow",
+    "description": "Family-owned taco shop in Sacramento known for handmade tortillas and a fresh salsa bar. Serving locals and the downtown lunch crowd.",
+    "url": "https://unveiled.pro/previews/zz-test-premium-flow/",
+    "image": "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=1200&q=80",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Sacramento",
+      "addressRegion": "CA",
+      "addressCountry": "US"
+    },
+    "servesCuisine": "Mexican",
+    "priceRange": "$$",
+    "openingHours": ["Mo-Fr 10:00-21:00", "Sa-Su 09:00-22:00"]
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --clay:    #C0392B;
+      --warm:    #E8673A;
+      --gold:    #F4A736;
+      --cream:   #FDF6EC;
+      --bark:    #2C1A0E;
+      --muted:   #7A5C46;
+      --white:   #FFFFFF;
+      --radius:  14px;
+      --shadow:  0 4px 28px rgba(44,26,14,.13);
+      --trans:   .25s ease;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: var(--cream);
+      color: var(--bark);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.5rem;
+      background: rgba(253,246,236,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(244,167,54,.25);
+    }
+    .nav-logo {
+      font-size: 1.35rem; font-weight: 700; color: var(--clay);
+      text-decoration: none; letter-spacing: -.5px;
+    }
+    .nav-logo span { color: var(--warm); }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+    .nav-links a {
+      font-family: system-ui, sans-serif; font-size: .88rem; font-weight: 600;
+      color: var(--bark); text-decoration: none; letter-spacing: .03em;
+      transition: color var(--trans);
+    }
+    .nav-links a:hover { color: var(--warm); }
+    .nav-cta {
+      background: var(--clay); color: var(--white) !important;
+      padding: .45rem 1.1rem; border-radius: 50px;
+      transition: background var(--trans) !important;
+    }
+    .nav-cta:hover { background: var(--warm) !important; color: var(--white) !important; }
+
+    @media (max-width: 640px) {
+      .nav-links { gap: .9rem; }
+      .nav-links li:not(:last-child):not(:nth-last-child(2)) { display: none; }
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100svh;
+      padding: 7rem 1.5rem 4rem;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      text-align: center;
+      background:
+        linear-gradient(160deg, rgba(44,26,14,.62) 0%, rgba(192,57,43,.45) 100%),
+        url('https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=1400&q=80') center/cover no-repeat;
+      color: var(--white);
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(244,167,54,.2);
+      border: 1px solid rgba(244,167,54,.55);
+      color: var(--gold);
+      font-family: system-ui, sans-serif;
+      font-size: .78rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+      padding: .35rem 1rem; border-radius: 50px; margin-bottom: 1.25rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.4rem, 6vw, 5rem);
+      line-height: 1.1; font-weight: 700;
+      max-width: 780px; margin-bottom: 1.1rem;
+      text-shadow: 0 2px 14px rgba(0,0,0,.35);
+    }
+    .hero h1 em { font-style: normal; color: var(--gold); }
+    .hero p {
+      font-size: clamp(1rem, 2.2vw, 1.25rem);
+      max-width: 540px; opacity: .9; margin-bottom: 2.2rem;
+      font-family: system-ui, sans-serif; font-weight: 400;
+    }
+    .btn-group { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+    .btn {
+      display: inline-block; text-decoration: none;
+      font-family: system-ui, sans-serif; font-size: .95rem; font-weight: 700;
+      padding: .85rem 2rem; border-radius: 50px;
+      transition: transform var(--trans), box-shadow var(--trans), background var(--trans);
+      cursor: pointer; border: none;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.22); }
+    .btn-primary { background: var(--warm); color: var(--white); }
+    .btn-primary:hover { background: var(--clay); }
+    .btn-outline {
+      background: transparent; color: var(--white);
+      border: 2px solid rgba(255,255,255,.7);
+    }
+    .btn-outline:hover { background: rgba(255,255,255,.12); }
+    .hero-scroll {
+      margin-top: 3rem; font-family: system-ui, sans-serif;
+      font-size: .78rem; letter-spacing: .08em; text-transform: uppercase;
+      opacity: .6; display: flex; flex-direction: column; align-items: center; gap: .4rem;
+    }
+    .hero-scroll svg { animation: bounce 1.6s infinite; }
+    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
+
+    /* ── SECTION SHELL ── */
+    section { padding: 5rem 1.5rem; }
+    .container { max-width: 1120px; margin: 0 auto; }
+    .section-label {
+      font-family: system-ui, sans-serif;
+      font-size: .75rem; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--warm);
+      margin-bottom: .6rem;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.9rem);
+      line-height: 1.15; font-weight: 700; color: var(--bark);
+      margin-bottom: .75rem;
+    }
+    .section-sub {
+      font-family: system-ui, sans-serif;
+      font-size: 1.05rem; color: var(--muted); max-width: 540px;
+      margin-bottom: 3rem;
+    }
+
+    /* ── MENU / SERVICES ── */
+    #menu { background: var(--white); }
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 1.75rem;
+    }
+    .menu-card {
+      border-radius: var(--radius); overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform var(--trans), box-shadow var(--trans);
+      background: var(--cream);
+    }
+    .menu-card:hover { transform: translateY(-5px); box-shadow: 0 12px 40px rgba(44,26,14,.18); }
+    .menu-card img { width: 100%; height: 210px; object-fit: cover; display: block; }
+    .menu-body { padding: 1.35rem 1.4rem 1.6rem; }
+    .menu-tag {
+      display: inline-block;
+      font-family: system-ui, sans-serif;
+      font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--warm); margin-bottom: .4rem;
+    }
+    .menu-card h3 { font-size: 1.2rem; color: var(--bark); margin-bottom: .4rem; }
+    .menu-card p { font-family: system-ui, sans-serif; font-size: .88rem; color: var(--muted); }
+    .menu-price {
+      display: block; margin-top: .75rem;
+      font-family: system-ui, sans-serif;
+      font-size: 1rem; font-weight: 700; color: var(--clay);
+    }
+
+    /* ── WHY US ── */
+    #why { background: var(--cream); }
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+    .why-card {
+      background: var(--white); border-radius: var(--radius);
+      padding: 2rem 1.6rem; box-shadow: var(--shadow);
+      border-top: 4px solid var(--gold);
+    }
+    .why-icon { font-size: 2rem; margin-bottom: .9rem; display: block; }
+    .why-card h3 { font-size: 1.1rem; margin-bottom: .5rem; color: var(--bark); }
+    .why-card p { font-family: system-ui, sans-serif; font-size: .88rem; color: var(--muted); }
+
+    /* ── GALLERY ── */
+    #gallery { background: var(--bark); }
+    #gallery .section-label { color: var(--gold); }
+    #gallery .section-title { color: var(--white); }
+    #gallery .section-sub { color: rgba(255,255,255,.65); }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto;
+      gap: 1rem;
+    }
+    .g-item { border-radius: var(--radius); overflow: hidden; }
+    .g-item img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform .4s ease, filter .4s ease;
+    }
+    .g-item:hover img { transform: scale(1.05); filter: brightness(1.08); }
+    .g-item:nth-child(1) { grid-column: span 2; height: 300px; }
+    .g-item:nth-child(2) { height: 300px; }
+    .g-item:nth-child(3) { height: 220px; }
+    .g-item:nth-child(4) { height: 220px; }
+    .g-item:nth-child(5) { grid-column: span 1; height: 220px; }
+    @media (max-width: 640px) {
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .g-item:nth-child(1) { grid-column: span 2; height: 220px; }
+      .g-item:nth-child(n) { height: 160px; }
+    }
+
+    /* ── TESTIMONIALS ── */
+    #love { background: var(--cream); }
+    .review-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 1.5rem;
+    }
+    .review-card {
+      background: var(--white); border-radius: var(--radius);
+      padding: 1.75rem 1.6rem; box-shadow: var(--shadow);
+    }
+    .stars { color: var(--gold); font-size: 1rem; margin-bottom: .75rem; letter-spacing: 2px; }
+    .review-card blockquote {
+      font-size: .96rem; color: var(--bark); margin-bottom: 1.1rem;
+      border: none; padding: 0; font-style: italic;
+    }
+    .reviewer { font-family: system-ui, sans-serif; font-size: .82rem; font-weight: 700; color: var(--muted); }
+
+    /* ── ORDER / CONTACT ── */
+    #order { background: var(--warm); }
+    .order-wrap {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+    }
+    @media (max-width: 780px) { .order-wrap { grid-template-columns: 1fr; } }
+    .order-copy .section-label { color: rgba(255,255,255,.75); }
+    .order-copy .section-title { color: var(--white); }
+    .order-copy .section-sub { color: rgba(255,255,255,.8); max-width: 440px; }
+    .order-form {
+      background: var(--white); border-radius: var(--radius);
+      padding: 2.2rem; box-shadow: 0 8px 40px rgba(44,26,14,.2);
+    }
+    .order-form h3 {
+      font-size: 1.25rem; color: var(--bark); margin-bottom: 1.4rem;
+      font-weight: 700;
+    }
+    .form-row { display: flex; gap: 1rem; }
+    @media (max-width: 480px) { .form-row { flex-direction: column; } }
+    .field { display: flex; flex-direction: column; gap: .35rem; margin-bottom: 1rem; flex: 1; }
+    .field label {
+      font-family: system-ui, sans-serif;
+      font-size: .78rem; font-weight: 700; letter-spacing: .05em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .field input, .field select, .field textarea {
+      padding: .72rem .95rem; border-radius: 8px;
+      border: 1.5px solid #E0CDB8; background: var(--cream);
+      font-family: system-ui, sans-serif; font-size: .93rem; color: var(--bark);
+      transition: border-color var(--trans);
+      outline: none;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      border-color: var(--warm);
+    }
+    .field textarea { resize: vertical; min-height: 90px; }
+    .form-submit {
+      width: 100%; padding: .9rem;
+      background: var(--clay); color: var(--white);
+      font-family: system-ui, sans-serif; font-size: 1rem; font-weight: 700;
+      border: none; border-radius: 50px; cursor: pointer;
+      transition: background var(--trans), transform var(--trans);
+      margin-top: .25rem;
+    }
+    .form-submit:hover { background: var(--bark); transform: translateY(-1px); }
+
+    /* ── INFO PILLS ── */
+    .info-pills { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.75rem; }
+    .pill {
+      display: flex; align-items: center; gap: .45rem;
+      background: rgba(255,255,255,.2);
+      border: 1px solid rgba(255,255,255,.4);
+      border-radius: 50px; padding: .45rem 1rem;
+      font-family: system-ui, sans-serif; font-size: .85rem;
+      font-weight: 600; color: var(--white);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bark); color: rgba(255,255,255,.7);
+      padding: 2.5rem 1.5rem; text-align: center;
+    }
+    .footer-logo {
+      font-family: Georgia, serif; font-size: 1.4rem; font-weight: 700;
+      color: var(--white); margin-bottom: .5rem;
+    }
+    .footer-logo span { color: var(--gold); }
+    footer p { font-family: system-ui, sans-serif; font-size: .84rem; margin-top: .4rem; }
+    .footer-links { display: flex; gap: 1.25rem; justify-content: center; flex-wrap: wrap; margin: 1rem 0; }
+    .footer-links a {
+      font-family: system-ui, sans-serif; font-size: .84rem;
+      color: rgba(255,255,255,.6); text-decoration: none;
+      transition: color var(--trans);
+    }
+    .footer-links a:hover { color: var(--gold); }
+    .divider { width: 40px; height: 3px; background: var(--warm); border-radius: 2px; margin: 1.5rem auto; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#hero">ZZ<span>Tacos</span></a>
+    <ul class="nav-links">
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#why">Our Story</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#order" class="nav-cta">Order Now</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <span class="hero-badge">Sacramento's Favorite Family Taco Shop</span>
+    <h1>Tacos Made With<br><em>Heart and Masa</em></h1>
+    <p>Handmade tortillas pressed fresh daily, a vibrant salsa bar, and family recipes that have been feeding Sacramento for years. This is the real thing.</p>
+    <div class="btn-group">
+      <a href="#order" class="btn btn-primary">Order Online</a>
+      <a href="#menu" class="btn btn-outline">See the Menu</a>
+    </div>
+    <div class="hero-scroll">
+      <span>Scroll to explore</span>
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M12 5v14M5 12l7 7 7-7"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- MENU -->
+  <section id="menu">
+    <div class="container">
+      <p class="section-label">What We Make</p>
+      <h2 class="section-title">Fresh from Our Kitchen<br>to Your Hands</h2>
+      <p class="section-sub">Every item is built around our handmade corn and flour tortillas, pressed and griddled to order.</p>
+
+      <div class="menu-grid">
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?w=600&q=80" alt="Carne Asada Tacos" loading="lazy">
+          <div class="menu-body">
+            <span class="menu-tag">Fan Favorite</span>
+            <h3>Carne Asada Tacos</h3>
+            <p>Marinated skirt steak grilled over mesquite, topped with house pico, cilantro, and white onion on a handmade corn tortilla.</p>
+            <span class="menu-price">From $3.75 each</span>
+          </div>
+        </div>
+
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1615870216519-2f9fa575fa5c?w=600&q=80" alt="Al Pastor Tacos" loading="lazy">
+          <div class="menu-body">
+            <span class="menu-tag">House Special</span>
+            <h3>Al Pastor</h3>
+            <p>Slow-marinated pork with guajillo and achiote, shaved thin and finished with a wedge of fresh pineapple and our charred salsa verde.</p>
+            <span class="menu-price">From $3.75 each</span>
+          </div>
+        </div>
+
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1504544750208-dc0358e63f7f?w=600&q=80" alt="Salsa Bar" loading="lazy">
+          <div class="menu-body">
+            <span class="menu-tag">Complimentary</span>
+            <h3>The Fresh Salsa Bar</h3>
+            <p>Eight house-made salsas, always rotating. Habanero mango, roasted tomato rojo, creamy avocado tomatillo, and more. All free with every order.</p>
+            <span class="menu-price">Free with every taco</span>
+          </div>
+        </div>
+
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1592415486689-125cbbfcbee2?w=600&q=80" alt="Burrito" loading="lazy">
+          <div class="menu-body">
+            <span class="menu-tag">Lunch Special</span>
+            <h3>Family Burrito</h3>
+            <p>A hefty flour tortilla (handmade, naturally) packed with your choice of protein, rice, whole beans, sour cream, and guac.</p>
+            <span class="menu-price">From $11.50</span>
+          </div>
+        </div>
+
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1513456852971-30c0b8199d4d?w=600&q=80" alt="Agua Fresca Drinks" loading="lazy">
+          <div class="menu-body">
+            <span class="menu-tag">Drinks</span>
+            <h3>Agua Frescas</h3>
+            <p>Hibiscus, tamarind, cucumber-lime, and seasonal horchata made in-house every morning. No concentrates, ever.</p>
+            <span class="menu-price">$3.00 / $4.50</span>
+          </div>
+        </div>
+
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&q=80" alt="Catering trays" loading="lazy">
+          <div class="menu-body">
+            <span class="menu-tag">Groups</span>
+            <h3>Taco Trays to Go</h3>
+            <p>Feeding a team lunch or a backyard gathering? Our tray packages include tortillas, protein, toppings, and our full salsa bar in containers.</p>
+            <span class="menu-price">From $45 / tray</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section id="why">
+    <div class="container">
+      <p class="section-label">Why We're Different</p>
+      <h2 class="section-title">Grown in Sacramento,<br>Made by Family</h2>
+      <p class="section-sub">We're not a chain. We're a family that loves feeding people, and it shows in every detail of what we do.</p>
+
+      <div class="why-grid">
+        <div class="why-card">
+          <span class="why-icon">🫓</span>
+          <h3>Handmade Every Morning</h3>
+          <p>Our tortillas are pressed and cooked fresh before we open the doors. No shelf bags, no shortcuts.</p>
+        </div>
+        <div class="why-card">
+          <span class="why-icon">🌶️</span>
+          <h3>Eight Salsas, Always Free</h3>
+          <p>Our salsa bar is a labor of love. From mild to fiery, every batch is made from whole, fresh ingredients daily.</p>
+        </div>
+        <div class="why-card">
+          <span class="why-icon">🏡</span>
+          <h3>Family Owned Since Day One</h3>
+          <p>Three generations of recipes, one kitchen, and a team that knows most of our regulars by name.</p>
+        </div>
+        <div class="why-card">
+          <span class="why-icon">⚡</span>
+          <h3>Built for the Lunch Rush</h3>
+          <p>Downtown Sacramento deserves fast, honest food. We keep the line moving without cutting corners on flavor.</p>
+        </div>
+        <div class="why-card">
+          <span class="why-icon">🥑</span>
+          <h3>Locally Sourced Produce</h3>
+          <p>We source our avocados, tomatoes, and peppers from Sacramento-area farms whenever they're in season.</p>
+        </div>
+        <div class="why-card">
+          <span class="why-icon">📦</span>
+          <h3>Easy Catering and Pickup</h3>
+          <p>Order trays online for office lunches, parties, or events. We'll have everything ready, on time and piping hot.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery">
+    <div class="container">
+      <p class="section-label">A Taste of the Shop</p>
+      <h2 class="section-title">Real Food, Real People</h2>
+      <p class="section-sub">A peek inside ZZ Test Premium Flow, from the griddle to the table.</p>
+
+      <div class="gallery-grid">
+        <div class="g-item">
+          <img src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=900&q=80" alt="Tacos on a wooden board" loading="lazy">
+        </div>
+        <div class="g-item">
+          <img src="https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?w=600&q=80" alt="Carne asada close up" loading="lazy">
+        </div>
+        <div class="g-item">
+          <img src="https://images.unsplash.com/photo-1504544750208-dc0358e63f7f?w=600&q=80" alt="Salsa bowls" loading="lazy">
+        </div>
+        <div class="g-item">
+          <img src="https://images.unsplash.com/photo-1513456852971-30c0b8199d4d?w=600&q=80" alt="Agua fresca drinks" loading="lazy">
+        </div>
+        <div class="g-item">
+          <img src="https://images.unsplash.com/photo-1615870216519-2f9fa575fa5c?w=600&q=80" alt="Al pastor on tortilla" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="love">
+    <div class="container">
+      <p class="section-label">What Sacramento Says</p>
+      <h2 class="section-title">Regulars Don't Lie</h2>
+      <p class="section-sub">We've built our reputation one taco at a time. Here's what a few of our downtown lunch crew have to say.</p>
+
+      <div class="review-grid">
+        <div class="review-card">
+          <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <blockquote>"The handmade tortillas are something else. I've had tacos all over Sacramento and nothing comes close. The salsa bar alone is worth the trip."</blockquote>
+          <span class="reviewer">Maria G. &mdash; Downtown Sacramento</span>
+        </div>
+        <div class="review-card">
+          <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <blockquote>"We order tray catering for our office at least twice a month. The team always has it ready on time and the food is as good as eating in the shop."</blockquote>
+          <span class="reviewer">James K. &mdash; Midtown Office Lunch Regular</span>
+        </div>
+        <div class="review-card">
+          <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <blockquote>"Al pastor with the habanero mango salsa is my standing order. I've introduced at least ten coworkers to this place. They all keep coming back."</blockquote>
+          <span class="reviewer">Rosa T. &mdash; Capitol District</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ORDER / CONTACT -->
+  <section id="order">
+    <div class="container">
+      <div class="order-wrap">
+        <div class="order-copy">
+          <p class="section-label">Online Orders and Catering</p>
+          <h2 class="section-title" style="color:var(--white)">Ready to Order?<br>We're Ready Too.</h2>
+          <p class="section-sub">Place a pickup order, request a catering tray for your next event, or just send us a message. We'll get back to you fast.</p>
+
+          <div class="info-pills">
+            <span class="pill">
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+              Downtown Sacramento, CA
+            </span>
+            <span class="pill">
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              Mon-Fri 10am-9pm
+            </span>
+            <span class="pill">
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              Sat-Sun 9am-10pm
+            </span>
+            <span class="pill">
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 4.07 5.18 2 2 0 0 1 6.07 3h3a2 2 0 0 1 2 1.72c.13 1 .37 1.97.72 2.9a2 2 0 0 1-.45 2.11L10 11.09a16 16 0 0 0 6.91 6.91l1.27-1.27a2 2 0 0 1 2.11-.45c.93.35 1.9.6 2.9.72A2 2 0 0 1 22 16.92z"/></svg>
+              Catering Welcome
+            </span>
+          </div>
+        </div>
+
+        <div class="order-form">
+          <h3>Place a Pickup or Catering Request</h3>
+          <form action="#" method="post">
+            <div class="form-row">
+              <div class="field">
+                <label for="fname">First Name</label>
+                <input type="text" id="fname" name="fname" placeholder="Elena" required>
+              </div>
+              <div class="field">
+                <label for="lname">Last Name</label>
+                <input type="text" id="lname" name="lname" placeholder="Ramirez" required>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" placeholder="elena@example.com" required>
+            </div>
+
+            <div class="field">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" name="phone" placeholder="(916) 555-0199">
+            </div>
+
+            <div class="field">
+              <label for="type">Order Type</label>
+              <select id="type" name="type">
+                <option value="">Select one...</option>
+                <option>Single Pickup Order</option>
+                <option>Office Lunch Tray</option>
+                <option>Party / Event Catering</option>
+                <option>General Question</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="note">Tell Us More</label>
+              <textarea id="note" name="note" placeholder="What are you craving? Date, quantity, anything helpful..."></textarea>
+            </div>
+
+            <button type="submit" class="form-submit">Send My Order Request</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">ZZ<span>Tacos</span></div>
+    <p>ZZ Test Premium Flow &mdash; Sacramento's family taco shop since day one.</p>
+    <div class="divider"></div>
+    <div class="footer-links">
+      <a href="#menu">Menu</a>
+      <a href="#why">Our Story</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#love">Reviews</a>
+      <a href="#order">Order Online</a>
+    </div>
+    <p>Downtown Sacramento, CA &nbsp;|&nbsp; Mon-Fri 10am-9pm &nbsp;|&nbsp; Sat-Sun 9am-10pm</p>
+    <p style="margin-top:.75rem; font-size:.78rem; opacity:.45;">&copy; 2025 ZZ Test Premium Flow. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
