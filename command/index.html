@@ -331,6 +331,12 @@
   .acard-top{display:flex;align-items:center;gap:10px;justify-content:space-between}
   .acard-nm{font-size:16px;font-weight:700;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .acard-mt{font-size:12.5px;color:var(--faint)}
+  .srctag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.2px;padding:2px 7px;border-radius:6px;margin-right:6px;vertical-align:middle}
+  .src-fb{background:rgba(59,89,152,.18);color:#5b7bd4}
+  .src-web{background:rgba(124,58,237,.16);color:#a98bff}
+  .src-he{background:rgba(20,170,170,.18);color:#3ec9c9}
+  .src-out{background:rgba(150,150,170,.16);color:var(--muted)}
+  .src-ig{background:rgba(225,48,108,.18);color:#f06595}
   .acard-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto}
   .acard-acts .btn{padding:10px 14px;font-size:13px;flex:1 1 auto;min-width:110px;text-align:center}
   @media(max-width:560px){
@@ -586,13 +592,18 @@ function triage(l){
   if(s==='LOST') return {color:'muted',emoji:'⚪',label:'Archived',what:'Passed or lost',next:'',reco:'',rank:9};
   return {color:'muted',emoji:'⚪',label:s||'—',what:'',next:'',reco:'',rank:8};
 }
+function srcTag(l){
+  const s=(l.source||'').toLowerCase();
+  const cls = s.startsWith('facebook')?'src-fb' : s==='instagram'?'src-ig' : s==='website-onboarding-he'?'src-he' : s.startsWith('website')||s==='organic-post'?'src-web' : 'src-out';
+  return `<span class="srctag ${cls}">${esc(srcLabel(l.source))}</span>`;
+}
 function triageRow(l){
   const t=triage(l);
   const act = t.act==='approve' ? `<button class="btn good" style="padding:8px 13px;font-size:12.5px;flex:none" onclick="event.stopPropagation();decide('${l.id}','APPROVED',this)">Approve</button>` : '<div class="chev">›</div>';
   return `<div class="trow tb-${t.color}" onclick="location.hash='#c/${l.id}'">
     <div class="tdot d-${t.color}"></div>
     <div class="tmain">
-      <div class="tname">${esc(l.business_name||'Untitled')} <span class="ttag tt-${t.color}">${t.emoji} ${esc(t.label)}</span></div>
+      <div class="tname">${srcTag(l)}${esc(l.business_name||'Untitled')} <span class="ttag tt-${t.color}">${t.emoji} ${esc(t.label)}</span></div>
       <div class="twhat">${esc(t.what)}${t.next?` · <span class="tnext">next: ${esc(t.next)}</span>`:''}</div>
       ${t.reco?`<div class="treco">${esc(t.reco)}</div>`:''}
     </div>${act}</div>`;
@@ -691,12 +702,12 @@ function projStatusList(){
 function goProjects(status){ PROJFILTER=status||'all'; go('allprojects'); }
 function goSource(src){ SRCFILTER=src||'all'; PROJFILTER='all'; go('allprojects'); }
 function srcLabel(s){
-  const m={'outbound':'We found','website-onboarding':'Website','website-onboarding-he':'Hebrew website','facebook':'Facebook ad','facebook-ad':'Facebook ad','manual':'Manual','referral':'Referral'};
+  const m={'outbound':'We found','website-onboarding':'Website','website-onboarding-he':'Hebrew Website','facebook':'Facebook','facebook-ad':'Facebook Ad','facebook-ads':'Facebook Ad','organic-post':'Organic Post','instagram':'Instagram','linkedin':'LinkedIn','google-business':'Google Profile','qr':'QR Code','email-campaign':'Email','referral':'Referral','manual':'Manual'};
   return m[(s||'').toLowerCase()] || (s||'Unknown');
 }
 function srcList(){
   const counts={}; LEADS.forEach(l=>{const s=(l.source||'unknown').toLowerCase(); counts[s]=(counts[s]||0)+1;});
-  const order=['outbound','website-onboarding','website-onboarding-he','facebook'];
+  const order=['outbound','website-onboarding','website-onboarding-he','facebook','facebook-ads','organic-post','instagram','linkedin','google-business','referral','qr','email-campaign'];
   const extras=Object.keys(counts).filter(s=>!order.includes(s));
   return [['all','All sources',LEADS.length]].concat(order.filter(s=>counts[s]).map(s=>[s,srcLabel(s),counts[s]])).concat(extras.map(s=>[s,srcLabel(s),counts[s]]));
 }
@@ -884,7 +895,7 @@ function needRow(l){
           <div class="acard-nm">${esc(l.business_name||'Untitled')}</div>
           <span class="pill p-${sg.cls}">${sg.label}</span>
         </div>
-        <div class="acard-mt">${esc(l.industry||l.source||'')} · ready ${ago(l.updated_at)}</div>
+        <div class="acard-mt">${srcTag(l)}${esc(l.industry||'')} · ready ${ago(l.updated_at)}</div>
         <div class="acard-acts">
           <button class="btn good" onclick="event.stopPropagation();decide('${l.id}','APPROVED',this)">Approve &amp; reveal</button>
           <button class="btn" onclick="event.stopPropagation();requestRevisionFor('${l.id}')">Request revision</button>
