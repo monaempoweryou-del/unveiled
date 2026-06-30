@@ -676,6 +676,13 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
     var eng = (val('url')?1:0) + collectSocial().length + (UPLOADS.logo?2:0) + (UPLOADS.hero?2:0) + gallN + (story?2:0);
     var tier = eng>=5?'high':(eng>=2?'medium':'standard');
     sp.engagement = { score:eng, tier:tier, signals:{ website:!!val('url'), socials:collectSocial().length, logo:!!UPLOADS.logo, hero:!!UPLOADS.hero, gallery:gallN, notes:!!story } };
+    // Analytics = learning. Capture what's cheap now (device/source/referrer); funnel hesitation needs the event pipeline.
+    try{ sp.meta = {
+      device: (window.matchMedia && window.matchMedia('(max-width:560px)').matches)?'mobile':'desktop',
+      viewport: (window.innerWidth||0)+'x'+(window.innerHeight||0),
+      src: SOURCE, campaign: CAMPAIGN||null, lang: LANG,
+      referrer: (document.referrer||'').slice(0,300), ts: new Date().toISOString()
+    }; }catch(_){}
     var lead={
       id: LEADID, business_name: biz, contact_name: val('name')||null, email: email,
       phone: val('phone')||null, website: val('url')||null,
