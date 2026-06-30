@@ -1023,6 +1023,21 @@ function rowHTML(l){
 }
 
 // ---- CUSTOMER WORKSPACE ----
+function custUploadsHTML(l){
+  let sp=l.social_profiles||{}; if(typeof sp==='string'){try{sp=JSON.parse(sp);}catch(e){sp={};}}
+  const u=(sp&&sp.uploads)||null; if(!u) return '';
+  const items=[];
+  if(u.logo) items.push(['Logo',u.logo]);
+  if(u.hero) items.push(['Hero',u.hero]);
+  (u.gallery||[]).forEach((g,i)=>{ if(g) items.push(['Image '+(i+1),g]); });
+  if(!items.length) return '';
+  const thumbs=items.map(it=>`<a href="${esc(it[1])}" target="_blank" title="${esc(it[0])}" style="position:relative;width:84px;height:84px;border-radius:10px;overflow:hidden;border:1px solid var(--line);display:block;flex:none">
+    <img src="${esc(it[1])}" alt="${esc(it[0])}" style="width:100%;height:100%;object-fit:cover">
+    <span style="position:absolute;left:0;right:0;bottom:0;background:rgba(0,0,0,.55);color:#fff;font-size:10px;font-weight:600;padding:2px 4px;text-align:center">${esc(it[0])}</span></a>`).join('');
+  return `<div class="wcard"><h3>Customer-provided assets <span class="soon">${items.length}</span></h3>
+    <div class="soonbox" style="margin-bottom:10px">The owner uploaded these during onboarding — Production uses them first (an uploaded logo &amp; hero take priority over discovered images).</div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px">${thumbs}</div></div>`;
+}
 function renderCustomer(id){
   const l=LEADS.find(x=>x.id===id); if(!l){go('customers');return;}
   CURLEAD=id;
@@ -1102,6 +1117,7 @@ function renderCustomer(id){
 
     ${revisionsHTML(id)}
 
+    ${custUploadsHTML(l)}
     <div class="wcard"><h3>Website assets <span class="soon" id="assetcap"></span></h3>
       <div id="assetmgr"><div class="soonbox">Loading your asset library…</div></div></div>
     <div class="wcard int"><h3>Emails & engagement <span class="inttag">Team only</span><span class="soon" style="margin-left:8px">not instrumented</span></h3><div class="soonbox">Per-customer email threads and open/click tracking aren't connected yet, so I won't show "opened 3 times" until we can measure it. Lights up with the email-tracking instrumentation.</div></div>

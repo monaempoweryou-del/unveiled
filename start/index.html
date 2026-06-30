@@ -42,7 +42,11 @@
   .topbar .promo{font-size:12.5px;font-weight:600;color:var(--muted);background:var(--paper);border:1px solid var(--border);border-radius:999px;padding:9px 16px;letter-spacing:.02em}
   .promo b{color:var(--violet)}
 
-  .grid{max-width:1120px;margin:0 auto;padding:8px 24px 70px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+  .grid{max-width:1120px;margin:0 auto;padding:8px 24px 70px;display:grid;grid-template-columns:1fr 1fr;gap:34px 48px;align-items:start;
+    grid-template-areas:"top form" "support form"}
+  .herotop{grid-area:top}
+  .formcol{grid-area:form;align-self:center}
+  .herosupport{grid-area:support}
 
   /* ---- left / hero ---- */
   .badge{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--violet);background:rgba(108,60,224,.09);border:1px solid rgba(108,60,224,.18);padding:7px 13px;border-radius:999px}
@@ -101,7 +105,7 @@
   }
   input::placeholder,textarea::placeholder{color:var(--faint)}
   input:focus,textarea:focus{border-color:var(--violet-l);background:#fff;box-shadow:0 0 0 4px rgba(139,92,246,.12)}
-  textarea{resize:vertical;min-height:150px;line-height:1.55}
+  textarea{resize:vertical;min-height:190px;line-height:1.6}
   .two{display:flex;gap:14px}.two>div{flex:1}
   .btnrow{display:flex;gap:12px;align-items:center;margin-top:24px}
   .btn{font:inherit;font-size:16px;font-weight:600;cursor:pointer;border-radius:13px;padding:15.5px 22px;min-height:54px;border:0;display:inline-flex;align-items:center;justify-content:center;gap:9px;-webkit-tap-highlight-color:transparent;
@@ -130,10 +134,12 @@
   /* ---- social platform picker ---- */
   .plats{display:flex;flex-wrap:wrap;gap:9px;margin-top:2px}
   .plat{display:inline-flex;align-items:center;gap:8px;font:inherit;font-size:14px;font-weight:600;color:var(--text);
-    background:#FCFBFA;border:1.5px solid var(--border);border-radius:999px;padding:10px 15px;min-height:44px;cursor:pointer;
-    -webkit-tap-highlight-color:transparent;transition:border-color .16s,background .16s,color .16s,transform .12s}
-  .plat:hover{border-color:var(--violet-l)} .plat:active{transform:scale(.97)}
-  .plat.on{border-color:var(--violet);background:rgba(108,60,224,.08);color:var(--violet)}
+    background:#fff;border:1.5px solid var(--border);border-radius:999px;padding:11px 16px;min-height:46px;cursor:pointer;
+    box-shadow:0 2px 6px -2px rgba(67,32,160,.14);-webkit-tap-highlight-color:transparent;
+    transition:border-color .16s,background .16s,color .16s,transform .14s,box-shadow .18s}
+  .plat:hover{border-color:var(--violet-l);transform:translateY(-1px);box-shadow:0 8px 16px -6px rgba(108,60,224,.26)}
+  .plat:active{transform:translateY(0) scale(.97);box-shadow:0 2px 5px -2px rgba(108,60,224,.2)}
+  .plat.on{border-color:var(--violet);background:rgba(108,60,224,.08);color:var(--violet);box-shadow:0 6px 16px -5px rgba(108,60,224,.32)}
   .plat .pi{display:grid;place-items:center;flex:none}
   .plat .pi svg{width:18px;height:18px;display:block}
   .plat .chk{opacity:0;width:0;overflow:hidden;font-weight:700;transition:.16s}
@@ -161,20 +167,22 @@
   #done .ticks3 span{display:flex;align-items:center;gap:8px}
 
   @media(max-width:880px){
-    .grid{grid-template-columns:1fr;gap:22px;padding:4px 18px 56px}
-    h1{font-size:38px;margin-top:14px} .lead{margin-bottom:16px}
-    .hero{order:1} .formcol{order:2}
+    .grid{grid-template-columns:1fr;gap:16px;padding:2px 18px 52px;grid-template-areas:"top" "form" "support"}
+    .formcol{align-self:auto}
+    h1{font-size:34px;margin:8px 0 10px} .lead{margin-bottom:0;font-size:15.5px}
+    .herosupport{margin-top:6px}
     .showcase{display:none}
-    .card{padding:26px 20px;border-radius:24px}
+    .card{padding:24px 20px;border-radius:24px}
     .diff{font-size:14px;padding:12px 14px;max-width:none}
-    .topbar{padding:18px}
+    .topbar{padding:16px 18px}
     .topbar .promo{display:none}
+    #main.beyond1 .herotop h1{font-size:26px}
   }
   @media(max-width:480px){
-    .grid{padding:0 14px 48px;gap:18px}
-    .topbar{padding:16px 14px}
-    h1{font-size:31px;line-height:1.07;margin:10px 0 12px}
-    .lead{font-size:15.5px}
+    .grid{padding:0 14px 46px;gap:14px}
+    .topbar{padding:14px}
+    h1{font-size:30px;line-height:1.08;margin:6px 0 9px}
+    .lead{font-size:15px;margin-bottom:0}
     .ticks{gap:12px;margin-bottom:18px} .tick{font-size:15px}
     .card{padding:22px 17px;border-radius:22px}
     h2{font-size:21px} .hand{font-size:19px;margin-bottom:16px}
@@ -192,6 +200,39 @@
   [dir="rtl"] .arr{display:inline-block;transform:scaleX(-1)}
   [dir="rtl"] .btn-primary:hover .arr{transform:scaleX(-1) translateX(4px)}
   [dir="rtl"] .plab .pi,[dir="rtl"] .tick .i{transform:none}
+
+  /* ---- final UX pass: form-first, lighter steps, premium fields ---- */
+  .reassure{display:none;font-size:13px;font-weight:600;color:var(--violet);background:rgba(108,60,224,.07);
+    border:1px solid rgba(108,60,224,.14);border-radius:11px;padding:10px 13px;margin:0 0 18px;animation:fade .35s ease both}
+  /* once past Step 1 the lobby recedes: supporting marketing collapses, the form leads */
+  #main.beyond1 .herosupport{display:none}
+  #main.beyond1 .badge,#main.beyond1 .lead{display:none}
+  #main.beyond1 .herotop h1{font-size:38px;margin:4px 0 0}
+  /* keep autofilled fields premium — override Safari/Chrome yellow */
+  input:-webkit-autofill,input:-webkit-autofill:hover,input:-webkit-autofill:focus,textarea:-webkit-autofill{
+    -webkit-text-fill-color:var(--text);-webkit-box-shadow:0 0 0 1000px #FCFBFA inset;caret-color:var(--text);
+    transition:background-color 99999s ease 0s}
+  input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0 1000px #fff inset,0 0 0 4px rgba(139,92,246,.12)}
+
+  /* ---- optional asset uploader ("Make it yours") ---- */
+  .optbadge{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--violet);
+    background:rgba(108,60,224,.09);border:1px solid rgba(108,60,224,.2);border-radius:999px;padding:4px 11px;margin-bottom:10px}
+  .uploads{display:flex;flex-direction:column;gap:12px;margin-top:4px}
+  .uprow{border:1.5px solid var(--border);border-radius:14px;padding:13px 14px;background:#FCFBFA;transition:border-color .16s}
+  .uprow:hover{border-color:#DAD2C6}
+  .uphead{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .uplabel b{display:block;font-size:14px;font-weight:700;color:var(--text)}
+  .uplabel span{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+  .upadd{flex:none;display:inline-flex;align-items:center;gap:6px;cursor:pointer;font:inherit;font-size:13.5px;font-weight:600;color:var(--violet);
+    background:#fff;border:1.5px solid rgba(108,60,224,.25);border-radius:11px;padding:10px 15px;white-space:nowrap;
+    box-shadow:0 2px 6px -3px rgba(108,60,224,.3);transition:.16s;-webkit-tap-highlight-color:transparent}
+  .upadd:hover{background:rgba(108,60,224,.06);border-color:var(--violet)} .upadd:active{transform:scale(.97)}
+  .upthumbs{display:flex;flex-wrap:wrap;gap:9px;margin-top:11px}
+  .upthumb{position:relative;width:66px;height:66px;border-radius:11px;overflow:hidden;border:1px solid var(--border);background:#fff;box-shadow:0 3px 8px -3px rgba(67,32,160,.22)}
+  .upthumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .upthumb .rm{position:absolute;top:3px;right:3px;width:19px;height:19px;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;border:0;font-size:12px;line-height:1;cursor:pointer;display:grid;place-items:center;padding:0}
+  .upthumb.busy{display:grid;place-items:center}
+  .upthumb.busy .spin{border-top-color:var(--violet);border-color:rgba(108,60,224,.25)}
 </style>
 </head>
 <body>
@@ -203,10 +244,14 @@
 
   <div class="grid" id="main">
     <!-- hero -->
-    <div class="hero">
+    <div class="herotop">
       <span class="badge" data-i18n="badge">WE BUILD FIRST. YOU DECIDE.</span>
       <h1 data-i18n-html="h1">The website your business <span class="v">deserves.</span></h1>
       <p class="lead" data-i18n="lead">We design it custom and build it in 72 hours — completely free. You only pay if you love it.</p>
+    </div>
+
+    <!-- supporting content: drops BELOW the form on mobile, left column on desktop -->
+    <div class="herosupport">
       <div class="ticks">
         <div class="tick"><span class="i">⚡</span> <span data-i18n="tick1">Your full preview in 72 hours</span></div>
         <div class="tick"><span class="i">💳</span> <span data-i18n="tick2">No upfront payment, ever</span></div>
@@ -234,9 +279,10 @@
     <div class="formcol">
       <form id="f" class="card" autocomplete="on" novalidate>
         <div class="steptop">
-          <span class="stepn" id="stepn">Step 1 of 3</span>
-          <span class="dots"><i class="d on" data-s="1"></i><i class="d" data-s="2"></i><i class="d" data-s="3"></i></span>
+          <span class="stepn" id="stepn">Step 1 of 4</span>
+          <span class="dots"><i class="d on" data-s="1"></i><i class="d" data-s="2"></i><i class="d" data-s="3"></i><i class="d" data-s="4"></i></span>
         </div>
+        <div class="reassure" id="reassure"></div>
 
         <!-- step 1 -->
         <div class="step on" data-step="1">
@@ -278,6 +324,19 @@
           <textarea id="story" data-i18n-ph="phStory" placeholder="What do you do? &#10;Who do you serve? &#10;What makes you different? &#10;Anything you'd love us to include?"></textarea>
           <div class="btnrow">
             <button type="button" class="btn btn-back" onclick="next(2)"><span class="arr">←</span> <span data-i18n="btnBack">Back</span></button>
+            <button type="button" class="btn btn-primary" onclick="next(4)"><span data-i18n="btnContinue">Continue</span> <span class="arr">→</span></button>
+          </div>
+        </div>
+
+        <!-- step 4 — optional personal touch -->
+        <div class="step" data-step="4">
+          <span class="optbadge" data-i18n="optBadge">Optional</span>
+          <h2 data-i18n="s4h">Make it yours.</h2>
+          <p class="hand" data-i18n="s4hand">Show us what you're proud of ✦</p>
+          <p class="grouphint" data-i18n="s4hint">Want an even more personal preview? Add a few images you love. If not, we'll automatically find the best public images for your business.</p>
+          <div class="uploads" id="uploads"></div>
+          <div class="btnrow">
+            <button type="button" class="btn btn-back" onclick="next(3)"><span class="arr">←</span> <span data-i18n="btnBack">Back</span></button>
             <button type="submit" class="btn btn-primary" id="submit" data-i18n="btnSubmit">Build my free website 🚀</button>
           </div>
           <div class="fineprint" data-i18n-html="fineprint">By submitting you agree to our <a href="/privacy/">Privacy Policy</a>.</div>
@@ -353,7 +412,11 @@
       doneBig:'אנחנו כבר ניגשים לעבודה.',
       doneBody:'נסקור את העסק שלכם ונתחיל לעצב את האתר המותאם אישית מיד. עקבו אחרי תיבת המייל ב-72 השעות הקרובות (הציצו גם בתיקיית הספאם, ליתר ביטחון) — האתר החדש שלכם בדרך.',
       doneT1:'⏱ תצוגה תוך 72 שעות', doneT2:'💳 $0 מראש', doneT3:'✓ ללא התחייבות',
-      stepFmt:'שלב {n} מתוך 3', loading:'מתחילים בבנייה…',
+      stepFmt:'שלב {n} מתוך 4', loading:'מתחילים בבנייה…',
+optBadge:'אופציונלי',
+s4h:'הוסיפו נגיעה אישית.',
+s4hand:'הראו לנו במה אתם גאים ✦',
+s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה תמונות שאתם אוהבים. אם לא — נמצא אוטומטית את התמונות הציבוריות הטובות ביותר לעסק שלכם.',
       errReq:'צריך רק את שם העסק ואימייל תקין כדי להתחיל.',
       errFail:'משהו השתבש בשליחה. נסו שוב, או כתבו לנו ל-unveiled@monadigitalmarketing.com.'
     }
@@ -370,10 +433,17 @@
   function val(id){ var e=document.getElementById(id); return e?e.value.trim():''; }
   function showErr(m){ var e=document.getElementById('err'); e.textContent=m; e.style.display='block'; }
   function curStep(){ var c=document.querySelector('.step.on'); return c?+c.dataset.step:1; }
+  // subtle reassurance after committing (not celebration — just "you're moving")
+  var REASSURE={2:{en:'✓ Nice — you’re moving fast.',he:'✓ יופי — אתם מתקדמים מהר.'},
+                3:{en:'Almost there — one quick thought.',he:'כמעט סיימנו — מחשבה אחת קצרה.'},
+                4:{en:'Last step — and it’s completely optional.',he:'שלב אחרון — והוא לגמרי אופציונלי.'}};
   function go(step, noFocus){
     document.querySelectorAll('.step').forEach(function(s){ s.classList.toggle('on', +s.dataset.step===step); });
     document.querySelectorAll('.dots .d').forEach(function(d){ d.classList.toggle('on', +d.dataset.s<=step); });
-    document.getElementById('stepn').textContent=(LANG==='he'?T('stepFmt').replace('{n}',step):'Step '+step+' of 3');
+    document.getElementById('stepn').textContent=(LANG==='he'?T('stepFmt').replace('{n}',step):'Step '+step+' of 4');
+    var main=document.getElementById('main'); if(main) main.classList.toggle('beyond1', step>1);
+    var re=document.getElementById('reassure');
+    if(re){ var r=REASSURE[step]; var msg=r?(r[LANG]||r.en):''; re.textContent=msg; re.style.display=msg?'block':'none'; }
     try{ document.getElementById('f').scrollIntoView({behavior:'smooth',block:'nearest'}); }catch(e){}
     if(!noFocus){ try{ var f=document.querySelector('.step.on input, .step.on textarea'); if(f) f.focus({preventScroll:true}); }catch(e){} }
     saveState();
@@ -387,8 +457,8 @@
       svg:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.7l-.4 2.9h-2.3v7A10 10 0 0 0 22 12z"/></svg>'},
     {k:'google',n:'Google',ph:'Business name + city, or Maps link',he:'שם העסק + עיר, או קישור Maps',
       svg:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 10.9v2.9h4c-.2 1.1-1.4 3.1-4 3.1a4.4 4.4 0 0 1 0-8.8c1.2 0 2.1.5 2.7 1l2-2A7.3 7.3 0 0 0 12 4.7a7.3 7.3 0 1 0 0 14.6c4.2 0 7-3 7-7.1 0-.5 0-.9-.1-1.3H12z"/></svg>'},
-    {k:'tiktok',n:'TikTok',ph:'@username or your profile link',he:'@שם־משתמש או קישור',
-      svg:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.3 2.1 1.6 3.5 3.5 3.7v2.6c-1.3.1-2.5-.3-3.6-1v5.9c0 3.4-2.7 5.9-5.9 5.4A5.2 5.2 0 0 1 6 14.2c.3-2.4 2.4-4.1 4.8-4v2.8c-.3-.1-.7-.2-1-.2-1.2 0-2.1 1-2 2.2 0 1.1 1 2 2.1 2 1.2 0 2.2-.9 2.2-2.1V3h2.4z"/></svg>'},
+    {k:'yelp',n:'Yelp',ph:'Business name + city, or Yelp link',he:'שם העסק + עיר, או קישור Yelp',
+      svg:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 3.3c.6-.2 1.3.2 1.3 1l.2 7c0 .9-1.1 1.3-1.6.6L7.6 8.4c-.4-.5-.3-1.3.3-1.6L11 3.3zM9.4 13.2c.5-.5 1.4-.2 1.5.5l.2 4.6c0 .8-.9 1.2-1.5.6l-2.9-2.8c-.5-.5-.3-1.4.3-1.6l2.4-1.3zM13.7 13.5c.2-.7 1.1-.9 1.6-.3l2.9 3.3c.5.6.1 1.5-.7 1.5l-4.3.1c-.8 0-1.3-.8-.9-1.5l1.4-3.1zM14.1 12c-.7.1-1.3-.6-1-1.3l1.6-3.9c.3-.7 1.2-.8 1.7-.2l2.5 3.1c.5.6.1 1.5-.6 1.6L14.1 12z"/></svg>'},
     {k:'linkedin',n:'LinkedIn',ph:'Company name or link',he:'שם החברה או קישור',
       svg:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.9 8.9H4.2V20h2.7V8.9zM5.5 4a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2zM20 20h-2.7v-5.6c0-1.4-.5-2.3-1.7-2.3-.9 0-1.5.6-1.7 1.2-.1.2-.1.5-.1.8V20H11s0-9.4 0-11.1h2.7v1.6c.4-.6 1-1.4 2.5-1.4 1.9 0 3.3 1.2 3.3 3.9V20z"/></svg>'},
     {k:'youtube',n:'YouTube',ph:'Channel name or link',he:'שם הערוץ או קישור',
@@ -432,11 +502,71 @@
     return pairs;
   }
 
+  /* ---------- optional asset uploader ("Make it yours") — first-class production assets ---------- */
+  var LEADID=uuid();                                   // stable id: storage paths AND the lead row
+  var UPLOADS={logo:null,hero:null,gallery:[]};
+  var UPSLOTS=[
+    {k:'logo',  multi:false,        bEn:'Your logo',       hEn:"We'll use it across your whole site.",        bHe:'הלוגו שלכם',  hHe:'נשתמש בו בכל האתר.'},
+    {k:'hero',  multi:false,        bEn:'Hero image',      hEn:'Considered for your homepage banner.',         bHe:'תמונת נושא', hHe:'תישקל לכותרת הראשית של האתר.'},
+    {k:'gallery',multi:true,max:3,  bEn:'A few favorites', hEn:'Team, projects, products, storefront — up to 3.',bHe:'כמה מועדפות', hHe:'צוות, פרויקטים, מוצרים, חזית — עד 3.'}
+  ];
+  function renderUploads(){
+    var box=document.getElementById('uploads'); if(!box) return; box.innerHTML='';
+    var addLabel=(LANG==='he'?'+ הוספה':'+ Add');
+    UPSLOTS.forEach(function(s){
+      var urls = s.multi ? (UPLOADS[s.k]||[]) : (UPLOADS[s.k]?[UPLOADS[s.k]]:[]);
+      var full = s.multi ? urls.length>=s.max : urls.length>=1;
+      var b=(LANG==='he'?s.bHe:s.bEn), h=(LANG==='he'?s.hHe:s.hEn);
+      var row=document.createElement('div'); row.className='uprow'; row.setAttribute('data-slot',s.k);
+      row.innerHTML='<div class="uphead"><div class="uplabel"><b>'+b+'</b><span>'+h+'</span></div>'+
+        (full?'':'<label class="upadd"><input type="file" accept="image/*" '+(s.multi?'multiple':'')+' hidden><span>'+addLabel+'</span></label>')+
+        '</div><div class="upthumbs"></div>';
+      box.appendChild(row);
+      var thumbs=row.querySelector('.upthumbs');
+      urls.forEach(function(u,idx){ thumbs.appendChild(thumbEl(s.k,u,idx,s.multi)); });
+      var inp=row.querySelector('input[type=file]');
+      if(inp) inp.addEventListener('change', function(e){ handleUpload(s, e.target.files); });
+    });
+  }
+  function thumbEl(k,url,idx,multi){
+    var d=document.createElement('div'); d.className='upthumb';
+    var img=document.createElement('img'); img.src=url; img.alt=''; d.appendChild(img);
+    var rm=document.createElement('button'); rm.type='button'; rm.className='rm'; rm.setAttribute('aria-label','Remove'); rm.textContent='×';
+    rm.addEventListener('click', function(){ removeUpload(k,idx,multi); });
+    d.appendChild(rm); return d;
+  }
+  async function handleUpload(slot, files){
+    if(!files||!files.length) return;
+    var list = slot.multi ? Array.prototype.slice.call(files) : [files[0]];
+    if(slot.multi){ var room=slot.max-(UPLOADS[slot.k]||[]).length; list=list.slice(0,Math.max(0,room)); }
+    for(var i=0;i<list.length;i++){
+      var f=list[i]; if(!f||!/^image\//.test(f.type)) continue;
+      var tb=document.querySelector('.uprow[data-slot="'+slot.k+'"] .upthumbs');
+      var busy=document.createElement('div'); busy.className='upthumb busy'; busy.innerHTML='<span class="spin"></span>'; if(tb) tb.appendChild(busy);
+      try{
+        var url=await uploadFile(slot.k, f);
+        if(slot.multi){ UPLOADS[slot.k].push(url); } else { UPLOADS[slot.k]=url; }
+      }catch(e){ console.warn('upload failed',e); showErr(LANG==='he'?'תמונה אחת לא עלתה — נסו שוב.':"One image didn't upload — please try again."); }
+      saveState(); renderUploads();
+    }
+  }
+  function removeUpload(k,idx,multi){ if(multi){ UPLOADS[k].splice(idx,1); } else { UPLOADS[k]=null; } saveState(); renderUploads(); }
+  async function uploadFile(slot, file){
+    var safe=(file.name||'image').replace(/[^a-zA-Z0-9._-]/g,'_');
+    var path=LEADID+'/'+slot+'-'+Date.now()+'-'+safe;
+    var r=await fetch(SUPA_URL+'/storage/v1/object/lead-assets/'+path,{
+      method:'POST',
+      headers:{ apikey:SUPA_KEY, Authorization:'Bearer '+SUPA_KEY, 'Content-Type':file.type||'application/octet-stream', 'x-upsert':'true' },
+      body:file });
+    if(!r.ok) throw new Error('upload '+r.status);
+    return SUPA_URL+'/storage/v1/object/public/lead-assets/'+path;
+  }
+
   /* ---------- form-state preservation (survives a hop to Instagram/Facebook and back) ---------- */
   var LSKEY='uv_frontdoor_v1';
   function saveState(){
     try{
-      var s={biz:val('biz'),name:val('name'),email:val('email'),phone:val('phone'),url:val('url'),story:val('story'),plats:PLATSEL,plinks:{},step:curStep()};
+      var s={leadid:LEADID,biz:val('biz'),name:val('name'),email:val('email'),phone:val('phone'),url:val('url'),story:val('story'),plats:PLATSEL,plinks:{},uploads:UPLOADS,step:curStep()};
       document.querySelectorAll('#platfields .prow input').forEach(function(i){ s.plinks[i.getAttribute('data-k')]=i.value; });
       localStorage.setItem(LSKEY, JSON.stringify(s));
     }catch(e){}
@@ -445,9 +575,11 @@
     try{
       var raw=localStorage.getItem(LSKEY); if(!raw) return null;
       var s=JSON.parse(raw); if(!s) return null;
+      if(s.leadid) LEADID=s.leadid;
+      if(s.uploads && typeof s.uploads==='object') UPLOADS={logo:s.uploads.logo||null,hero:s.uploads.hero||null,gallery:Array.isArray(s.uploads.gallery)?s.uploads.gallery:[]};
       ['biz','name','email','phone','url','story'].forEach(function(k){ var el=document.getElementById(k); if(el && s[k]) el.value=s[k]; });
       if(s.plats && typeof s.plats==='object') PLATSEL=s.plats;
-      renderPlats(); renderPlatFields();
+      renderPlats(); renderPlatFields(); renderUploads();
       if(s.plinks){ Object.keys(s.plinks).forEach(function(k){ var i=document.querySelector('.prow[data-k="'+k+'"] input'); if(i) i.value=s.plinks[k]; }); }
       return s;
     }catch(e){ return null; }
@@ -458,7 +590,7 @@
   document.getElementById('f').addEventListener('keydown', function(e){
     if(e.key==='Enter' && e.target && e.target.tagName==='INPUT'){
       e.preventDefault();
-      if(curStep()<3) window.next(curStep()+1);
+      if(curStep()<4) window.next(curStep()+1);
     }
   });
   window.next=function(step){
@@ -478,8 +610,9 @@
   // init: resume any in-progress session, then apply ?url= prefill, then render the pickers
   (function init(){
     applyI18n();
+    document.getElementById('stepn').textContent=(LANG==='he'?T('stepFmt').replace('{n}','1'):'Step 1 of 4');
     var s=restoreState();
-    if(!s){ renderPlats(); renderPlatFields(); }
+    if(!s){ renderPlats(); renderPlatFields(); renderUploads(); }
     var u=param('url'); if(u){ var el=document.getElementById('url'); if(el && !el.value) el.value=u; }
     if(s && s.step>1){ go(s.step, true); } // land them back where they left off, without grabbing focus on load
   })();
@@ -492,11 +625,15 @@
     var pairs=collectSocial();
     var links=pairs.map(function(x){ return x.url; });
     var byPlat={}; pairs.forEach(function(x){ byPlat[x.platform]=x.url; });
+    var sp={};
+    if(links.length){ sp.links=links; sp.by_platform=byPlat; }
+    if(UPLOADS.logo||UPLOADS.hero||(UPLOADS.gallery&&UPLOADS.gallery.length)){
+      sp.uploads={logo:UPLOADS.logo||null, hero:UPLOADS.hero||null, gallery:UPLOADS.gallery||[]}; }
     var story=val('story');
     var lead={
-      id: uuid(), business_name: biz, contact_name: val('name')||null, email: email,
+      id: LEADID, business_name: biz, contact_name: val('name')||null, email: email,
       phone: val('phone')||null, website: val('url')||null,
-      social_profiles: links.length?{links:links, by_platform:byPlat}:{},
+      social_profiles: sp,
       about: story||null, requirements: story||null, additional_notes: null,
       status:'NEW LEAD', source: SOURCE,
       discovery_method: 'unveiled-start'+(LANG==='he'?'-he':'')+(CAMPAIGN?(':'+CAMPAIGN):'')
