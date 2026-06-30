@@ -1,0 +1,60 @@
+/* ============================================================
+   UNVEILED · Animated Sphere — ONE reusable component (LS-SPHERE)
+   The primary visual identity. Replaces all website-mockup art.
+   Usage: <div class="unv-sphere"></div>  (+ load /sphere.js)
+   Optional size: <div class="unv-sphere sm"></div> or .xs
+   Identical to the finalized hero sphere. GPU-accelerated, calm.
+   ============================================================ */
+.unv-sphere{width:100%;display:flex;align-items:center;justify-content:center}
+
+/* the system: glow (back) + orbit ring of upright screens (mid) + sphere (front) */
+.sphere-sys{position:relative;width:100%;max-width:540px;aspect-ratio:1 / 0.9;perspective:1600px;margin:0 auto}
+.unv-sphere.sm .sphere-sys{max-width:360px}
+.unv-sphere.xs .sphere-sys{max-width:230px}
+
+/* soft breathing glow */
+.ss-glow{position:absolute;top:50%;left:50%;width:72%;height:72%;transform:translate(-50%,-50%);
+  border-radius:50%;pointer-events:none;z-index:1;
+  background:radial-gradient(circle,rgba(140,90,245,0.40) 0%,rgba(108,60,224,0.16) 40%,transparent 70%);
+  filter:blur(22px);animation:ssGlow 7s ease-in-out infinite;will-change:transform,opacity}
+@keyframes ssGlow{0%,100%{opacity:.62;transform:translate(-50%,-50%) scale(.96)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.04)}}
+
+/* orbit container — no stacking context, so screens interleave front/behind the sphere */
+.ss-orbit{position:absolute;inset:0;pointer-events:none}
+.ss-ring{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.ss-ring-back{z-index:3}
+.ss-ring-front{z-index:7}
+.ss-ring ellipse,.ss-ring path{fill:none;stroke:rgba(178,138,252,0.42);stroke-width:1px;
+  vector-effect:non-scaling-stroke;filter:drop-shadow(0 0 3px rgba(150,100,245,0.55))}
+.ss-ring-front path{stroke:rgba(196,162,255,0.5)}
+
+.orbit-screen{position:absolute;top:50%;left:50%;width:24%;max-width:130px;height:auto;
+  will-change:transform,opacity;pointer-events:none;transform:translate(-50%,-50%)}
+.orbit-screen.mini{width:13.5%;max-width:76px}
+.orbit-dot{position:absolute;top:50%;left:50%;width:7px;height:7px;border-radius:50%;
+  pointer-events:none;will-change:transform,opacity;transform:translate(-50%,-50%);
+  background:radial-gradient(circle,rgba(222,200,255,0.95) 0%,rgba(150,100,245,0.5) 70%,transparent 100%);
+  box-shadow:0 0 8px rgba(150,100,245,0.75)}
+
+/* sphere — gentle continuous left/right turn (driven by JS), slow + breathing */
+.ss-core{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:5;will-change:transform;transition:transform .45s ease-out}
+.ss-core-f{display:flex;align-items:center;justify-content:center;width:100%;height:100%;animation:ssFloat 20s ease-in-out infinite}
+.ss-core-i{width:62%;height:auto;filter:drop-shadow(0 24px 54px rgba(80,40,160,0.42));transform-style:preserve-3d;will-change:transform}
+@keyframes ssFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-8px) scale(1.028)}}
+
+/* shifting highlight — light catching the sphere (premium reflection) */
+.ss-sheen{position:absolute;top:50%;left:50%;width:60%;height:60%;transform:translate(-50%,-50%);
+  border-radius:50%;overflow:hidden;z-index:6;pointer-events:none;mix-blend-mode:screen;opacity:1}
+.ss-sheen::before{content:'';position:absolute;width:80%;height:80%;border-radius:50%;
+  background:radial-gradient(circle,rgba(224,205,255,0.78) 0%,rgba(172,135,255,0.26) 45%,transparent 72%);
+  filter:blur(8px);animation:ssSheen 8s linear infinite;will-change:transform,opacity}
+@keyframes ssSheen{
+  0%{transform:translate(34%,-28%) scale(1.0);opacity:0.55}
+  25%{transform:translate(40%,24%) scale(1.08);opacity:0.9}
+  50%{transform:translate(-12%,40%) scale(1.0);opacity:0.6}
+  75%{transform:translate(-38%,2%) scale(1.08);opacity:0.9}
+  100%{transform:translate(34%,-28%) scale(1.0);opacity:0.55}}
+
+@media (prefers-reduced-motion: reduce){
+  .ss-core-i,.ss-core-f,.ss-glow,.ss-sheen::before{animation:none !important}
+}
