@@ -64,6 +64,17 @@
   .choose:active{transform:scale(.99)}
   .reassure{text-align:center;color:var(--faint);font-size:13px;margin-top:16px}
   .changes{text-align:center;margin:22px 0 0} .changes a{color:var(--violet);font-weight:600;font-size:14.5px;cursor:pointer}
+  .hide{display:none!important}
+  /* AI-first recommendation: one large, confident, premium card */
+  .reco-lead{font-size:21px;font-weight:700;letter-spacing:-.01em;line-height:1.25;margin:0 0 4px}
+  .reco-lead b{color:var(--violet)}
+  .plan.hero{border-color:var(--violet);box-shadow:0 26px 60px -26px rgba(108,60,224,.55);background:#fff;padding:26px 22px;margin-top:14px}
+  .plan.hero .pname{font-size:24px}
+  .plan.hero .why{font-size:14.5px;color:var(--muted);margin:10px 0 2px;line-height:1.5}
+  .plan.hero .price{font-size:38px}
+  .plan.hero .choose{background:var(--grad);color:#fff;border:0;box-shadow:0 14px 30px -12px rgba(108,60,224,.6);font-size:16.5px;padding:15px}
+  .annl{text-align:center;margin-top:12px} .annl a{color:var(--faint);font-weight:600;font-size:13px;cursor:pointer}
+  .cmp-secondary{text-align:center;margin:18px 0 0} .cmp-secondary a{color:var(--faint);font-weight:600;font-size:13.5px;cursor:pointer}
   .est{font-size:10px;font-weight:700;color:#b45309;background:rgba(245,158,11,.16);border-radius:999px;padding:2px 7px;letter-spacing:.03em;vertical-align:middle}
   /* modal */
   .ov{position:fixed;inset:0;background:rgba(28,25,23,.55);backdrop-filter:blur(3px);display:none;place-items:center;z-index:30;padding:18px}
@@ -129,11 +140,11 @@
 
   <!-- guided recommendation + packages (DATA-DRIVEN; numbers are placeholders) -->
   <div class="card" id="plancard">
-    <h2>Choose how we keep helping you</h2>
-    <div class="reco" id="reco"><span class="s">✨</span><span id="recotext">Loading your recommendation…</span></div>
-    <div class="toggle"><button id="tm" class="on" onclick="setBilling('monthly')">Monthly</button><button id="ta" onclick="setBilling('annual')">Annual <span class="save">· save 2 months</span></button></div>
-    <div class="plans" id="plans"></div>
-    <p class="reassure">Change or cancel anytime. We earn your business every month.</p>
+    <p class="reco-lead" id="recolead">Based on everything we've learned, here's the path we'd recommend.</p>
+    <div id="heroPlan"></div>
+    <p class="reassure" style="margin-top:16px">Change or cancel anytime. We earn your business every month — no contracts.</p>
+    <div class="cmp-secondary"><a id="cmpToggle" onclick="toggleCompare()">Want to compare all options?</a></div>
+    <div class="plans hide" id="allPlans" style="margin-top:14px"></div>
     <div class="changes"><a onclick="openChanges()">Want a few changes first?</a></div>
   </div>
 </div>
@@ -197,25 +208,42 @@
   function priceOf(p){ return BILLING==='annual'? p.annualMonthly : p.monthly; }
   function money(n){ return '$'+(Number(n)||0).toLocaleString(); }
 
-  function renderReco(){
-    var r=PACKAGES.find(function(p){return p.id===REC.id;})||PACKAGES[0];
-    document.getElementById('recotext').innerHTML='For <b>'+esc(BIZ)+'</b>, I’d recommend <b>'+esc(r.name)+'</b> — '+esc(REC.why);
+  function planCardHTML(p, opts){
+    opts=opts||{};
+    var rec=(p.id===REC.id);
+    return (rec?'<span class="recbadge">RECOMMENDED FOR YOU</span>':(p.badge?'<span class="recbadge" style="background:#78716C">'+esc(p.badge)+'</span>':''))+
+      '<div class="pname">'+esc(p.name)+'</div><div class="ptag">'+esc(p.tagline)+'</div>'+
+      (opts.why?'<div class="why">'+esc(opts.why)+'</div>':'')+
+      '<div class="price">'+money(priceOf(p))+'<small>/mo</small></div>'+
+      '<div class="launch">'+(p.launch>0?('+ '+money(p.launch)+' one-time launch'):'Launch included')+(BILLING==='annual'?' · billed yearly':'')+'</div>'+
+      '<ul>'+p.outcomes.map(function(o){return '<li><span class="c">✓</span>'+esc(o)+'</li>';}).join('')+'</ul>'+
+      '<button class="choose" onclick="choose(\''+p.id+'\')">'+(opts.cta||('Choose '+esc(p.name)))+'</button>'+
+      (opts.annual?'<div class="annl"><a onclick="flipBilling()">'+(BILLING==='annual'?'Switch to monthly billing':'Prefer annual? Save 2 months')+'</a></div>':'');
   }
-  function renderPlans(){
-    var box=document.getElementById('plans'); box.innerHTML='';
+  // ONE confident recommendation — we've learned about their business, so we lead, not list.
+  function renderHero(){
+    var p=PACKAGES.find(function(x){return x.id===REC.id;})||PACKAGES[0];
+    document.getElementById('recolead').innerHTML='Based on everything we’ve learned about <b>'+esc(BIZ)+'</b>, this is the path we’d recommend.';
+    var el=document.createElement('div'); el.className='plan hero';
+    el.innerHTML=planCardHTML(p,{why:'Because '+REC.why, cta:'I’m ready →', annual:true});
+    var box=document.getElementById('heroPlan'); box.innerHTML=''; box.appendChild(el);
+  }
+  function renderAll(){
+    var box=document.getElementById('allPlans'); box.innerHTML='';
     PACKAGES.forEach(function(p){
-      var rec=(p.id===REC.id);
-      var el=document.createElement('div'); el.className='plan'+(rec?' rec':'');
-      el.innerHTML=(rec?'<span class="recbadge">RECOMMENDED FOR YOU</span>':(p.badge?'<span class="recbadge" style="background:#78716C">'+esc(p.badge)+'</span>':''))+
-        '<div class="pname">'+esc(p.name)+'</div><div class="ptag">'+esc(p.tagline)+'</div>'+
-        '<div class="price">'+money(priceOf(p))+'<small>/mo</small></div>'+
-        '<div class="launch">'+(p.launch>0?('+ '+money(p.launch)+' one-time launch'):'Launch included')+(BILLING==='annual'?' · billed yearly':'')+'</div>'+
-        '<ul>'+p.outcomes.map(function(o){return '<li><span class="c">✓</span>'+esc(o)+'</li>';}).join('')+'</ul>'+
-        '<button class="choose" onclick="choose(\''+p.id+'\')">Choose '+esc(p.name)+'</button>';
+      var el=document.createElement('div'); el.className='plan'+(p.id===REC.id?' rec':'');
+      el.innerHTML=planCardHTML(p,{});
       box.appendChild(el);
     });
   }
-  function setBilling(b){ BILLING=b; document.getElementById('tm').classList.toggle('on',b==='monthly'); document.getElementById('ta').classList.toggle('on',b==='annual'); renderPlans(); }
+  var COMPARED=false;
+  function toggleCompare(){
+    COMPARED=!COMPARED;
+    document.getElementById('allPlans').classList.toggle('hide',!COMPARED);
+    document.getElementById('cmpToggle').textContent = COMPARED?'Hide other options':'Want to compare all options?';
+    if(COMPARED) renderAll();
+  }
+  function flipBilling(){ BILLING=(BILLING==='annual'?'monthly':'annual'); renderHero(); if(COMPARED) renderAll(); }
 
   /* ---------- commit (payment + lead write are wired via a secure Edge Function later) ---------- */
   function choose(id){
@@ -236,7 +264,7 @@
   document.getElementById('ov').addEventListener('click',function(e){ if(e.target.id==='ov') closeModal(); });
 
   if(BIZ && BIZ!=='your business'){ document.getElementById('momenttext').innerHTML='Imagine '+esc(BIZ)+' looking like this tomorrow.'; }
-  renderReco(); renderPlans();
+  renderHero();
 </script>
 </body>
 </html>
