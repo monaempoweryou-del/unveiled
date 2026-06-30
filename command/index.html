@@ -147,19 +147,23 @@
   .gate input{width:100%;padding:13px 15px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:#fff;font-family:inherit;font-size:14px;margin-bottom:10px}
   /* ===== Company OS shell ===== */
   .appshell{position:relative;z-index:1;display:flex;min-height:100vh}
-  .sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;background:rgba(255,255,255,.72);backdrop-filter:blur(18px);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:18px 14px;z-index:30;transition:transform .26s cubic-bezier(.3,.7,.3,1)}
-  .sb-brand{display:flex;align-items:center;gap:9px;padding:4px 8px 16px}
-  .sb-brand .logo-sphere{height:26px;width:26px} .sb-brand .wordmark{font-size:13.5px}
-  .sb-cap{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);padding:0 10px 8px;font-weight:600}
-  .sb-nav{display:flex;flex-direction:column;gap:2px;overflow-y:auto;flex:1}
-  .sb-item{display:flex;align-items:center;gap:11px;padding:10px 11px;border-radius:11px;cursor:pointer;color:var(--muted);font-size:14px;font-weight:550;text-decoration:none;transition:.14s;position:relative}
-  .sb-item .ic{width:20px;text-align:center;font-size:15px;opacity:.8;flex:none}
-  .sb-item:hover{background:rgba(124,58,237,.07);color:var(--txt)}
-  .sb-item.active{background:linear-gradient(90deg,rgba(124,58,237,.16),rgba(124,58,237,.04));color:var(--violet2);font-weight:700}
-  .sb-item.active .ic{opacity:1}
+  .sidebar{position:fixed;top:0;left:0;width:248px;height:100vh;background:rgba(252,251,254,.82);backdrop-filter:blur(22px) saturate(140%);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:22px 14px 16px;z-index:30;transition:transform .26s cubic-bezier(.3,.7,.3,1)}
+  .sb-brand{display:flex;align-items:center;gap:10px;padding:2px 8px 20px;margin-bottom:2px}
+  .sb-brand .logo-sphere{height:25px;width:25px;flex:none}
+  .sb-brand .wordmark{font-size:14px;font-weight:700;letter-spacing:.26em;line-height:1;color:var(--txt);transform:translateY(.5px)}
+  .sb-cap{font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);padding:0 11px 14px;font-weight:600}
+  .sb-nav{display:flex;flex-direction:column;gap:3px;overflow-y:auto;flex:1;padding-right:2px}
+  .sb-item{display:flex;align-items:center;gap:12px;padding:9px 11px;border-radius:10px;cursor:pointer;color:var(--muted);font-size:13.5px;font-weight:500;letter-spacing:-.005em;text-decoration:none;transition:background .15s ease,color .15s ease;position:relative}
+  .sb-item .ic{width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;color:var(--faint);flex:none;transition:color .15s ease}
+  .sb-item .ic svg{width:20px;height:20px;display:block}
+  .sb-item:hover{background:rgba(124,58,237,.055);color:var(--txt)}
+  .sb-item:hover .ic{color:var(--muted)}
+  .sb-item.active{background:rgba(124,58,237,.10);color:var(--violet2);font-weight:650}
+  .sb-item.active::before{content:"";position:absolute;left:-14px;top:50%;transform:translateY(-50%);width:3px;height:18px;border-radius:0 3px 3px 0;background:var(--violet)}
+  .sb-item.active .ic{color:var(--violet2)}
   .sb-item .sb-badge{margin-left:auto;font-size:10.5px;font-weight:800;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:var(--violet);color:#fff;display:none;align-items:center;justify-content:center}
   .sb-item .sb-badge.show{display:flex}
-  .sb-foot{padding-top:12px;border-top:1px solid var(--line);margin-top:8px}
+  .sb-foot{padding-top:14px;border-top:1px solid var(--line);margin-top:10px}
   .sb-foot .wpill{margin:0;width:100%;justify-content:flex-start}
   .scrim{position:fixed;inset:0;background:rgba(20,12,40,.4);z-index:25;opacity:0;pointer-events:none;transition:.2s}
   .main{flex:1;min-width:0;margin-left:236px;padding:18px 26px 90px;max-width:980px}
@@ -449,8 +453,8 @@
   .cbadge{font-size:10px;font-weight:800;letter-spacing:.03em;padding:2px 7px;border-radius:999px}
   .cbadge.est{color:#b45309;background:rgba(245,158,11,.18)}
   .cbadge.act{color:#10b981;background:rgba(16,185,129,.18)}
-  .sb-group{font-size:10px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);opacity:.65;padding:15px 11px 5px}
-  .sb-group:first-child{padding-top:4px}
+  .sb-group{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);padding:20px 11px 7px}
+  .sb-group:first-child{padding-top:2px}
 </style>
 </head>
 <body>
@@ -486,19 +490,19 @@
     <div class="sb-cap">Your company</div>
     <nav class="sb-nav" id="sbnav">
       <div class="sb-group">Run the business</div>
-      <a class="sb-item" data-v="exec" onclick="go('exec')"><span class="ic">🧭</span><span>Executive</span></a>
-      <a class="sb-item" data-v="production" onclick="go('production')"><span class="ic">🏭</span><span>Production</span><span class="sb-badge" id="sbb-prod"></span></a>
-      <a class="sb-item" data-v="customers" onclick="go('customers')"><span class="ic">👥</span><span>Customers</span></a>
-      <a class="sb-item" data-v="allprojects" onclick="go('allprojects')"><span class="ic">📁</span><span>All Projects</span></a>
+      <a class="sb-item" data-v="exec" onclick="go('exec')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.4 8.6l-2 4.8-4.8 2 2-4.8z"/></svg></span><span>Executive</span></a>
+      <a class="sb-item" data-v="production" onclick="go('production')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8.5 4.5L12 12 3.5 7.5z"/><path d="M3.5 12L12 16.5 20.5 12"/><path d="M3.5 16.5L12 21l8.5-4.5"/></svg></span><span>Production</span><span class="sb-badge" id="sbb-prod"></span></a>
+      <a class="sb-item" data-v="customers" onclick="go('customers')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3 2.9-4.6 5.5-4.6s4.9 1.6 5.5 4.6"/><path d="M16 5.2a3 3 0 010 5.6"/><path d="M17.5 14.6c2 .5 3.4 2 3.9 4.4"/></svg></span><span>Customers</span></a>
+      <a class="sb-item" data-v="allprojects" onclick="go('allprojects')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="4.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg></span><span>All Projects</span></a>
       <div class="sb-group">Grow the business</div>
-      <a class="sb-item" data-v="sales" onclick="go('sales')"><span class="ic">📈</span><span>Sales</span></a>
-      <a class="sb-item" data-v="marketing" onclick="go('marketing')"><span class="ic">📣</span><span>Marketing</span></a>
-      <a class="sb-item" data-v="comms" onclick="go('comms')"><span class="ic">💬</span><span>Communication</span></a>
+      <a class="sb-item" data-v="sales" onclick="go('sales')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16l4.5-4.8 3.3 3 5-5.6"/><path d="M16.8 5.5H21V9.7"/></svg></span><span>Sales</span></a>
+      <a class="sb-item" data-v="marketing" onclick="go('marketing')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5v5l2.5.6c.4 2.4.9 4.2 1.6 4.3 1 .2 1.4-1.4 1.4-3.5"/><path d="M4 9.5l13-5v15l-13-5z"/><path d="M17 8.5a2.6 2.6 0 010 7"/></svg></span><span>Marketing</span></a>
+      <a class="sb-item" data-v="comms" onclick="go('comms')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5A2 2 0 016 4.5h12a2 2 0 012 2v7a2 2 0 01-2 2H9l-4 3.5V6.5z"/><path d="M8.5 9.5h7M8.5 12.5h4"/></svg></span><span>Communication</span></a>
       <div class="sb-group">Intelligence &amp; operations</div>
-      <a class="sb-item" data-v="research" onclick="go('research')"><span class="ic">🔎</span><span>Brand Review</span><span class="sb-badge" id="sbb-research"></span></a>
-      <a class="sb-item" data-v="costs" onclick="go('costs')"><span class="ic">💰</span><span>Cost Center</span></a>
-      <a class="sb-item" data-v="learning" onclick="go('learning')"><span class="ic">🧠</span><span>Learning</span></a>
-      <a class="sb-item" data-v="settings" onclick="go('settings')"><span class="ic">⚙️</span><span>System Health</span></a>
+      <a class="sb-item" data-v="research" onclick="go('research')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12S5.5 6 12 6s9.5 6 9.5 6-3 6-9.5 6-9.5-6-9.5-6z"/><circle cx="12" cy="12" r="2.6"/></svg></span><span>Brand Review</span><span class="sb-badge" id="sbb-research"></span></a>
+      <a class="sb-item" data-v="costs" onclick="go('costs')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h12v17l-2-1.3-2 1.3-2-1.3-2 1.3-2-1.3-2 1.3z"/><path d="M9 8h6M9 11.5h6M9 15h3"/></svg></span><span>Cost Center</span></a>
+      <a class="sb-item" data-v="learning" onclick="go('learning')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2l1.7 4.4 4.4 1.7-4.4 1.7L12 15.4l-1.7-4.4L5.9 9.3l4.4-1.7z"/><path d="M18 15.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></svg></span><span>Learning</span></a>
+      <a class="sb-item" data-v="settings" onclick="go('settings')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12.5h3.5l2-5.5 3 11 2.5-7 1.5 3.5H21"/></svg></span><span>System Health</span></a>
     </nav>
     <div class="sb-foot"><div class="wpill" id="wpill"><span class="dot a"></span><span id="wlbl">…</span></div></div>
   </aside>
