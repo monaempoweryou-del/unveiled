@@ -491,6 +491,7 @@
     <nav class="sb-nav" id="sbnav">
       <div class="sb-group">Run the business</div>
       <a class="sb-item" data-v="exec" onclick="go('exec')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.4 8.6l-2 4.8-4.8 2 2-4.8z"/></svg></span><span>Executive</span></a>
+      <a class="sb-item" data-v="leads" onclick="go('leads')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4-3.9-3.8 5.4-.8z"/></svg></span><span>Leads</span><span class="sb-badge" id="sbb-leads"></span></a>
       <a class="sb-item" data-v="production" onclick="go('production')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8.5 4.5L12 12 3.5 7.5z"/><path d="M3.5 12L12 16.5 20.5 12"/><path d="M3.5 16.5L12 21l8.5-4.5"/></svg></span><span>Production</span><span class="sb-badge" id="sbb-prod"></span></a>
       <a class="sb-item" data-v="customers" onclick="go('customers')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3 2.9-4.6 5.5-4.6s4.9 1.6 5.5 4.6"/><path d="M16 5.2a3 3 0 010 5.6"/><path d="M17.5 14.6c2 .5 3.4 2 3.9 4.4"/></svg></span><span>Customers</span></a>
       <a class="sb-item" data-v="allprojects" onclick="go('allprojects')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="4.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg></span><span>All Projects</span></a>
@@ -514,6 +515,7 @@
       <span class="tb-bell" id="bell" style="display:none;margin-left:auto" onclick="go('exec')">🔔<span class="bdot" id="bdot">0</span></span>
     </header>
     <div class="view" id="v-exec"></div>
+    <div class="view" id="v-leads"></div>
     <div class="view" id="v-allprojects"></div>
     <div class="view" id="v-production"></div>
     <div class="view" id="v-research"></div>
@@ -596,8 +598,8 @@ function workerPill(){
 }
 
 // ===== Company OS navigation =====
-const VIEWS=['exec','allprojects','production','research','comms','sales','marketing','customers','costs','learning','settings'];
-const VTITLE={exec:'Executive',allprojects:'All Projects',production:'Production',research:'Brand Review',comms:'Communication',sales:'Sales',marketing:'Marketing',customers:'Customers',costs:'Cost Center',learning:'Learning',settings:'System Health'};
+const VIEWS=['exec','leads','allprojects','production','research','comms','sales','marketing','customers','costs','learning','settings'];
+const VTITLE={exec:'Executive',leads:'Leads',allprojects:'All Projects',production:'Production',research:'Brand Review',comms:'Communication',sales:'Sales',marketing:'Marketing',customers:'Customers',costs:'Cost Center',learning:'Learning',settings:'System Health'};
 let PROJFILTER='all';
 let SRCFILTER='all';
 const DEPTS=[
@@ -937,7 +939,17 @@ var EXEC_CSS=`<style>
 .execv2{background:radial-gradient(120% 80% at 100% 0,#100b22,#08070e 60%);color:#ece9f6;margin:-14px -14px 0;padding:16px 18px 28px;border-radius:14px;min-height:82vh}
 .execv2 .v2top h1{font-size:25px;font-weight:800;letter-spacing:-.5px;margin:0 0 3px}
 .execv2 .v2top p{margin:0;color:#8f8aa6;font-size:13.5px}
+.execv2 .v2depts{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin:15px 0 4px}
+.execv2 .v2dep{position:relative;overflow:hidden;display:block;background:#131120;border:1px solid rgba(255,255,255,.08);border-radius:15px;padding:15px 16px;cursor:pointer;text-decoration:none;color:inherit;transition:.15s}
+.execv2 .v2dep:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.18)}
+.execv2 .v2dep::before{content:'';position:absolute;top:0;left:0;bottom:0;width:4px}
+.execv2 .v2dep.leads::before{background:#8b5cf6}.execv2 .v2dep.prod::before{background:#f5a524}.execv2 .v2dep.comm::before{background:#26c281}
+.execv2 .v2dep .darr{position:absolute;top:13px;right:14px;color:#6d6785;font-size:16px}
+.execv2 .v2dep .dn{font-size:30px;font-weight:800;letter-spacing:-.6px;line-height:1}
+.execv2 .v2dep .dl{font-weight:800;font-size:13.5px;margin-top:7px}
+.execv2 .v2dep .dsub{color:#8f8aa6;font-size:11.5px;margin-top:3px}
 .execv2 .v2stats{display:grid;grid-template-columns:repeat(5,1fr);gap:13px;margin:16px 0 18px}
+@media(max-width:640px){.execv2 .v2depts{grid-template-columns:1fr}}
 .execv2 .v2stat{position:relative;overflow:hidden;background:#131120;border:1px solid rgba(255,255,255,.07);border-radius:15px;padding:14px 15px 13px}
 .execv2 .v2stat::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#8b5cf6,#c084fc);opacity:.28}
 .execv2 .v2stat.hi{background:linear-gradient(140deg,#211741,#141024);border-color:rgba(139,92,246,.4);box-shadow:0 0 0 1px rgba(139,92,246,.14),0 8px 30px rgba(139,92,246,.12)}
@@ -1093,6 +1105,7 @@ function miniRing(pct,color){
 // every card opens the customer/lead page; no approve/promote/revise buttons here.
 function renderExec(){
   const c=counts(), opps=oppList(), approvals=c.appr, nl=newSince();
+  const dc=(typeof deptCounts==='function'?deptCounts():{leads:0,production:0,communication:0});
   const est=fmtMoney(opps.length*pkgPrice());
   const top=opps.slice().sort((a,b)=>oppScore(b).pct-oppScore(a).pct)[0];
   const leadsN = CC_SINCE? nl.length : c.newlead.length;
@@ -1106,6 +1119,11 @@ function renderExec(){
   $('v-exec').innerHTML=EXEC_CSS+`
    <div class="execv2">
     <div class="v2top"><h1>Good ${dayPart()}, Moe.</h1><p>Here's what happened while you were away.</p></div>
+    <div class="v2depts">
+      <a class="v2dep leads" onclick="go('leads')"><span class="darr">›</span><div class="dn">${c.newlead.length}</div><div class="dl">Leads</div><div class="dsub">waiting for qualification</div></a>
+      <a class="v2dep prod" onclick="go('production')"><span class="darr">›</span><div class="dn">${c.appr.length}</div><div class="dl">Production</div><div class="dsub">${c.appr.length} awaiting approval · ${c.building.length} building</div></a>
+      <a class="v2dep comm" onclick="go('comms')"><span class="darr">›</span><div class="dn">${dc.communication}</div><div class="dl">Communication</div><div class="dsub">delivered customers</div></a>
+    </div>
     <div class="v2stats">
       <div class="v2stat"><div class="l">New leads since you left</div>
         <div class="v2statrow"><div class="v">${leadsN}</div>${sparkSVG(leads7,'#a855f7')}</div>
@@ -1125,7 +1143,7 @@ function renderExec(){
     </div>
     <div class="v2grid">
       <div class="v2col">
-        <div class="v2sec"><h2>✨ New Opportunities <span>${opps.length}</span></h2><a onclick="go('sales')">View all →</a></div>
+        <div class="v2sec"><h2>✨ New Opportunities <span>${opps.length}</span></h2><a onclick="go('leads')">Open Leads →</a></div>
         ${opps.length? `<div class="v2opps">${opps.slice(0,9).map(oppCard).join('')}</div>`
           : `<div class="v2empty">No new businesses have discovered UNVEILED yet. The moment someone submits through the Front Door, they appear here first.</div>`}
         <div class="v2sec"><h2>🎁 Websites Waiting for Approval <span>${approvals.length}</span></h2><a onclick="go('production')">View all →</a></div>
@@ -1167,26 +1185,83 @@ function renderExec(){
 }
 
 // ===== Production =====
+// ===== Shared dark department styling (Production + Communication) =====
+var DEPTV_CSS=`<style>
+.dv{background:radial-gradient(120% 80% at 100% 0,#100b22,#08070e 60%);color:#ece9f6;margin:-14px -14px 0;padding:18px 18px 30px;border-radius:14px;min-height:82vh}
+.dv .dvhead{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:12px}
+.dv .dvhead h1{font-size:24px;font-weight:800;letter-spacing:-.5px;margin:0 0 3px}
+.dv .dvhead p{margin:0;color:#8f8aa6;font-size:13px;max-width:560px;line-height:1.45}
+.dv .dvpill{display:flex;align-items:center;gap:8px;background:#131120;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:9px 13px;font-size:12.5px;font-weight:700;white-space:nowrap}
+.dv .dvsec{font-weight:900;font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:#9a93ad;margin:22px 2px 12px;display:flex;gap:9px;align-items:center}
+.dv .dvsec .c{background:rgba(139,92,246,.22);color:#d6c9ff;font-size:11px;font-weight:800;padding:1px 8px;border-radius:20px}
+.dv .dvempty{background:#131120;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:22px;text-align:center;color:#8f8aa6;font-size:13px}
+.dv .dvcard{display:flex;align-items:center;gap:13px;background:#131120;border:1px solid rgba(255,255,255,.08);border-radius:15px;padding:13px 15px;margin-bottom:12px;cursor:pointer}
+.dv .dvcard:hover{border-color:rgba(255,255,255,.16)}
+.dv .dvthumb{width:104px;height:70px;border-radius:10px;overflow:hidden;background:#1a1730;flex:none;position:relative}
+.dv .dvthumb img{width:100%;height:100%;object-fit:cover;object-position:top}
+.dv .dvthumb .ini{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;color:#443768;font-size:22px}
+.dv .dvmain{flex:1;min-width:0}
+.dv .dvnm{font-weight:800;font-size:15.5px}
+.dv .dvst{font-size:12px;color:#8f8aa6;margin-top:2px}
+.dv .dvbar{height:7px;border-radius:5px;background:rgba(255,255,255,.07);overflow:hidden;margin-top:9px;max-width:360px}
+.dv .dvbar i{display:block;height:100%;border-radius:5px}
+.dv .dvblock{margin-top:8px;font-size:12px;color:#f5a524;font-weight:600}
+.dv .dvact{display:flex;gap:8px;flex:none;flex-wrap:wrap;justify-content:flex-end}
+.dv .dvb{font:inherit;font-size:12.5px;font-weight:800;border-radius:10px;padding:9px 13px;border:1px solid rgba(255,255,255,.12);cursor:pointer;background:#181530;color:#ece9f6}
+.dv .dvb.go{background:#26c281;border-color:#26c281;color:#05130c}
+.dv .dvb.warn{color:#f5a524;border-color:rgba(245,165,36,.35)}
+.dv .dvchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.dv .dch{font-size:11px;font-weight:700;border-radius:20px;padding:3px 9px;border:1px solid rgba(255,255,255,.1);color:#8f8aa6}
+.dv .dch.on{background:rgba(38,194,129,.16);color:#5be3a8;border-color:rgba(38,194,129,.35)}
+.dv .dch.pend{opacity:.55}
+.dv .dvprev{background:#131120;border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden;margin-bottom:14px}
+.dv .dvprev .sh{height:230px;background:#0c0a16;overflow:hidden;display:flex;align-items:flex-start;justify-content:center}
+.dv .dvprev .sh img{width:100%;object-fit:cover;object-position:top}
+.dv .dvprev .bar2{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 15px;flex-wrap:wrap}
+.dv .dvprev .nm{font-weight:800;font-size:16px}
+@media(max-width:640px){.dv .dvcard{flex-direction:column;align-items:stretch}.dv .dvact{justify-content:flex-start}.dv .dvthumb{width:100%;height:120px}}
+</style>`;
+function prodStage(l){ var s=l.status;
+  if(s==='QUALIFIED') return {label:'Queued for build',pct:12,color:'#8b5cf6'};
+  if(s==='BUILDING') return (typeof activeBuildJob==='function'&&!activeBuildJob(l.id))?{label:'Build stalled',pct:50,color:'#f0576a',stalled:true}:{label:'Building',pct:50,color:'#8b5cf6'};
+  if(s==='QA') return {label:'Quality check',pct:80,color:'#f5a524'};
+  if(s==='CHANGES REQUESTED') return {label:'Revising',pct:65,color:'#f5a524'};
+  if(s==='PREVIEW READY') return {label:'Ready for approval',pct:100,color:'#26c281'};
+  return {label:s||'',pct:0,color:'#8f8aa6'};
+}
+function prodCard(l){ var st=prodStage(l), pv=l.preview_url;
+  var thumb='<div class="dvthumb">'+(pv?'<img loading="lazy" src="'+shot(pv,300)+'">':'<div class="ini">'+esc(initials(l.business_name))+'</div>')+'</div>';
+  return '<div class="dvcard" onclick="location.hash=\'#c/'+l.id+'\'">'+thumb+
+    '<div class="dvmain"><div class="dvnm">'+esc(l.business_name||'Project')+'</div>'+
+      '<div class="dvst">'+esc(st.label)+' · in stage '+ago(l.updated_at)+'</div>'+
+      '<div class="dvbar"><i style="width:'+st.pct+'%;background:'+st.color+'"></i></div>'+
+      (st.stalled?'<div class="dvblock">⚠ Build stopped before finishing.</div>':'')+'</div>'+
+    '<div class="dvact">'+(st.stalled?'<button class="dvb warn" onclick="event.stopPropagation();requeueBuild(\''+l.id+'\',this)">Requeue</button>':'<span style="color:#8f8aa6;font-size:18px">›</span>')+'</div></div>';
+}
+function prodApprove(l){ var pv=l.preview_url||'';
+  return '<div class="dvprev"><div class="sh">'+(pv?'<img loading="lazy" src="'+shot(pv,1000)+'">':'<div style="color:#8f8aa6;padding:95px 0;font-size:13px">Preview building…</div>')+'</div>'+
+    '<div class="bar2"><div class="nm">'+esc(l.business_name||'Website')+'</div>'+
+    '<div class="dvact">'+(pv?'<button class="dvb" onclick="window.open(\''+esc(absUrl(pv))+'\',\'_blank\')">Review ↗</button>':'')+
+    '<button class="dvb go" onclick="decide(\''+l.id+'\',\'APPROVED\',this)">Approve &amp; send reveal</button>'+
+    '<button class="dvb warn" onclick="requestRevisionFor(\''+l.id+'\')">Request revision</button></div></div></div>';
+}
 function renderProduction(){
-  const c=counts(), wh=workerHealth(), stuck=stuckJobs();
-  const need=c.appr.length+c.blocked.length; const sbb=$('sbb-prod');
-  if(sbb){ if(need){sbb.textContent=need;sbb.classList.add('show');} else sbb.classList.remove('show'); }
-  const kpis=[[c.building.length,'Building'],[c.pending.length,'Queued'],[c.appr.length,'Waiting approval'],[c.blocked.length,'Need changes']];
-  const buildingLeads=LEADS.filter(l=>l.status==='BUILDING');
-  const recent=WQ.filter(j=>j.type==='build_website'&&j.status==='completed').slice(0,6);
-  $('v-production').innerHTML=`
-    <div class="wcard" style="display:flex;align-items:center;gap:14px;margin-top:0">
-      <div class="dcheck" style="width:42px;height:42px;border-radius:12px;background:${wh.live?'#dcf5e6':'#fbe6c8'};color:${wh.live?'#15803d':'#9a6a00'};font-size:19px">${wh.live?'⚡':'⏸'}</div>
-      <div><div style="font-weight:700;font-size:15px">Production worker: ${wh.live?'Live':'Paused'}</div>
-      <div class="soonbox">${wh.live?('Last heartbeat '+wh.since+' · '+c.pending.length+' queued · '+c.building.length+' building'):'No heartbeat in over 2 minutes. Builds and revisions are not running.'}</div></div></div>
-    <div class="kpis" style="margin-top:14px">${kpis.map(([n,l])=>`<div class="kpi"><div class="n">${n}</div><div class="l">${l}</div></div>`).join('')}</div>
-    ${stuck.length?`<div class="wcard" style="border-color:rgba(182,124,8,.45)"><h3>⚠ Stuck jobs <span class="soon">${stuck.length}</span></h3><div class="soonbox">${stuck.length} build ${stuck.length>1?'jobs have':'job has'} been "running" for over 30 minutes, almost certainly orphaned by a worker restart. They block the queue until cleared. A stale-job reaper is the permanent fix; say the word and I'll add it.</div></div>`:''}
-    <div class="sec"><h2>Needs your approval</h2><span class="c">${c.appr.length||'none'}</span></div>
-    <div class="card needhero">${c.appr.length?c.appr.map(needRow).join(''):'<div class="empty">No finished sites waiting. When a build passes QA, it lands here for your approval.</div>'}</div>
-    <div class="sec"><h2>In production now</h2><span class="c">${buildingLeads.length}</span></div>
-    <div class="card">${buildingLeads.length?buildingLeads.map(rowHTML).join(''):'<div class="empty">Nothing building right now.</div>'}</div>
-    <div class="sec"><h2>Recently shipped</h2></div>
-    <div class="card">${recent.length?recent.map(j=>{const nm=leadName((j.payload||{}).lead_id);const url=(j.result||{}).preview_url;return `<div class="crow" ${url?`onclick="window.open('${esc(url)}','_blank')"`:'style="cursor:default"'}><div class="dcheck">✓</div><div><div class="nm">${esc(nm)}</div><div class="mt">Built & deployed · ${ago(j.updated_at||j.created_at)}</div></div>${url?'<div class="chev">↗</div>':''}</div>`;}).join(''):'<div class="empty">Completed builds will appear here.</div>'}</div>`;
+  var c=counts(), wh=workerHealth();
+  var inProd=(LEADS||[]).filter(function(l){ return dept(l)==='production' && l.status!=='PREVIEW READY'; })
+    .sort(function(a,b){ var o={'CHANGES REQUESTED':0,'QA':1,'BUILDING':2,'QUALIFIED':3}; return (o[a.status]==null?9:o[a.status])-(o[b.status]==null?9:o[b.status]); });
+  var appr=c.appr, recent=WQ.filter(function(j){return j.type==='build_website'&&j.status==='completed';}).slice(0,6);
+  var sbb=$('sbb-prod'); if(sbb){ if(appr.length){sbb.textContent=appr.length;sbb.classList.add('show');} else sbb.classList.remove('show'); }
+  $('v-production').innerHTML=DEPTV_CSS+`
+   <div class="dv">
+    <div class="dvhead"><div><h1>Production</h1><p>Only businesses being built right now. Finished sites wait for your approval; approving sends the reveal and moves them to Communication.</p></div>
+      <div class="dvpill"><span style="width:9px;height:9px;border-radius:50%;display:inline-block;background:${wh.live?'#26c281':'#f0576a'};box-shadow:0 0 8px ${wh.live?'#26c281':'#f0576a'}"></span> Worker ${wh.live?'live':'paused'}</div></div>
+    <div class="dvsec">🎁 Waiting for your approval <span class="c">${appr.length}</span></div>
+    ${appr.length? appr.map(prodApprove).join('') : '<div class="dvempty">No finished sites waiting. When a build passes QA it lands here.</div>'}
+    <div class="dvsec">⚙ In production now <span class="c">${inProd.length}</span></div>
+    ${inProd.length? inProd.map(prodCard).join('') : '<div class="dvempty">Nothing building right now. Promote a lead to start production.</div>'}
+    <div class="dvsec">✓ Recently shipped</div>
+    ${recent.length? recent.map(function(j){ var nm=leadName((j.payload||{}).lead_id), url=(j.result||{}).preview_url; return '<div class="dvcard" '+(url?'onclick="window.open(\''+esc(url)+'\',\'_blank\')"':'')+'><div class="dvthumb">'+(url?'<img src="'+shot(url,300)+'">':'<div class="ini">'+esc(initials(nm))+'</div>')+'</div><div class="dvmain"><div class="dvnm">'+esc(nm)+'</div><div class="dvst">Built &amp; deployed · '+ago(j.updated_at||j.created_at)+'</div></div></div>'; }).join('') : '<div class="dvempty">Completed builds will appear here.</div>'}
+   </div>`;
 }
 
 // ===== Brand Research review queue (LS-BRAND-RESEARCH) =====
@@ -1361,20 +1436,34 @@ function renderCustomerList(){
 }
 
 // ===== Communication =====
+function commSteps(l){
+  var delivered=!!l.reveal_sent_at;
+  var steps=[['Delivered',delivered],['Opened',false,true],['Preview viewed',false,true],['Replied',false,true],['Zoom scheduled',false,true],['Subscription',false,true]];
+  return steps.map(function(s){ var on=s[1], pend=s[2]&&!on; var cls=on?'on':(pend?'pend':''); return '<span class="dch '+cls+'">'+(on?'✓ ':'')+s[0]+(pend?' · pending':'')+'</span>'; }).join('');
+}
+function commCard(l){
+  var days=l.reveal_sent_at?Math.floor((Date.now()-new Date(l.reveal_sent_at).getTime())/86400000):null;
+  var atRisk=days!=null&&days>=7&&l.status==='PREVIEW DELIVERED';
+  var pv=l.preview_url||'';
+  return '<div class="dvcard" style="align-items:flex-start" onclick="location.hash=\'#c/'+l.id+'\'">'+
+    '<div class="dvthumb">'+(pv?'<img loading="lazy" src="'+shot(pv,300)+'">':'<div class="ini">'+esc(initials(l.business_name))+'</div>')+'</div>'+
+    '<div class="dvmain"><div class="dvnm">'+esc(l.business_name||'Customer')+(atRisk?' <span style="color:#f0576a;font-size:11px;font-weight:800;letter-spacing:.5px">AT RISK</span>':'')+'</div>'+
+    '<div class="dvst">'+(l.reveal_sent_at?('Reveal delivered '+ago(l.reveal_sent_at)+(days!=null?' · '+days+'d ago':'')):'Approved — reveal queued')+'</div>'+
+    '<div class="dvchips">'+commSteps(l)+'</div></div>'+
+    '<div class="dvact">'+(pv?'<button class="dvb" onclick="event.stopPropagation();window.open(\''+esc(absUrl(pv))+'\',\'_blank\')">Preview ↗</button>':'')+
+    (l.email?'<button class="dvb" onclick="event.stopPropagation();resendReveal(\''+l.id+'\',this)">Resend</button>':'')+'</div></div>';
+}
 function renderComms(){
-  const sent=LEADS.filter(l=>l.reveal_sent_at).sort((a,b)=>new Date(b.reveal_sent_at)-new Date(a.reveal_sent_at));
-  const awaiting=LEADS.filter(l=>l.status==='PREVIEW DELIVERED');
-  $('v-comms').innerHTML=`
-    <div class="pulse" style="font-size:19px">Customer Communication<span class="s">Every touchpoint with every customer, in one place. The tracking layer switches on the moment we connect the email provider. Until then this shows exactly what we can see honestly today.</span></div>
-    ${instr('Instrumenting','amber','Email Intelligence','This section will automatically begin tracking <b>delivery, opens, clicks, replies, and response times</b> the moment the email provider is connected. No historical data is fabricated. Measurement starts at the first tracked send.',
-      [{label:'Approved send path live (unveiled@monadigitalmarketing.com)',done:true},{label:'Connect email provider for tracking',done:false},{label:'Enable open / click webhooks',done:false},{label:'Receive first tracked email',done:false}],
-      'Once active, every customer shows: delivered or not, opened and how many times, clicked through to the site, and how long they took to reply, plus an automatic nudge when someone goes quiet.')}
-    ${instr('Instrumenting','violet','Outbound Approval Queue','Before an automated email goes out, it will appear here so you can <b>open it, edit it, approve it, or hold it</b>, then let the automation continue. As trust builds, you can let categories send on their own.',
-      [{label:'Email send path live',done:true},{label:'Route automated drafts through an approval step',done:false},{label:'Per-category auto-send trust settings',done:false}],
-      'This is how the platform earns autonomy gradually: you stay in control of outbound until you decide a category is ready to send automatically.')}
-    <div class="sec"><h2>What we can see today</h2></div>
-    <div class="card">${sent.length?sent.slice(0,12).map(l=>`<div class="crow" onclick="location.hash='#c/${l.id}'"><div class="ava">${esc(initials(l.business_name))}</div><div><div class="nm">${esc(l.business_name||'Untitled')}</div><div class="mt">Reveal sent · ${ago(l.reveal_sent_at)}</div></div><span class="pill p-blue">Reveal delivered</span></div>`).join(''):'<div class="empty">No reveals sent yet. When you approve a finished site, the reveal goes to the customer and appears here.</div>'}</div>
-    ${awaiting.length?`<div class="sec"><h2>Awaiting their reply</h2><span class="c">${awaiting.length}</span></div><div class="card">${awaiting.map(rowHTML).join('')}</div>`:''}`;
+  var custs=(LEADS||[]).filter(function(l){return dept(l)==='communication';})
+    .sort(function(a,b){ return new Date(b.reveal_sent_at||b.updated_at||0)-new Date(a.reveal_sent_at||a.updated_at||0); });
+  var atRisk=custs.filter(function(l){ var d=l.reveal_sent_at?Math.floor((Date.now()-new Date(l.reveal_sent_at).getTime())/86400000):0; return d>=7&&l.status==='PREVIEW DELIVERED'; }).length;
+  $('v-comms').innerHTML=DEPTV_CSS+`
+   <div class="dv">
+    <div class="dvhead"><div><h1>Communication &amp; Sales</h1><p>Every delivered customer, after the reveal. Engagement rows (opened, replied, subscription) light up honestly once email tracking + Square are wired — never faked before then.</p></div>
+      ${atRisk?`<div class="dvpill" style="color:#f0868f">${atRisk} at risk</div>`:''}</div>
+    <div class="dvsec">Delivered customers <span class="c">${custs.length}</span></div>
+    ${custs.length? custs.map(commCard).join('') : '<div class="dvempty">No delivered customers yet. When you approve a site, the reveal goes out and the customer appears here.</div>'}
+   </div>`;
 }
 
 // ===== Sales =====
@@ -1563,7 +1652,101 @@ function setBuildEst(){
   localStorage.setItem('cc_est_build',String(n)); renderCosts();
 }
 
-Object.assign(RENDER,{exec:renderExec,allprojects:renderAllProjects,production:renderProduction,research:renderResearch,comms:renderComms,sales:renderSales,marketing:renderMarketing,customers:renderCustomers,costs:renderCosts,learning:renderLearning,settings:renderSettings});
+// ===== DEPARTMENT 1: LEADS — the qualification queue (dossier per lead, 3 decisions) =====
+var LEADS_CSS=`<style>
+.ldept{background:radial-gradient(120% 80% at 100% 0,#100b22,#08070e 60%);color:#ece9f6;margin:-14px -14px 0;padding:18px 18px 30px;border-radius:14px;min-height:82vh}
+.ldept .ldhead{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:16px}
+.ldept .ldhead h1{font-size:24px;font-weight:800;letter-spacing:-.5px;margin:0 0 3px}
+.ldept .ldhead p{margin:0;color:#8f8aa6;font-size:13px;max-width:520px;line-height:1.45}
+.ldept .ldcount{background:#131120;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:9px 13px;font-size:12.5px;color:#8f8aa6;white-space:nowrap}
+.ldept .ldcount span{color:#fff;font-weight:800}.ldept .ldcount .fz{color:#8f8aa6}
+.ldept .ldempty{background:#131120;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:26px;text-align:center;color:#8f8aa6;font-size:13.5px}
+.ldz{display:grid;grid-template-columns:190px 1fr;gap:0;background:#131120;border:1px solid rgba(255,255,255,.08);border-radius:18px;overflow:hidden;margin-bottom:16px}
+.ldz-shot{position:relative;background:#1a1730;min-height:190px;overflow:hidden}
+.ldz-shot img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;position:absolute;inset:0}
+.ldz-shot.noimg img{display:none}
+.ldz-init{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:44px;color:#443768}
+.ldz-shot img~.ldz-init{display:none}.ldz-shot.noimg .ldz-init{display:flex}
+.ldz-new{position:absolute;top:11px;left:11px;background:#8b5cf6;color:#fff;font-size:10px;font-weight:800;letter-spacing:.6px;padding:3px 9px;border-radius:20px}
+.ldz-fz{position:absolute;top:11px;left:11px;background:#3a3550;color:#c9c3d6;font-size:10px;font-weight:800;letter-spacing:.6px;padding:3px 9px;border-radius:20px}
+.ldz-main{padding:15px 17px 15px}
+.ldz-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.ldz-nm{font-weight:800;font-size:18px;letter-spacing:-.3px}
+.ldz-meta{margin-top:4px;font-size:12.5px;color:#8f8aa6}
+.ldz-ring{display:flex;flex-direction:column;align-items:center;gap:1px;flex:none}.ldz-ring span{font-size:10px;color:#8f8aa6;font-weight:700}
+.ldz-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:11px}
+.ldz-links a{font-size:12px;font-weight:700;color:#c9bbff;background:rgba(139,92,246,.14);border:1px solid rgba(139,92,246,.25);border-radius:8px;padding:4px 9px}
+.ldz-sum{margin-top:11px;font-size:12.5px;color:#b9b3cc;line-height:1.5}
+.ldz-why{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}
+.ldz-chip{font-size:11.5px;background:#181530;color:#a99fce;border-radius:7px;padding:3px 8px}
+.ldz-reco{margin-top:11px;font-size:12.5px;color:#cfc9e0;line-height:1.5}.ldz-reco b{color:#a855f7}
+.ldz-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;flex-wrap:wrap}
+.ldz-val{font-weight:800;font-size:14px}.ldz-val .mut{color:#8f8aa6;font-weight:600;font-size:12px}
+.ldz-acts{display:flex;gap:8px;flex-wrap:wrap}
+.ldb{font:inherit;font-size:13px;font-weight:800;border-radius:11px;padding:10px 15px;border:1px solid rgba(255,255,255,.12);cursor:pointer;background:#181530;color:#ece9f6}
+.ldb.promote{background:#8b5cf6;border-color:#8b5cf6;color:#fff}
+.ldb.reject{color:#f0868f;border-color:rgba(240,87,106,.35)}
+@media(max-width:640px){.ldz{grid-template-columns:1fr}.ldz-shot{min-height:150px;height:150px}}
+</style>`;
+function _cap(s){ s=String(s||''); return s.charAt(0).toUpperCase()+s.slice(1); }
+function _host(u){ try{ return new URL(/^https?:/.test(u)?u:'https://'+u).hostname.replace(/^www\./,''); }catch(e){ return 'link'; } }
+function leadLinks(l){
+  var out=[], seen={}, sp=(typeof _sp==='function'?_sp(l):{});
+  function add(lab,u){ if(!u)return; var k=(''+u).toLowerCase(); if(seen[k])return; seen[k]=1; out.push('<a href="'+esc(absUrl(u))+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'+esc(lab)+' ↗</a>'); }
+  if(l.website) add('Website', l.website);
+  var res=sp.resolved||{}; Object.keys(res).forEach(function(k){ add(_cap(k), res[k]); });
+  var bp=sp.by_platform||{}; Object.keys(bp).forEach(function(k){ var v=bp[k]; add(_cap(k), (v&&v.url)||v); });
+  (sp.links||[]).forEach(function(u){ if(out.length<7) add(_host(u), u); });
+  return out.slice(0,7).join('');
+}
+function aiReco(l,s){
+  if(!l.email && !l.phone) return 'No way to reach them yet — get a contact before promoting.';
+  if(s.pct>=80) return 'Strong fit. Recommend promoting to production.';
+  if(s.pct>=60) return 'Reasonable fit. Promote if you have capacity, or freeze for later.';
+  return 'Weak signals so far. Consider freezing until we learn more, or reject if it is clearly not a fit.';
+}
+function leadDossier(l){
+  var s=oppScore(l), d=(typeof discFor==='function'?discFor(l.id):null), conf=(d&&d.overall_confidence)?Math.round(d.overall_confidence*100):s.pct;
+  var frozen=l.status==='FROZEN', site=l.website, links=leadLinks(l);
+  var summary=(d&&d.report&&(d.report.summary||d.report.brand_summary))||'';
+  var img=site?('<img loading="lazy" src="'+shot(site,600)+'" onerror="this.parentNode.classList.add(\'noimg\')">'):'';
+  return `<div class="ldz">
+    <div class="ldz-shot ${site?'':'noimg'}">${img}<div class="ldz-init">${esc(initials(l.business_name))}</div>${frozen?'<span class="ldz-fz">FROZEN</span>':'<span class="ldz-new">NEW</span>'}</div>
+    <div class="ldz-main">
+      <div class="ldz-top">
+        <div><div class="ldz-nm">${esc(l.business_name||'New lead')}</div>
+          <div class="ldz-meta">${esc(srcLabel(l.source))}${l.industry?' · '+esc(l.industry):''}${l.contact_name?' · '+esc(l.contact_name):''} · ${ago(l.created_at)}</div></div>
+        <div class="ldz-ring">${miniRing(conf,conf>=80?'#26c281':(conf>=60?'#f5a524':'#8b5cf6'))}<span>fit</span></div>
+      </div>
+      ${links?`<div class="ldz-links">${links}</div>`:''}
+      ${summary?`<div class="ldz-sum">${esc(summary)}</div>`:''}
+      <div class="ldz-why">${s.reasons.slice(0,4).map(function(r){return '<span class="ldz-chip">'+esc(r)+'</span>';}).join('')}</div>
+      <div class="ldz-reco"><b>AI</b> ${esc(aiReco(l,s))}</div>
+      <div class="ldz-foot">
+        <div class="ldz-val">💰 ~${esc(fmtMoney(pkgPrice()))} <span class="mut">est. value</span></div>
+        <div class="ldz-acts">
+          <button class="ldb promote" onclick="promoteLead('${l.id}',this)">Promote to Production ›</button>
+          <button class="ldb" onclick="freezeLead('${l.id}')">${frozen?'Frozen':'Freeze'}</button>
+          <button class="ldb reject" onclick="rejectLead('${l.id}')">Reject</button>
+        </div>
+      </div>
+    </div></div>`;
+}
+function renderLeads(){
+  var list=(LEADS||[]).filter(function(l){return dept(l)==='leads';}).sort(function(a,b){
+    var af=a.status==='FROZEN'?1:0, bf=b.status==='FROZEN'?1:0; if(af!==bf) return af-bf;
+    var na=new Date(a.created_at||0).getTime(), nb=new Date(b.created_at||0).getTime(); if(nb!==na) return nb-na;
+    return oppScore(b).pct-oppScore(a).pct; });
+  var news=list.filter(function(l){return l.status!=='FROZEN';}).length, frozen=list.length-news;
+  var sbb=$('sbb-leads'); if(sbb){ if(news){sbb.textContent=news;sbb.classList.add('show');} else sbb.classList.remove('show'); }
+  $('v-leads').innerHTML=LEADS_CSS+`
+   <div class="ldept">
+    <div class="ldhead"><div><h1>Leads</h1><p>The qualification queue. Decide who deserves production — every decision trains the system on what we build and what we decline.</p></div>
+      <div class="ldcount"><span>${news}</span> to qualify${frozen?` · <span class="fz">${frozen} frozen</span>`:''}</div></div>
+    ${list.length? list.map(leadDossier).join('') : '<div class="ldempty">No leads waiting for qualification. New inbound opportunities land here first.</div>'}
+   </div>`;
+}
+Object.assign(RENDER,{exec:renderExec,leads:renderLeads,allprojects:renderAllProjects,production:renderProduction,research:renderResearch,comms:renderComms,sales:renderSales,marketing:renderMarketing,customers:renderCustomers,costs:renderCosts,learning:renderLearning,settings:renderSettings});
 
 function renderSkeleton(){
   const el=$('v-exec'); if(!el)return; el.style.display='block';
@@ -1654,9 +1837,15 @@ function renderCustomer(id){
   // contextual actions: team sees internal controls; customer sees only their own
   let teamActs='', custActs='';
   if(l.preview_url){ const open=`<a class="btn primary" href="${esc(l.preview_url)}" target="_blank">Open website ↗</a>`; teamActs+=open; custActs+=open; }
+  // Department-appropriate decisions (Knowledge-OS/DEPARTMENT-ARCHITECTURE.md).
+  var d=dept(l);
+  if(d==='leads'){ teamActs+=`
+    <button class="btn primary" onclick="promoteLead('${id}',this)">Promote to Production ›</button>
+    <button class="btn" onclick="freezeLead('${id}')">Freeze for later</button>
+    <button class="btn ghost" onclick="rejectLead('${id}')">Reject…</button>`;
+  }
   if(sg.k==='approve'){ teamActs+=`
-    <button class="btn good" onclick="decide('${id}','APPROVED',this)">Approve &amp; send reveal</button>
-    <button class="btn ghost" onclick="decide('${id}','LOST',this)">Pass</button>`;
+    <button class="btn good" onclick="decide('${id}','APPROVED',this)">Approve &amp; send reveal</button>`;
   }
   const wasApproved = ['APPROVED','PREVIEW DELIVERED'].includes(l.status) || !!l.reveal_sent_at;
   if(wasApproved && l.preview_url && email) teamActs+=`<button class="btn" onclick="resendReveal('${id}',this)">📤 Resend reveal to customer</button>`;
@@ -1989,6 +2178,59 @@ $('fileinput').addEventListener('change',async(e)=>{
   await createRevision({lead_id:CURLEAD,kind:'replace_image',original_url:PENDING_REPLACE,new_image_url:pub,instruction:'Swap the existing image for this newly uploaded one.'},'Image uploaded. Revision is now in production ✓');
   PENDING_REPLACE=null;
 });
+// ===== THREE-DEPARTMENT OPERATING MODEL (LOCKED) — Knowledge-OS/DEPARTMENT-ARCHITECTURE.md =====
+// Every business lives in exactly ONE department, derived from status (single source of truth).
+function dept(l){ var s=(l&&l.status)||'';
+  if(s==='NEW LEAD'||s==='FROZEN') return 'leads';
+  if(['QUALIFIED','BUILDING','QA','PREVIEW READY','CHANGES REQUESTED'].indexOf(s)>=0) return 'production';
+  if(['APPROVED','PREVIEW DELIVERED','LIVE'].indexOf(s)>=0) return 'communication';
+  return 'archived';
+}
+function deptCounts(){ var c={leads:0,production:0,communication:0,archived:0}; (LEADS||[]).forEach(function(l){ c[dept(l)]++; }); return c; }
+var REJECT_REASONS=['Not a fit / wrong industry','Not enough information','Low value / not worth resources','Bad or missing contact','Duplicate','Already has a great site','Other'];
+// Freeze a lead for later (stays parked in Leads).
+async function freezeLead(id){ var l=LEADS.find(function(x){return x.id===id;})||{}; var nm=l.business_name||'this lead';
+  if(!confirm('Freeze '+nm+' for later?\n\nIt stays in Leads, parked, until you promote or reject it.')) return;
+  var sess=(await sb.auth.getSession()).data.session; if(!sess){ toast('Sign in first.'); return; }
+  var up=await sb.from('leads').update({status:'FROZEN',updated_at:new Date().toISOString()}).eq('id',id).select('id');
+  if(up.error||!up.data||!up.data.length){ toast('Could not freeze: '+((up.error&&(up.error.message||up.error.code))||'no permission')); return; }
+  try{ await sb.from('activity_log').insert({entity_type:'lead',entity_id:id,action:'lead_frozen',meta:{}}); }catch(_e){}
+  emitSignal({lead_id:id,industry:l.industry||null,decision:'frozen',revision_kind:null,target_area:null,instruction:null,first_pass:null});
+  toast('Frozen for later. Parked in Leads.'); await load(); route();
+}
+// Reject-with-reason: a structured reason becomes training data (learning_signals), status -> LOST.
+(function REJECTUI(){
+  var css=document.createElement('style'); css.textContent=`
+  .rjov{position:fixed;inset:0;z-index:70;background:rgba(8,6,16,.55);backdrop-filter:blur(3px);display:none}.rjov.on{display:block}
+  .rjm{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:71;width:min(420px,92vw);background:var(--bg,#fff);border:1px solid var(--line,#eee);border-radius:18px;padding:18px;display:none;box-shadow:0 30px 80px -20px rgba(0,0,0,.6)}.rjm.on{display:block}
+  .rjm h3{margin:0 0 4px;font-size:17px;font-weight:800}.rjm p{margin:0 0 14px;color:var(--muted,#8b8b95);font-size:13px;line-height:1.5}
+  .rjbtns{display:flex;flex-direction:column;gap:8px}
+  .rjbtns button{text-align:left;font:inherit;font-size:14px;font-weight:600;padding:12px 14px;border-radius:11px;border:1px solid var(--line,#eee);background:var(--panel,#faf9fc);color:var(--txt,#1c1830);cursor:pointer}
+  .rjbtns button:hover{border-color:#c9b8ff}
+  .rjx{margin-top:12px;width:100%;background:none;border:0;color:var(--muted,#8b8b95);font-size:13px;cursor:pointer}
+  `; document.head.appendChild(css);
+  var ov=document.createElement('div'); ov.className='rjov'; var m=document.createElement('div'); m.className='rjm';
+  document.body.appendChild(ov); document.body.appendChild(m); var TARGET=null;
+  window.rejectLead=function(id){ TARGET=id; var nm=(LEADS.find(function(x){return x.id===id;})||{}).business_name||'this lead';
+    m.innerHTML='<h3>Reject '+esc(nm)+'?</h3><p>Pick a reason. It becomes training data so the system learns what we build and what we decline.</p>'+
+      '<div class="rjbtns">'+REJECT_REASONS.map(function(r){return '<button data-r="'+esc(r)+'">'+esc(r)+'</button>';}).join('')+'</div><button class="rjx">Cancel</button>';
+    ov.classList.add('on'); m.classList.add('on'); };
+  function closeRj(){ ov.classList.remove('on'); m.classList.remove('on'); TARGET=null; }
+  ov.onclick=closeRj;
+  m.addEventListener('click', async function(e){ var t=e.target;
+    if(t&&t.className==='rjx'){ closeRj(); return; }
+    if(t&&t.dataset&&t.dataset.r&&TARGET){ var id=TARGET, reason=t.dataset.r; closeRj();
+      var l=LEADS.find(function(x){return x.id===id;})||{};
+      var sess=(await sb.auth.getSession()).data.session; if(!sess){ toast('Sign in first.'); return; }
+      var up=await sb.from('leads').update({status:'LOST',updated_at:new Date().toISOString()}).eq('id',id).select('id');
+      if(up.error||!up.data||!up.data.length){ toast('Could not reject: '+((up.error&&(up.error.message||up.error.code))||'no permission')); return; }
+      try{ await sb.from('activity_log').insert({entity_type:'lead',entity_id:id,action:'lead_rejected',meta:{reason:reason}}); }catch(_e){}
+      emitSignal({lead_id:id,industry:l.industry||null,decision:'rejected',revision_kind:null,target_area:reason,instruction:null,first_pass:null});
+      toast('Rejected — reason logged as training data.'); await load(); route();
+    }
+  });
+})();
+
 // ===== COO Assistant (Phase 2): context-aware, advise + you confirm, on every page =====
 (function COO(){
   var css=document.createElement('style'); css.textContent=`
@@ -2041,6 +2283,7 @@ $('fileinput').addEventListener('change',async(e)=>{
     var sources={}; (LEADS||[]).forEach(function(l){ var s=(typeof srcLabel==='function'?srcLabel(l.source):l.source)||'Other'; sources[s]=(sources[s]||0)+1; });
     ctx.company={
       counts:{new_leads:(c.newlead||[]).length, qualified:(c.qualified||[]).length, building:(c.building||[]).length, awaiting_approval:(c.appr||[]).length, customers_waiting:(c.delivered||[]).length, approved:(c.approved||[]).length, changes_requested:(c.blocked||[]).length, lost:(c.lost||[]).length},
+      departments:(typeof deptCounts==='function'?deptCounts():null),
       new_since_last_visit:(typeof newSince==='function'?newSince().length:null),
       est_pipeline_value:(typeof pkgPrice==='function'? hot.length*pkgPrice() : null),
       hot_leads:hot, awaiting_approval:approvals, stalled_builds:stalled, customers_waiting:waiting,
@@ -2048,7 +2291,7 @@ $('fileinput').addEventListener('change',async(e)=>{
       system_health:{worker_live:wh.live, worker_last:wh.since||null, queued:(c.pending||[]).length, email:'operational', sms:'A2P pending', not_tracked:['email opens','replies','meetings','subscriptions','MRR']}
     };
     if(h.indexOf('c/')===0){ var id=h.slice(2); var l=LEADS.find(function(x){return x.id===id;})||{}; var d2=(typeof discFor==='function'?discFor(id):null);
-      ctx.focus_lead={id:id, business:l.business_name, status:l.status, source:(typeof srcLabel==='function'?srcLabel(l.source):l.source), email:l.email, phone:l.phone, website:l.website, preview_url:l.preview_url, reveal_sent_at:l.reveal_sent_at, industry:l.industry, notes:l.cc_notes, quality:(d2&&d2.overall_confidence?Math.round(d2.overall_confidence*100):null), high_intent:(typeof highIntent==='function'?highIntent(l):null)};
+      ctx.focus_lead={id:id, business:l.business_name, status:l.status, department:(typeof dept==='function'?dept(l):null), source:(typeof srcLabel==='function'?srcLabel(l.source):l.source), email:l.email, phone:l.phone, website:l.website, preview_url:l.preview_url, reveal_sent_at:l.reveal_sent_at, industry:l.industry, notes:l.cc_notes, quality:(d2&&d2.overall_confidence?Math.round(d2.overall_confidence*100):null), high_intent:(typeof highIntent==='function'?highIntent(l):null)};
       ctx.focus_lead.recent_activity=(ACTS||[]).filter(function(a){return a.entity_id===id;}).slice(0,10).map(function(a){return {action:a.action, at:a.created_at};});
       ctx.focus_lead.revisions=(WQ||[]).filter(function(j){return j.type==='revision'&&j.payload&&j.payload.lead_id===id;}).slice(0,6).map(function(j){return {status:j.status, kind:(j.payload||{}).kind, at:j.updated_at};});
       ctx.focus_lead.builds=(WQ||[]).filter(function(j){return j.type==='build_website'&&j.payload&&j.payload.lead_id===id;}).slice(0,6).map(function(j){return {status:j.status, blocker:j.blocker_reason||null, at:j.updated_at};});
