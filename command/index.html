@@ -1123,13 +1123,14 @@ function renderExec(){
   let celebrate='';
   const conv=onboardingCusts[0];
   if(conv){
-    let o=conv.onboarding||{}; if(typeof o==='string'){try{o=JSON.parse(o);}catch(e){o={};}}
-    const nextAct = (!o.payment_sent&&!o.paid)?'Send payment link' : (!o.paid?'Confirm payment received' : (!o.launched?'Launch the website':'Activate customer'));
+    const steps=(typeof onbSteps==='function'?onbSteps(conv):[]);
+    let act=null; for(let i=0;i<steps.length;i++){ if(steps[i].state==='active'){ act=steps[i]; break; } }
+    const nextAct = act? act.label : 'Graduate to Active Customer';
     const isFirst = activeCusts.length===0 && onboardingCusts.length===1;
     celebrate=`<a class="v2celebrate" onclick="go('comms')">
-       <div class="cbig">🎉 ${isFirst?'Congratulations — your first customer is ready to convert!':'A customer is ready to convert'}</div>
+       <div class="cbig">🎉 ${isFirst?'Congratulations — your first customer is on their way in!':'A customer is moving through onboarding'}</div>
        <div class="cnm">${esc(conv.business_name||'A customer')}</div>
-       <div class="cnext">Next action: <b>${nextAct}</b><span class="carr">→</span></div>
+       <div class="cnext">Next step: <b>${esc(nextAct)}</b><span class="carr">→</span></div>
      </a>`;
   }
   const est=fmtMoney(opps.length*pkgPrice());
@@ -1470,7 +1471,7 @@ function renderCustomers(){
 
 // ===== PENDING CUSTOMERS (the onboarding funnel — a "yes" becoming a launched, paying customer) =====
 var ONB_CSS=`<style>
-.dv .onbc{background:#131120;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:15px 17px;margin-bottom:14px}
+.dv .onbc{background:#131120;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px 18px;margin-bottom:14px}
 .dv .onbc.hot{border-color:rgba(139,92,246,.4);box-shadow:0 0 0 1px rgba(139,92,246,.12)}
 .dv .onbtop{display:flex;align-items:center;gap:14px}
 .dv .onbthumb{width:96px;height:66px;border-radius:10px;overflow:hidden;background:#1a1730;flex:none;position:relative}
@@ -1480,65 +1481,84 @@ var ONB_CSS=`<style>
 .dv .onbnm{font-weight:800;font-size:16px}
 .dv .onbsub{font-size:12.5px;color:#c9bbff;margin-top:2px;font-weight:600}
 .dv .onbbar{height:7px;border-radius:5px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:9px;max-width:440px}
-.dv .onbbar i{display:block;height:100%;border-radius:5px;background:linear-gradient(90deg,#8b5cf6,#26c281)}
+.dv .onbbar i{display:block;height:100%;border-radius:5px;background:linear-gradient(90deg,#8b5cf6,#26c281);transition:width .4s}
 .dv .onbpct{font-size:11.5px;color:#8f8aa6;margin-top:5px;font-weight:600}
-.dv .onblist{margin-top:13px;border-top:1px solid rgba(255,255,255,.07);padding-top:4px}
-.dv .onbstep{display:flex;align-items:center;gap:11px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.05)}
-.dv .onbstep:last-child{border-bottom:0}
-.dv .onbstep .ck{width:22px;height:22px;border-radius:50%;border:1.5px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#05130c;flex:none}
-.dv .onbstep.done .ck{background:#26c281;border-color:#26c281}
-.dv .onbstep.next .ck{border-color:#8b5cf6;box-shadow:0 0 0 3px rgba(139,92,246,.18)}
-.dv .onbstep .lb{flex:1;font-size:13.5px;font-weight:600}
-.dv .onbstep.done .lb{color:#8f8aa6}
-.dv .onbstep .opt{color:#6d6785;font-weight:600;font-size:11px}
-.dv .onbacts{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
-.dv .onbnote{font-size:11.5px;color:#8f8aa6;font-style:italic;align-self:center}
+/* the pipeline — a connected vertical stepper */
+.dv .onbpipe{margin-top:15px;border-top:1px solid rgba(255,255,255,.07);padding-top:12px}
+.dv .ostep{display:flex;gap:13px}
+.dv .orail{display:flex;flex-direction:column;align-items:center;flex:none}
+.dv .onode{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;flex:none;border:1.5px solid rgba(255,255,255,.16);background:#181530;color:#cfc9e0}
+.dv .oline{width:2px;flex:1;background:rgba(255,255,255,.1);margin:3px 0;min-height:12px}
+.dv .ostep:last-child .oline{display:none}
+.dv .ostep.done .onode{background:#26c281;border-color:#26c281;color:#05130c}
+.dv .ostep.done .oline{background:#26c281}
+.dv .ostep.active .onode{border-color:#8b5cf6;background:#241a44;color:#fff;box-shadow:0 0 0 4px rgba(139,92,246,.18)}
+.dv .ostep.locked{opacity:.45}
+.dv .obody{flex:1;min-width:0;padding-bottom:12px}
+.dv .olab{font-weight:800;font-size:13.5px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dv .otag{font-size:9.5px;font-weight:800;letter-spacing:.5px;padding:2px 7px;border-radius:20px;text-transform:uppercase}
+.dv .otag.now{background:rgba(139,92,246,.22);color:#d6c9ff}
+.dv .otag.opt,.dv .otag.skip{background:rgba(255,255,255,.06);color:#8f8aa6}
+.dv .osub{font-size:11.5px;color:#8f8aa6;margin-top:2px}
+.dv .oacts{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}
+.dv .oover{background:none;border:0;color:#6d6785;font-size:11px;text-decoration:underline;cursor:pointer;padding:0;margin-top:7px;display:block}
+.dv .onbnote{font-size:11.5px;color:#8f8aa6;font-style:italic}
 .dv .onbchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
 .dv .badgeok{color:#5be3a8;font-size:11.5px;font-weight:800;letter-spacing:.3px}
-@media(max-width:640px){.dv .onbtop{flex-wrap:wrap}.dv .onbthumb{width:100%;height:120px}.dv .onbstep{flex-wrap:wrap}.dv .onbacts{justify-content:flex-start;width:100%}}
+@media(max-width:640px){.dv .onbtop{flex-wrap:wrap}.dv .onbthumb{width:100%;height:120px}.dv .oacts{width:100%}}
 </style>`;
-function onbData(l){ var o=l.onboarding||{}; if(typeof o==='string'){try{o=JSON.parse(o);}catch(e){o={};}} return o||{}; }
-function stepAction(l,s,o){
-  if(s.done) return '';
-  var id=l.id;
-  if(s.k==='paid'){
-    return '<span class="onbacts">'+
-      (o.payment_sent?'<span class="onbnote">link sent · awaiting payment</span>':'<button class="dvb" onclick="event.stopPropagation();sendPaymentLink(\''+id+'\',this)">Send payment link</button>')+
-      '<button class="dvb go" onclick="event.stopPropagation();markPaid(\''+id+'\',this)">Mark paid</button></span>';
+// Team actions live ONLY on the active step. Payment is provider-agnostic: it auto-confirms
+// from a verified `payment.confirmed` event; the manual override is a subtle escape hatch.
+function stepAction(l,s){ var id=l.id, o=onbData(l);
+  if(s.k==='package'){
+    var lp=leadPkg(l);
+    var chips=(typeof PKGS!=='undefined'&&PKGS?PKGS:[]).map(function(p){ var sel=String(p.name||'').toLowerCase()===String(lp.name||'').toLowerCase(); var pr=pkgPriceLabel(p);
+      return '<button class="dvb'+(sel?' go':'')+'" onclick="event.stopPropagation();selectPackage(\''+id+'\',\''+esc(p.name)+'\',this)">'+esc(p.name)+(pr?' · '+pr:'')+'</button>'; }).join('');
+    var confirmBtn = lp.name
+      ? '<button class="dvb go" onclick="event.stopPropagation();confirmPackage(\''+id+'\',this)">Confirm '+esc(lp.name)+(pkgPriceLabel(lp.pkg)?' · '+pkgPriceLabel(lp.pkg)+'/mo':'')+' &amp; continue</button>'
+      : '<span class="onbnote">Choose the package to continue.</span>';
+    return '<div class="oacts">'+confirmBtn+'</div>'+
+      (chips?'<div class="osub" style="margin-top:9px">'+(lp.name?'Change package:':'Recommended for this customer:')+'</div><div class="oacts">'+chips+'</div>':'');
   }
-  if(s.k==='domain') return '<button class="dvb" onclick="event.stopPropagation();setOnbStep(\''+id+'\',\'domain\',this)">Mark connected</button>';
-  if(s.k==='revisions') return '<button class="dvb" onclick="event.stopPropagation();requestRevisionFor(\''+id+'\')">Request revision</button>';
-  if(s.k==='launched') return '<button class="dvb" onclick="event.stopPropagation();setOnbStep(\''+id+'\',\'launched\',this)">Mark launched</button>';
-  if(s.k==='active'){
-    return (o.paid&&o.launched)? '<button class="dvb go" onclick="event.stopPropagation();activateCustomer(\''+id+'\',this)">Activate customer 🎉</button>'
-                : '<span class="onbnote">unlocks after payment + launch</span>';
+  if(s.k==='payment'){
+    return '<div class="oacts">'+
+      (o.payment_link_sent
+        ? '<span class="onbnote">Link sent · the step checks itself off when the payment provider confirms payment.</span>'
+        : '<button class="dvb go" onclick="event.stopPropagation();sendPaymentLink(\''+id+'\',this)">Send payment link</button>')+
+      '</div><button class="oover" onclick="event.stopPropagation();recordPaymentManually(\''+id+'\')">record payment manually (override)</button>';
   }
+  if(s.k==='domain') return '<div class="oacts"><button class="dvb" onclick="event.stopPropagation();advanceStep(\''+id+'\',{domain:true},\'Domain access collected ✓\',this)">Collect domain access</button></div>';
+  if(s.k==='dns') return '<div class="oacts"><button class="dvb" onclick="event.stopPropagation();advanceStep(\''+id+'\',{dns:true},\'Hosting / DNS access collected ✓\',this)">Add hosting / DNS</button><button class="dvb" onclick="event.stopPropagation();advanceStep(\''+id+'\',{dns_skipped:true},\'Skipped — we’re hosting it ✓\',this)">Not needed</button></div>';
+  if(s.k==='revisions') return '<div class="oacts"><button class="dvb" onclick="event.stopPropagation();requestRevisionFor(\''+id+'\')">Log a revision</button><button class="dvb" onclick="event.stopPropagation();advanceStep(\''+id+'\',{revisions_done:true},\'Final revisions complete ✓\',this)">Revisions done</button><button class="dvb" onclick="event.stopPropagation();advanceStep(\''+id+'\',{revisions_skipped:true},\'No revisions needed ✓\',this)">None needed</button></div>';
+  if(s.k==='launch') return '<div class="oacts"><button class="dvb" onclick="event.stopPropagation();advanceStep(\''+id+'\',{launch_ready:true},\'Launch checklist complete ✓\',this)">Complete launch checklist</button></div>';
+  if(s.k==='live') return '<div class="oacts"><button class="dvb go" onclick="event.stopPropagation();goLive(\''+id+'\',this)">Mark website live 🌟</button></div>';
   return '';
 }
 function pendingCard(l){
-  var steps=onbSteps(l), pr=onbProgress(l), pv=l.preview_url||'', o=onbData(l);
-  var nextStep=null; for(var i=0;i<steps.length;i++){ if(!steps[i].done&&!steps[i].opt){ nextStep=steps[i]; break; } }
+  var steps=onbSteps(l), pr=onbProgress(l), pv=l.preview_url||'';
+  var active=null; for(var i=0;i<steps.length;i++){ if(steps[i].state==='active'){ active=steps[i]; break; } }
   var thumb=pv?'<img loading="lazy" src="'+shot(pv,400)+'">':'<div class="ini">'+esc(initials(l.business_name))+'</div>';
-  var list=steps.map(function(s){
-    var isNext=nextStep&&s.k===nextStep.k;
-    return '<div class="onbstep '+(s.done?'done':'')+(isNext?' next':'')+'">'+
-      '<span class="ck">'+(s.done?'✓':'')+'</span>'+
-      '<span class="lb">'+esc(s.label.replace(' (optional)',''))+(s.opt?' <span class="opt">optional</span>':'')+'</span>'+
-      stepAction(l,s,o)+
-    '</div>';
+  var pipe=steps.map(function(s){
+    var glyph = s.state==='done'?'✓':(s.skipped?'–':s.icon);
+    var tag = s.state==='active'?'<span class="otag now">Now</span>'
+            : (s.skipped?'<span class="otag skip">Skipped</span>'
+            : ((s.opt&&s.state!=='done')?'<span class="otag opt">Optional</span>':''));
+    return '<div class="ostep '+s.state+'">'+
+      '<div class="orail"><div class="onode">'+glyph+'</div><div class="oline"></div></div>'+
+      '<div class="obody"><div class="olab">'+esc(s.label)+tag+'</div>'+
+        '<div class="osub">'+esc(s.sub)+'</div>'+
+        (s.state==='active'?stepAction(l,s):'')+
+      '</div></div>';
   }).join('');
-  return '<div class="onbc hot">'+
-    '<div class="onbtop">'+
+  return '<div class="onbc hot"><div class="onbtop">'+
       '<div class="onbthumb">'+thumb+'</div>'+
       '<div class="onbmeta"><div class="onbnm">'+esc(l.business_name||'Customer')+'</div>'+
-        '<div class="onbsub">'+(nextStep?('Next: '+esc(nextStep.label.replace(' (optional)',''))):'Onboarding complete — ready to activate 🎉')+'</div>'+
+        '<div class="onbsub">'+(active?('Now: '+esc(active.label)):'Onboarding complete — graduating to Active 🎉')+'</div>'+
         '<div class="onbbar"><i style="width:'+pr.pct+'%"></i></div>'+
-        '<div class="onbpct">'+pr.done+' of '+pr.total+' steps · '+pr.pct+'% complete</div>'+
+        '<div class="onbpct">'+pr.done+' of '+pr.total+' steps complete · '+pr.pct+'%</div>'+
       '</div>'+
       (pv?'<button class="dvb" onclick="window.open(\''+esc(absUrl(pv))+'\',\'_blank\')">Preview ↗</button>':'')+
-    '</div>'+
-    '<div class="onblist">'+list+'</div>'+
-  '</div>';
+    '</div><div class="onbpipe">'+pipe+'</div></div>';
 }
 function awaitingCard(l){
   var pv=l.preview_url||''; var days=l.reveal_sent_at?Math.floor((Date.now()-new Date(l.reveal_sent_at).getTime())/86400000):null;
@@ -1563,7 +1583,7 @@ function renderComms(){
   var sbb=$('sbb-pending'); if(sbb){ if(onboarding.length){sbb.textContent=onboarding.length;sbb.classList.add('show');} else sbb.classList.remove('show'); }
   $('v-comms').innerHTML=ONB_CSS+DEPTV_CSS+`
    <div class="dv">
-    <div class="dvhead"><div><h1>Pending Customers</h1><p>They approved the preview and said yes. This is the onboarding funnel — payment, domain, final touches, launch — that turns a “yes” into a live, paying customer. No one becomes an Active Customer until it's complete.</p></div>
+    <div class="dvhead"><div><h1>Pending Customers</h1><p>They said yes to the preview. This is the guided onboarding pipeline — confirm package &amp; pricing, payment, domain, final touches, launch — that turns a “yes” into a live, paying customer. Each step unlocks the next; no one becomes an Active Customer until they're launched.</p></div>
       <div class="dvpill">${onboarding.length} onboarding</div></div>
     <div class="dvsec">🚀 In onboarding <span class="c">${onboarding.length}</span></div>
     ${onboarding.length? onboarding.map(pendingCard).join('') : '<div class="dvempty">No one in onboarding yet. When a customer says yes to their preview, start their onboarding and this becomes their welcome checklist.</div>'}
@@ -1584,25 +1604,45 @@ async function persistOnb(id,patch,msg){
   await load(); route();
   return true;
 }
-async function setOnbStep(id,key,btn){ if(btn){btn.disabled=true;btn.textContent='…';}
-  var msgs={domain:'Domain marked connected ✓',launched:'Marked launched ✓ — one step from Active Customer.'};
-  var patch={}; patch[key]=true;
-  if(!(await persistOnb(id,patch,msgs[key]||'Saved ✓')) && btn){ btn.disabled=false; btn.textContent=key==='domain'?'Mark connected':'Mark launched'; }
+async function advanceStep(id,patch,msg,btn){ if(btn){btn.disabled=true;btn.textContent='…';}
+  if(!(await persistOnb(id,patch,msg)) && btn){ btn.disabled=false; }
 }
+async function selectPackage(id,name,btn){ if(btn){btn.disabled=true;}
+  // remember the choice on both the onboarding record and the lead (so we never re-ask)
+  try{ await sb.from('leads').update({package:name}).eq('id',id); var li=LEADS.find(function(x){return x.id===id;}); if(li) li.package=name; }catch(e){}
+  await persistOnb(id,{package:name},'Package set: '+name);
+}
+async function confirmPackage(id,btn){
+  var lp=leadPkg(LEADS.find(function(x){return x.id===id;})||{});
+  if(!lp.name){ toast('Choose a package first.'); return; }
+  await advanceStep(id,{package:lp.name,package_confirmed:true},'Package confirmed: '+lp.name+'. Next: payment.',btn);
+}
+// Provider-agnostic: creates a checkout via whichever provider is configured. The payment
+// step only checks itself off from a VERIFIED `payment.confirmed` event — never the browser.
 async function sendPaymentLink(id,btn){
-  var l=LEADS.find(function(x){return x.id===id;})||{}; var to=l.email||'', nm=l.business_name||'the customer';
+  var l=LEADS.find(function(x){return x.id===id;})||{}; var to=l.email||'', nm=l.business_name||'the customer'; var lp=leadPkg(l);
   if(!to){ toast('No email on file — add one before sending a payment link.'); return; }
-  if(!confirm('Log that the payment link is going to '+nm+'?\n\nUNVEILED does not auto-charge. You will send the Square payment link to '+to+' yourself, then mark it paid once it clears.')) return;
-  try{ await sb.from('activity_log').insert({entity_type:'lead',entity_id:id,action:'payment_link_requested',meta:{to:to}}); }catch(e){}
-  await persistOnb(id,{payment_sent:true},'Logged ✓  Send '+nm+'’s Square payment link to '+to+'. When it clears, hit “Mark paid.”');
-}
-async function markPaid(id,btn){
-  var nm=(LEADS.find(function(x){return x.id===id;})||{}).business_name||'Customer';
-  if(!confirm('Confirm you have received payment from '+nm+'?\n\nOnly mark this once the money has actually cleared in Square.')) return;
+  if(!confirm('Send '+nm+' a payment link for '+(lp.name||'their package')+'?\n\nThe link is created by the configured payment provider. The payment step confirms itself only when the provider verifies the payment — never manually.')) return;
   if(btn){btn.disabled=true;btn.textContent='…';}
-  try{ await sb.from('activity_log').insert({entity_type:'lead',entity_id:id,action:'payment_confirmed'}); }catch(e){}
-  try{ if(typeof emitSignal==='function') emitSignal({lead_id:id,decision:'paid',target_area:'payment'}); }catch(e){}
-  if(!(await persistOnb(id,{paid:true,payment_sent:true},'💳 Payment confirmed for '+nm+' ✓  One step from becoming an Active Customer.')) && btn){ btn.disabled=false; btn.textContent='Mark paid'; }
+  // TODO(provider): POST /functions/v1/create-checkout {lead_id} -> provider link -> email via send-mail.
+  // Until a provider is live, record intent so the step shows "waiting for verified payment".
+  try{ await sb.from('activity_log').insert({entity_type:'lead',entity_id:id,action:'payment_link_sent',meta:{to:to,package:lp.name||null}}); }catch(e){}
+  if(!(await persistOnb(id,{payment_link_sent:true},'Payment link recorded for '+nm+'. It auto-confirms when the provider verifies payment.')) && btn){ btn.disabled=false; btn.textContent='Send payment link'; }
+}
+async function recordPaymentManually(id){   // explicit OVERRIDE — normal path is a verified provider event
+  var nm=(LEADS.find(function(x){return x.id===id;})||{}).business_name||'Customer';
+  if(!confirm('OVERRIDE: manually record that '+nm+' has paid?\n\nNormally the payment step confirms itself from a verified provider event. Only use this if payment was taken outside the system and has truly cleared.')) return;
+  try{ await sb.from('activity_log').insert({entity_type:'lead',entity_id:id,action:'payment_recorded_manual'}); }catch(e){}
+  try{ if(typeof emitSignal==='function') emitSignal({lead_id:id,decision:'paid',target_area:'payment_manual'}); }catch(e){}
+  await persistOnb(id,{paid:true,payment_link_sent:true},'💳 Payment recorded for '+nm+' (manual override) ✓  Next step unlocked.');
+}
+async function goLive(id,btn){
+  var nm=(LEADS.find(function(x){return x.id===id;})||{}).business_name||'Customer';
+  if(!confirm('Mark '+nm+'’s website live?\n\nThis completes onboarding — once live, '+nm+' graduates to Active Customer automatically.')) return;
+  if(btn){btn.disabled=true;btn.textContent='…';}
+  if(!(await persistOnb(id,{live:true,launch_ready:true},'🌟 '+nm+' is live.'))){ if(btn){btn.disabled=false;btn.textContent='Mark website live 🌟';} return; }
+  var l=LEADS.find(function(x){return x.id===id;})||{};
+  if(onbComplete(l)) await activateCustomer(id,null,true);   // auto-graduate
 }
 async function startOnboarding(id,btn){
   var nm=(LEADS.find(function(x){return x.id===id;})||{}).business_name||'Customer';
@@ -1616,17 +1656,19 @@ async function startOnboarding(id,btn){
   toast('🎉 '+nm+' started onboarding. Next: send the payment link.');
   await load(); route();
 }
-async function activateCustomer(id,btn){
-  var l=LEADS.find(function(x){return x.id===id;})||{}; var nm=l.business_name||'Customer'; var o=onbData(l);
-  if(!(o.paid&&o.launched)){ toast('Finish payment and launch before activating '+nm+'.'); return; }
-  if(!confirm('Activate '+nm+' as an Active Customer?\n\nThis marks onboarding complete and begins the long-term, paying relationship.')) return;
+// Graduation = onboarding complete (all required steps done). Called automatically after
+// go-live; the whole pipeline is what earns Active Customer, never payment alone.
+async function activateCustomer(id,btn,auto){
+  var l=LEADS.find(function(x){return x.id===id;})||{}; var nm=l.business_name||'Customer';
+  if(!onbComplete(l)){ if(!auto) toast('Finish onboarding (package, payment, domain, launch, live) before '+nm+' graduates.'); return; }
+  if(!auto && !confirm('Graduate '+nm+' to Active Customer?\n\nOnboarding is complete — this begins the long-term, paying relationship.')) return;
   var res=await sb.auth.getSession(); var session=res&&res.data&&res.data.session;
   if(!session){ toast('Sign in first.'); return; }
   if(btn){btn.disabled=true;btn.textContent='…';}
   var u=await sb.from('leads').update({status:'ACTIVE CUSTOMER',converted_at:new Date().toISOString(),updated_at:new Date().toISOString()}).eq('id',id).select('id,status');
-  if(u.error||!u.data||!u.data.length){ toast('Could not activate: '+((u.error&&(u.error.message||u.error.code))||'no rows changed')); if(btn){btn.disabled=false;btn.textContent='Activate customer 🎉';} return; }
+  if(u.error||!u.data||!u.data.length){ toast('Could not graduate: '+((u.error&&(u.error.message||u.error.code))||'no rows changed')); if(btn){btn.disabled=false;btn.textContent='Activate customer 🎉';} return; }
   try{ if(typeof emitSignal==='function') emitSignal({lead_id:id,decision:'activated',target_area:'conversion'}); }catch(e){}
-  toast('🎉 '+nm+' is now an Active Customer. Welcome to the portfolio.');
+  toast('🎉 '+nm+' completed onboarding and is now an Active Customer. Welcome to the portfolio.');
   await load(); route();
 }
 
@@ -2361,19 +2403,48 @@ function dept(l){ var s=(l&&l.status)||'';
   return 'archived'; // LOST, FAILED-QUAL
 }
 function deptCounts(){ var c={leads:0,production:0,pending:0,active:0,archived:0}; (LEADS||[]).forEach(function(l){ c[dept(l)]++; }); return c; }
-// Onboarding checklist for a pending customer (derived from status + leads.onboarding jsonb).
-function onbSteps(l){ var o=l.onboarding||{}; if(typeof o==='string'){try{o=JSON.parse(o);}catch(e){o={};}}
-  var reviewed=['APPROVED','PREVIEW DELIVERED','PENDING PAYMENT','ACTIVE CUSTOMER','LIVE'].indexOf(l.status)>=0;
-  return [
-    {k:'reviewed',label:'Review complete',done:reviewed},
-    {k:'paid',label:'Submit payment',done:!!o.paid},
-    {k:'domain',label:'Connect domain',done:!!o.domain},
-    {k:'revisions',label:'Final revisions (optional)',done:!!o.revisions,opt:true},
-    {k:'launched',label:'Launch website',done:!!o.launched},
-    {k:'active',label:'Become an Active Customer',done:l.status==='ACTIVE CUSTOMER'}
+// ===== ONBOARDING PIPELINE (Pending Customer department) =====
+// An ordered workflow, NOT a flat checklist. Each step unlocks the next; a required
+// step that isn't done blocks everything after it (optional steps never block).
+// Payment is a checkpoint that UNLOCKS the rest — it does NOT create an Active Customer.
+// Only after "Website live" (onboarding complete) does the customer graduate to Active.
+// Provider-agnostic: the 'payment' step is satisfied by a verified `payment.confirmed`
+// event from ANY payment provider (Square today, Stripe tomorrow) — never the browser.
+function onbData(l){ var o=(l&&l.onboarding)||{}; if(typeof o==='string'){try{o=JSON.parse(o);}catch(e){o={};}} return o||{}; }
+// Pricing reuses the existing catalog (service_packages -> PKGS) + the package the lead
+// already carries (l.package). We never ask twice: if the package is known we prefill it
+// and the step becomes a one-click confirm.
+function pkgByName(n){ return (typeof PKGS!=='undefined'&&PKGS?PKGS:[]).find(function(p){return String(p.name||'').toLowerCase()===String(n||'').toLowerCase();}); }
+function pkgAmount(p){ if(!p)return 0; return +(p.price_monthly||p.monthly||p.price||p.amount||p.setup_fee||0)||0; }
+function pkgPriceLabel(p){ var a=pkgAmount(p); return a?('$'+a.toLocaleString('en-US')):''; }
+function leadPkg(l){ var o=onbData(l); var name=o.package||l.package||''; return {name:name, pkg:pkgByName(name)}; }
+function onbSteps(l){ var o=onbData(l);
+  var approved=['APPROVED','PREVIEW DELIVERED','PENDING PAYMENT','ACTIVE CUSTOMER','LIVE'].indexOf((l&&l.status)||'')>=0;
+  var lp=leadPkg(l); var pl=pkgPriceLabel(lp.pkg);
+  var pkgSub = lp.name? ('Selected: '+lp.name+(pl?' · '+pl+'/mo':'')) : 'Confirm the package before payment';
+  var paySub = lp.name? ('Complete '+lp.name+(pl?' — '+pl+'/mo':'')+' · verified by the payment provider') : 'Verified by the payment provider';
+  var steps=[
+    {k:'approved', icon:'✅', label:'Website approved',        sub:'Customer said yes to the reveal',          done:approved},
+    {k:'package',  icon:'💼', label:'Package & pricing',       sub:pkgSub,                                      done:!!o.package_confirmed},
+    {k:'payment',  icon:'💳', label:'Payment confirmed',       sub:paySub,                                      done:!!o.paid},
+    {k:'domain',   icon:'🌐', label:'Domain access',           sub:'Collect the customer’s domain',        done:!!o.domain},
+    {k:'dns',      icon:'🗄️', label:'Hosting / DNS access',     sub:'Only if we’re not hosting it',          done:!!(o.dns||o.dns_skipped), opt:true, skipped:!!o.dns_skipped},
+    {k:'revisions',icon:'✍️', label:'Final revisions',          sub:'Included tweaks before launch',             done:!!o.revisions_done, opt:true, skipped:!!o.revisions_skipped},
+    {k:'launch',   icon:'🚀', label:'Launch checklist',         sub:'Final pre-go-live checks',                  done:!!o.launch_ready},
+    {k:'live',     icon:'🌟', label:'Website live',             sub:'Go-live — then they graduate',          done:!!o.live}
   ];
+  // sequential unlock
+  var blocked=false;
+  for(var i=0;i<steps.length;i++){ var s=steps[i];
+    if(s.done){ s.state='done'; continue; }
+    if(blocked){ s.state='locked'; continue; }
+    s.state='active';
+    if(!s.opt) blocked=true;   // a required incomplete step gates the rest; optional never blocks
+  }
+  return steps;
 }
-function onbProgress(l){ var s=onbSteps(l).filter(function(x){return !x.opt;}); var done=s.filter(function(x){return x.done;}).length; return {done:done,total:s.length,pct:Math.round(done/s.length*100)}; }
+function onbProgress(l){ var s=onbSteps(l).filter(function(x){return !x.opt;}); var done=s.filter(function(x){return x.state==='done';}).length; return {done:done,total:s.length,pct:Math.round(done/s.length*100)}; }
+function onbComplete(l){ return onbProgress(l).done===onbProgress(l).total; } // paid + domain + launch + live all done
 var REJECT_REASONS=['Not a fit / wrong industry','Not enough information','Low value / not worth resources','Bad or missing contact','Duplicate','Already has a great site','Other'];
 // Freeze a lead for later (stays parked in Leads).
 async function freezeLead(id){ var l=LEADS.find(function(x){return x.id===id;})||{}; var nm=l.business_name||'this lead';
