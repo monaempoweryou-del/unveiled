@@ -241,8 +241,9 @@
     .sidebar{transform:translateX(-100%);box-shadow:0 30px 80px -20px rgba(40,20,90,.5)}
     .sidebar.open{transform:translateX(0)}
     .scrim.open{opacity:1;pointer-events:auto}
-    .main{margin-left:0;padding:14px 15px 90px;max-width:100%}
-    .hamb{display:flex}
+    .main{margin-left:0;padding:calc(20px + env(safe-area-inset-top)) 15px 90px;max-width:100%}
+    .mhead{margin-bottom:18px;min-height:44px}
+    .hamb{display:flex;width:44px;height:44px}
     .twocol{grid-template-columns:1fr}
   }
   .gate button{width:100%;padding:13px;border:0;border-radius:12px;cursor:pointer;font-weight:600;font-size:14px;background:linear-gradient(90deg,var(--violet),#6d34d6);color:#fff;font-family:inherit}
@@ -493,12 +494,12 @@
       <a class="sb-item" data-v="exec" onclick="go('exec')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.4 8.6l-2 4.8-4.8 2 2-4.8z"/></svg></span><span>Executive</span></a>
       <a class="sb-item" data-v="leads" onclick="go('leads')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4-3.9-3.8 5.4-.8z"/></svg></span><span>Leads</span><span class="sb-badge" id="sbb-leads"></span></a>
       <a class="sb-item" data-v="production" onclick="go('production')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8.5 4.5L12 12 3.5 7.5z"/><path d="M3.5 12L12 16.5 20.5 12"/><path d="M3.5 16.5L12 21l8.5-4.5"/></svg></span><span>Production</span><span class="sb-badge" id="sbb-prod"></span></a>
-      <a class="sb-item" data-v="customers" onclick="go('customers')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3 2.9-4.6 5.5-4.6s4.9 1.6 5.5 4.6"/><path d="M16 5.2a3 3 0 010 5.6"/><path d="M17.5 14.6c2 .5 3.4 2 3.9 4.4"/></svg></span><span>Customers</span></a>
+      <a class="sb-item" data-v="comms" onclick="go('comms')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg></span><span>Pending Customers</span><span class="sb-badge" id="sbb-pending"></span></a>
+      <a class="sb-item" data-v="customers" onclick="go('customers')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3 2.9-4.6 5.5-4.6s4.9 1.6 5.5 4.6"/><path d="M16 5.2a3 3 0 010 5.6"/><path d="M17.5 14.6c2 .5 3.4 2 3.9 4.4"/></svg></span><span>Active Customers</span></a>
       <a class="sb-item" data-v="allprojects" onclick="go('allprojects')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="4.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg></span><span>All Projects</span></a>
       <div class="sb-group">Grow the business</div>
       <a class="sb-item" data-v="sales" onclick="go('sales')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16l4.5-4.8 3.3 3 5-5.6"/><path d="M16.8 5.5H21V9.7"/></svg></span><span>Sales</span></a>
       <a class="sb-item" data-v="marketing" onclick="go('marketing')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5v5l2.5.6c.4 2.4.9 4.2 1.6 4.3 1 .2 1.4-1.4 1.4-3.5"/><path d="M4 9.5l13-5v15l-13-5z"/><path d="M17 8.5a2.6 2.6 0 010 7"/></svg></span><span>Marketing</span></a>
-      <a class="sb-item" data-v="comms" onclick="go('comms')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5A2 2 0 016 4.5h12a2 2 0 012 2v7a2 2 0 01-2 2H9l-4 3.5V6.5z"/><path d="M8.5 9.5h7M8.5 12.5h4"/></svg></span><span>Communication</span></a>
       <div class="sb-group">Intelligence &amp; operations</div>
       <a class="sb-item" data-v="research" onclick="go('research')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12S5.5 6 12 6s9.5 6 9.5 6-3 6-9.5 6-9.5-6-9.5-6z"/><circle cx="12" cy="12" r="2.6"/></svg></span><span>Brand Review</span><span class="sb-badge" id="sbb-research"></span></a>
       <a class="sb-item" data-v="costs" onclick="go('costs')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h12v17l-2-1.3-2 1.3-2-1.3-2 1.3-2-1.3-2 1.3z"/><path d="M9 8h6M9 11.5h6M9 15h3"/></svg></span><span>Cost Center</span></a>
@@ -599,17 +600,17 @@ function workerPill(){
 
 // ===== Company OS navigation =====
 const VIEWS=['exec','leads','allprojects','production','research','comms','sales','marketing','customers','costs','learning','settings'];
-const VTITLE={exec:'Executive',leads:'Leads',allprojects:'All Projects',production:'Production',research:'Brand Review',comms:'Communication',sales:'Sales',marketing:'Marketing',customers:'Customers',costs:'Cost Center',learning:'Learning',settings:'System Health'};
+const VTITLE={exec:'Executive',leads:'Leads',allprojects:'All Projects',production:'Production',research:'Brand Review',comms:'Pending Customers',sales:'Sales',marketing:'Marketing',customers:'Active Customers',costs:'Cost Center',learning:'Learning',settings:'System Health'};
 let PROJFILTER='all';
 let SRCFILTER='all';
 const DEPTS=[
   {v:'allprojects',i:'📁',t:'All Projects',d:'Every project from day one, searchable'},
   {v:'production',i:'🏭',t:'Production',d:'Builds, QA, approvals, worker health'},
   {v:'research',i:'🔎',t:'Brand Review',d:'Profiles the AI flagged below 90%'},
-  {v:'comms',i:'💬',t:'Communication',d:'Every email, reply, call & follow-up'},
+  {v:'comms',i:'🚀',t:'Pending Customers',d:'Said yes — onboarding to launch'},
   {v:'sales',i:'📈',t:'Sales',d:'Pipeline, packages, next best offer'},
   {v:'marketing',i:'📣',t:'Marketing',d:'Lead sources & what converts'},
-  {v:'customers',i:'👥',t:'Customers',d:'Every customer workspace'},
+  {v:'customers',i:'🏆',t:'Active Customers',d:'Paying, launched — the portfolio'},
   {v:'costs',i:'💰',t:'Cost Center',d:'Every paid service & what we spend'},
   {v:'learning',i:'🧠',t:'Learning',d:'How the company gets smarter'},
   {v:'settings',i:'⚙️',t:'Settings',d:'Connections, packages, automations'},
@@ -939,17 +940,25 @@ var EXEC_CSS=`<style>
 .execv2{background:radial-gradient(120% 80% at 100% 0,#100b22,#08070e 60%);color:#ece9f6;margin:-14px -14px 0;padding:16px 18px 28px;border-radius:14px;min-height:82vh}
 .execv2 .v2top h1{font-size:25px;font-weight:800;letter-spacing:-.5px;margin:0 0 3px}
 .execv2 .v2top p{margin:0;color:#8f8aa6;font-size:13.5px}
-.execv2 .v2depts{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin:15px 0 4px}
+.execv2 .v2depts{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin:15px 0 4px}
 .execv2 .v2dep{position:relative;overflow:hidden;display:block;background:#131120;border:1px solid rgba(255,255,255,.08);border-radius:15px;padding:15px 16px;cursor:pointer;text-decoration:none;color:inherit;transition:.15s}
 .execv2 .v2dep:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.18)}
 .execv2 .v2dep::before{content:'';position:absolute;top:0;left:0;bottom:0;width:4px}
-.execv2 .v2dep.leads::before{background:#8b5cf6}.execv2 .v2dep.prod::before{background:#f5a524}.execv2 .v2dep.comm::before{background:#26c281}
+.execv2 .v2dep.leads::before{background:#8b5cf6}.execv2 .v2dep.prod::before{background:#f5a524}.execv2 .v2dep.pend::before{background:#3b9dff}.execv2 .v2dep.active::before{background:#26c281}
 .execv2 .v2dep .darr{position:absolute;top:13px;right:14px;color:#6d6785;font-size:16px}
 .execv2 .v2dep .dn{font-size:30px;font-weight:800;letter-spacing:-.6px;line-height:1}
 .execv2 .v2dep .dl{font-weight:800;font-size:13.5px;margin-top:7px}
 .execv2 .v2dep .dsub{color:#8f8aa6;font-size:11.5px;margin-top:3px}
+.execv2 .v2celebrate{display:block;position:relative;overflow:hidden;text-decoration:none;color:#fff;margin:16px 0 2px;padding:18px 20px;border-radius:16px;cursor:pointer;
+  background:linear-gradient(120deg,#2b1d54,#1a2f5c 55%,#123f3a);border:1px solid rgba(139,92,246,.45);box-shadow:0 10px 34px rgba(59,157,255,.16)}
+.execv2 .v2celebrate:hover{transform:translateY(-2px);border-color:rgba(139,92,246,.75)}
+.execv2 .v2celebrate .cbig{font-size:16.5px;font-weight:900;letter-spacing:-.2px}
+.execv2 .v2celebrate .cnm{font-size:22px;font-weight:900;letter-spacing:-.5px;margin-top:4px}
+.execv2 .v2celebrate .cnext{margin-top:8px;font-size:13.5px;color:#d9d4ee}
+.execv2 .v2celebrate .cnext b{color:#fff}
+.execv2 .v2celebrate .carr{font-weight:900;margin-left:4px}
 .execv2 .v2stats{display:grid;grid-template-columns:repeat(5,1fr);gap:13px;margin:16px 0 18px}
-@media(max-width:640px){.execv2 .v2depts{grid-template-columns:1fr}}
+@media(max-width:640px){.execv2 .v2depts{grid-template-columns:repeat(2,1fr)}}
 .execv2 .v2stat{position:relative;overflow:hidden;background:#131120;border:1px solid rgba(255,255,255,.07);border-radius:15px;padding:14px 15px 13px}
 .execv2 .v2stat::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#8b5cf6,#c084fc);opacity:.28}
 .execv2 .v2stat.hi{background:linear-gradient(140deg,#211741,#141024);border-color:rgba(139,92,246,.4);box-shadow:0 0 0 1px rgba(139,92,246,.14),0 8px 30px rgba(139,92,246,.12)}
@@ -1105,7 +1114,24 @@ function miniRing(pct,color){
 // every card opens the customer/lead page; no approve/promote/revise buttons here.
 function renderExec(){
   const c=counts(), opps=oppList(), approvals=c.appr, nl=newSince();
-  const dc=(typeof deptCounts==='function'?deptCounts():{leads:0,production:0,communication:0});
+  const dc=(typeof deptCounts==='function'?deptCounts():{leads:0,production:0,pending:0,active:0});
+  const pendingCusts=LEADS.filter(l=>dept(l)==='pending');
+  const activeCusts=LEADS.filter(l=>dept(l)==='active');
+  const onboardingCusts=pendingCusts.filter(l=>l.status==='PENDING PAYMENT');
+  // Milestone: someone finished the preview and is mid-conversion — the CEO must never
+  // have to hunt for this. Surface the single most exciting "ready to convert" customer.
+  let celebrate='';
+  const conv=onboardingCusts[0];
+  if(conv){
+    let o=conv.onboarding||{}; if(typeof o==='string'){try{o=JSON.parse(o);}catch(e){o={};}}
+    const nextAct = (!o.payment_sent&&!o.paid)?'Send payment link' : (!o.paid?'Confirm payment received' : (!o.launched?'Launch the website':'Activate customer'));
+    const isFirst = activeCusts.length===0 && onboardingCusts.length===1;
+    celebrate=`<a class="v2celebrate" onclick="go('comms')">
+       <div class="cbig">🎉 ${isFirst?'Congratulations — your first customer is ready to convert!':'A customer is ready to convert'}</div>
+       <div class="cnm">${esc(conv.business_name||'A customer')}</div>
+       <div class="cnext">Next action: <b>${nextAct}</b><span class="carr">→</span></div>
+     </a>`;
+  }
   const est=fmtMoney(opps.length*pkgPrice());
   const top=opps.slice().sort((a,b)=>oppScore(b).pct-oppScore(a).pct)[0];
   const leadsN = CC_SINCE? nl.length : c.newlead.length;
@@ -1113,16 +1139,18 @@ function renderExec(){
   const mStart=new Date(); const mS=new Date(mStart.getFullYear(),mStart.getMonth(),1).getTime();
   const nMonth=WQ.filter(j=>j.type==='build_website'&&j.status==='completed'&&new Date(j.updated_at||j.created_at||0).getTime()>=mS).length;
   const lifetime=WQ.filter(j=>j.type==='build_website'&&j.status==='completed').length;
-  const activeCust=LEADS.filter(l=>['APPROVED','LIVE','PREVIEW DELIVERED'].indexOf(l.status)>=0).length;
+  const activeCust=activeCusts.length;
   const leads14=daySeries(LEADS,'created_at',14), leads7=leads14.slice(-7);
   const leadTrend=trendPct(leads7), momTotal=leads14.reduce(function(a,b){return a+b;},0);
   $('v-exec').innerHTML=EXEC_CSS+`
    <div class="execv2">
     <div class="v2top"><h1>Good ${dayPart()}, Moe.</h1><p>Here's what happened while you were away.</p></div>
+    ${celebrate}
     <div class="v2depts">
       <a class="v2dep leads" onclick="go('leads')"><span class="darr">›</span><div class="dn">${c.newlead.length}</div><div class="dl">Leads</div><div class="dsub">waiting for qualification</div></a>
       <a class="v2dep prod" onclick="go('production')"><span class="darr">›</span><div class="dn">${c.appr.length}</div><div class="dl">Production</div><div class="dsub">${c.appr.length} awaiting approval · ${c.building.length} building</div></a>
-      <a class="v2dep comm" onclick="go('comms')"><span class="darr">›</span><div class="dn">${dc.communication}</div><div class="dl">Communication</div><div class="dsub">delivered customers</div></a>
+      <a class="v2dep pend" onclick="go('comms')"><span class="darr">›</span><div class="dn">${dc.pending}</div><div class="dl">Pending Customers</div><div class="dsub">${onboardingCusts.length} onboarding · say yes → launch</div></a>
+      <a class="v2dep active" onclick="go('customers')"><span class="darr">›</span><div class="dn">${dc.active}</div><div class="dl">Active Customers</div><div class="dsub">${dc.active===1?'your first paying customer':'paying · launched'}</div></a>
     </div>
     <div class="v2stats">
       <div class="v2stat"><div class="l">New leads since you left</div>
@@ -1242,8 +1270,9 @@ function prodApprove(l){ var pv=l.preview_url||'';
   return '<div class="dvprev"><div class="sh">'+(pv?'<img loading="lazy" src="'+shot(pv,1000)+'">':'<div style="color:#8f8aa6;padding:95px 0;font-size:13px">Preview building…</div>')+'</div>'+
     '<div class="bar2"><div class="nm">'+esc(l.business_name||'Website')+'</div>'+
     '<div class="dvact">'+(pv?'<button class="dvb" onclick="window.open(\''+esc(absUrl(pv))+'\',\'_blank\')">Review ↗</button>':'')+
-    '<button class="dvb go" onclick="decide(\''+l.id+'\',\'APPROVED\',this)">Approve &amp; send reveal</button>'+
-    '<button class="dvb warn" onclick="requestRevisionFor(\''+l.id+'\')">Request revision</button></div></div></div>';
+    '<button class="dvb go" onclick="decide(\''+l.id+'\',\'APPROVED\',this)">Approve &amp; send to customer</button>'+
+    '<button class="dvb warn" onclick="requestRevisionFor(\''+l.id+'\')">Request revision</button>'+
+    '<button class="dvb" style="color:#f0868f;border-color:rgba(240,87,106,.3)" onclick="rejectLead(\''+l.id+'\')">Reject build</button></div></div></div>';
 }
 function renderProduction(){
   var c=counts(), wh=workerHealth();
@@ -1412,58 +1441,193 @@ function renderProjList(){
 }
 
 // ===== Customers =====
-function renderCustomers(){
-  $('v-customers').innerHTML=`<input class="search" id="search" placeholder="Search customers…" oninput="renderCustomerList()" /><div id="custlist"></div>`;
-  renderCustomerList();
+// ===== ACTIVE CUSTOMERS (the portfolio — paid + launched, long-term relationship) =====
+function onbDate(d){ if(!d) return 'recently'; try{ return new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }catch(e){ return 'recently'; } }
+function activeCard(l){
+  var pv=l.preview_url||'', since=l.converted_at||l.approved_at||l.updated_at;
+  var thumb=pv?'<img loading="lazy" src="'+shot(pv,400)+'">':'<div class="ini">'+esc(initials(l.business_name))+'</div>';
+  return '<div class="onbc"><div class="onbtop">'+
+    '<div class="onbthumb">'+thumb+'</div>'+
+    '<div class="onbmeta"><div class="onbnm">'+esc(l.business_name||'Customer')+' <span class="badgeok">● Active</span></div>'+
+      '<div class="onbsub">Customer since '+esc(onbDate(since))+'</div>'+
+      '<div class="onbchips"><span class="dch on">✓ Delivered</span><span class="dch on">✓ Paid</span><span class="dch on">✓ Launched</span>'+
+        '<span class="dch pend">Portal · soon</span><span class="dch pend">Support · soon</span><span class="dch pend">Analytics · soon</span><span class="dch pend">Billing · Square soon</span></div>'+
+    '</div>'+
+    (pv?'<button class="dvb" onclick="window.open(\''+esc(absUrl(pv))+'\',\'_blank\')">Live site ↗</button>':'')+
+  '</div></div>';
 }
-function renderCustomerList(){
-  const term=(($('search')&&$('search').value)||'').toLowerCase();
-  const visible=LEADS.filter(l=>!term||(l.business_name||'').toLowerCase().includes(term));
-  const byAttn=(a,b)=>{const ra=triage(a).rank,rb=triage(b).rank; return ra!==rb?ra-rb:(new Date(b.updated_at||0)-new Date(a.updated_at||0));};
-  const buckets=[
-    ['Decide now','What needs a human call right now',l=>triage(l).rank<=1],
-    ['Watching','In motion, automation is handling it',l=>{const r=triage(l).rank;return r>=2&&r<=4;}],
-    ['On track','Healthy, no action needed',l=>triage(l).rank>=5],
-  ];
-  const legend=`<div class="legend"><span class="lg"><i class="d-red"></i>Decide / at risk</span><span class="lg"><i class="d-blue"></i>Internal action</span><span class="lg"><i class="d-amber"></i>Waiting</span><span class="lg"><i class="d-violet"></i>In motion</span><span class="lg"><i class="d-green"></i>Won</span></div>
-    <div class="soonbox" style="margin:0 0 12px">🟢 Hot-opportunity ranking (e.g. "opened the preview twice today") switches on automatically once preview/email tracking is connected. We won't rank on engagement we can't yet measure.</div>`;
-  let body='';
-  for(const [name,sub,fn] of buckets){
-    const rows=visible.filter(fn).sort(byAttn); if(!rows.length) continue;
-    body+=`<div class="sec"><h2>${name}</h2><span class="c">${rows.length}</span></div><div class="soonbox" style="margin:-4px 0 8px">${sub}</div><div class="card">${rows.slice(0,60).map(triageRow).join('')}</div>`;
-  }
-  $('custlist').innerHTML=legend+(body||`<div class="empty">No customers match that search.</div>`);
+function renderCustomers(){
+  var actives=(LEADS||[]).filter(function(l){return dept(l)==='active';})
+    .sort(function(a,b){return new Date(b.converted_at||b.updated_at||0)-new Date(a.converted_at||a.updated_at||0);});
+  $('v-customers').innerHTML=ONB_CSS+DEPTV_CSS+`
+   <div class="dv">
+    <div class="dvhead"><div><h1>Active Customers</h1><p>Your portfolio — paying, launched customers. This is where the long-term relationship lives. Portal, support, ongoing revisions, analytics and billing light up honestly as each system is wired; never faked before then.</p></div>
+      <div class="dvpill">${actives.length} customer${actives.length===1?'':'s'}</div></div>
+    <div class="dvsec">🏆 The portfolio <span class="c">${actives.length}</span></div>
+    ${actives.length? actives.map(activeCard).join('') : '<div class="dvempty">No active customers yet. When a Pending Customer finishes onboarding — pays and launches — they graduate here as your first paying relationship. That moment is worth celebrating.</div>'}
+   </div>`;
 }
 
-// ===== Communication =====
-function commSteps(l){
-  var delivered=!!l.reveal_sent_at;
-  var steps=[['Delivered',delivered],['Opened',false,true],['Preview viewed',false,true],['Replied',false,true],['Zoom scheduled',false,true],['Subscription',false,true]];
-  return steps.map(function(s){ var on=s[1], pend=s[2]&&!on; var cls=on?'on':(pend?'pend':''); return '<span class="dch '+cls+'">'+(on?'✓ ':'')+s[0]+(pend?' · pending':'')+'</span>'; }).join('');
+// ===== PENDING CUSTOMERS (the onboarding funnel — a "yes" becoming a launched, paying customer) =====
+var ONB_CSS=`<style>
+.dv .onbc{background:#131120;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:15px 17px;margin-bottom:14px}
+.dv .onbc.hot{border-color:rgba(139,92,246,.4);box-shadow:0 0 0 1px rgba(139,92,246,.12)}
+.dv .onbtop{display:flex;align-items:center;gap:14px}
+.dv .onbthumb{width:96px;height:66px;border-radius:10px;overflow:hidden;background:#1a1730;flex:none;position:relative}
+.dv .onbthumb img{width:100%;height:100%;object-fit:cover;object-position:top}
+.dv .onbthumb .ini{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;color:#443768;font-size:20px}
+.dv .onbmeta{flex:1;min-width:0}
+.dv .onbnm{font-weight:800;font-size:16px}
+.dv .onbsub{font-size:12.5px;color:#c9bbff;margin-top:2px;font-weight:600}
+.dv .onbbar{height:7px;border-radius:5px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:9px;max-width:440px}
+.dv .onbbar i{display:block;height:100%;border-radius:5px;background:linear-gradient(90deg,#8b5cf6,#26c281)}
+.dv .onbpct{font-size:11.5px;color:#8f8aa6;margin-top:5px;font-weight:600}
+.dv .onblist{margin-top:13px;border-top:1px solid rgba(255,255,255,.07);padding-top:4px}
+.dv .onbstep{display:flex;align-items:center;gap:11px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.dv .onbstep:last-child{border-bottom:0}
+.dv .onbstep .ck{width:22px;height:22px;border-radius:50%;border:1.5px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#05130c;flex:none}
+.dv .onbstep.done .ck{background:#26c281;border-color:#26c281}
+.dv .onbstep.next .ck{border-color:#8b5cf6;box-shadow:0 0 0 3px rgba(139,92,246,.18)}
+.dv .onbstep .lb{flex:1;font-size:13.5px;font-weight:600}
+.dv .onbstep.done .lb{color:#8f8aa6}
+.dv .onbstep .opt{color:#6d6785;font-weight:600;font-size:11px}
+.dv .onbacts{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.dv .onbnote{font-size:11.5px;color:#8f8aa6;font-style:italic;align-self:center}
+.dv .onbchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.dv .badgeok{color:#5be3a8;font-size:11.5px;font-weight:800;letter-spacing:.3px}
+@media(max-width:640px){.dv .onbtop{flex-wrap:wrap}.dv .onbthumb{width:100%;height:120px}.dv .onbstep{flex-wrap:wrap}.dv .onbacts{justify-content:flex-start;width:100%}}
+</style>`;
+function onbData(l){ var o=l.onboarding||{}; if(typeof o==='string'){try{o=JSON.parse(o);}catch(e){o={};}} return o||{}; }
+function stepAction(l,s,o){
+  if(s.done) return '';
+  var id=l.id;
+  if(s.k==='paid'){
+    return '<span class="onbacts">'+
+      (o.payment_sent?'<span class="onbnote">link sent · awaiting payment</span>':'<button class="dvb" onclick="event.stopPropagation();sendPaymentLink(\''+id+'\',this)">Send payment link</button>')+
+      '<button class="dvb go" onclick="event.stopPropagation();markPaid(\''+id+'\',this)">Mark paid</button></span>';
+  }
+  if(s.k==='domain') return '<button class="dvb" onclick="event.stopPropagation();setOnbStep(\''+id+'\',\'domain\',this)">Mark connected</button>';
+  if(s.k==='revisions') return '<button class="dvb" onclick="event.stopPropagation();requestRevisionFor(\''+id+'\')">Request revision</button>';
+  if(s.k==='launched') return '<button class="dvb" onclick="event.stopPropagation();setOnbStep(\''+id+'\',\'launched\',this)">Mark launched</button>';
+  if(s.k==='active'){
+    return (o.paid&&o.launched)? '<button class="dvb go" onclick="event.stopPropagation();activateCustomer(\''+id+'\',this)">Activate customer 🎉</button>'
+                : '<span class="onbnote">unlocks after payment + launch</span>';
+  }
+  return '';
 }
-function commCard(l){
-  var days=l.reveal_sent_at?Math.floor((Date.now()-new Date(l.reveal_sent_at).getTime())/86400000):null;
-  var atRisk=days!=null&&days>=7&&l.status==='PREVIEW DELIVERED';
-  var pv=l.preview_url||'';
-  return '<div class="dvcard" style="align-items:flex-start" onclick="location.hash=\'#c/'+l.id+'\'">'+
+function pendingCard(l){
+  var steps=onbSteps(l), pr=onbProgress(l), pv=l.preview_url||'', o=onbData(l);
+  var nextStep=null; for(var i=0;i<steps.length;i++){ if(!steps[i].done&&!steps[i].opt){ nextStep=steps[i]; break; } }
+  var thumb=pv?'<img loading="lazy" src="'+shot(pv,400)+'">':'<div class="ini">'+esc(initials(l.business_name))+'</div>';
+  var list=steps.map(function(s){
+    var isNext=nextStep&&s.k===nextStep.k;
+    return '<div class="onbstep '+(s.done?'done':'')+(isNext?' next':'')+'">'+
+      '<span class="ck">'+(s.done?'✓':'')+'</span>'+
+      '<span class="lb">'+esc(s.label.replace(' (optional)',''))+(s.opt?' <span class="opt">optional</span>':'')+'</span>'+
+      stepAction(l,s,o)+
+    '</div>';
+  }).join('');
+  return '<div class="onbc hot">'+
+    '<div class="onbtop">'+
+      '<div class="onbthumb">'+thumb+'</div>'+
+      '<div class="onbmeta"><div class="onbnm">'+esc(l.business_name||'Customer')+'</div>'+
+        '<div class="onbsub">'+(nextStep?('Next: '+esc(nextStep.label.replace(' (optional)',''))):'Onboarding complete — ready to activate 🎉')+'</div>'+
+        '<div class="onbbar"><i style="width:'+pr.pct+'%"></i></div>'+
+        '<div class="onbpct">'+pr.done+' of '+pr.total+' steps · '+pr.pct+'% complete</div>'+
+      '</div>'+
+      (pv?'<button class="dvb" onclick="window.open(\''+esc(absUrl(pv))+'\',\'_blank\')">Preview ↗</button>':'')+
+    '</div>'+
+    '<div class="onblist">'+list+'</div>'+
+  '</div>';
+}
+function awaitingCard(l){
+  var pv=l.preview_url||''; var days=l.reveal_sent_at?Math.floor((Date.now()-new Date(l.reveal_sent_at).getTime())/86400000):null;
+  var atRisk=days!=null&&days>=7;
+  return '<div class="dvcard" style="align-items:flex-start">'+
     '<div class="dvthumb">'+(pv?'<img loading="lazy" src="'+shot(pv,300)+'">':'<div class="ini">'+esc(initials(l.business_name))+'</div>')+'</div>'+
     '<div class="dvmain"><div class="dvnm">'+esc(l.business_name||'Customer')+(atRisk?' <span style="color:#f0576a;font-size:11px;font-weight:800;letter-spacing:.5px">AT RISK</span>':'')+'</div>'+
-    '<div class="dvst">'+(l.reveal_sent_at?('Reveal delivered '+ago(l.reveal_sent_at)+(days!=null?' · '+days+'d ago':'')):'Approved — reveal queued')+'</div>'+
-    '<div class="dvchips">'+commSteps(l)+'</div></div>'+
-    '<div class="dvact">'+(pv?'<button class="dvb" onclick="event.stopPropagation();window.open(\''+esc(absUrl(pv))+'\',\'_blank\')">Preview ↗</button>':'')+
-    (l.email?'<button class="dvb" onclick="event.stopPropagation();resendReveal(\''+l.id+'\',this)">Resend</button>':'')+'</div></div>';
+      '<div class="dvst">'+(l.reveal_sent_at?('Reveal delivered '+ago(l.reveal_sent_at)+(days!=null?' · '+days+'d ago':'')):'Approved — reveal queued')+'</div>'+
+      '<div class="dvchips"><span class="dch on">✓ Reveal delivered</span><span class="dch pend">Awaiting their yes</span></div></div>'+
+    '<div class="dvact">'+
+      (pv?'<button class="dvb" onclick="window.open(\''+esc(absUrl(pv))+'\',\'_blank\')">Preview ↗</button>':'')+
+      (l.email?'<button class="dvb" onclick="resendReveal(\''+l.id+'\',this)">Resend</button>':'')+
+      '<button class="dvb go" onclick="startOnboarding(\''+l.id+'\',this)">✓ They said yes</button>'+
+    '</div></div>';
 }
 function renderComms(){
-  var custs=(LEADS||[]).filter(function(l){return dept(l)==='communication';})
-    .sort(function(a,b){ return new Date(b.reveal_sent_at||b.updated_at||0)-new Date(a.reveal_sent_at||a.updated_at||0); });
-  var atRisk=custs.filter(function(l){ var d=l.reveal_sent_at?Math.floor((Date.now()-new Date(l.reveal_sent_at).getTime())/86400000):0; return d>=7&&l.status==='PREVIEW DELIVERED'; }).length;
-  $('v-comms').innerHTML=DEPTV_CSS+`
+  var pend=(LEADS||[]).filter(function(l){return dept(l)==='pending';});
+  var onboarding=pend.filter(function(l){return l.status==='PENDING PAYMENT';})
+    .sort(function(a,b){return onbProgress(b).pct-onbProgress(a).pct;});
+  var awaiting=pend.filter(function(l){return l.status==='APPROVED'||l.status==='PREVIEW DELIVERED';})
+    .sort(function(a,b){return new Date(b.reveal_sent_at||b.updated_at||0)-new Date(a.reveal_sent_at||a.updated_at||0);});
+  var sbb=$('sbb-pending'); if(sbb){ if(onboarding.length){sbb.textContent=onboarding.length;sbb.classList.add('show');} else sbb.classList.remove('show'); }
+  $('v-comms').innerHTML=ONB_CSS+DEPTV_CSS+`
    <div class="dv">
-    <div class="dvhead"><div><h1>Communication &amp; Sales</h1><p>Every delivered customer, after the reveal. Engagement rows (opened, replied, subscription) light up honestly once email tracking + Square are wired — never faked before then.</p></div>
-      ${atRisk?`<div class="dvpill" style="color:#f0868f">${atRisk} at risk</div>`:''}</div>
-    <div class="dvsec">Delivered customers <span class="c">${custs.length}</span></div>
-    ${custs.length? custs.map(commCard).join('') : '<div class="dvempty">No delivered customers yet. When you approve a site, the reveal goes out and the customer appears here.</div>'}
+    <div class="dvhead"><div><h1>Pending Customers</h1><p>They approved the preview and said yes. This is the onboarding funnel — payment, domain, final touches, launch — that turns a “yes” into a live, paying customer. No one becomes an Active Customer until it's complete.</p></div>
+      <div class="dvpill">${onboarding.length} onboarding</div></div>
+    <div class="dvsec">🚀 In onboarding <span class="c">${onboarding.length}</span></div>
+    ${onboarding.length? onboarding.map(pendingCard).join('') : '<div class="dvempty">No one in onboarding yet. When a customer says yes to their preview, start their onboarding and this becomes their welcome checklist.</div>'}
+    <div class="dvsec">⏳ Awaiting their decision <span class="c">${awaiting.length}</span></div>
+    ${awaiting.length? awaiting.map(awaitingCard).join('') : '<div class="dvempty">No one deciding right now. Delivered reveals waiting on a yes appear here — one click marks “they said yes” and starts onboarding.</div>'}
    </div>`;
+}
+// ---- Onboarding + conversion actions (honest: UNVEILED never auto-charges or moves money) ----
+async function persistOnb(id,patch,msg){
+  var res=await sb.auth.getSession(); var session=res&&res.data&&res.data.session;
+  if(!session){ toast('Sign in first — onboarding changes need a signed-in staff session.'); return false; }
+  var l=LEADS.find(function(x){return x.id===id;})||{}; var o=onbData(l);
+  for(var k in patch){ o[k]=patch[k]; }
+  var up=await sb.from('leads').update({onboarding:o,updated_at:new Date().toISOString()}).eq('id',id);
+  if(up.error){ toast('Could not save: '+(up.error.message||up.error.code||'unknown')); return false; }
+  l.onboarding=o;
+  if(msg) toast(msg);
+  await load(); route();
+  return true;
+}
+async function setOnbStep(id,key,btn){ if(btn){btn.disabled=true;btn.textContent='…';}
+  var msgs={domain:'Domain marked connected ✓',launched:'Marked launched ✓ — one step from Active Customer.'};
+  var patch={}; patch[key]=true;
+  if(!(await persistOnb(id,patch,msgs[key]||'Saved ✓')) && btn){ btn.disabled=false; btn.textContent=key==='domain'?'Mark connected':'Mark launched'; }
+}
+async function sendPaymentLink(id,btn){
+  var l=LEADS.find(function(x){return x.id===id;})||{}; var to=l.email||'', nm=l.business_name||'the customer';
+  if(!to){ toast('No email on file — add one before sending a payment link.'); return; }
+  if(!confirm('Log that the payment link is going to '+nm+'?\n\nUNVEILED does not auto-charge. You will send the Square payment link to '+to+' yourself, then mark it paid once it clears.')) return;
+  try{ await sb.from('activity_log').insert({entity_type:'lead',entity_id:id,action:'payment_link_requested',meta:{to:to}}); }catch(e){}
+  await persistOnb(id,{payment_sent:true},'Logged ✓  Send '+nm+'’s Square payment link to '+to+'. When it clears, hit “Mark paid.”');
+}
+async function markPaid(id,btn){
+  var nm=(LEADS.find(function(x){return x.id===id;})||{}).business_name||'Customer';
+  if(!confirm('Confirm you have received payment from '+nm+'?\n\nOnly mark this once the money has actually cleared in Square.')) return;
+  if(btn){btn.disabled=true;btn.textContent='…';}
+  try{ await sb.from('activity_log').insert({entity_type:'lead',entity_id:id,action:'payment_confirmed'}); }catch(e){}
+  try{ if(typeof emitSignal==='function') emitSignal({lead_id:id,decision:'paid',target_area:'payment'}); }catch(e){}
+  if(!(await persistOnb(id,{paid:true,payment_sent:true},'💳 Payment confirmed for '+nm+' ✓  One step from becoming an Active Customer.')) && btn){ btn.disabled=false; btn.textContent='Mark paid'; }
+}
+async function startOnboarding(id,btn){
+  var nm=(LEADS.find(function(x){return x.id===id;})||{}).business_name||'Customer';
+  if(!confirm(nm+' said yes and wants to move forward?\n\nThis begins onboarding — the checklist for payment, domain and launch.')) return;
+  var res=await sb.auth.getSession(); var session=res&&res.data&&res.data.session;
+  if(!session){ toast('Sign in first.'); return; }
+  if(btn){btn.disabled=true;btn.textContent='…';}
+  var u=await sb.from('leads').update({status:'PENDING PAYMENT',updated_at:new Date().toISOString()}).eq('id',id).select('id,status');
+  if(u.error||!u.data||!u.data.length){ toast('Could not start onboarding: '+((u.error&&(u.error.message||u.error.code))||'no rows changed')); if(btn){btn.disabled=false;btn.textContent='✓ They said yes';} return; }
+  try{ if(typeof emitSignal==='function') emitSignal({lead_id:id,decision:'committed',target_area:'onboarding'}); }catch(e){}
+  toast('🎉 '+nm+' started onboarding. Next: send the payment link.');
+  await load(); route();
+}
+async function activateCustomer(id,btn){
+  var l=LEADS.find(function(x){return x.id===id;})||{}; var nm=l.business_name||'Customer'; var o=onbData(l);
+  if(!(o.paid&&o.launched)){ toast('Finish payment and launch before activating '+nm+'.'); return; }
+  if(!confirm('Activate '+nm+' as an Active Customer?\n\nThis marks onboarding complete and begins the long-term, paying relationship.')) return;
+  var res=await sb.auth.getSession(); var session=res&&res.data&&res.data.session;
+  if(!session){ toast('Sign in first.'); return; }
+  if(btn){btn.disabled=true;btn.textContent='…';}
+  var u=await sb.from('leads').update({status:'ACTIVE CUSTOMER',converted_at:new Date().toISOString(),updated_at:new Date().toISOString()}).eq('id',id).select('id,status');
+  if(u.error||!u.data||!u.data.length){ toast('Could not activate: '+((u.error&&(u.error.message||u.error.code))||'no rows changed')); if(btn){btn.disabled=false;btn.textContent='Activate customer 🎉';} return; }
+  try{ if(typeof emitSignal==='function') emitSignal({lead_id:id,decision:'activated',target_area:'conversion'}); }catch(e){}
+  toast('🎉 '+nm+' is now an Active Customer. Welcome to the portfolio.');
+  await load(); route();
 }
 
 // ===== Sales =====
@@ -1844,12 +2008,17 @@ function renderCustomer(id){
     <button class="btn" onclick="freezeLead('${id}')">Freeze for later</button>
     <button class="btn ghost" onclick="rejectLead('${id}')">Reject…</button>`;
   }
+  // PRODUCTION -> COMMUNICATION handoff: the finished build's three decisions, on the project page.
+  // Approve moves it to Communication (sends the reveal); Revision loops it back to Production;
+  // Reject build archives it with a reason (training data).
   if(sg.k==='approve'){ teamActs+=`
-    <button class="btn good" onclick="decide('${id}','APPROVED',this)">Approve &amp; send reveal</button>`;
+    <button class="btn good" onclick="decide('${id}','APPROVED',this)">✓ Approve &amp; send to customer</button>
+    <button class="btn" onclick="requestRevisionFor('${id}')">✎ Request revision</button>
+    <button class="btn ghost" onclick="rejectLead('${id}')">✕ Reject build</button>`;
   }
   const wasApproved = ['APPROVED','PREVIEW DELIVERED'].includes(l.status) || !!l.reveal_sent_at;
   if(wasApproved && l.preview_url && email) teamActs+=`<button class="btn" onclick="resendReveal('${id}',this)">📤 Resend reveal to customer</button>`;
-  if(l.preview_url) teamActs+=`<button class="btn" onclick="openRevisionModal()">✎ Request a revision</button>`;
+  if(l.preview_url && sg.k!=='approve') teamActs+=`<button class="btn" onclick="openRevisionModal()">✎ Request a revision</button>`;
   if(phone) teamActs+=`<a class="btn" href="tel:${esc(phone.replace(/[^0-9+]/g,''))}">📞 Call</a>`;
   if(email) teamActs+=`<a class="btn" href="mailto:${esc(email)}">✉ Email</a>`;
   if(l.preview_url) custActs+=`<button class="btn" onclick="openRevisionModal()">✎ Request a change</button>`;
@@ -2180,13 +2349,31 @@ $('fileinput').addEventListener('change',async(e)=>{
 });
 // ===== THREE-DEPARTMENT OPERATING MODEL (LOCKED) — Knowledge-OS/DEPARTMENT-ARCHITECTURE.md =====
 // Every business lives in exactly ONE department, derived from status (single source of truth).
+// FOUR departments (Knowledge-OS/DEPARTMENT-ARCHITECTURE.md):
+// Lead -> Production -> PENDING CUSTOMER (they said yes: onboarding funnel — review, pay,
+// domain, final revisions, launch) -> ACTIVE CUSTOMER (paid + launched: the portfolio,
+// portal, support, ongoing service). Payment + launch are what make someone active.
 function dept(l){ var s=(l&&l.status)||'';
-  if(s==='NEW LEAD'||s==='FROZEN') return 'leads';
-  if(['QUALIFIED','BUILDING','QA','PREVIEW READY','CHANGES REQUESTED'].indexOf(s)>=0) return 'production';
-  if(['APPROVED','PREVIEW DELIVERED','LIVE'].indexOf(s)>=0) return 'communication';
-  return 'archived';
+  if(['NEW LEAD','RESEARCHING','FROZEN'].indexOf(s)>=0) return 'leads';
+  if(['QUALIFIED','BUILDING','QA','STUCK - BUILD','STUCK - ASSETS','PREVIEW READY','CHANGES REQUESTED'].indexOf(s)>=0) return 'production';
+  if(['APPROVED','PREVIEW DELIVERED','PENDING PAYMENT'].indexOf(s)>=0) return 'pending';
+  if(['ACTIVE CUSTOMER','LIVE'].indexOf(s)>=0) return 'active';
+  return 'archived'; // LOST, FAILED-QUAL
 }
-function deptCounts(){ var c={leads:0,production:0,communication:0,archived:0}; (LEADS||[]).forEach(function(l){ c[dept(l)]++; }); return c; }
+function deptCounts(){ var c={leads:0,production:0,pending:0,active:0,archived:0}; (LEADS||[]).forEach(function(l){ c[dept(l)]++; }); return c; }
+// Onboarding checklist for a pending customer (derived from status + leads.onboarding jsonb).
+function onbSteps(l){ var o=l.onboarding||{}; if(typeof o==='string'){try{o=JSON.parse(o);}catch(e){o={};}}
+  var reviewed=['APPROVED','PREVIEW DELIVERED','PENDING PAYMENT','ACTIVE CUSTOMER','LIVE'].indexOf(l.status)>=0;
+  return [
+    {k:'reviewed',label:'Review complete',done:reviewed},
+    {k:'paid',label:'Submit payment',done:!!o.paid},
+    {k:'domain',label:'Connect domain',done:!!o.domain},
+    {k:'revisions',label:'Final revisions (optional)',done:!!o.revisions,opt:true},
+    {k:'launched',label:'Launch website',done:!!o.launched},
+    {k:'active',label:'Become an Active Customer',done:l.status==='ACTIVE CUSTOMER'}
+  ];
+}
+function onbProgress(l){ var s=onbSteps(l).filter(function(x){return !x.opt;}); var done=s.filter(function(x){return x.done;}).length; return {done:done,total:s.length,pct:Math.round(done/s.length*100)}; }
 var REJECT_REASONS=['Not a fit / wrong industry','Not enough information','Low value / not worth resources','Bad or missing contact','Duplicate','Already has a great site','Other'];
 // Freeze a lead for later (stays parked in Leads).
 async function freezeLead(id){ var l=LEADS.find(function(x){return x.id===id;})||{}; var nm=l.business_name||'this lead';
