@@ -1509,22 +1509,15 @@ var ONB_CSS=`<style>
 </style>`;
 // Team actions live ONLY on the active step. Payment is provider-agnostic: it auto-confirms
 // from a verified `payment.confirmed` event; the manual override is a subtle escape hatch.
-function stepAction(l,s){ var id=l.id, o=onbData(l);
-  if(s.k==='package'){
-    var lp=leadPkg(l);
-    var chips=(typeof PKGS!=='undefined'&&PKGS?PKGS:[]).map(function(p){ var sel=String(p.name||'').toLowerCase()===String(lp.name||'').toLowerCase(); var pr=pkgPriceLabel(p);
-      return '<button class="dvb'+(sel?' go':'')+'" onclick="event.stopPropagation();selectPackage(\''+id+'\',\''+esc(p.name)+'\',this)">'+esc(p.name)+(pr?' · '+pr:'')+'</button>'; }).join('');
-    var confirmBtn = lp.name
-      ? '<button class="dvb go" onclick="event.stopPropagation();confirmPackage(\''+id+'\',this)">Confirm '+esc(lp.name)+(pkgPriceLabel(lp.pkg)?' · '+pkgPriceLabel(lp.pkg)+'/mo':'')+' &amp; continue</button>'
-      : '<span class="onbnote">Choose the package to continue.</span>';
-    return '<div class="oacts">'+confirmBtn+'</div>'+
-      (chips?'<div class="osub" style="margin-top:9px">'+(lp.name?'Change package:':'Recommended for this customer:')+'</div><div class="oacts">'+chips+'</div>':'');
-  }
+function stepAction(l,s){ var id=l.id, o=onbData(l); var lp=leadPkg(l), pl=pkgPriceLabel(lp.pkg);
   if(s.k==='payment'){
-    return '<div class="oacts">'+
+    // The customer accepts + pays in the preview. Here we just reflect status; the resend
+    // is a nudge, and the step confirms itself from a verified provider event.
+    return '<div class="osub" style="margin-top:2px">'+(lp.name?('Package: <b style="color:#cfc9e0">'+esc(lp.name)+(pl?' · '+pl+'/mo':'')+'</b>'):'No package selected yet — the customer picks it in the preview.')+'</div>'+
+      '<div class="oacts">'+
       (o.payment_link_sent
-        ? '<span class="onbnote">Link sent · the step checks itself off when the payment provider confirms payment.</span>'
-        : '<button class="dvb go" onclick="event.stopPropagation();sendPaymentLink(\''+id+'\',this)">Send payment link</button>')+
+        ? '<span class="onbnote">Awaiting the provider to confirm payment — the step checks itself off automatically.</span>'
+        : '<button class="dvb go" onclick="event.stopPropagation();sendPaymentLink(\''+id+'\',this)">Re-send payment link</button>')+
       '</div><button class="oover" onclick="event.stopPropagation();recordPaymentManually(\''+id+'\')">record payment manually (override)</button>';
   }
   if(s.k==='domain') return '<div class="oacts"><button class="dvb" onclick="event.stopPropagation();advanceStep(\''+id+'\',{domain:true},\'Domain access collected ✓\',this)">Collect domain access</button></div>';
@@ -2420,12 +2413,13 @@ function pkgPriceLabel(p){ var a=pkgAmount(p); return a?('$'+a.toLocaleString('e
 function leadPkg(l){ var o=onbData(l); var name=o.package||l.package||''; return {name:name, pkg:pkgByName(name)}; }
 function onbSteps(l){ var o=onbData(l);
   var approved=['APPROVED','PREVIEW DELIVERED','PENDING PAYMENT','ACTIVE CUSTOMER','LIVE'].indexOf((l&&l.status)||'')>=0;
+  // Pricing is NOT a checklist step — the customer accepts the package + pays inside the
+  // preview experience ("You loved your website. Now let's make it yours."). Here the
+  // chosen package is just read-only context on the payment step.
   var lp=leadPkg(l); var pl=pkgPriceLabel(lp.pkg);
-  var pkgSub = lp.name? ('Selected: '+lp.name+(pl?' · '+pl+'/mo':'')) : 'Confirm the package before payment';
   var paySub = lp.name? ('Complete '+lp.name+(pl?' — '+pl+'/mo':'')+' · verified by the payment provider') : 'Verified by the payment provider';
   var steps=[
-    {k:'approved', icon:'✅', label:'Website approved',        sub:'Customer said yes to the reveal',          done:approved},
-    {k:'package',  icon:'💼', label:'Package & pricing',       sub:pkgSub,                                      done:!!o.package_confirmed},
+    {k:'approved', icon:'✅', label:'Website approved',        sub:'Customer accepted the preview',            done:approved},
     {k:'payment',  icon:'💳', label:'Payment confirmed',       sub:paySub,                                      done:!!o.paid},
     {k:'domain',   icon:'🌐', label:'Domain access',           sub:'Collect the customer’s domain',        done:!!o.domain},
     {k:'dns',      icon:'🗄️', label:'Hosting / DNS access',     sub:'Only if we’re not hosting it',          done:!!(o.dns||o.dns_skipped), opt:true, skipped:!!o.dns_skipped},
