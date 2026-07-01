@@ -643,6 +643,10 @@ function counts(){
 }
 function workerHealth(){ const age=BEAT?(Date.now()-new Date(BEAT.created_at).getTime())/1000:1e9; return {live:age<120,since:BEAT?ago(BEAT.created_at):'never'}; }
 function stuckJobs(){ return WQ.filter(j=>j.status==='running'&&j.claimed_at&&(Date.now()-new Date(j.claimed_at).getTime())>30*60000); }
+// A lead in BUILDING with NO pending/running build job = the build stopped before
+// finishing (worker crash/restart). Honesty: never tell the CEO it's "building now".
+function activeBuildJob(id){ return WQ.find(j=>j.type==='build_website'&&(j.status==='pending'||j.status==='running')&&j.payload&&j.payload.lead_id===id); }
+function orphanBuilding(){ return LEADS.filter(l=>l.status==='BUILDING'&&!activeBuildJob(l.id)); }
 function instr(chip,color,title,body,reqs,value){
   return `<div class="wcard instr"><div class="instr-h"><span class="ichip ${color}">${chip}</span><h3>${esc(title)}</h3></div>
     <div class="instr-b">${body}</div>
@@ -662,7 +666,8 @@ function triage(l){
   if(s==='PREVIEW DELIVERED'&&days!=null&&days>=7) return {color:'red',emoji:'🔴',label:'At risk',what:'Reveal sent '+Math.floor(days)+' days ago',next:'no movement since',reco:'No approval in '+Math.floor(days)+' days. Recommend a final follow-up before marking cold.',rank:1};
   if(s==='CHANGES REQUESTED'||myRev) return {color:'blue',emoji:'🔵',label:'Needs internal action',what:'Revision requested',next:myRev?'worker is processing it now':'queued for production',reco:myRev?'In production. The worker is on it. No action needed from you.':'Revision is queued for the worker. No action needed.',rank:2};
   if(s==='PREVIEW DELIVERED') return {color:'amber',emoji:'🟡',label:'Waiting',what:'Reveal delivered '+ago(l.reveal_sent_at),next:'automated follow-up will go out',reco:'Delivered. Give them room. Automation handles the follow-up.',rank:4};
-  if(s==='BUILDING') return {color:'violet',emoji:'🟣',label:'In production',what:'Website is being built',next:'lands in your approval queue when done',reco:'Building now. No action needed.',rank:5};
+  if(s==='BUILDING'){ if(!activeBuildJob(l.id)) return {color:'amber',emoji:'🟠',label:'Build stalled',what:'Build stopped before finishing',next:'requeue to send it back to production',reco:'This build did not finish (the worker stopped mid-build). Requeue to run it through production again.',rank:1,act:'requeue'};
+    return {color:'violet',emoji:'🟣',label:'In production',what:'Website is being built',next:'lands in your approval queue when done',reco:'Building now. No action needed.',rank:5}; }
   if(s==='QUALIFIED') return {color:'violet',emoji:'🟣',label:'Ready to build',what:'Qualified, no site yet',next:'queue it into production',reco:'Ready to build whenever you are.',rank:5};
   if(s==='APPROVED') return {color:'green',emoji:'🟢',label:'Won',what:'Approved the reveal',next:'begin onboarding',reco:'Won. Move into onboarding.',rank:6};
   if(s==='NEW LEAD') return l.email?{color:'muted',emoji:'⚪',label:'New lead',what:'New inbound lead',next:'qualify to start',reco:'Fresh lead. Qualify to begin.',rank:7}:{color:'amber',emoji:'🟠',label:'Call to reach',what:'No email on file',next:'best reached by phone',reco:'No email. Reach out by phone.',rank:7};
@@ -676,7 +681,9 @@ function srcTag(l){
 }
 function triageRow(l){
   const t=triage(l);
-  const act = t.act==='approve' ? `<button class="btn good" style="padding:8px 13px;font-size:12.5px;flex:none" onclick="event.stopPropagation();decide('${l.id}','APPROVED',this)">Approve</button>` : '<div class="chev">›</div>';
+  const act = t.act==='approve' ? `<button class="btn good" style="padding:8px 13px;font-size:12.5px;flex:none" onclick="event.stopPropagation();decide('${l.id}','APPROVED',this)">Approve</button>`
+    : t.act==='requeue' ? `<button class="btn" style="padding:8px 13px;font-size:12.5px;flex:none;background:#fff;border:1.5px solid var(--line)" onclick="event.stopPropagation();requeueBuild('${l.id}',this)">Requeue</button>`
+    : '<div class="chev">›</div>';
   return `<div class="trow tb-${t.color}" onclick="location.hash='#c/${l.id}'">
     <div class="tdot d-${t.color}"></div>
     <div class="tmain">
@@ -799,46 +806,363 @@ async function promoteLead(id, btn){
   try{
     const {data:exist}=await sb.from('work_queue').select('id').eq('type','build_website').contains('payload',{lead_id:id}).limit(1);
     if(!exist||!exist.length){
-      await sb.from('work_queue').insert({type:'build_website',status:'pending',payload:{business:nm,lead_id:id},idempotency_key:'promote-'+id});
+      // Production ORDER: builds run in the order they are promoted. claim_build_job picks the
+      // next pending job by `priority asc`, so each promote takes the next queue slot.
+      const {data:pend}=await sb.from('work_queue').select('priority').eq('type','build_website').eq('status','pending');
+      var buildPos=(pend&&pend.length?Math.max.apply(null,pend.map(function(j){return j.priority||0;})):0)+1;
+      await sb.from('work_queue').insert({type:'build_website',status:'pending',priority:buildPos,payload:{business:nm,lead_id:id},idempotency_key:'promote-'+id});
     }
   }catch(e){ console.warn('work order insert skipped:',e); }
   const {data,error}=await sb.from('leads').update({status:'QUALIFIED',updated_at:new Date().toISOString()}).eq('id',id).select('id');
   if(error||!data||!data.length){ if(btn){btn.disabled=false;btn.textContent='Promote ›';}
     toast('Could not promote: '+((error&&(error.message||error.code))||'no rows updated, your account may lack permission')); return; }
   emitSignal({lead_id:id,industry:l.industry||null,decision:'promoted',revision_kind:null,target_area:null,instruction:null,first_pass:null});
-  toast('✓ '+nm+' promoted to Production. Build queued. Production takes it from here.');
+  toast('✓ '+nm+' promoted to Production'+(typeof buildPos!=='undefined'&&buildPos?' (build #'+buildPos+' in queue)':'')+'. Production takes it from here.');
   await load(); route();
 }
 
-// ===== Executive cockpit (mobile-first operating system) =====
+// Recover a stalled build: the previous job stopped before finishing and the lead is
+// stranded in BUILDING with no active job. Queue a fresh build (new idempotency_key) and
+// reset the lead to QUALIFIED so it re-enters production cleanly.
+async function requeueBuild(id, btn){
+  const l=LEADS.find(x=>x.id===id)||{}; const nm=l.business_name||'this lead';
+  if(!confirm('Requeue build for '+nm+'?\n\nThe previous build stopped before finishing. This sends it back into production.')) return;
+  if(btn){btn.textContent='Requeuing…';btn.disabled=true;}
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){ toast('Sign in first. Requeuing needs a signed-in staff session.'); if(btn){btn.disabled=false;btn.textContent='Requeue';} return; }
+  try{
+    const {data:pend}=await sb.from('work_queue').select('priority').eq('type','build_website').eq('status','pending');
+    var pos=(pend&&pend.length?Math.max.apply(null,pend.map(function(j){return j.priority||0;})):0)+1;
+    const {error:je}=await sb.from('work_queue').insert({type:'build_website',status:'pending',priority:pos,payload:{business:nm,lead_id:id},idempotency_key:'requeue-'+id+'-'+Date.now()});
+    if(je) throw je;
+  }catch(e){ if(btn){btn.disabled=false;btn.textContent='Requeue';} toast('Could not requeue: '+((e&&(e.message||e.code))||'your account may lack permission')); return; }
+  const {error}=await sb.from('leads').update({status:'QUALIFIED',updated_at:new Date().toISOString()}).eq('id',id);
+  if(error){ if(btn){btn.disabled=false;btn.textContent='Requeue';} toast('Requeued the job, but could not reset the lead: '+(error.message||error.code)); return; }
+  toast('✓ '+nm+' requeued (build #'+pos+' in queue). Production will pick it up.');
+  await load(); route();
+}
+
+// ===== Executive Home helpers: away-digest, opportunity scoring, live screenshots =====
+// Capture the moment of THIS load once, then stamp "now" for next time, so the home
+// screen can honestly answer "what changed since I last looked?" (fixes the stale feel).
+var CC_SINCE=(function(){try{var v=+localStorage.getItem('cc_last_visit')||0;localStorage.setItem('cc_last_visit',Date.now());return v;}catch(e){return 0;}})();
+function absUrl(u){ if(!u) return ''; return /^https?:\/\//i.test(u)?u:('https://'+u); }
+// Real screenshot of any live URL (their current site / our preview) via WordPress mShots, no key.
+function shot(u,w){ u=absUrl(u); if(!u) return ''; return 'https://s.wordpress.com/mshots/v1/'+encodeURIComponent(u)+'?w='+(w||600); }
+function fmtMoney(n){ n=Math.round(n||0); try{return '$'+n.toLocaleString('en-US');}catch(e){return '$'+n;} }
+function discFor(id){ try{ return (typeof DISC!=='undefined'&&DISC)?DISC.find(function(d){return d.lead_id===id;}):null; }catch(e){ return null; } }
+function pkgPrice(){ try{ var ps=(typeof PKGS!=='undefined'&&PKGS?PKGS:[]).map(function(p){return +(p.price||p.amount||p.setup_fee||p.monthly||p.price_monthly||0);}).filter(Boolean); if(ps.length) return Math.round(ps.reduce(function(a,b){return a+b;},0)/ps.length); }catch(e){} return 2500; }
+function leadCat(l){ return l.industry||l.category||l.business_type||''; }
+// Transparent, rule-based opportunity FIT from REAL signals only. This is an honest
+// heuristic (source, contactability, web/social presence, brand-research confidence),
+// NOT a measured close rate — real conversion % needs the funnel instrumented first.
+function oppScore(l){
+  var pts=8, reasons=[];
+  if(highIntent(l)){ pts+=45; reasons.push('Came to UNVEILED directly'); }
+  if(l.website){ pts+=14; reasons.push('Has a site to elevate'); }
+  if(l.email){ pts+=10; } else { reasons.push('No email yet'); }
+  if(l.phone){ pts+=6; }
+  var sp=_sp(l); if((sp.links&&sp.links.length)||(sp.by_platform&&Object.keys(sp.by_platform).length)||(sp.resolved&&Object.keys(sp.resolved).length)){ pts+=8; reasons.push('Active social presence'); }
+  if(l.about||l.requirements){ pts+=7; reasons.push('Told us what they want'); }
+  var d=discFor(l.id); if(d&&d.overall_confidence){ pts+=Math.round(d.overall_confidence*8); reasons.push('Brand '+Math.round(d.overall_confidence*100)+'% resolved'); }
+  return {pct:Math.max(20,Math.min(96,pts)), reasons:reasons};
+}
+function tSince(j){ return new Date(j.updated_at||j.created_at||0).getTime(); }
+function newSince(){ return CC_SINCE? LEADS.filter(function(l){return new Date(l.created_at||0).getTime()>CC_SINCE;}) : []; }
+function awayDigest(){
+  var since=CC_SINCE;
+  var nl=newSince();
+  var built=WQ.filter(function(j){return j.type==='build_website'&&j.status==='completed'&&tSince(j)>since;});
+  var revs=WQ.filter(function(j){return j.type==='revision'&&j.status==='completed'&&tSince(j)>since;});
+  var appr=LEADS.filter(function(l){return l.status==='APPROVED'&&new Date(l.updated_at||0).getTime()>since;});
+  var bysrc={}; nl.forEach(function(l){ var s=srcLabel(l.source)||'Other'; bysrc[s]=(bysrc[s]||0)+1; });
+  var top=null; LEADS.filter(function(l){return ['NEW LEAD','QUALIFIED'].indexOf(l.status)>=0;}).forEach(function(l){ var sc=oppScore(l).pct; if(!top||sc>top.pct) top={l:l,pct:sc}; });
+  return {since:since,nl:nl,built:built,revs:revs,appr:appr,bysrc:bysrc,val:nl.length*pkgPrice(),top:top,
+          anything:(nl.length+built.length+revs.length+appr.length)>0};
+}
+function digestHTML(){
+  var d=awayDigest(), c=counts(), opps=oppList().length;
+  var hi = d.since===0? "Here's what's waiting." : 'While you were away…';
+  var big;
+  if(opps>0) big='🔥 <span class="hl">'+opps+'</span> '+(opps===1?'business wants':'businesses want')+' UNVEILED.';
+  else if(c.appr.length>0) big='🎁 <span class="hl">'+c.appr.length+'</span> '+(c.appr.length===1?'website is':'websites are')+' ready for you.';
+  else big='All quiet for now.';
+  // honest sub-line from REAL activity since last visit (no fabricated engagement)
+  var bits=[];
+  if(d.nl.length){ var srcs=Object.keys(d.bysrc).map(function(k){return d.bysrc[k]+' '+k;}).join(', '); bits.push(d.nl.length+' new '+(d.nl.length===1?'lead':'leads')+(srcs?' ('+srcs+')':'')); }
+  if(d.built.length) bits.push(d.built.length+' finished overnight');
+  if(d.appr.length) bits.push(d.appr.length+' approved');
+  if(d.revs.length) bits.push(d.revs.length+' revision'+(d.revs.length>1?'s':'')+' done');
+  var sub;
+  if(bits.length) sub=esc(bits.join(' · '))+(d.nl.length?' · ~'+esc(fmtMoney(d.val))+' est. new pipeline':'');
+  else if(d.since===0) sub=c.qualified.length+' ready to build · '+c.appr.length+' waiting on your approval';
+  else sub='Nothing new since your last check '+ago(new Date(d.since).toISOString())+'. Everything below is still waiting.';
+  return `<div class="hero"><div class="herohi">Good ${dayPart()}, Moe.</div>
+    <div class="herohi">${hi}</div>
+    <div class="herobig">${big}</div>
+    <div class="herosub">${sub}</div></div>`;
+}
+function oppList(){
+  return LEADS.filter(function(l){return ['NEW LEAD','QUALIFIED'].indexOf(l.status)>=0 && highIntent(l);})
+    .sort(function(a,b){ var na=new Date(a.created_at||0).getTime(), nb=new Date(b.created_at||0).getTime(); if(nb!==na) return nb-na; return oppScore(b).pct-oppScore(a).pct; });
+}
+// Homepage = navigation, not execution: the whole card opens the lead page. No buttons.
+function oppCard(l){
+  var s=oppScore(l), site=l.website, cat=leadCat(l), fresh=(Date.now()-new Date(l.created_at||0).getTime())<86400000;
+  var img=site? `<img loading="lazy" src="${shot(site,700)}" alt="" onerror="this.parentNode.classList.add('noimg')">` : '';
+  return `<div class="v2opp" onclick="location.hash='#c/${l.id}'">
+    <div class="v2shot ${site?'':'noimg'}">${img}<div class="v2init">${esc(initials(l.business_name))}</div>
+      <span class="v2match ${s.pct>=80?'hot':''}">⭐ ${s.pct}% match</span>${fresh?'<span class="v2new">NEW</span>':''}</div>
+    <div class="v2ob">
+      <div class="v2on">${esc(l.business_name||'New lead')}</div>
+      <div class="v2ometa"><span class="src">${esc(srcLabel(l.source))}</span> · <span class="val">~${esc(fmtMoney(pkgPrice()))}</span> <span class="mut">est.</span>${cat?' · <span class="mut">'+esc(cat)+'</span>':''}</div>
+      <div class="v2owhy">${esc(s.reasons.slice(0,2).join('. '))}${s.reasons.length?'.':''}</div>
+    </div></div>`;
+}
+// Nav-only: opens the customer page (approve/revise/reject/notes all live there).
+// One real quality signal = brand-research confidence for the lead (omitted if absent).
+function approvalCard(l){
+  var pv=l.preview_url||'', d=discFor(l.id), q=(d&&d.overall_confidence)?Math.round(d.overall_confidence*100):null;
+  var desk=pv? `<img loading="lazy" src="${shot(pv,900)}" alt="">`:'<div class="v2pph">Preview is being built…</div>';
+  var mob=pv? `<img loading="lazy" src="${shot(pv,320)}" alt="">`:'';
+  return `<div class="v2prev" onclick="location.hash='#c/${l.id}'">
+    <div class="v2pshot">${desk}${mob?`<div class="v2pmob">${mob}</div>`:''}<span class="v2pbadge">🎁 Ready for you</span></div>
+    <div class="v2pb">
+      <div><div class="v2pn">${esc(l.business_name||'Website')}</div><div class="v2pupd">Updated ${ago(l.updated_at||l.created_at)}</div></div>
+      ${q!=null?`<div class="v2q"><div class="v2qring" style="background:${qcol(q)}">${q}</div>Quality</div>`:''}
+    </div></div>`;
+}
+function qcol(q){ return q>=85?'#26c281':q>=70?'#f5a524':'#f0576a'; }
+var EXEC_CSS=`<style>
+.execv2{background:radial-gradient(120% 80% at 100% 0,#100b22,#08070e 60%);color:#ece9f6;margin:-14px -14px 0;padding:16px 18px 28px;border-radius:14px;min-height:82vh}
+.execv2 .v2top h1{font-size:25px;font-weight:800;letter-spacing:-.5px;margin:0 0 3px}
+.execv2 .v2top p{margin:0;color:#8f8aa6;font-size:13.5px}
+.execv2 .v2stats{display:grid;grid-template-columns:repeat(5,1fr);gap:13px;margin:16px 0 18px}
+.execv2 .v2stat{position:relative;overflow:hidden;background:#131120;border:1px solid rgba(255,255,255,.07);border-radius:15px;padding:14px 15px 13px}
+.execv2 .v2stat::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#8b5cf6,#c084fc);opacity:.28}
+.execv2 .v2stat.hi{background:linear-gradient(140deg,#211741,#141024);border-color:rgba(139,92,246,.4);box-shadow:0 0 0 1px rgba(139,92,246,.14),0 8px 30px rgba(139,92,246,.12)}
+.execv2 .v2stat.hi::before{background:linear-gradient(90deg,#f5a524,#f0576a);opacity:1}
+.execv2 .v2stat .l{color:#8f8aa6;font-size:12px;font-weight:600;line-height:1.3;min-height:30px}
+.execv2 .v2statrow{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;margin-top:6px}
+.execv2 .v2stat .v{font-size:26px;font-weight:800;letter-spacing:-.5px;line-height:1;margin:0}
+.execv2 .v2stat .v.sm{font-size:15.5px;line-height:1.15}
+.execv2 .v2stat .s{margin-top:7px;font-size:11px;font-weight:700}
+.execv2 .spark{width:74px;height:30px;flex:none}
+.execv2 .v2ring{flex:none;line-height:0}
+.execv2 .up{color:#26c281}.execv2 .warn{color:#f5a524}.execv2 .mut{color:#8f8aa6;font-weight:600}
+.execv2 .v2grid{display:grid;grid-template-columns:1fr 320px;gap:18px;align-items:start}
+.execv2 .v2sec{display:flex;align-items:center;justify-content:space-between;margin:4px 2px 12px}
+.execv2 .v2sec h2{font-size:16px;font-weight:800;margin:0;display:flex;align-items:center;gap:9px}
+.execv2 .v2sec h2 span{background:rgba(139,92,246,.22);color:#d6c9ff;font-size:12px;font-weight:800;padding:2px 9px;border-radius:20px}
+.execv2 .v2sec a{color:#a855f7;font-size:12.5px;font-weight:700;cursor:pointer}
+.execv2 .v2opps{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:16px;margin-bottom:22px}
+.execv2 .v2opp{background:#131120;border:1px solid rgba(255,255,255,.07);border-radius:16px;overflow:hidden;cursor:pointer;transition:.16s}
+.execv2 .v2opp:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.14);box-shadow:0 16px 40px rgba(0,0,0,.5)}
+.execv2 .v2shot{position:relative;height:184px;background:#1a1730;overflow:hidden}
+.execv2 .v2shot img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.execv2 .v2shot.noimg img{display:none}
+.execv2 .v2init{position:absolute;inset:0;display:none;align-items:center;justify-content:center;font-weight:900;font-size:40px;color:#443768}
+.execv2 .v2shot.noimg .v2init{display:flex}
+.execv2 .v2match{position:absolute;top:10px;left:10px;background:rgba(6,4,14,.72);color:#fff;font-size:12px;font-weight:800;padding:4px 10px;border-radius:20px;border:1px solid rgba(255,255,255,.12)}
+.execv2 .v2match.hot{background:rgba(38,194,129,.9);border-color:transparent}
+.execv2 .v2new{position:absolute;top:10px;right:10px;background:#8b5cf6;color:#fff;font-size:10px;font-weight:800;letter-spacing:.5px;padding:3px 8px;border-radius:20px}
+.execv2 .v2ob{padding:13px 14px 14px}
+.execv2 .v2on{font-weight:800;font-size:15.5px}
+.execv2 .v2ometa{margin-top:6px;font-size:12.5px;color:#8f8aa6}
+.execv2 .v2ometa .src{color:#c9bbff;font-weight:700}.execv2 .v2ometa .val{color:#fff;font-weight:800}
+.execv2 .v2owhy{margin-top:10px;font-size:12.5px;color:#b9b3cc;line-height:1.5}
+.execv2 .v2prevs{display:grid;grid-template-columns:repeat(auto-fill,minmax(370px,1fr));gap:16px}
+.execv2 .v2prev{background:#131120;border:1px solid rgba(255,255,255,.07);border-radius:16px;overflow:hidden;cursor:pointer;transition:.16s}
+.execv2 .v2prev:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.14);box-shadow:0 16px 40px rgba(0,0,0,.5)}
+.execv2 .v2pshot{position:relative;height:252px;background:#0c0a16;overflow:hidden;display:flex;align-items:flex-start;justify-content:center}
+.execv2 .v2pshot img{width:100%;object-fit:cover;object-position:top;display:block}
+.execv2 .v2pph{color:#8f8aa6;padding:82px 0;font-size:13px}
+.execv2 .v2pmob{position:absolute;right:12px;bottom:-2px;width:66px;border-radius:8px 8px 0 0;overflow:hidden;border:2px solid #17142a;box-shadow:0 10px 24px rgba(0,0,0,.6)}
+.execv2 .v2pmob img{width:100%;display:block}
+.execv2 .v2pbadge{position:absolute;top:10px;left:10px;background:rgba(38,194,129,.16);color:#5be3a8;border:1px solid rgba(38,194,129,.4);font-size:11px;font-weight:800;padding:3px 9px;border-radius:20px}
+.execv2 .v2pb{padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.execv2 .v2pn{font-weight:800;font-size:15px}.execv2 .v2pupd{font-size:11.5px;color:#8f8aa6;margin-top:3px}
+.execv2 .v2q{display:flex;align-items:center;gap:7px;font-weight:800;font-size:12.5px;color:#cfc9e0}
+.execv2 .v2qring{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff}
+.execv2 .v2rail .v2panel{background:#131120;border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:15px;margin-bottom:16px}
+.execv2 .v2rt{font-weight:800;font-size:14.5px;margin-bottom:11px;display:flex;align-items:center;justify-content:space-between}
+.execv2 .v2rt a{color:#a855f7;font-size:12px;font-weight:700;cursor:pointer}
+.execv2 .v2act{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.execv2 .v2act:last-child{border-bottom:0}
+.execv2 .v2adot{width:29px;height:29px;border-radius:9px;background:#181530;display:flex;align-items:center;justify-content:center;font-size:13px;flex:none}
+.execv2 .v2at{font-weight:700;font-size:12.5px}.execv2 .v2as{font-size:11px;color:#8f8aa6;margin-top:2px}
+.execv2 .v2atm{margin-left:auto;font-size:10.5px;color:#8f8aa6;white-space:nowrap}
+.execv2 .v2act.pend{opacity:.55}
+.execv2 .v2h{display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:12.5px}
+.execv2 .v2h:last-child{border-bottom:0}.execv2 .v2h .st{margin-left:auto;font-weight:700;font-size:11.5px}
+.execv2 .led{width:9px;height:9px;border-radius:50%}
+.execv2 .lg{background:#26c281;box-shadow:0 0 8px #26c281}.execv2 .la{background:#f5a524;box-shadow:0 0 8px #f5a524}.execv2 .lr{background:#f0576a;box-shadow:0 0 8px #f0576a}
+.execv2 .v2bottom{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:8px}
+.execv2 .v2bp{background:#131120;border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:15px}
+.execv2 .v2bp h3{font-size:13.5px;margin:0 0 12px;font-weight:800}
+.execv2 .v2bp.pend{opacity:.62}
+.execv2 .v2src{display:flex;align-items:center;gap:9px;margin-bottom:10px;font-size:12px}
+.execv2 .v2src .bar{flex:1;height:7px;border-radius:6px;background:rgba(255,255,255,.06);overflow:hidden}
+.execv2 .v2src .bar i{display:block;height:100%;background:linear-gradient(90deg,#8b5cf6,#c084fc)}
+.execv2 .v2src .pc{color:#8f8aa6;font-weight:700;width:32px;text-align:right}
+.execv2 .v2ins{display:flex;gap:8px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:12px;line-height:1.45;color:#cfc9e0}
+.execv2 .v2ins:last-child{border-bottom:0}
+.execv2 .v2met{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.execv2 .v2met .ml{font-size:11px;color:#8f8aa6}.execv2 .v2met .mv{font-size:18px;font-weight:800;margin-top:2px}
+.execv2 .soon{color:#8f8aa6;font-weight:600;font-size:11px}
+.execv2 .v2empty{background:#131120;border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:22px;text-align:center;color:#8f8aa6;font-size:13px;line-height:1.5;margin-bottom:22px}
+.execv2 .v2mom .mh{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#8f8aa6;font-weight:600}
+.execv2 .v2mom .mh b{color:#26c281}
+.execv2 .v2mom .mv{font-weight:800;font-size:22px;letter-spacing:-.4px;margin-top:2px}
+.execv2 .v2mom svg{width:100%;height:52px;display:block;margin-top:6px}
+.execv2 .v2pmob{width:80px}
+@media(max-width:900px){
+ .execv2 .v2stats{grid-template-columns:repeat(2,1fr)}
+ .execv2 .v2grid{grid-template-columns:1fr}
+ .execv2 .v2opps{grid-template-columns:1fr}
+ .execv2 .v2prevs{grid-template-columns:1fr}
+ .execv2 .v2bottom{grid-template-columns:1fr}
+}
+</style>`;
+
+// ===== Executive Home — answers "what's new since I left?" first =====
+// ---- right-rail + bottom-row builders (real data only; unmeasured = "pending") ----
+function v2ActionMeta(a){
+  var m={lead_created:['◔','New lead received'],build_started:['⟨⟩','Build started'],
+    homepage_complete:['⟨⟩','Website build completed'],qa_passed:['✅','QA passed'],
+    deployed:['🖼','Preview deployed'],job_completed:['🖼','Preview ready, awaiting approval'],
+    reveal_queued_on_approve:['🎉','Reveal sent to customer'],brand_discovery:['🔎','Brand research completed'],
+    brand_profile_built:['🎨','Brand learned'],build_blocked:['⚠','Build needs attention'],
+    build_refused_existing:['🛡','Rebuild refused (protected)'],revision_requested:['✎','Revision requested'],
+    revision_completed:['✅','Revision completed'],exec_approval_queued:['🕓','Preview awaiting approval'],
+    promoted:['🚀','Promoted to production']};
+  return m[a]||['•',(a||'update').replace(/_/g,' ')];
+}
+function v2ActivityRows(){
+  var rows=(typeof ACTS!=='undefined'&&ACTS?ACTS:[]).slice(0,6).map(function(e){
+    var mm=v2ActionMeta(e.action);
+    return '<div class="v2act"><div class="v2adot">'+mm[0]+'</div><div style="min-width:0"><div class="v2at">'+esc(leadName(e.entity_id))+'</div><div class="v2as">'+esc(mm[1])+'</div></div><div class="v2atm">'+ago(e.created_at)+'</div></div>';
+  }).join('');
+  return rows||'<div class="v2as" style="padding:6px 0">No recent activity yet.</div>';
+}
+function v2HealthRows(){
+  var wh=workerHealth();
+  var rows=[['Production worker', wh.live?['lg','Operational','#26c281']:['lr','Paused','#f0576a']],
+    ['Database',['lg','Healthy','#26c281']],['Email service',['lg','Operational','#26c281']],
+    ['SMS (Twilio)',['la','A2P pending','#f5a524']],['Deployment',['lg','Operational','#26c281']]];
+  return rows.map(function(r){return '<div class="v2h"><span class="led '+r[1][0]+'"></span> '+r[0]+' <span class="st" style="color:'+r[1][2]+'">'+r[1][1]+'</span></div>';}).join('');
+}
+function v2SourceRows(){
+  var t={},tot=0; (LEADS||[]).forEach(function(l){ var s=srcLabel(l.source)||'Other'; t[s]=(t[s]||0)+1; tot++; });
+  var arr=Object.keys(t).map(function(k){return [k,t[k]];}).sort(function(a,b){return b[1]-a[1];}).slice(0,5);
+  if(!tot) return '<div class="v2ins">No leads yet.</div>';
+  return arr.map(function(a){ var pc=Math.round(a[1]/tot*100); return '<div class="v2src"><span style="min-width:80px">'+esc(a[0])+'</span><div class="bar"><i style="width:'+pc+'%"></i></div><span class="pc">'+pc+'%</span></div>'; }).join('');
+}
+// ---- momentum charts (REAL series only) ----
+function daySeries(items, field, n){
+  var days=[], now=new Date(); now.setHours(0,0,0,0);
+  for(var i=n-1;i>=0;i--) days.push(now.getTime()-i*864e5);
+  var counts=days.map(function(){return 0;});
+  (items||[]).forEach(function(it){ var t=new Date(it[field]||0); if(isNaN(t))return; t.setHours(0,0,0,0); var idx=days.indexOf(t.getTime()); if(idx>=0) counts[idx]++; });
+  return counts;
+}
+function sparkSVG(series, color, w, h){
+  w=w||100; h=h||30; var n=series.length, max=Math.max.apply(null,series.concat([1]));
+  var pts=series.map(function(v,i){ var x=n>1?(i/(n-1)*w):0; var y=h-2-(v/max)*(h-4); return x.toFixed(1)+','+y.toFixed(1); });
+  var id='sg'+Math.random().toString(36).slice(2,7);
+  return '<svg class="spark" viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="none">'+
+    '<defs><linearGradient id="'+id+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+color+'" stop-opacity=".4"/><stop offset="1" stop-color="'+color+'" stop-opacity="0"/></linearGradient></defs>'+
+    '<polygon points="0,'+h+' '+pts.join(' ')+' '+w+','+h+'" fill="url(#'+id+')"/>'+
+    '<polyline points="'+pts.join(' ')+'" fill="none" stroke="'+color+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+}
+function trendPct(series){ // last day vs prior-6-day average
+  if(series.length<2) return null;
+  var last=series[series.length-1];
+  var prior=series.slice(0,-1); var avg=prior.reduce(function(a,b){return a+b;},0)/(prior.length||1);
+  if(!avg) return last>0?100:0;
+  return Math.round((last-avg)/avg*100);
+}
+function miniRing(pct,color){
+  var r=15, c=2*Math.PI*r, off=c*(1-pct/100);
+  return '<svg width="38" height="38" viewBox="0 0 38 38"><circle cx="19" cy="19" r="'+r+'" fill="none" stroke="rgba(255,255,255,.09)" stroke-width="4"/>'+
+    '<circle cx="19" cy="19" r="'+r+'" fill="none" stroke="'+color+'" stroke-width="4" stroke-linecap="round" stroke-dasharray="'+c.toFixed(1)+'" stroke-dashoffset="'+off.toFixed(1)+'" transform="rotate(-90 19 19)"/>'+
+    '<text x="19" y="22" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">'+pct+'</text></svg>';
+}
+
+// HOME = the reference layout, wired to real data. Navigation, not execution:
+// every card opens the customer/lead page; no approve/promote/revise buttons here.
 function renderExec(){
-  const c=counts(), wh=workerHealth(), stuck=stuckJobs(), op=opCounts(), hot=hotLeads();
-  const stages=[
-    ['🔬', c.qualified.length, 'Prep', "goProjects('QUALIFIED')"],
-    ['🏭', c.building.length, 'Building', "goProjects('BUILDING')"],
-    ['📥', c.appr.length, 'Ready', "goProjects('PREVIEW READY')"],
-    ['📤', c.delivered.length, 'Delivered', "goProjects('PREVIEW DELIVERED')"],
-    ['🟢', c.approved.length, 'Live', "goProjects('APPROVED')"]
-  ];
-  const mtr=motivationStrip();
-  const needNow=LEADS.filter(l=>triage(l).rank<=1).sort((a,b)=>triage(a).rank-triage(b).rank);
-  const healthMsg=(!wh.live?'⚠ Production worker paused. No heartbeat in 2+ minutes. ':'')+(stuck.length?('⚠ '+stuck.length+' build job'+(stuck.length>1?'s':'')+' stuck >30 min.'):'');
-  $('v-exec').innerHTML=`
-    <div class="pulse">Good ${dayPart()}, Moe.</div>
-    <div class="exsum">${execSummary()}</div>
-    <div class="mstrip">${mtr.map(m=>`<div class="mchip${m.soon?' soon':''}"><div class="mn">${m.soon?esc(m.n):m.n}</div><div class="ml">${esc(m.l)}</div>${m.g?`<div class="mg ${m.up?'up':'flat'}">${esc(m.g)}</div>`:''}</div>`).join('')}</div>
-    ${hot.length?`<div class="sec"><h2>🔥 High-intent leads</h2><span class="c">${hot.length}</span></div>
-      <div class="soonbox" style="margin:-4px 0 8px">They came to UNVEILED and asked us to build. These are your most valuable opportunities.</div>
-      <div class="card">${hot.slice(0,6).map(leadRow).join('')}</div>`:''}
-    <div class="sec"><h2>Production pipeline</h2><span class="c">${op.prod||'idle'}</span></div>
-    <div class="pipe">${stages.map(([i,n,l,v])=>`<div class="pstage" onclick="${v}"><div class="pn">${n}</div><div class="pl">${i} ${l}</div><span class="parr">›</span></div>`).join('')}</div>
-    <div class="sec donesec" id="doneSec" style="display:none"><h2>Just completed overnight</h2><span class="c" id="doneCount"></span></div>
-    <div class="card donecard" id="doneList" style="display:none"></div>
-    <div class="sec"><h2>Needs you now</h2><span class="c">${needNow.length||'all clear'}</span></div>
-    <div class="card needhero">${needNow.length?needNow.slice(0,6).map(triageRow).join(''):`<div class="empty">You're all caught up. Nothing needs a decision right now.</div>`}</div>
-    ${healthMsg?`<div class="sec"><h2>Operations health</h2></div><div class="card"><div class="soonbox">${esc(healthMsg)}</div></div>`:''}
-    <div class="sec"><h2>Departments</h2></div>
-    <div class="deptgrid">${DEPTS.map(d=>`<a class="deptcard" onclick="go('${d.v}')"><div class="di">${d.i}</div><div class="dt">${d.t}</div><div class="dd">${esc(d.d)}</div></a>`).join('')}</div>`;
+  const c=counts(), opps=oppList(), approvals=c.appr, nl=newSince();
+  const est=fmtMoney(opps.length*pkgPrice());
+  const top=opps.slice().sort((a,b)=>oppScore(b).pct-oppScore(a).pct)[0];
+  const leadsN = CC_SINCE? nl.length : c.newlead.length;
+  const leadsSub = CC_SINCE? (nl.length? '▲ '+nl.length+' arrived since your last visit' : 'no new arrivals since last visit') : c.newlead.length+' new in your pipeline';
+  const mStart=new Date(); const mS=new Date(mStart.getFullYear(),mStart.getMonth(),1).getTime();
+  const nMonth=WQ.filter(j=>j.type==='build_website'&&j.status==='completed'&&new Date(j.updated_at||j.created_at||0).getTime()>=mS).length;
+  const lifetime=WQ.filter(j=>j.type==='build_website'&&j.status==='completed').length;
+  const activeCust=LEADS.filter(l=>['APPROVED','LIVE','PREVIEW DELIVERED'].indexOf(l.status)>=0).length;
+  const leads14=daySeries(LEADS,'created_at',14), leads7=leads14.slice(-7);
+  const leadTrend=trendPct(leads7), momTotal=leads14.reduce(function(a,b){return a+b;},0);
+  $('v-exec').innerHTML=EXEC_CSS+`
+   <div class="execv2">
+    <div class="v2top"><h1>Good ${dayPart()}, Moe.</h1><p>Here's what happened while you were away.</p></div>
+    <div class="v2stats">
+      <div class="v2stat"><div class="l">New leads since you left</div>
+        <div class="v2statrow"><div class="v">${leadsN}</div>${sparkSVG(leads7,'#a855f7')}</div>
+        <div class="s ${CC_SINCE&&nl.length?'up':'mut'}">${esc(leadsSub)}</div></div>
+      <div class="v2stat hi"><div class="l">Websites waiting for approval</div>
+        <div class="v2statrow"><div class="v">${approvals.length}</div><div style="font-size:22px">🎁</div></div>
+        <div class="s ${approvals.length?'warn':'mut'}">${approvals.length?(approvals.length+' ready to review'):'all clear'}</div></div>
+      <div class="v2stat"><div class="l">New customer responses</div>
+        <div class="v2statrow"><div class="v sm">Tracking soon</div><div style="font-size:20px;opacity:.5">👁</div></div>
+        <div class="s mut">lights up when email tracking ships</div></div>
+      <div class="v2stat"><div class="l">Estimated pipeline value</div>
+        <div class="v2statrow"><div class="v">${esc(est)}</div>${sparkSVG(leads7,'#26c281')}</div>
+        <div class="s mut">est. · ${opps.length} ${opps.length===1?'opportunity':'opportunities'}</div></div>
+      <div class="v2stat"><div class="l">Top opportunity</div>
+        <div class="v2statrow"><div class="v sm">${top?esc(top.business_name||'A lead'):'—'}</div>${top?('<div class="v2ring">'+miniRing(oppScore(top).pct,'#8b5cf6')+'</div>'):''}</div>
+        <div class="s ${top?'up':'mut'}">${top?('⭐ '+oppScore(top).pct+'% match'):'no new opportunities'}</div></div>
+    </div>
+    <div class="v2grid">
+      <div class="v2col">
+        <div class="v2sec"><h2>✨ New Opportunities <span>${opps.length}</span></h2><a onclick="go('sales')">View all →</a></div>
+        ${opps.length? `<div class="v2opps">${opps.slice(0,9).map(oppCard).join('')}</div>`
+          : `<div class="v2empty">No new businesses have discovered UNVEILED yet. The moment someone submits through the Front Door, they appear here first.</div>`}
+        <div class="v2sec"><h2>🎁 Websites Waiting for Approval <span>${approvals.length}</span></h2><a onclick="go('production')">View all →</a></div>
+        ${approvals.length? `<div class="v2prevs">${approvals.map(approvalCard).join('')}</div>`
+          : `<div class="v2empty">Nothing waiting on your yes. When the team finishes a website, it lands here as a present to open.</div>`}
+      </div>
+      <div class="v2rail">
+        <div class="v2panel v2mom"><div class="mh">New-lead momentum · 14 days ${leadTrend!=null?('<b style="color:'+(leadTrend>=0?'#26c281':'#f0576a')+'">'+(leadTrend>=0?'▲ ':'▼ ')+Math.abs(leadTrend)+'%</b>'):''}</div><div class="mv">${momTotal} lead${momTotal===1?'':'s'}</div>${sparkSVG(leads14,'#8b5cf6',300,52)}</div>
+        <div class="v2panel"><div class="v2rt">Recent Activity <a onclick="go('production')">View all →</a></div>${v2ActivityRows()}</div>
+        <div class="v2panel"><div class="v2rt">Customer Signals</div>
+          <div class="v2act pend"><div class="v2adot">👁</div><div><div class="v2at">Email opens</div><div class="v2as">Ready when the tracking pixel ships</div></div><div class="v2atm">soon</div></div>
+          <div class="v2act pend"><div class="v2adot">↩</div><div><div class="v2at">Replies</div><div class="v2as">Not yet instrumented</div></div><div class="v2atm">soon</div></div>
+          <div class="v2act pend"><div class="v2adot">📅</div><div><div class="v2at">Meetings booked</div><div class="v2as">Calendar integration later</div></div><div class="v2atm">soon</div></div>
+          <div class="v2act pend"><div class="v2adot">💳</div><div><div class="v2at">Subscriptions</div><div class="v2as">Lights up with Square events</div></div><div class="v2atm">soon</div></div>
+        </div>
+        <div class="v2panel"><div class="v2rt">System Health</div>${v2HealthRows()}</div>
+      </div>
+    </div>
+    <div class="v2bottom">
+      <div class="v2bp"><h3>Top Lead Sources</h3>${v2SourceRows()}</div>
+      <div class="v2bp pend"><h3>What UNVEILED learned <span class="soon">· pending measurement</span></h3><div class="v2ins">Insights appear here as approvals and revisions teach the platform what converts. Needs the funnel instrumented first.</div></div>
+      <div class="v2bp pend"><h3>Outreach Overview <span class="soon">· pending tracking</span></h3>
+        <div class="v2ins">Emails sent <span style="margin-left:auto;color:#8f8aa6">—</span></div>
+        <div class="v2ins">Open rate <span style="margin-left:auto;color:#8f8aa6">—</span></div>
+        <div class="v2ins">Reply rate <span style="margin-left:auto;color:#8f8aa6">—</span></div>
+        <div class="v2ins">Meetings booked <span style="margin-left:auto;color:#8f8aa6">—</span></div>
+      </div>
+      <div class="v2bp"><h3>Business at a glance</h3>
+        <div class="v2met">
+          <div><div class="ml">Active customers</div><div class="mv">${activeCust}</div></div>
+          <div><div class="ml">Delivered · lifetime</div><div class="mv">${lifetime}</div></div>
+          <div><div class="ml">Sites this month</div><div class="mv">${nMonth}</div></div>
+          <div><div class="ml">MRR</div><div class="mv soon" style="font-size:13px">Connect Square</div></div>
+        </div>
+      </div>
+    </div>
+   </div>`;
   renderExecDone();
 }
 
@@ -1688,6 +2012,9 @@ $('fileinput').addEventListener('change',async(e)=>{
   .coofoot{display:flex;gap:8px;padding:11px 12px;border-top:1px solid var(--line);padding-bottom:calc(11px + env(safe-area-inset-bottom,0px))}
   .cooin{flex:1;font:inherit;font-size:16px;background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:12px 14px;color:var(--txt);resize:none;max-height:120px;outline:none}
   .coosend{flex:none;border:0;border-radius:13px;background:linear-gradient(135deg,#7c3aed,#4338ca);color:#fff;font-size:17px;width:48px;cursor:pointer}
+  .coochips{display:flex;flex-wrap:wrap;gap:7px;align-self:flex-start;margin-top:2px}
+  .coochip{font:inherit;font-size:12.5px;font-weight:600;color:var(--txt);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:7px 12px;cursor:pointer}
+  .coochip:active{transform:scale(.97)}
   @media(min-width:720px){ .coopanel{left:auto;right:18px;bottom:18px;width:430px;border-radius:20px;max-height:72vh} .coofab{bottom:24px} }
   `; document.head.appendChild(css);
   var fab=document.createElement('button'); fab.className='coofab'; fab.title='Ask your COO'; fab.textContent='✦';
@@ -1700,20 +2027,44 @@ $('fileinput').addEventListener('change',async(e)=>{
   var HIST=[];
   function cv(){ try{ return currentView(); }catch(e){ return 'exec'; } }
   function ctxLabel(){ var h=location.hash.replace(/^#/,''); if(h.indexOf('c/')===0){ var l=LEADS.find(function(x){return x.id===h.slice(2);}); return l?(l.business_name||'Customer'):'Customer'; } return (typeof VTITLE!=='undefined'&&VTITLE[cv()])||'Dashboard'; }
+  // Whole-company snapshot: the assistant sees the business, not just the page.
   function buildContext(){
     var h=location.hash.replace(/^#/,''); var ctx={view:cv(), page:ctxLabel(), now:new Date().toISOString()};
-    if(h.indexOf('c/')===0){ var id=h.slice(2); var l=LEADS.find(function(x){return x.id===id;})||{};
-      ctx.lead={id:id, business:l.business_name, status:l.status, source:l.source, email:l.email, phone:l.phone, preview_url:l.preview_url, reveal_sent_at:l.reveal_sent_at, industry:l.industry, notes:l.cc_notes, high_intent:(typeof highIntent==='function'?highIntent(l):null)};
-      ctx.recent_activity=ACTS.filter(function(a){return a.entity_id===id;}).slice(0,8).map(function(a){return {action:a.action, at:a.created_at};});
-      ctx.revisions=WQ.filter(function(j){return j.type==='revision'&&j.payload&&j.payload.lead_id===id;}).slice(0,5).map(function(j){return {status:j.status, kind:(j.payload||{}).kind, at:j.updated_at};});
-    } else { var c=(typeof counts==='function')?counts():{};
-      ctx.summary={waiting_approval:(c.appr||[]).length, building:(c.building||[]).length, queued:(c.pending||[]).length, customers_waiting:(c.delivered||[]).length, qualified:(c.qualified||[]).length, high_intent_leads:(typeof hotLeads==='function'?hotLeads().length:null)};
-    } return ctx;
+    var c=(typeof counts==='function')?counts():{};
+    function lite(l){ return {id:l.id, business:l.business_name, status:l.status, source:(typeof srcLabel==='function'?srcLabel(l.source):l.source), updated:l.updated_at}; }
+    var hot=(typeof oppList==='function'?oppList():[]).slice(0,8).map(function(l){ var s=(typeof oppScore==='function'?oppScore(l):{pct:null,reasons:[]}); return {id:l.id, business:l.business_name, source:(typeof srcLabel==='function'?srcLabel(l.source):l.source), match:s.pct, est_value:(typeof pkgPrice==='function'?pkgPrice():null), website:l.website||null, why:(s.reasons||[]).slice(0,3)}; });
+    var approvals=(c.appr||[]).map(function(l){ var d=(typeof discFor==='function'?discFor(l.id):null); return {id:l.id, business:l.business_name, preview_url:l.preview_url||null, updated:l.updated_at, quality:(d&&d.overall_confidence?Math.round(d.overall_confidence*100):null)}; });
+    var stalled=(typeof orphanBuilding==='function'?orphanBuilding():[]).map(lite);
+    var waiting=(c.delivered||[]).map(function(l){ var days=l.reveal_sent_at?Math.floor((Date.now()-new Date(l.reveal_sent_at).getTime())/86400000):null; return {id:l.id, business:l.business_name, days_waiting:days}; });
+    var wh=(typeof workerHealth==='function'?workerHealth():{live:null});
+    var recent=(ACTS||[]).slice(0,14).map(function(a){ return {who:(typeof leadName==='function'?leadName(a.entity_id):null), action:a.action, at:a.created_at}; });
+    var sources={}; (LEADS||[]).forEach(function(l){ var s=(typeof srcLabel==='function'?srcLabel(l.source):l.source)||'Other'; sources[s]=(sources[s]||0)+1; });
+    ctx.company={
+      counts:{new_leads:(c.newlead||[]).length, qualified:(c.qualified||[]).length, building:(c.building||[]).length, awaiting_approval:(c.appr||[]).length, customers_waiting:(c.delivered||[]).length, approved:(c.approved||[]).length, changes_requested:(c.blocked||[]).length, lost:(c.lost||[]).length},
+      new_since_last_visit:(typeof newSince==='function'?newSince().length:null),
+      est_pipeline_value:(typeof pkgPrice==='function'? hot.length*pkgPrice() : null),
+      hot_leads:hot, awaiting_approval:approvals, stalled_builds:stalled, customers_waiting:waiting,
+      recent_activity:recent, lead_sources:sources,
+      system_health:{worker_live:wh.live, worker_last:wh.since||null, queued:(c.pending||[]).length, email:'operational', sms:'A2P pending', not_tracked:['email opens','replies','meetings','subscriptions','MRR']}
+    };
+    if(h.indexOf('c/')===0){ var id=h.slice(2); var l=LEADS.find(function(x){return x.id===id;})||{}; var d2=(typeof discFor==='function'?discFor(id):null);
+      ctx.focus_lead={id:id, business:l.business_name, status:l.status, source:(typeof srcLabel==='function'?srcLabel(l.source):l.source), email:l.email, phone:l.phone, website:l.website, preview_url:l.preview_url, reveal_sent_at:l.reveal_sent_at, industry:l.industry, notes:l.cc_notes, quality:(d2&&d2.overall_confidence?Math.round(d2.overall_confidence*100):null), high_intent:(typeof highIntent==='function'?highIntent(l):null)};
+      ctx.focus_lead.recent_activity=(ACTS||[]).filter(function(a){return a.entity_id===id;}).slice(0,10).map(function(a){return {action:a.action, at:a.created_at};});
+      ctx.focus_lead.revisions=(WQ||[]).filter(function(j){return j.type==='revision'&&j.payload&&j.payload.lead_id===id;}).slice(0,6).map(function(j){return {status:j.status, kind:(j.payload||{}).kind, at:j.updated_at};});
+      ctx.focus_lead.builds=(WQ||[]).filter(function(j){return j.type==='build_website'&&j.payload&&j.payload.lead_id===id;}).slice(0,6).map(function(j){return {status:j.status, blocker:j.blocker_reason||null, at:j.updated_at};});
+    }
+    return ctx;
   }
   function add(role,text){ var d=document.createElement('div'); d.className='coom '+(role==='u'?'u':'a'); d.textContent=text; $('coobody').appendChild(d); $('coobody').scrollTop=1e9; return d; }
   function addAction(act){ if(!act||!act.type)return; var w=document.createElement('div'); w.className='cooact'; var b=document.createElement('button'); b.textContent=(act.label||'Confirm')+' ›'; b.onclick=function(){ runAction(act,b); }; w.appendChild(b); $('coobody').appendChild(w); $('coobody').scrollTop=1e9; }
   async function runAction(act,btn){ btn.disabled=true; var orig=btn.textContent; btn.textContent='Working…';
     try{
+      // SAFE actions (no state change): navigate + open. Run on tap, then close the panel.
+      if(act.type==='navigate'&&act.view){ btn.textContent='Opened ✓'; close(); go(act.view); return; }
+      if(act.type==='open_lead'&&act.lead_id){ btn.textContent='Opened ✓'; close(); location.hash='#c/'+act.lead_id; return; }
+      if(act.type==='open_preview'){ var u=act.url; if(!u&&act.lead_id){ var lp=LEADS.find(function(x){return x.id===act.lead_id;}); u=lp&&lp.preview_url; }
+        if(u){ window.open((typeof absUrl==='function'?absUrl(u):u),'_blank'); btn.textContent='Opened ✓'; } else { btn.disabled=false; btn.textContent=orig; add('a','There is no preview link for that one yet.'); } return; }
+      // STATE-CHANGING actions (already confirmed by tapping): route through the gated flows.
       if(act.type==='request_revision'&&act.lead_id){ CURLEAD=act.lead_id; await createRevision({lead_id:act.lead_id,kind:'edit',instruction:act.instruction||''},'Revision sent to production ✓'); }
       else if(act.type==='promote'&&act.lead_id){ await promoteLead(act.lead_id); }
       else if(act.type==='approve'&&act.lead_id){ await decide(act.lead_id,'APPROVED'); }
@@ -1726,11 +2077,17 @@ $('fileinput').addEventListener('change',async(e)=>{
   async function send(){ var inp=$('cooin'); var msg=(inp.value||'').trim(); if(!msg)return; inp.value=''; inp.style.height='auto'; add('u',msg); HIST.push({role:'user',content:msg});
     var typing=add('a','…');
     try{ var sess=(await sb.auth.getSession()).data.session;
-      var r=await fetch(CFG.url+'/functions/v1/coo-assistant',{method:'POST',headers:{'Content-Type':'application/json',apikey:CFG.key,Authorization:'Bearer '+(sess?sess.access_token:CFG.key)},body:JSON.stringify({message:msg,context:buildContext(),history:HIST.slice(0,-1)})});
+      var r=await fetch(CFG.url+'/functions/v1/coo-assistant',{method:'POST',headers:{'Content-Type':'application/json',apikey:CFG.key,Authorization:'Bearer '+(sess?sess.access_token:CFG.key)},body:JSON.stringify({message:msg,context:buildContext(),person:'Moe',history:HIST.slice(0,-1)})});
       var out=await r.json(); typing.textContent=out.reply||'…'; HIST.push({role:'assistant',content:out.reply||''}); if(out.action) addAction(out.action);
     }catch(e){ typing.textContent='I could not reach the assistant just now. It may not be deployed yet. Try again shortly.'; }
   }
-  function open(){ ov.classList.add('on'); panel.classList.add('on'); $('cooctx').textContent=ctxLabel(); if(!$('coobody').children.length){ add('a','Hi Moe, I can see '+ctxLabel()+'. Ask me anything, or tell me what to do (I\'ll confirm before anything happens).'); } setTimeout(function(){$('cooin').focus();},120); }
+  function chips(){ var ex=['What needs my approval today?','What should I focus on first?','Show me the hottest leads','What changed since yesterday?','Any projects stuck?'];
+    var w=document.createElement('div'); w.className='coochips';
+    ex.forEach(function(t){ var b=document.createElement('button'); b.className='coochip'; b.textContent=t; b.onclick=function(){ $('cooin').value=t; send(); }; w.appendChild(b); });
+    $('coobody').appendChild(w); }
+  function open(){ ov.classList.add('on'); panel.classList.add('on'); $('cooctx').textContent=ctxLabel();
+    if(!$('coobody').children.length){ add('a','Hi Moe. I can see the whole business right now — leads, approvals, production, activity and system health. Ask me anything, or tell me what to do (I confirm before anything changes).'); chips(); }
+    setTimeout(function(){$('cooin').focus();},120); }
   function close(){ ov.classList.remove('on'); panel.classList.remove('on'); }
   fab.onclick=open; ov.onclick=close;
   panel.addEventListener('click',function(e){ var t=e.target; if(t&&t.id==='coox')close(); else if(t&&t.id==='coosend')send(); });
