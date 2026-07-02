@@ -392,6 +392,11 @@
   function param(n){ try{ return new URLSearchParams(location.search).get(n)||''; }catch(e){ return ''; } }
   var SOURCE = SRC_MAP[(param('src')||param('utm_source')||'').toLowerCase().trim()] || 'website-onboarding';
   var CAMPAIGN = param('campaign')||param('utm_campaign')||'';
+  // creative attribution — every lead traceable to the exact creative that produced it
+  var CREATIVE = (param('cid')||param('creative')||'').trim();
+  var CVER     = (param('cv')||param('v')||'').trim();
+  var OFFER    = (param('offer')||'').trim();
+  var LVAR     = (param('lv')||param('landing')||'').trim();
 
   /* ===== ONE Front Door, many languages (LS-FRONT-DOOR). Same engine, same
      pipeline, same backend; only language + RTL differ. Pick via ?lang=he or a
@@ -683,6 +688,7 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
       device: (window.matchMedia && window.matchMedia('(max-width:560px)').matches)?'mobile':'desktop',
       viewport: (window.innerWidth||0)+'x'+(window.innerHeight||0),
       src: SOURCE, campaign: CAMPAIGN||null, lang: LANG,
+      creative_id: CREATIVE||null, creative_version: CVER||null, offer: OFFER||null, landing_variant: LVAR||null,
       referrer: (document.referrer||'').slice(0,300), ts: new Date().toISOString()
     }; }catch(_){}
     var lead={
@@ -693,12 +699,24 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
       status:'NEW LEAD', source: SOURCE,
       discovery_method: 'unveiled-start'+(LANG==='he'?'-he':'')+(CAMPAIGN?(':'+CAMPAIGN):'')
     };
-    try{
-      var r = await fetch(SUPA_URL+'/rest/v1/leads', {
+    // Forward-compatible attribution: send the top-level columns the marketing schema adds.
+    // If the migration isn't applied yet, the columns don't exist and PostgREST 400s —
+    // so we retry WITHOUT them. Lead capture must never break; attribution is also safe in sp.meta.
+    var leadAttr = Object.assign({}, lead, {
+      channel: SOURCE, campaign: CAMPAIGN||null, offer: OFFER||null,
+      creative_id: CREATIVE||null, creative_version: CVER||null, landing_variant: LVAR||null,
+      attribution_confidence: CREATIVE?'exact':'unattributed'
+    });
+    async function postLead(payload){
+      return fetch(SUPA_URL+'/rest/v1/leads', {
         method:'POST',
         headers:{ apikey:SUPA_KEY, Authorization:'Bearer '+SUPA_KEY, 'Content-Type':'application/json', Prefer:'return=minimal' },
-        body: JSON.stringify(lead)
+        body: JSON.stringify(payload)
       });
+    }
+    try{
+      var r = await postLead(leadAttr);
+      if(!r.ok && (r.status===400||r.status===404||r.status===422)){ r = await postLead(lead); } // pre-migration fallback
       if(!r.ok) throw new Error('insert '+r.status);
       clearState();
       document.getElementById('main').style.display='none';
