@@ -108,6 +108,17 @@ def ensure_seed_job():
     except Exception as e:
         log(f"seed enqueue skipped: {e!r}")
 
+
+def requeue_stuck():
+    """On boot, retry any assemble_reel job left running/blocked by a prior crash
+    (e.g. a deploy that lacked ffmpeg). A fresh deploy means we fixed something."""
+    try:
+        _sb("PATCH", "/rest/v1/work_queue?type=eq.assemble_reel&status=in.(running,blocked)",
+            {"status": "pending", "updated_at": now()}, {"Prefer": "return=minimal"})
+        log("requeued any stuck assemble_reel jobs -> pending")
+    except Exception as e:
+        log(f"requeue_stuck skipped: {e!r}")
+
 def finish_job(job_id, status, result=None, blocker=None):
     body = {"status": status, "updated_at": now()}
     if result is not None: body["result"] = result
@@ -244,8 +255,12 @@ def process(job):
         download(shots[0], s1); download(shots[1], s2); download(shots[2], s3)
         download(vo_url, vo)
         log("rendering (captions + CTA)")
-        r = subprocess.run(build_cmd(s1, s2, s3, vo, out, caps),
-                           capture_output=True, text=True)
+        try:
+            r = subprocess.run(build_cmd(s1, s2, s3, vo, out, caps),
+                               capture_output=True, text=True)
+        except FileNotFoundError:
+            finish_job(job["id"], "blocked", blocker="ffmpeg not installed on host")
+            return
         if r.returncode != 0 or not os.path.exists(out):
             finish_job(job["id"], "blocked", blocker=f"ffmpeg failed: {r.stderr[-500:]}")
             return
@@ -263,6 +278,7 @@ def run_render_loop():
     if not (SUPABASE_URL and SERVICE_KEY):
         log("no supabase creds; render service idle"); return
     log("Video Assembly Service online; polling for assemble_reel jobs")
+    requeue_stuck()    # retry any job left running/blocked by a prior crash
     ensure_seed_job()  # self-activate: enqueue the first render if none exists
     while True:
         try:
