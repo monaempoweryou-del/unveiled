@@ -1,0 +1,5 @@
+# Railway/Nixpacks build config for the UNVEILED worker.
+# The Video Assembly Service (render_worker.py) needs ffmpeg with the drawtext
+# (libfreetype) filter + a TTF font on the host. These packages provide both.
+[phases.setup]
+aptPkgs = ["ffmpeg", "fonts-dejavu-core"]

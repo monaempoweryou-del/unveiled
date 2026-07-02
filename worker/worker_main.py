@@ -15,6 +15,7 @@ import time
 
 import heartbeat
 import build_worker
+import render_worker  # Video Assembly Service (Book 03) — captioned + CTA reels
 
 
 def heartbeat_thread():
@@ -26,9 +27,20 @@ def heartbeat_thread():
         time.sleep(heartbeat.INTERVAL)
 
 
+def render_thread():
+    # Idles gracefully if creds/ffmpeg are missing; never blocks the builder.
+    while True:
+        try:
+            render_worker.run_render_loop()
+        except Exception as e:
+            print(f"[render] error: {e!r}", flush=True)
+        time.sleep(30)
+
+
 def main():
-    print("[worker_main] starting: heartbeat thread + builder loop", flush=True)
+    print("[worker_main] starting: heartbeat + builder + render", flush=True)
     threading.Thread(target=heartbeat_thread, daemon=True).start()
+    threading.Thread(target=render_thread, daemon=True).start()
     # Builder returns immediately if keys are missing; keep the process (and
     # heartbeat) alive either way.
     build_worker.run_builder()
