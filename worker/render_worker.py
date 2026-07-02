@@ -68,9 +68,45 @@ def activity(entity_id, action, meta):
         log(f"activity failed ({action}): {e!r}")
 
 def claim_render_job():
-    # atomic claim; mirrors claim_build_job. See Backend/render-queue.sql
-    rows = _sb("POST", "/rest/v1/rpc/claim_render_job", {"p_worker": WORKER_ID})
-    return rows[0] if rows else None
+    # REST claim — no DDL/RPC needed. Grab one pending job, mark it running.
+    # The status filter on the PATCH guards against a double-claim.
+    rows = _sb("GET", "/rest/v1/work_queue?type=eq.assemble_reel&status=eq.pending"
+                      "&order=priority.asc,created_at.asc&limit=1")
+    if not rows:
+        return None
+    jid = rows[0]["id"]
+    claimed = _sb("PATCH", f"/rest/v1/work_queue?id=eq.{jid}&status=eq.pending",
+                  {"status": "running", "claimed_at": now(), "updated_at": now()},
+                  {"Prefer": "return=representation"})
+    return claimed[0] if claimed else None
+
+
+SEED_TRACKING = "UNV-LOSS-8SEC-H01"
+SEED_ASSET    = "c1000000-0000-4000-8000-000000000001"
+CDN = "https://d8j0ntlcm91z4.cloudfront.net/user_3EWHLVZERh0UJFhuopr0aNP3t90"
+
+def ensure_seed_job():
+    """Self-enqueue the first 8-Seconds render if it doesn't already exist.
+    Removes the human-SQL step: the worker has the capability, so the worker does it."""
+    try:
+        existing = _sb("GET", "/rest/v1/work_queue?type=eq.assemble_reel"
+                              f"&payload->>tracking_id=eq.{SEED_TRACKING}&limit=1")
+        if existing:
+            return
+        payload = {
+            "creative_asset_id": SEED_ASSET, "tracking_id": SEED_TRACKING,
+            "shots": [
+                f"{CDN}/hf_20260702_015052_45292c1e-fd40-454c-9b7a-d37fe5e42a5d.mp4",
+                f"{CDN}/hf_20260702_035128_ae649689-d48d-4344-9a9d-bb88b9c8adcd.mp4",
+                f"{CDN}/hf_20260702_035131_d5f3ec4f-cc86-40d9-bba7-bd8c900b440e.mp4"],
+            "vo": f"{CDN}/hf_20260702_015354_81c8bb85-5193-4607-aa45-1cf62b0348ab.wav",
+        }
+        _sb("POST", "/rest/v1/work_queue",
+            {"type": "assemble_reel", "status": "pending", "priority": 5, "payload": payload},
+            {"Prefer": "return=minimal"})
+        log("self-enqueued first assemble_reel job (UNV-LOSS-8SEC-H01)")
+    except Exception as e:
+        log(f"seed enqueue skipped: {e!r}")
 
 def finish_job(job_id, status, result=None, blocker=None):
     body = {"status": status, "updated_at": now()}
@@ -227,6 +263,7 @@ def run_render_loop():
     if not (SUPABASE_URL and SERVICE_KEY):
         log("no supabase creds; render service idle"); return
     log("Video Assembly Service online; polling for assemble_reel jobs")
+    ensure_seed_job()  # self-activate: enqueue the first render if none exists
     while True:
         try:
             job = claim_render_job()
