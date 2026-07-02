@@ -1683,20 +1683,126 @@ function renderSales(){
       'Once it has signal, opening a customer will surface which package fits, the next best offer, close probability, what is blocking the deal, and estimated lifetime value: recommendations, not raw data.')}`;
 }
 
-// ===== Marketing =====
+// ===== Marketing (activated: creatives are production objects in the Command Center) =====
+let MKT=null; // {camps,assets,media,perf} — lazily loaded
+const MKT_STAGES=['idea','brief','research','concept','copy','visual-production','internal-qa','ready-for-approval','revision-requested','approved','scheduled','published'];
+async function loadMarketing(){
+  try{
+    const [camps,assets,media,perf]=await Promise.all([
+      q('campaigns?select=*&order=created_at.desc'),
+      q('creative_assets?select=*&order=created_at.desc&limit=500'),
+      q('creative_media?select=*&order=created_at.desc&limit=1000'),
+      q('marketing_leaderboard?select=*'),
+    ]);
+    MKT={camps:camps||[],assets:assets||[],media:media||[],perf:perf||[],ok:true};
+  }catch(e){ MKT={camps:[],assets:[],media:[],perf:[],ok:false}; }
+}
+function mktProducerLabel(p){ // abstract the backend engine into one friendly Producer field
+  if(!p) return 'Unknown';
+  const s=String(p).toLowerCase();
+  if(s.includes('kling')||s.includes('marketing_studio')||s.includes('higgsfield')) return 'Higgsfield';
+  if(s.includes('seed_audio')||s.includes('eleven')) return s.includes('eleven')?'ElevenLabs':'Higgsfield Audio';
+  if(s.includes('claude')) return 'Claude'; if(s.includes('runway')) return 'Runway';
+  if(s.includes('veo')) return 'Veo'; if(s.includes('midjourney')) return 'Midjourney';
+  return p.split(':').pop();
+}
+async function mktSetAssetStatus(id,status,logAction,extra){
+  const {error}=await sb.from('creative_assets').update({status:status,updated_at:new Date().toISOString()}).eq('id',id).select('id');
+  if(error){ toast('Could not update — is the marketing schema applied?'); return; }
+  try{ await sb.from('activity_log').insert({entity_type:'creative_asset',entity_id:id,action:logAction,meta:extra||{}}); }catch(e){}
+  await loadMarketing(); renderMarketing(); toast('Done. The Command Center is updated.');
+}
+async function mktSetMediaStatus(id,status,logAction){
+  const {error}=await sb.from('creative_media').update({status:status}).eq('id',id).select('id');
+  if(error){ toast('Could not update — is the marketing schema applied?'); return; }
+  try{ await sb.from('activity_log').insert({entity_type:'creative_media',entity_id:id,action:logAction}); }catch(e){}
+  await loadMarketing(); renderMarketing(); toast('Done.');
+}
+function mktApproveAsset(id){ mktSetAssetStatus(id,'approved','creative_approved'); }
+function mktScheduleAsset(id){ mktSetAssetStatus(id,'scheduled','creative_scheduled'); }
+function mktReviseAsset(id){ const why=prompt('What should change? (this is logged as training data)'); if(why==null) return; mktSetAssetStatus(id,'revision-requested','creative_revision_requested',{reason:why}); }
+function mktApproveMedia(id){ mktSetMediaStatus(id,'approved','media_approved'); }
+function mktRejectMedia(id){ mktSetMediaStatus(id,'rejected','media_rejected'); }
+
 function renderMarketing(){
+  // real-today lead attribution (works with or without the marketing schema)
   const dim=key=>{const m={};LEADS.forEach(l=>{const v=((l[key]||l.source||'')+'').trim()||'Unknown';m[v]=(m[v]||0)+1;});return Object.entries(m).sort((a,b)=>b[1]-a[1]);};
-  const channels=dim('channel'), industries=dim('industry');
   const bars=rows=>{const max=Math.max(1,...rows.map(r=>r[1]));return `<div class="bars">${rows.slice(0,8).map(([k,n])=>`<div class="barrow"><span class="bk">${esc(k)}</span><span class="bt"><span class="bf" style="width:${Math.round(n/max*100)}%"></span></span><span class="bn">${n}</span></div>`).join('')}</div>`;};
+  const channels=dim('channel');
+
+  if(MKT===null){ loadMarketing().then(renderMarketing);
+    $('v-marketing').innerHTML=`<div class="pulse" style="font-size:19px">Marketing<span class="s">Loading the department…</span></div><div class="card"><div class="empty">Loading campaigns, work orders and assets…</div></div>`; return; }
+
+  const assets=MKT.assets, media=MKT.media, camps=MKT.camps;
+  const schemaLive = camps.length>0 || assets.length>0;
+  const mediaFor=aid=>media.filter(m=>m.creative_asset_id===aid);
+  const byStatus=s=>assets.filter(a=>a.status===s);
+  const readyAssets=byStatus('ready-for-approval');
+  const reviewMedia=media.filter(m=>m.status==='awaiting-review');
+  const scheduled=byStatus('scheduled'), published=byStatus('published');
+  const inFlight=assets.filter(a=>!['published','archived','approved','scheduled'].includes(a.status));
+  const qLeads=(MKT.perf||[]).reduce((s,r)=>s+(+r.qualified_leads||0),0);
+
+  const stat=(n,l)=>`<div class="stat"><div class="sn">${n}</div><div class="sl">${l}</div></div>`;
+  const mediaThumb=m=>`<div style="border:1px solid var(--line,#E5E0D8);border-radius:12px;overflow:hidden;background:#faf8f5">
+      <div style="aspect-ratio:1/1;background:#f2eee8 center/cover no-repeat${m.thumbnail_url||m.url?`;background-image:url('${esc(m.thumbnail_url||m.url)}')`:''}"></div>
+      <div style="padding:8px 10px;font-size:11px;line-height:1.5">
+        <div><b>${esc(m.kind||'asset')}</b> · ${esc(m.role||'')}</div>
+        <div class="meta">Producer: ${esc(mktProducerLabel(m.producer))} · v${m.version||1} · ${m.cost_credits!=null?m.cost_credits+' cr':'—'}</div>
+        <div class="meta">Status: ${esc(m.status||'')}</div>
+        ${m.status==='awaiting-review'?`<div style="display:flex;gap:6px;margin-top:6px">
+          <button class="btn" onclick="mktApproveMedia('${m.id}')">Approve</button>
+          <button class="btn ghost" onclick="mktRejectMedia('${m.id}')">Reject</button></div>`:''}
+      </div></div>`;
+  const assetCard=a=>{const mm=mediaFor(a.id);const cov=mm.find(x=>x.thumbnail_url||x.url);
+    return `<div class="card" style="padding:14px;display:flex;gap:12px;align-items:flex-start">
+      <div style="width:64px;height:64px;border-radius:10px;flex:0 0 auto;background:#f2eee8 center/cover no-repeat${cov?`;background-image:url('${esc(cov.thumbnail_url||cov.url)}')`:''}"></div>
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:600">${esc(a.hook||a.concept||a.tracking_id)}</div>
+        <div class="meta">${esc(a.tracking_id)} · ${esc(a.trigger||'')} · ${esc(a.format||'')} · Stage ${a.awareness_stage||'—'} · ${mm.length} asset(s)</div>
+        <div class="meta">Status: <b>${esc(a.status)}</b></div>
+        ${a.status==='ready-for-approval'?`<div style="display:flex;gap:6px;margin-top:8px">
+          <button class="btn" onclick="mktApproveAsset('${a.id}')">Approve</button>
+          <button class="btn ghost" onclick="mktReviseAsset('${a.id}')">Request revision</button></div>`:''}
+        ${a.status==='approved'?`<div style="margin-top:8px"><button class="btn" onclick="mktScheduleAsset('${a.id}')">Mark scheduled</button></div>`:''}
+      </div></div>`;};
+  const pipeline=()=>{const cnt=s=>assets.filter(a=>a.status===s).length;
+    return `<div class="bars">${MKT_STAGES.filter(s=>cnt(s)>0).map(s=>`<div class="barrow"><span class="bk">${esc(s)}</span><span class="bt"><span class="bf" style="width:${Math.round(cnt(s)/Math.max(1,assets.length)*100)}%"></span></span><span class="bn">${cnt(s)}</span></div>`).join('')||'<div class="empty">No work orders yet.</div>'}</div>`;};
+
+  const schemaBanner = schemaLive ? '' : instr('Action needed','amber','Activate the marketing schema',
+    'The Marketing view is built and wired. It goes live the moment <b>Backend/marketing-integration.sql</b> is applied to Supabase — that creates the campaign, creative_asset and creative_media tables and seeds the first real work order (LOSS · 8 Seconds). Until then, only lead attribution below is live.',
+    [{label:'Marketing view built into the Command Center',done:true},{label:'marketing-integration.sql applied to Supabase',done:false},{label:'/start captures cid → creative attribution',done:false}],
+    'Once applied, every generated asset, approval and revision lives here — not in the workshop.');
+
   $('v-marketing').innerHTML=`
-    <div class="pulse" style="font-size:19px">Marketing<span class="s">Every lead records where it came from, and that attribution is real today. Conversion and ROI light up as outcomes accumulate.</span></div>
-    <div class="sec"><h2>Leads by channel</h2><span class="c">${LEADS.length} total</span></div>
+    <div class="pulse" style="font-size:19px">Marketing<span class="s">Creatives are production objects. Everything — work orders, assets, approvals, performance — lives here, in the Command Center. Claude is one execution engine behind it.</span></div>
+    ${schemaBanner}
+    <div class="statrow" style="margin:6px 0 12px">
+      ${stat(camps.length,'Campaigns')}${stat(inFlight.length,'Work orders in flight')}${stat(readyAssets.length,'Ready for approval')}${stat(reviewMedia.length,'Assets to review')}${stat(qLeads,'Qualified leads')}</div>
+
+    ${readyAssets.length?`<div class="sec"><h2>Ready for approval</h2><span class="c">${readyAssets.length}</span></div>${readyAssets.map(assetCard).join('')}`:''}
+
+    ${reviewMedia.length?`<div class="sec"><h2>Assets awaiting review</h2><span class="c">${reviewMedia.length}</span></div>
+      <div class="card" style="padding:14px"><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px">${reviewMedia.map(mediaThumb).join('')}</div></div>`:''}
+
+    <div class="sec"><h2>Campaign queue &amp; work orders</h2><span class="c">${assets.length} objects</span></div>
+    <div class="card" style="padding:16px">${schemaLive?pipeline():'<div class="empty">No work orders yet — apply the schema to seed the first campaign.</div>'}</div>
+    ${camps.map(c=>{const ca=assets.filter(a=>a.campaign_id===c.id);return `<div class="card" style="padding:14px">
+      <div style="font-weight:600">${esc(c.name)} <span class="meta">· ${esc(c.trigger||'')} · Stage ${c.awareness_stage||'—'}</span></div>
+      <div class="meta">Belief: “${esc(c.belief_current||'')}” → “${esc(c.belief_desired||'')}”</div>
+      <div class="meta">${ca.length} work order(s): ${esc(ca.map(a=>a.status).join(', ')||'—')}</div></div>`;}).join('')}
+
+    ${scheduled.length?`<div class="sec"><h2>Scheduled</h2></div>${scheduled.map(assetCard).join('')}`:''}
+    ${published.length?`<div class="sec"><h2>Published</h2></div>${published.map(assetCard).join('')}`:''}
+
+    <div class="sec"><h2>Performance</h2><span class="c">success metric = qualified leads</span></div>
+    <div class="card" style="padding:16px">${(MKT.perf&&MKT.perf.length)?bars(MKT.perf.map(r=>[r.tracking_id||'—',+r.qualified_leads||0])):'<div class="empty">No leads attributed to a creative yet. Fills in once /start captures the cid and outcomes accrue. Native metrics (watch time, hook-hold) are not wired — shown only when measured, never estimated.</div>'}</div>
+
+    <div class="sec"><h2>Lead attribution (live today)</h2><span class="c">${LEADS.length} leads</span></div>
     <div class="card" style="padding:16px">${channels.length?bars(channels):'<div class="empty">No leads yet.</div>'}</div>
-    <div class="sec"><h2>Leads by industry</h2></div>
-    <div class="card" style="padding:16px">${industries.length?bars(industries):'<div class="empty">No industry data yet.</div>'}</div>
-    ${instr('Collecting Data','blue','Marketing Attribution','We already record <b>channel, campaign, offer, and industry</b> on every lead. As campaigns accumulate outcomes, this page will show conversion rates, cost per customer, ROI, and the channels worth more budget.',
-      [{label:'Channel / campaign / offer captured on every lead',done:true},{label:'Outcomes (approvals, payments) instrumented',done:false},{label:'Enough volume per channel to compare fairly',done:false}],
-      'The goal: tell you exactly which channels and offers deserve more budget, backed by real conversion data, never guesses.')}`;
+
+    <div class="sec"><h2>Creative Intelligence &amp; Learning</h2></div>
+    <div class="card" style="padding:16px"><div class="meta">Doctrine, engine, swipe patterns and the weekly learning loop live in <b>Creative Intelligence/</b>. Winning creatives (by qualified leads) promote to the Winning Campaign Archive and become defaults. Open <a onclick="go('learning')" style="cursor:pointer;text-decoration:underline">Learning</a> for company-wide signals.</div></div>`;
 }
 
 // ===== Learning ===== (live: reads attribution + engagement captured on every lead)
