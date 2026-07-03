@@ -1919,6 +1919,7 @@ function renderLearning(){
   const _wk={}; (BI||[]).forEach(b=>((b.opportunity_reasons)||[]).forEach(r=>{_wk[r]=(_wk[r]||0)+1;}));
   const _wkRows=Object.entries(_wk).sort((a,b)=>b[1]-a[1]).slice(0,6); const _topWk=_wkRows[0];
   const _oSent=(OSENDS||[]).length, _oOpen=(OSENDS||[]).filter(x=>x.opened_at).length, _oRep=(OSENDS||[]).filter(x=>x.replied_at).length;
+  const _bar=rows=>{const mx=Math.max(1,...rows.map(r=>r[1]));return '<div class="bars">'+rows.map(([k,n])=>'<div class="barrow"><span class="bk">'+esc(k)+'</span><span class="bt"><span class="bf" style="width:'+Math.round(n/mx*100)+'%"></span></span><span class="bn">'+n+'</span></div>').join('')+'</div>';};
   const intelHTML=`
     <div class="sec"><h2>Factory Improvement Timeline</h2><span class="c">${(IMPROVE||[]).length} fixes locked in</span></div>
     <div class="card" style="padding:4px 16px">
@@ -1932,8 +1933,8 @@ function renderLearning(){
     ${(BI||[]).length?`<div class="sec"><h2>Acquisition Intelligence</h2><span class="c">${BI.length} businesses analyzed</span></div>
       <div class="card" style="padding:16px">
         ${_bestInd?`<div class="meta" style="margin-bottom:10px">Best opportunity industry so far: <b>${esc(_bestInd[0])}</b> (avg score ${_bestInd[1]}).${_topWk?` Most common gap: <b>${esc(_topWk[0])}</b>, in ${Math.round(_topWk[1]/BI.length*100)}% of targets.`:''}</div>`:''}
-        ${bar(_indBars)}
-        ${_wkRows.length?`<div class="meta" style="margin-top:12px;margin-bottom:6px">Common problems discovered</div>${bar(_wkRows)}`:''}
+        ${_bar(_indBars)}
+        ${_wkRows.length?`<div class="meta" style="margin-top:12px;margin-bottom:6px">Common problems discovered</div>${_bar(_wkRows)}`:''}
       </div>`:''}
     ${_oSent?`<div class="sec"><h2>Outreach Intelligence</h2><span class="c">${_oSent} sent</span></div>
       <div class="card" style="padding:16px">
