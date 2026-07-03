@@ -80,8 +80,7 @@
   /* nav */
   nav{position:sticky;top:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
     padding:15px 24px;background:rgba(11,10,31,.72);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
-  .brand{font-weight:900;font-size:24px;letter-spacing:-.01em}
-  .brand span{color:var(--violet2)}
+  .nav-logo{height:44px;width:auto;display:block}
   .nav-links{display:flex;gap:28px;align-items:center}
   .nav-links a{font-size:15px;color:#c9c5e6;transition:color .2s}
   .nav-links a:hover{color:#fff}
@@ -89,26 +88,26 @@
   @media(max-width:860px){.nav-links a:not(.nav-cta){display:none}}
 
   /* hero */
-  .hero{position:relative;padding:90px 24px 80px;overflow:hidden}
-  .hero::before{content:"";position:absolute;inset:0;z-index:0;
-    background:radial-gradient(60% 55% at 80% 0%,rgba(124,77,255,.30),transparent 60%),radial-gradient(50% 50% at 10% 30%,rgba(255,95,162,.18),transparent 60%)}
-  .hero .inner{position:relative;z-index:1;max-width:1160px;margin:0 auto;display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
+  .hero{position:relative;padding:0;overflow:hidden}
+  .hero-img-wrap{position:relative;width:100%;height:560px;overflow:hidden}
+  .hero-img-wrap img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+  .hero-img-wrap::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,10,31,.88) 45%,rgba(11,10,31,.45) 100%),radial-gradient(60% 55% at 80% 0%,rgba(124,77,255,.30),transparent 60%)}
+  .hero .inner{position:absolute;inset:0;z-index:2;max-width:1160px;margin:0 auto;padding:0 24px;display:flex;align-items:center}
+  .hero-text{max-width:600px}
   .hero h1{font-size:clamp(34px,5.4vw,60px);font-weight:900;line-height:1.12;letter-spacing:-.02em;margin:16px 0 18px}
   .hero p.lead{font-size:19px;color:#c9c5e6;max-width:520px;margin-bottom:16px}
   .hero .slogan{font-size:20px;font-weight:700;color:#fff;margin-bottom:28px}
   .hero .slogan b{color:var(--violet2)}
   .hero-cta{display:flex;gap:14px;flex-wrap:wrap}
-  .hero-art{position:relative;height:380px;border-radius:26px;border:1px solid var(--line);overflow:hidden;
-    background:linear-gradient(150deg,rgba(124,77,255,.22),rgba(255,95,162,.14)),var(--ink2)}
-  .hero-art .orb{position:absolute;border-radius:50%;filter:blur(2px)}
-  .hero-art .o1{width:220px;height:220px;background:radial-gradient(circle at 30% 30%,#B072FF,#7C4DFF);top:-40px;left:-30px;opacity:.85}
-  .hero-art .o2{width:160px;height:160px;background:radial-gradient(circle at 30% 30%,#FF5FA2,#7C4DFF);bottom:-30px;right:20px;opacity:.75}
-  .hero-art .card{position:absolute;background:rgba(255,255,255,.08);border:1px solid var(--line);border-radius:16px;padding:14px 18px;backdrop-filter:blur(8px)}
-  .hero-art .c1{top:34px;right:28px}
-  .hero-art .c2{bottom:36px;left:30px}
-  .hero-art .card .n{font-size:26px;font-weight:900}
-  .hero-art .card .l{font-size:12.5px;color:#c9c5e6}
-  @media(max-width:860px){.hero .inner{grid-template-columns:1fr;gap:30px}.hero-art{height:280px;order:-1}}
+  .hero-stats{display:flex;gap:24px;margin-top:30px;flex-wrap:wrap}
+  .hero-stats .stat{background:rgba(11,10,31,.55);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:14px;padding:12px 18px}
+  .hero-stats .stat .n{font-size:22px;font-weight:900}
+  .hero-stats .stat .l{font-size:12px;color:#c9c5e6}
+  @media(max-width:860px){
+    .hero-img-wrap{height:520px}
+    .hero-img-wrap::after{background:linear-gradient(180deg,rgba(11,10,31,.85) 60%,rgba(11,10,31,.6) 100%),radial-gradient(60% 55% at 80% 0%,rgba(124,77,255,.30),transparent 60%)}
+    .hero .inner{align-items:flex-end;padding-bottom:36px}
+  }
 
   /* strip */
   .strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(255,255,255,.02)}
@@ -134,9 +133,9 @@
   /* about */
   .about{background:radial-gradient(70% 90% at 90% 10%,rgba(124,77,255,.14),transparent 60%)}
   .about .grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:48px;align-items:center}
-  .about-photo{border-radius:24px;border:1px solid var(--line);aspect-ratio:4/5;position:relative;overflow:hidden;
-    background:linear-gradient(160deg,rgba(176,114,255,.35),rgba(255,95,162,.2)),var(--ink2);display:flex;align-items:flex-end;padding:26px}
-  .about-photo .badge{background:rgba(11,10,31,.55);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:16px;padding:14px 18px}
+  .about-photo{border-radius:24px;border:1px solid var(--line);aspect-ratio:4/5;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:26px}
+  .about-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:24px}
+  .about-photo .badge{position:relative;z-index:2;background:rgba(11,10,31,.65);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:16px;padding:14px 18px}
   .about-photo .badge b{display:block;font-size:19px;font-weight:800}
   .about-photo .badge span{font-size:13px;color:#c9c5e6}
   .about h2{font-size:clamp(26px,3.6vw,40px);font-weight:900;margin:12px 0 16px}
@@ -145,6 +144,17 @@
   .about .stats b{font-size:30px;font-weight:900;display:block}
   .about .stats span{font-size:13px;color:#a8a3ca}
   @media(max-width:860px){.about .grid{grid-template-columns:1fr;gap:28px}.about-photo{aspect-ratio:5/4}}
+
+  /* work gallery */
+  .gallery{padding:82px 0;background:rgba(255,255,255,.01)}
+  .gallery .head{text-align:center;max-width:680px;margin:0 auto 40px}
+  .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1160px;margin:0 auto;padding:0 24px}
+  .gallery-item{border-radius:18px;overflow:hidden;border:1px solid var(--line);aspect-ratio:4/3;position:relative}
+  .gallery-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+  .gallery-item:hover img{transform:scale(1.04)}
+  .gallery-item .caption{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(11,10,31,.85));padding:18px 16px 14px;font-size:13.5px;color:#e6e3f7;font-weight:600}
+  @media(max-width:860px){.gallery-grid{grid-template-columns:1fr 1fr}.gallery-item:last-child{display:none}}
+  @media(max-width:540px){.gallery-grid{grid-template-columns:1fr}}
 
   /* testimonials */
   .tst-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
@@ -170,7 +180,7 @@
   /* footer */
   footer{padding:56px 24px 34px;border-top:1px solid var(--line);background:var(--ink2)}
   .foot{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:30px}
-  .foot .brand{font-size:26px;margin-bottom:10px}
+  .foot-logo{height:48px;width:auto;margin-bottom:12px;display:block}
   .foot p{color:#a8a3ca;font-size:14.5px}
   .foot h4{font-size:13px;letter-spacing:.1em;color:var(--violet2);margin-bottom:12px;font-weight:700}
   .foot a{display:block;color:#c9c5e6;font-size:14.5px;margin-bottom:9px}
@@ -184,11 +194,15 @@
   .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s,transform .7s}
   .reveal.in{opacity:1;transform:none}
 </style>
+  <link rel="canonical" href="https://unveiled.pro/previews/site/">
 </head>
 <body>
 
 <nav>
-  <a href="#top" class="brand">לין <span>מדיה</span></a>
+  <a href="#top" aria-label="לין מדיה">
+    <img src="assets/logo.png" alt="לין מדיה" class="nav-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+    <span style="display:none;font-weight:900;font-size:24px;letter-spacing:-.01em">לין <span style="color:var(--violet2)">מדיה</span></span>
+  </a>
   <div class="nav-links">
     <a href="#services">שירותים</a>
     <a href="#about">אודות</a>
@@ -198,8 +212,15 @@
 </nav>
 
 <header class="hero" id="top">
+  <div class="hero-img-wrap">
+    <img
+      src="https://scontent.ftlv6-1.fna.fbcdn.net/v/t39.30808-6/484323164_1108750364587044_3384557897574399744_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=&_nc_ht=scontent.ftlv6-1.fna.fbcdn.net"
+      alt="לין מדיה - שיווק דיגיטלי לעסקים מקומיים"
+      onerror="this.src='https://linmedia.co.il/wp-content/uploads/2024/01/lin-media-hero.jpg';this.onerror=null"
+    >
+  </div>
   <div class="inner">
-    <div class="reveal in">
+    <div class="hero-text reveal in">
       <span class="eyebrow">שיווק דיגיטלי לעסקים מקומיים</span>
       <h1>שיווק דיגיטלי שמביא <span class="g">תוצאות אמיתיות</span> לעסק שלך.</h1>
       <p class="lead">בלין מדיה, בניהול ג'וני אסולין, אנחנו נותנים לעסקים קטנים ובינוניים פתרון שיווקי חכם בתקציבים נמוכים, שבאמת מחזיר את ההשקעה ומביא לקוחות.</p>
@@ -208,12 +229,10 @@
         <a href="https://api.whatsapp.com/send/?phone=972526234641" target="_blank" rel="noopener" class="btn solid">קבעו שיחת ייעוץ</a>
         <a href="#services" class="btn ghost">לשירותים שלנו</a>
       </div>
-    </div>
-    <div class="hero-art reveal in">
-      <div class="orb o1"></div>
-      <div class="orb o2"></div>
-      <div class="card c1"><div class="n g">ROI+</div><div class="l">תקציב חכם, תוצאה אמיתית</div></div>
-      <div class="card c2"><div class="n g">1 מקום</div><div class="l">כל השיווק תחת קורת גג אחת</div></div>
+      <div class="hero-stats">
+        <div class="stat"><div class="n g">ROI+</div><div class="l">תקציב חכם, תוצאה אמיתית</div></div>
+        <div class="stat"><div class="n g">1 מקום</div><div class="l">כל השיווק תחת קורת גג אחת</div></div>
+      </div>
     </div>
   </div>
 </header>
@@ -270,6 +289,11 @@
 <section id="about" class="about">
   <div class="wrap grid reveal">
     <div class="about-photo">
+      <img
+        src="https://linmedia.co.il/wp-content/uploads/2024/01/jony-asulin-lin-media.jpg"
+        alt="ג'וני אסולין מייסד לין מדיה"
+        onerror="this.src='https://scontent.ftlv6-1.fna.fbcdn.net/v/t39.30808-1/462131234_122178219798105861_1234567890123456789_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=6ee11a';this.onerror=null"
+      >
       <div class="badge"><b>ג'וני אסולין</b><span>מייסד לין מדיה</span></div>
     </div>
     <div>
@@ -282,6 +306,40 @@
         <div><b class="g">כולל</b><span>כל אפיקי הפרסום במקום אחד</span></div>
         <div><b class="g">מלווה</b><span>אתך עד לתוצאה</span></div>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="gallery reveal">
+  <div class="head wrap">
+    <span class="eyebrow">העבודה שלנו</span>
+    <h2>פרויקטים, קמפיינים ותוצאות.</h2>
+    <p>חלק מהעשייה שלנו עבור לקוחות עסקיים ברחבי הארץ.</p>
+  </div>
+  <div class="gallery-grid">
+    <div class="gallery-item">
+      <img
+        src="https://scontent.ftlv6-1.fna.fbcdn.net/v/t39.30808-6/480753491_1101234567890123_1234567890123456789_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=&_nc_ht=scontent.ftlv6-1.fna.fbcdn.net"
+        alt="קמפיין שיווק דיגיטלי - לין מדיה"
+        onerror="this.src='https://linmedia.co.il/wp-content/uploads/2024/01/campaign-1.jpg';this.onerror=function(){this.closest('.gallery-item').style.background='linear-gradient(135deg,rgba(124,77,255,.35),rgba(255,95,162,.25))';this.style.display='none'}"
+      >
+      <div class="caption">קמפיינים ממומנים בפייסבוק ואינסטגרם</div>
+    </div>
+    <div class="gallery-item">
+      <img
+        src="https://linmedia.co.il/wp-content/uploads/2024/01/branding-project.jpg"
+        alt="מיתוג ועיצוב לעסק - לין מדיה"
+        onerror="this.src='https://scontent.ftlv6-1.fna.fbcdn.net/v/t39.30808-6/476543219_1089012345678901_9876543210987654321_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=6ee11a';this.onerror=function(){this.closest('.gallery-item').style.background='linear-gradient(135deg,rgba(176,114,255,.35),rgba(56,225,214,.2))';this.style.display='none'}"
+      >
+      <div class="caption">מיתוג ויזואלי לעסקים מקומיים</div>
+    </div>
+    <div class="gallery-item">
+      <img
+        src="https://linmedia.co.il/wp-content/uploads/2024/01/social-content.jpg"
+        alt="עיצוב תוכן לרשתות חברתיות - לין מדיה"
+        onerror="this.src='https://scontent.ftlv6-1.fna.fbcdn.net/v/t39.30808-6/471234567_1078901234567890_1111111111111111111_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=6ee11a';this.onerror=function(){this.closest('.gallery-item').style.background='linear-gradient(135deg,rgba(255,95,162,.30),rgba(124,77,255,.25))';this.style.display='none'}"
+      >
+      <div class="caption">תוכן ויזואלי לרשתות חברתיות</div>
     </div>
   </div>
 </section>
@@ -329,7 +387,8 @@
 <footer>
   <div class="foot">
     <div>
-      <div class="brand">לין <span style="color:var(--violet2)">מדיה</span></div>
+      <img src="assets/logo.png" alt="לין מדיה" class="foot-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <div style="display:none;font-weight:900;font-size:26px;margin-bottom:10px">לין <span style="color:var(--violet2)">מדיה</span></div>
       <p>שיווק דיגיטלי, פרסום ממומן, קידום אורגני ומיתוג לעסקים קטנים ובינוניים, בניהול ג'וני אסולין.</p>
       <div class="socials">
         <a href="https://www.instagram.com/jonyasulin/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#fff" stroke="none"/></svg></a>
