@@ -649,8 +649,8 @@ function workerPill(){
   const age=BEAT?(Date.now()-new Date(BEAT.created_at).getTime())/1000:1e9;
   const pending=WQ.filter(j=>j.status==='pending').length;
   let c='g',t='All caught up';
-  if(age<120){ if(pending>0){c='g';t='Production team working';} }
-  else { c='a'; t='Production paused'; }
+  if(age<900){ if(pending>0){c='g';t='Factory building';} }
+  else { c='a'; t='Factory needs attention'; }
   $('wpill').innerHTML='<span class="dot '+c+'"></span><span>'+t+'</span>';
 }
 
@@ -700,7 +700,7 @@ function counts(){
   return {appr:by('PREVIEW READY'),blocked:by('CHANGES REQUESTED'),qualified:by('QUALIFIED'),delivered:by('PREVIEW DELIVERED'),approved:by('APPROVED'),newlead:by('NEW LEAD'),lost:by('LOST'),
     building:WQ.filter(j=>j.status==='running'),pending:WQ.filter(j=>j.status==='pending')};
 }
-function workerHealth(){ const age=BEAT?(Date.now()-new Date(BEAT.created_at).getTime())/1000:1e9; return {live:age<120,since:BEAT?ago(BEAT.created_at):'never'}; }
+function workerHealth(){ const age=BEAT?(Date.now()-new Date(BEAT.created_at).getTime())/1000:1e9; return {live:age<900,since:BEAT?ago(BEAT.created_at):'never'}; }
 function stuckJobs(){ return WQ.filter(j=>j.status==='running'&&j.claimed_at&&(Date.now()-new Date(j.claimed_at).getTime())>30*60000); }
 // A lead in BUILDING with NO pending/running build job = the build stopped before
 // finishing (worker crash/restart). Honesty: never tell the CEO it's "building now".
@@ -1210,19 +1210,19 @@ function renderExec(){
       <a class="v2dep active" onclick="go('customers')"><span class="darr">›</span><div class="dn">${dc.active}</div><div class="dl">Active Customers</div><div class="dsub">${dc.active===1?'your first paying customer':'paying · launched'}</div></a>
     </div>
     <div class="v2stats">
-      <div class="v2stat"><div class="l">New leads since you left</div>
+      <div class="v2stat" style="cursor:pointer" onclick="go('leads')"><div class="l">New leads since you left</div>
         <div class="v2statrow"><div class="v">${leadsN}</div>${sparkSVG(leads7,'#a855f7')}</div>
         <div class="s ${CC_SINCE&&nl.length?'up':'mut'}">${esc(leadsSub)}</div></div>
-      <div class="v2stat hi"><div class="l">Websites waiting for approval</div>
+      <div class="v2stat hi" style="cursor:pointer" onclick="go('production')"><div class="l">Websites waiting for approval</div>
         <div class="v2statrow"><div class="v">${approvals.length}</div><div style="font-size:22px">🎁</div></div>
         <div class="s ${approvals.length?'warn':'mut'}">${approvals.length?(approvals.length+' ready to review'):'all clear'}</div></div>
       <div class="v2stat"><div class="l">New customer responses</div>
         <div class="v2statrow"><div class="v sm">Tracking soon</div><div style="font-size:20px;opacity:.5">👁</div></div>
         <div class="s mut">lights up when email tracking ships</div></div>
-      <div class="v2stat"><div class="l">Estimated pipeline value</div>
+      <div class="v2stat" style="cursor:pointer" onclick="go('sales')"><div class="l">Estimated pipeline value</div>
         <div class="v2statrow"><div class="v">${esc(est)}</div>${sparkSVG(leads7,'#26c281')}</div>
         <div class="s mut">est. · ${opps.length} ${opps.length===1?'opportunity':'opportunities'}</div></div>
-      <div class="v2stat"><div class="l">Top opportunity</div>
+      <div class="v2stat"${top?' style="cursor:pointer" onclick="location.hash=\'#c/'+top.id+'\'"':''}><div class="l">Top opportunity</div>
         <div class="v2statrow"><div class="v sm">${top?esc(top.business_name||'A lead'):'—'}</div>${top?('<div class="v2ring">'+miniRing(oppScore(top).pct,'#8b5cf6')+'</div>'):''}</div>
         <div class="s ${top?'up':'mut'}">${top?('⭐ '+oppScore(top).pct+'% match'):'no new opportunities'}</div></div>
     </div>
@@ -2253,13 +2253,14 @@ function renderCustomer(id){
   }
   const wasApproved = ['APPROVED','PREVIEW DELIVERED'].includes(l.status) || !!l.reveal_sent_at;
   if(wasApproved && l.preview_url && email) teamActs+=`<button class="btn" onclick="resendReveal('${id}',this)">📤 Resend reveal to customer</button>`;
+  if(l.status==='APPROVED') teamActs+=`<button class="btn ghost" onclick="reopenLead('${id}')">↺ Reopen for review</button>`;
   if(l.preview_url && sg.k!=='approve') teamActs+=`<button class="btn" onclick="openRevisionModal()">✎ Request a revision</button>`;
   if(phone) teamActs+=`<a class="btn" href="tel:${esc(phone.replace(/[^0-9+]/g,''))}">📞 Call</a>`;
   if(email) teamActs+=`<a class="btn" href="mailto:${esc(email)}">✉ Email</a>`;
   if(l.preview_url) custActs+=`<button class="btn" onclick="openRevisionModal()">✎ Request a change</button>`;
 
   $('ws').innerHTML=`
-    <div class="back" onclick="location.hash=''">‹ All customers</div>
+    <div class="back" onclick="go('customers')">‹ All customers</div>
     <div class="vtog"><button class="sel" onclick="setView('team',this)">Team view</button><button onclick="setView('customer',this)">Customer view</button></div>
     <div class="custbanner">👁 Customer view. This is exactly what <b>${esc(l.business_name||'this customer')}</b> will see when they log in. Same workspace, fewer doors.</div>
     <div class="wsHead">
@@ -2516,6 +2517,18 @@ async function resendReveal(id,btn){
   try{ await sb.from('activity_log').insert({entity_type:'lead',entity_id:id,action:'reveal_resent',meta:{to:to}}); }catch(e){}
   if(btn){btn.textContent='Queued ✓';}
   toast('Reveal queued for '+nm+' ✓  It sends within a minute once the email sender is live, and the delivery log will confirm it landed.');
+}
+async function reopenLead(id){
+  // Nothing is permanently locked by a click: an accidental approval can be
+  // pulled back into the QC queue. Does not un-send anything already sent.
+  const nm=(LEADS.find(x=>x.id===id)||{}).business_name||'this project';
+  if(!confirm('Reopen '+nm+' for review?\n\nIt returns to your QC queue so you can request changes. Anything already sent to the customer stays sent.')) return;
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){ toast('Sign in first — reopening needs a signed-in staff session.'); return; }
+  const {data,error}=await sb.from('leads').update({status:'PREVIEW READY',updated_at:new Date().toISOString()}).eq('id',id).select('id');
+  if(error){ toast('Could not reopen: '+(error.message||error.code||'unknown')); return; }
+  if(!data||!data.length){ toast('Nothing changed (a security policy filtered this record).'); return; }
+  await load(); route(); toast('Reopened for review ✓  You can request changes now.');
 }
 async function decide(id,status,btn){
   const nm=(LEADS.find(x=>x.id===id)||{}).business_name||'Customer';
