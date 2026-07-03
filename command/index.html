@@ -915,6 +915,17 @@ var CC_SINCE=(function(){try{var v=+localStorage.getItem('cc_last_visit')||0;loc
 function absUrl(u){ if(!u) return ''; return /^https?:\/\//i.test(u)?u:('https://'+u); }
 // Real screenshot of any live URL (their current site / our preview) via WordPress mShots, no key.
 function shot(u,w){ u=absUrl(u); if(!u) return ''; return 'https://s.wordpress.com/mshots/v1/'+encodeURIComponent(u)+'?w='+(w||600); }
+// The mShots screenshot service can 403/fail on fresh URLs, which showed as a broken
+// "404" thumbnail even though the real site is live. Degrade any broken thumbnail to the
+// business initials instead of a broken image. One global capture handler covers every card.
+document.addEventListener('error', function(e){
+  var t=e.target;
+  if(t && t.tagName==='IMG' && /mshots/.test(t.src||'') && !t.dataset.fb){
+    t.dataset.fb='1'; t.style.display='none';
+    if(t.parentNode){ t.parentNode.classList.add('noimg');
+      if(!t.parentNode.querySelector('.ini')){ var s=document.createElement('div'); s.className='ini'; s.textContent='◇'; t.parentNode.appendChild(s); } }
+  }
+}, true);
 function fmtMoney(n){ n=Math.round(n||0); try{return '$'+n.toLocaleString('en-US');}catch(e){return '$'+n;} }
 function discFor(id){ try{ return (typeof DISC!=='undefined'&&DISC)?DISC.find(function(d){return d.lead_id===id;}):null; }catch(e){ return null; } }
 function pkgPrice(){ try{ var ps=(typeof PKGS!=='undefined'&&PKGS?PKGS:[]).map(function(p){return +(p.price||p.amount||p.setup_fee||p.monthly||p.price_monthly||0);}).filter(Boolean); if(ps.length) return Math.round(ps.reduce(function(a,b){return a+b;},0)/ps.length); }catch(e){} return 2500; }
@@ -1491,7 +1502,7 @@ function renderProjChips(){
 function renderProjList(){
   const el=$('projlist'); if(!el)return;
   const term=(($('psearch')&&$('psearch').value)||'').toLowerCase();
-  let rows=LEADS.slice().sort((a,b)=>new Date(b.updated_at||b.created_at||0)-new Date(a.updated_at||a.created_at||0));
+  let rows=LEADS.slice().sort((a,b)=>new Date(b.created_at||b.updated_at||0)-new Date(a.created_at||a.updated_at||0));
   if(SRCFILTER!=='all') rows=rows.filter(l=>(l.source||'unknown').toLowerCase()===SRCFILTER);
   if(PROJFILTER!=='all') rows=rows.filter(l=>(l.status||'UNKNOWN').toUpperCase()===PROJFILTER);
   if(term) rows=rows.filter(l=>((l.business_name||'')+' '+(l.source||'')+' '+(l.status||'')).toLowerCase().includes(term));
