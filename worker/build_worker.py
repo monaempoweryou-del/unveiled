@@ -651,6 +651,19 @@ def slug_from(lead, payload):
     return slugify(payload.get("business") or lead.get("business_name"),
                    unique=lead.get("id") or payload.get("lead_id"))
 
+def ensure_canonical(html, slug):
+    """A revision edits existing HTML via the LLM, which can silently drop the
+    rel="canonical" link that QA requires. Re-inject it if the edit lost it so
+    a good visual revision is never blocked on a single meta tag."""
+    if 'rel="canonical"' in html:
+        return html
+    canon = f"https://unveiled.pro/previews/{slug}/"
+    tag = f'<link rel="canonical" href="{canon}">'
+    if "</head>" in html:
+        return html.replace("</head>", "  " + tag + "\n</head>", 1)
+    return html
+
+
 def process_revision(job):
     payload = job.get("payload") or {}
     lead_id = payload.get("lead_id")
@@ -684,7 +697,7 @@ def process_revision(job):
                     finish_job(job["id"], "blocked",
                                blocker="original image not found on the live page (it may already have changed)")
                     activity(lead_id, "revision_blocked", {"reason": "original image not found"})
-                    if lead_id: update_lead(lead_id, {"status": "PREVIEW READY", "updated_at": now()})
+                    if lead_id: update_lead(lead_id, {"status": "CHANGES REQUESTED", "updated_at": now()})
                     return
         elif kind == "visual_refresh":
             # Improve only the visual quality, preserving all approved work,
@@ -703,11 +716,14 @@ def process_revision(job):
                 return
             html = apply_edit(html, instruction)
 
+        html = ensure_canonical(html, slug)
         ok, issues = qa(html)
         if not ok:
             finish_job(job["id"], "blocked", blocker=f"QA failed: {issues}")
             activity(lead_id, "revision_blocked", {"reason": issues})
-            if lead_id: update_lead(lead_id, {"status": "PREVIEW READY", "updated_at": now()})
+            # A blocked revision must NOT advance to PREVIEW READY — a defect that
+            # failed QA cannot be presented to the human as "ready" (TEMPORARY-QC-LAYER).
+            if lead_id: update_lead(lead_id, {"status": "CHANGES REQUESTED", "updated_at": now()})
             return
 
         url = deploy(slug, html)
