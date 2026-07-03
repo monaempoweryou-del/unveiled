@@ -2519,6 +2519,10 @@ async function resendReveal(id,btn){
 }
 async function decide(id,status,btn){
   const nm=(LEADS.find(x=>x.id===id)||{}).business_name||'Customer';
+  // Approval releases the reveal to a real customer and cannot be undone here.
+  // A human's job is taste/business judgment, not catching defects — anything
+  // below standard should have been caught by production QA before this point.
+  if(status==='APPROVED' && !confirm('Approve '+nm+' and release the reveal to the customer?\n\nThis emails their preview link now and cannot be undone. Only approve work that already passed production QA.')) return;
   if(btn){btn.textContent='…';btn.disabled=true;}
   // STEP 1: request must reach the backend with an authorized identity.
   // leads is RLS-protected (LS-PII); writes require a signed-in staff session.
