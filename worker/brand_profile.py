@@ -291,7 +291,7 @@ def build_brand_profile(lead):
 
     # personality cue from industry (a starting hypothesis, not a fact)
     profile["personality"] = (lead.get("personality")
-                              or lead.get("about", "")[:160]
+                              or (lead.get("about") or "")[:160]
                               or f"a {profile['industry']} business in {profile['location']}".strip())
 
     # confidence: weighted by how much real signal we actually gathered
