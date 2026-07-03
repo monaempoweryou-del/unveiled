@@ -621,6 +621,8 @@ async function q(path){const {data:{session}}=await sb.auth.getSession();
 function signal(l){
   const s=l.status;
   if(s==='PREVIEW READY') return {k:'approve',label:'Waiting on your approval',cls:'red',rank:0};
+  if(s==='STUCK - BUILD') return {k:'stuck',label:'Build failed QA',cls:'red',rank:1};
+  if(s==='STUCK - ASSETS') return {k:'assets',label:'Needs images',cls:'amber',rank:1};
   if(s==='CHANGES REQUESTED') return {k:'fix',label:'Needs changes',cls:'amber',rank:1};
   if(s==='BUILDING') return {k:'build',label:'In production',cls:'violet',rank:3};
   if(s==='PREVIEW DELIVERED') return {k:'wait',label:'Waiting on customer',cls:'blue',rank:4};
@@ -705,6 +707,7 @@ window.addEventListener('hashchange',route);
 function counts(){
   const by=s=>LEADS.filter(l=>l.status===s);
   return {appr:by('PREVIEW READY'),blocked:by('CHANGES REQUESTED'),qualified:by('QUALIFIED'),delivered:by('PREVIEW DELIVERED'),approved:by('APPROVED'),newlead:by('NEW LEAD'),lost:by('LOST'),
+    stuck:LEADS.filter(l=>l.status==='STUCK - BUILD'||l.status==='STUCK - ASSETS'),
     building:WQ.filter(j=>j.status==='running'),pending:WQ.filter(j=>j.status==='pending')};
 }
 function workerHealth(){ const age=BEAT?(Date.now()-new Date(BEAT.created_at).getTime())/1000:1e9; return {live:age<900,since:BEAT?ago(BEAT.created_at):'never'}; }
@@ -720,6 +723,16 @@ function instr(chip,color,title,body,reqs,value){
     ${value?`<div class="instr-val">${value}</div>`:''}</div>`;
 }
 
+// The QA / crash reason behind a stuck build, pulled from the blocked job's
+// blocker_reason (or the build/revision_blocked activity as a fallback) so the
+// card tells the human exactly why the factory stopped (e.g. "needs 5 images").
+function stuckReason(l){
+  const j=WQ.find(x=>x.payload&&x.payload.lead_id===l.id&&x.status==='blocked'&&x.blocker_reason);
+  if(j&&j.blocker_reason) return String(j.blocker_reason).replace(/^QA failed:\s*/,'').slice(0,160);
+  const a=(ACTS||[]).find(x=>(x.action==='build_blocked'||x.action==='revision_blocked')&&x.entity_id===l.id);
+  if(a&&a.meta&&a.meta.reason){ const r=a.meta.reason; return String(Array.isArray(r)?r.join('; '):r).slice(0,160); }
+  return '';
+}
 // ===== Decision triage: the OS ranks attention, it doesn't just list =====
 // Real signals only. Engagement tiers (preview opens) light up when tracking is wired.
 function triage(l){
@@ -728,6 +741,9 @@ function triage(l){
   const myRev=WQ.find(j=>j.type==='revision'&&j.payload&&j.payload.lead_id===l.id&&(j.status==='pending'||j.status==='running'));
   const myBlocked=WQ.find(j=>j.payload&&j.payload.lead_id===l.id&&j.status==='blocked');
   if(s==='PREVIEW READY') return {color:'red',emoji:'🔴',label:'Needs your approval',what:'Website finished, waiting on you',next:'approving sends the reveal',reco:'Review and approve to send the reveal.',rank:0,act:'approve'};
+  // A failed build is honestly labeled — NOT a customer revision. Show the reason.
+  if(s==='STUCK - ASSETS'){ const r=stuckReason(l); return {color:'amber',emoji:'🟠',label:'Needs images',what:r||'Build could not reach the 5-image minimum',next:'add real images, then requeue',reco:'This build could not source enough real images'+(r?' ('+r+')':'')+'. Add images in the asset manager, then requeue.',rank:1,act:'requeue'}; }
+  if(s==='STUCK - BUILD'){ const r=stuckReason(l); return {color:'red',emoji:'🔴',label:'Build failed QA',what:r||'The build did not pass quality checks',next:'review the reason, then requeue',reco:'This build failed QA'+(r?': '+r:'')+'. It is a factory failure, not a customer revision. Requeue to run it again.',rank:1,act:'requeue'}; }
   if(myBlocked) return {color:'amber',emoji:'🟠',label:'Blocked',what:'A job is blocked in production',next:'a human needs to clear it',reco:'Open to see the blocker and clear it.',rank:1};
   if(s==='PREVIEW DELIVERED'&&days!=null&&days>=7) return {color:'red',emoji:'🔴',label:'At risk',what:'Reveal sent '+Math.floor(days)+' days ago',next:'no movement since',reco:'No approval in '+Math.floor(days)+' days. Recommend a final follow-up before marking cold.',rank:1};
   if(s==='CHANGES REQUESTED'||myRev) return {color:'blue',emoji:'🔵',label:'Needs internal action',what:'Revision requested',next:myRev?'worker is processing it now':'queued for production',reco:myRev?'In production. The worker is on it. No action needed from you.':'Revision is queued for the worker. No action needed.',rank:2};
@@ -1328,6 +1344,8 @@ function prodStage(l){ var s=l.status;
   if(s==='QUALIFIED') return {label:'Queued for build',pct:12,color:'#8b5cf6'};
   if(s==='BUILDING') return (typeof activeBuildJob==='function'&&!activeBuildJob(l.id))?{label:'Build stalled',pct:50,color:'#f0576a',stalled:true}:{label:'Building',pct:50,color:'#8b5cf6'};
   if(s==='QA') return {label:'Quality check',pct:80,color:'#f5a524'};
+  if(s==='STUCK - ASSETS') return {label:'Needs images',pct:60,color:'#f5a524',stalled:true};
+  if(s==='STUCK - BUILD') return {label:'Build failed QA',pct:55,color:'#f0576a',stalled:true};
   if(s==='CHANGES REQUESTED') return {label:'Revising',pct:65,color:'#f5a524'};
   if(s==='PREVIEW READY') return {label:'Ready for approval',pct:100,color:'#26c281'};
   return {label:s||'',pct:0,color:'#8f8aa6'};
@@ -1338,7 +1356,7 @@ function prodCard(l){ var st=prodStage(l), pv=l.preview_url;
     '<div class="dvmain"><div class="dvnm">'+esc(l.business_name||'Project')+'</div>'+
       '<div class="dvst">'+esc(st.label)+' · in stage '+ago(l.updated_at)+'</div>'+
       '<div class="dvbar"><i style="width:'+st.pct+'%;background:'+st.color+'"></i></div>'+
-      (st.stalled?'<div class="dvblock">⚠ Build stopped before finishing.</div>':'')+'</div>'+
+      (st.stalled?'<div class="dvblock">⚠ '+esc((l.status&&l.status.indexOf('STUCK')===0)?(st.label+(stuckReason(l)?': '+stuckReason(l):'')):'Build stopped before finishing.')+'</div>':'')+'</div>'+
     '<div class="dvact">'+(st.stalled?'<button class="dvb warn" onclick="event.stopPropagation();requeueBuild(\''+l.id+'\',this)">Requeue</button>':'<span style="color:#8f8aa6;font-size:18px">›</span>')+'</div></div>';
 }
 function prodApprove(l){ var pv=l.preview_url||'';
@@ -1352,7 +1370,7 @@ function prodApprove(l){ var pv=l.preview_url||'';
 function renderProduction(){
   var c=counts(), wh=workerHealth();
   var inProd=(LEADS||[]).filter(function(l){ return dept(l)==='production' && l.status!=='PREVIEW READY'; })
-    .sort(function(a,b){ var o={'CHANGES REQUESTED':0,'QA':1,'BUILDING':2,'QUALIFIED':3}; return (o[a.status]==null?9:o[a.status])-(o[b.status]==null?9:o[b.status]); });
+    .sort(function(a,b){ var o={'STUCK - BUILD':0,'STUCK - ASSETS':0,'CHANGES REQUESTED':1,'QA':2,'BUILDING':3,'QUALIFIED':4}; return (o[a.status]==null?9:o[a.status])-(o[b.status]==null?9:o[b.status]); });
   var appr=c.appr, recent=WQ.filter(function(j){return j.type==='build_website'&&j.status==='completed';}).slice(0,6);
   var sbb=$('sbb-prod'); if(sbb){ if(appr.length){sbb.textContent=appr.length;sbb.classList.add('show');} else sbb.classList.remove('show'); }
   $('v-production').innerHTML=DEPTV_CSS+`
@@ -1465,7 +1483,7 @@ async function brAct(lead_id, platform, action){
 
 // ===== All Projects (master list: every lead from day one, nothing hidden) =====
 function projStatusList(){
-  const order=['PREVIEW READY','CHANGES REQUESTED','QA','BUILDING','QUALIFIED','NEW LEAD','PREVIEW DELIVERED','APPROVED','LOST'];
+  const order=['PREVIEW READY','STUCK - BUILD','STUCK - ASSETS','CHANGES REQUESTED','QA','BUILDING','QUALIFIED','NEW LEAD','PREVIEW DELIVERED','APPROVED','LOST'];
   const counts={}; LEADS.forEach(l=>{const s=(l.status||'UNKNOWN').toUpperCase(); counts[s]=(counts[s]||0)+1;});
   const extras=Object.keys(counts).filter(s=>!order.includes(s));
   return [['all','All',LEADS.length]].concat(order.filter(s=>counts[s]).map(s=>[s,s,counts[s]])).concat(extras.map(s=>[s,s,counts[s]]));
