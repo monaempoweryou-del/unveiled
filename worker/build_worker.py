@@ -19,7 +19,7 @@ Optional:
   GITHUB_REPO (default monaempoweryou-del/unveiled), MODEL (default claude-sonnet-4-6),
   BUILD_POLL_INTERVAL (default 20), WORKER_ID (default railway-builder-1)
 """
-import os, sys, time, json, uuid, base64, re, datetime, urllib.request, urllib.error
+import os, sys, time, json, uuid, base64, re, datetime, traceback, unicodedata, urllib.request, urllib.error
 import brand_profile   # LS-BRAND-PRESERVE + LS-ASSET-STRUCTURE: learn the brand before building
 import brand_research  # LS-BRAND-RESEARCH: resolve loose identifiers -> verified profiles first
 
@@ -267,9 +267,37 @@ def snapshot_version(slug, html, meta=None):
         return None
 
 
-def slugify(name):
-    s = re.sub(r"[^a-z0-9]+", "-", (name or "site").lower()).strip("-")
-    return s or "site"
+# Hebrew -> Latin so RTL business names produce a real, unique slug instead of
+# collapsing to nothing. Without this every Hebrew-named lead slugified to the
+# shared literal "site" and overwrote each other in previews/site/ (RCA 2026-07-02).
+_HEBREW_TRANSLIT = {
+    "א": "a", "ב": "b", "ג": "g", "ד": "d", "ה": "h", "ו": "v", "ז": "z",
+    "ח": "ch", "ט": "t", "י": "y", "כ": "k", "ך": "k", "ל": "l", "מ": "m",
+    "ם": "m", "נ": "n", "ן": "n", "ס": "s", "ע": "a", "פ": "p", "ף": "f",
+    "צ": "tz", "ץ": "tz", "ק": "k", "ר": "r", "ש": "sh", "ת": "t",
+}
+
+def _transliterate(name):
+    """Best-effort ASCII of any script: Hebrew via map, Latin accents stripped."""
+    out = []
+    for ch in name or "":
+        if ch in _HEBREW_TRANSLIT:
+            out.append(_HEBREW_TRANSLIT[ch])
+        else:
+            decomposed = unicodedata.normalize("NFKD", ch)
+            out.append("".join(c for c in decomposed if not unicodedata.combining(c)))
+    return "".join(out)
+
+def slugify(name, unique=None):
+    s = re.sub(r"[^a-z0-9]+", "-", _transliterate(name).lower()).strip("-")
+    if s:
+        return s
+    # Never fall back to the shared literal "site": that made every empty-
+    # transliteration lead collide and overwrite the previous one. Derive a
+    # stable, per-lead-unique slug so previews never clobber each other.
+    if unique:
+        return f"site-{re.sub(r'[^a-z0-9]', '', str(unique).lower())[:8]}"
+    return "site"
 
 
 # Statuses where the approved work is the foundation and must never be
@@ -277,10 +305,182 @@ def slugify(name):
 LOCKED_STATUSES = {"APPROVED", "LIVE", "PREVIEW READY", "PREVIEW DELIVERED", "CHANGES REQUESTED"}
 
 # ---------- one job, end to end ----------
+# ---------- "Make it yours" acceptance section (pricing lives in the preview) ----------
+# Server-rendered at build time so every preview ends with ownership: the customer
+# scrolls their site, then chooses a plan and the checkout opens immediately. Reuses
+# the approved catalog (service_packages) as the single source of truth. Payment is
+# provider-agnostic: each card links to whatever checkout URL is stored (square_link
+# today, any provider tomorrow). Clean copy, no em dashes (LS-AITELLS).
+ACCEPT_CSS = """
+<style>
+.uv-accept{--acc-ink:#141118;--acc-soft:#6b6675;--acc-line:#ece9f2;--acc-bg:#faf9fc;--acc-brand:#7c46eb;--acc-brand-ink:#fff;
+  background:radial-gradient(120% 90% at 50% 0,#fff,var(--acc-bg) 70%);padding:64px 20px 76px;border-top:1px solid var(--acc-line);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Arial,sans-serif;color:var(--acc-ink)}
+.uv-accept *{box-sizing:border-box}
+.uv-wrap{max-width:1080px;margin:0 auto}
+.uv-head{text-align:center;max-width:640px;margin:0 auto 42px}
+.uv-eyebrow{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--acc-brand);background:rgba(124,70,235,.1);padding:6px 13px;border-radius:30px}
+.uv-h{font-size:38px;line-height:1.1;font-weight:900;letter-spacing:-.8px;margin:16px 0 0}
+.uv-sub{font-size:16px;line-height:1.6;color:var(--acc-soft);margin:14px 0 0}
+.uv-tempnote{display:inline-flex;align-items:center;gap:8px;margin-top:16px;font-size:12.5px;color:var(--acc-soft);background:#fff;border:1px solid var(--acc-line);padding:7px 13px;border-radius:30px}
+.uv-tempnote .dot{width:8px;height:8px;border-radius:50%;background:#f5a524}
+.uv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.uv-card{position:relative;display:flex;flex-direction:column;background:#fff;border:1.5px solid var(--acc-line);border-radius:20px;padding:24px 20px 20px;transition:.18s}
+.uv-card:hover{transform:translateY(-4px);box-shadow:0 22px 50px rgba(50,25,110,.13);border-color:rgba(124,70,235,.4)}
+.uv-card.reco{border-color:var(--acc-brand);box-shadow:0 18px 46px rgba(124,70,235,.18)}
+.uv-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);white-space:nowrap;background:var(--acc-brand);color:#fff;font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;padding:5px 13px;border-radius:30px}
+.uv-name{font-size:16px;font-weight:800}
+.uv-price{margin-top:12px;font-size:32px;font-weight:900;letter-spacing:-1px;line-height:1}
+.uv-once{display:inline-block;margin-top:8px;font-size:11.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:#16a34a;background:rgba(22,163,74,.1);padding:3px 9px;border-radius:20px}
+.uv-summary{margin-top:14px;font-size:13.5px;line-height:1.55;color:var(--acc-soft);flex:1}
+.uv-cta{margin-top:18px;display:block;text-align:center;text-decoration:none;font-weight:800;font-size:14.5px;padding:14px 12px;border-radius:13px;border:1.5px solid var(--acc-brand);color:var(--acc-brand);background:#fff;transition:.15s}
+.uv-card:hover .uv-cta,.uv-card.reco .uv-cta{background:var(--acc-brand);color:var(--acc-brand-ink)}
+.uv-foot{text-align:center;margin-top:30px;font-size:12.5px;color:var(--acc-soft)}
+/* in-page card form (Square Web Payments SDK) - keeps the customer on their site */
+.uv-modal{position:fixed;inset:0;background:rgba(10,7,20,.55);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:9999;padding:18px}
+.uv-modal.open{display:flex}
+.uv-pay{background:#fff;border-radius:20px;max-width:420px;width:100%;padding:26px 24px;box-shadow:0 30px 80px rgba(20,10,50,.4)}
+.uv-pay h3{margin:0;font-size:20px;font-weight:900;letter-spacing:-.4px}
+.uv-pay .p{margin:4px 0 18px;color:var(--acc-soft);font-size:14px}
+.uv-pay input{width:100%;padding:12px 14px;border:1.5px solid var(--acc-line);border-radius:11px;font-size:14px;margin-bottom:12px;font-family:inherit}
+.uv-cardbox{border:1.5px solid var(--acc-line);border-radius:11px;padding:4px 6px;margin-bottom:14px;min-height:44px}
+.uv-pay .pay{width:100%;padding:14px;border:0;border-radius:12px;background:var(--acc-brand);color:#fff;font-weight:800;font-size:15px;cursor:pointer}
+.uv-pay .pay:disabled{opacity:.6;cursor:default}
+.uv-pay .msg{margin-top:12px;font-size:13px;min-height:18px;text-align:center}
+.uv-pay .msg.err{color:#dc2626}.uv-pay .msg.ok{color:#16a34a;font-weight:700}
+.uv-pay .x{float:right;border:0;background:none;font-size:20px;color:var(--acc-soft);cursor:pointer;margin:-8px -6px 0 0}
+@media(max-width:860px){.uv-grid{grid-template-columns:repeat(2,1fr)}.uv-h{font-size:30px}}
+@media(max-width:520px){.uv-grid{grid-template-columns:1fr}}
+</style>"""
+
+def _esc(s):
+    return (str(s or "").replace("&", "&amp;").replace("<", "&lt;")
+            .replace(">", "&gt;").replace('"', "&quot;"))
+
+def fetch_packages():
+    try:
+        rows = _sb("GET", "/rest/v1/service_packages?select=name,price,billing,square_link,definition&order=sort")
+        return rows or []
+    except Exception as e:
+        log_line(f"fetch_packages failed (section skipped): {e!r}")
+        return []
+
+# Square Web Payments SDK config (embedded checkout). Set these in the builder env to
+# turn the CTAs into an in-page card form; leave unset to fall back to hosted links.
+SQUARE_APP_ID = os.environ.get("SQUARE_APPLICATION_ID", "")
+SQUARE_LOCATION_ID = os.environ.get("SQUARE_LOCATION_ID", "")
+CREATE_SUB_URL = os.environ.get("CREATE_SUBSCRIPTION_URL", "")
+
+def _sdk_block(lead):
+    """The in-page card form + Web Payments SDK glue. Only emitted when configured."""
+    lead_id = _esc(lead.get("id") or "")
+    email = _esc(lead.get("email") or "")
+    return f"""
+<div class="uv-modal" id="uv-modal"><div class="uv-pay">
+  <button class="x" onclick="uvClose()">&times;</button>
+  <h3 id="uv-pt">Complete your plan</h3>
+  <div class="p" id="uv-pp"></div>
+  <input id="uv-email" type="email" placeholder="Email for your receipt" value="{email}">
+  <div class="uv-cardbox" id="uv-card"></div>
+  <button class="pay" id="uv-paybtn">Pay securely</button>
+  <div class="msg" id="uv-msg"></div>
+</div></div>
+<script src="https://web.squarecdn.com/v1/square.js"></script>
+<script>
+(function(){{
+  var CFG={{appId:"{_esc(SQUARE_APP_ID)}",locationId:"{_esc(SQUARE_LOCATION_ID)}",endpoint:"{_esc(CREATE_SUB_URL)}",leadId:"{lead_id}"}};
+  var payments,card,cur;
+  async function init(){{ try{{ payments=window.Square.payments(CFG.appId,CFG.locationId); card=await payments.card(); await card.attach('#uv-card'); }}catch(e){{ console.warn('Square SDK init failed',e); }} }}
+  window.uvChoose=function(name,label){{ cur=name; document.getElementById('uv-pt').textContent=label||('Complete '+name); document.getElementById('uv-pp').textContent=name; document.getElementById('uv-msg').textContent=''; document.getElementById('uv-modal').classList.add('open'); }};
+  window.uvClose=function(){{ document.getElementById('uv-modal').classList.remove('open'); }};
+  document.addEventListener('click',function(e){{ if(e.target&&e.target.id==='uv-modal') uvClose(); }});
+  document.getElementById('uv-paybtn').addEventListener('click',async function(){{
+    var btn=this,msg=document.getElementById('uv-msg'); msg.className='msg';
+    if(!card){{ msg.textContent='Payment form still loading, one moment.'; return; }}
+    btn.disabled=true; btn.textContent='Processing…'; msg.textContent='';
+    try{{
+      var r=await card.tokenize();
+      if(r.status!=='OK'){{ throw new Error('Please check your card details.'); }}
+      var resp=await fetch(CFG.endpoint,{{method:'POST',headers:{{'Content-Type':'application/json'}},body:JSON.stringify({{lead_id:CFG.leadId,package:cur,source_id:r.token,buyer_email:document.getElementById('uv-email').value}})}});
+      var d=await resp.json();
+      if(!d.ok){{ throw new Error((d&&d.error)||'Payment could not be completed.'); }}
+      msg.className='msg ok'; msg.textContent='You are all set. We are taking it from here.';
+      btn.textContent='Confirmed ✓';
+    }}catch(err){{ msg.className='msg err'; msg.textContent=(err&&err.message)||'Something went wrong. Please try again.'; btn.disabled=false; btn.textContent='Pay securely'; }}
+  }});
+  init();
+}})();
+</script>"""
+
+def render_acceptance_section(lead, packages):
+    if not packages:
+        return ""
+    reco = (lead.get("package") or "").strip().lower()
+    ref = lead.get("id") or ""
+    sdk = bool(SQUARE_APP_ID and SQUARE_LOCATION_ID and CREATE_SUB_URL)
+    # recommended package (if known) leads the row
+    packages = sorted(packages, key=lambda p: 0 if (p.get("name", "").lower() == reco) else 1)
+    cards = []
+    for p in packages:
+        name = p.get("name", "")
+        price = p.get("price", "")
+        billing = (p.get("billing") or "").lower()
+        summary = ((p.get("definition") or {}).get("summary")) or ""
+        checkout = p.get("square_link") or ""
+        is_reco = name.lower() == reco
+        cta = "Own it forever" if billing == "one-time" else ("Start growing" if "growth" in name.lower() else "Keep it live")
+        once = '<span class="uv-once">One-time. Own it.</span>' if billing == "one-time" else ""
+        badge = '<span class="uv-badge">Recommended for you</span>' if is_reco else ""
+        if sdk:
+            # embedded: opens the in-page card form for this package (no redirect)
+            cta_html = (f'<a class="uv-cta" href="#uv-modal" '
+                        f'onclick="uvChoose(\'{_esc(name)}\',\'{_esc(cta)} · {_esc(name)}\');return false">{cta}</a>')
+        else:
+            if not checkout:
+                continue
+            url = checkout + (("?ref=" + _esc(ref)) if ref else "")
+            cta_html = f'<a class="uv-cta" href="{_esc(url)}" target="_blank" rel="noopener">{cta}</a>'
+        cards.append(
+            f'<div class="uv-card{" reco" if is_reco else ""}">{badge}'
+            f'<div class="uv-name">{_esc(name)}</div>'
+            f'<div class="uv-price">{_esc(price)}</div>{once}'
+            f'<div class="uv-summary">{_esc(summary)}</div>'
+            f'{cta_html}'
+            f'</div>'
+        )
+    if not cards:
+        return ""
+    return (
+        f'{ACCEPT_CSS}\n<section class="uv-accept" id="get-started">\n<div class="uv-wrap">\n'
+        f'<div class="uv-head"><span class="uv-eyebrow">Your website is ready</span>'
+        f'<h1 class="uv-h">Make it yours.</h1>'
+        f'<p class="uv-sub">This is a temporary preview. Pick a plan to keep it online and connect it to your business. We handle the rest.</p>'
+        f'<div class="uv-tempnote"><span class="dot"></span> Running on a temporary preview address</div></div>\n'
+        f'<div class="uv-grid">{"".join(cards)}</div>\n'
+        f'<div class="uv-foot">Secure checkout with Square. Cancel anytime. Once you pick a plan, we set up your domain and take it live.</div>\n'
+        f'</div>\n</section>'
+        f'{_sdk_block(lead) if sdk else ""}'
+    )
+
+def inject_acceptance(html, lead):
+    """Append the acceptance section just before </body>. Never blocks a deploy."""
+    try:
+        section = render_acceptance_section(lead, fetch_packages())
+        if not section:
+            return html
+        m = re.search(r"</body>", html, re.I)
+        if not m:
+            return html + section
+        return html[:m.start()] + section + "\n" + html[m.start():]
+    except Exception as e:
+        log_line(f"acceptance section skipped (non-fatal): {e!r}")
+        return html
+
+
 def process(job):
     payload = job.get("payload") or {}
     lead_id = payload.get("lead_id")
-    slug = slugify(payload.get("business"))
+    slug = slugify(payload.get("business"), unique=lead_id)
     activity(lead_id, "build_started", {"job": job["id"], "slug": slug})
 
     # LS-ITERATE GUARD: the build path produces Version 1 ONLY. If a preview
@@ -329,13 +529,22 @@ def process(job):
         log_line(f"learning brand + generating site for "
                  f"{lead_ctx.get('business') or lead_ctx.get('business_name')} ({slug})")
         html, report = generate_site(lead_ctx, slug)
-        activity(lead_id, "brand_profile_built", {
-            "confidence": report.get("brand_confidence"),
-            "reached_website": report.get("reached_existing_website"),
-            "real_assets": report["assets"]["real_count"],
-            "stock_assets": report["assets"]["stock_count"],
-            "preserved": report.get("preserved"), "improved": report.get("improved")})
-        activity(lead_id, "homepage_complete", {"bytes": len(html)})
+        # Defensive: a successful build must NEVER be aborted by a non-critical
+        # activity/logging line. report["assets"] was a raw subscript that crashed
+        # the whole build with "'NoneType' object is not subscriptable" when assets
+        # was absent/None, stranding the lead in BUILDING (root cause of the 7 blocked
+        # builds on 2026-06-30). Read every field through .get and swallow log errors.
+        try:
+            _assets = (report or {}).get("assets") or {}
+            activity(lead_id, "brand_profile_built", {
+                "confidence": (report or {}).get("brand_confidence"),
+                "reached_website": (report or {}).get("reached_existing_website"),
+                "real_assets": _assets.get("real_count", _assets.get("real_assets_available", 0)),
+                "stock_assets": _assets.get("stock_count", 0),
+                "preserved": (report or {}).get("preserved"), "improved": (report or {}).get("improved")})
+            activity(lead_id, "homepage_complete", {"bytes": len(html)})
+        except Exception as _le:
+            log_line(f"non-fatal activity log skipped: {_le!r}")
 
         ok, issues = qa(html, report)
         if not ok:
@@ -361,6 +570,11 @@ def process(job):
             except Exception:
                 pass  # column may not exist yet; report still lives as the JSON sibling
 
+        # Pricing lives in the preview: append the "Make it yours" acceptance section
+        # (reuses service_packages; provider-agnostic checkout). Done after QA so the
+        # generated site is validated on its own; the section is a trusted, clean block.
+        html = inject_acceptance(html, lead_ctx)
+
         url = deploy(slug, html)
         ver = snapshot_version(slug, html, {"kind": "build_v1", "confidence": report.get("brand_confidence")})
         activity(lead_id, "deployed", {"preview_url": url, "version": ver})
@@ -372,9 +586,17 @@ def process(job):
         activity(lead_id, "job_completed", {"preview_url": url, "handoff": "PREVIEW READY -> CEO approval"})
         log_line(f"DONE {slug} -> awaiting CEO approval")
     except Exception as e:
-        log_line(f"job {job.get('id')} FAILED: {e!r}")
-        finish_job(job["id"], "blocked", blocker=repr(e)[:400])
-        activity(lead_id, "build_blocked", {"reason": repr(e)[:400]})
+        # Capture the traceback so a future failure names its exact file+line
+        # (previously only repr(e) was stored, which hid the crash site — the
+        # 2026-06-30 NoneType failures could not be located without this).
+        tb = traceback.format_exc()
+        last = ""
+        for ln in reversed(tb.strip().splitlines()):
+            if "build_worker.py" in ln or ", line " in ln:
+                last = ln.strip(); break
+        log_line(f"job {job.get('id')} FAILED: {e!r}\n{tb}")
+        finish_job(job["id"], "blocked", blocker=(repr(e) + (" | at " + last if last else ""))[:400])
+        activity(lead_id, "build_blocked", {"reason": repr(e)[:200], "trace": tb[-1500:]})
 
 
 # ---------- revisions (Replace Image + text Request a revision + visual refresh) ----------
@@ -426,7 +648,8 @@ def slug_from(lead, payload):
     pu = (lead.get("preview_url") or "").rstrip("/")
     if pu:
         return pu.split("/")[-1]
-    return slugify(payload.get("business") or lead.get("business_name"))
+    return slugify(payload.get("business") or lead.get("business_name"),
+                   unique=lead.get("id") or payload.get("lead_id"))
 
 def process_revision(job):
     payload = job.get("payload") or {}
