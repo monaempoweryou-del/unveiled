@@ -597,7 +597,7 @@ const esc=s=>(s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;
 const ago=d=>{if(!d)return'';const s=(Date.now()-new Date(d).getTime())/1000;if(s<60)return'just now';if(s<3600)return Math.floor(s/60)+'m ago';if(s<86400)return Math.floor(s/3600)+'h ago';return Math.floor(s/86400)+'d ago';};
 const clock=d=>new Date(d).toLocaleString([], {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
 const initials=n=>(n||'?').split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase();
-let LEADS=[], WQ=[], ACTS=[], BEAT=null, PKGS=[], DISC=[], CE=[], FILTER=null, CURLEAD=null, PENDING_REPLACE=null;
+let LEADS=[], WQ=[], ACTS=[], BEAT=null, PKGS=[], DISC=[], CE=[], SIGNALS=[], BI=[], OSENDS=[], IMPROVE=[], FILTER=null, CURLEAD=null, PENDING_REPLACE=null;
 
 // ---- auth ----
 async function signIn(){const email=$('email').value.trim(),password=$('pass').value;$('gmsg').textContent='Signing in…';
@@ -633,7 +633,7 @@ function signal(l){
 
 async function load(){
   try{
-    [LEADS,WQ,ACTS,BEAT,PKGS,DISC,CE]=await Promise.all([
+    [LEADS,WQ,ACTS,BEAT,PKGS,DISC,CE,SIGNALS,BI,OSENDS,IMPROVE]=await Promise.all([
       q('leads?select=*&order=updated_at.desc&limit=500'),
       q('work_queue?select=id,type,status,claimed_at,created_at,updated_at,payload,blocker_reason,result&order=updated_at.desc&limit=200'),
       q('activity_log?select=action,meta,created_at,entity_id&action=neq.heartbeat&order=created_at.desc&limit=400'),
@@ -641,6 +641,13 @@ async function load(){
       q('service_packages?select=*'),
       q('brand_discovery?select=lead_id,overall_confidence,needs_review,report,created_at&order=created_at.desc&limit=300'),
       q('cost_entries?select=*&order=category.asc'),
+      // learning_signals powers the QC-intervention rate (LS-SUPERVISED-APPROVAL / TEMPORARY-QC-LAYER).
+      // Tolerate absence: if the table/columns aren't provisioned yet, fall back to [] so the view still renders.
+      q('learning_signals?select=*&order=created_at.desc&limit=1000').catch(()=>[]),
+      // Learning Center intelligence sources (Acquisition / Outreach / Factory Timeline)
+      q('business_intelligence?select=industry,city,state,stage,opportunity_score,business_potential,digital_opportunity,opportunity_reasons&limit=1000').catch(()=>[]),
+      q('outreach_sends?select=status,strategy,industry,sent_at,opened_at,replied_at&limit=1000').catch(()=>[]),
+      q('factory_improvements?select=*&order=happened_on.desc&limit=100').catch(()=>[]),
     ]);
   }catch(e){ console.error('load failed:',e); toast('Could not load your company data. Pull to refresh in a moment.'); }
 }
@@ -740,7 +747,7 @@ function srcTag(l){
 }
 function triageRow(l){
   const t=triage(l);
-  const act = t.act==='approve' ? `<button class="btn good" style="padding:8px 13px;font-size:12.5px;flex:none" onclick="event.stopPropagation();decide('${l.id}','APPROVED',this)">Approve</button>`
+  const act = t.act==='approve' ? `<button class="btn good" style="padding:8px 13px;font-size:12.5px;flex:none" onclick="event.stopPropagation();decide('${l.id}','APPROVED',this)">Pass QC &amp; send</button>`
     : t.act==='requeue' ? `<button class="btn" style="padding:8px 13px;font-size:12.5px;flex:none;background:#fff;border:1.5px solid var(--line)" onclick="event.stopPropagation();requeueBuild('${l.id}',this)">Requeue</button>`
     : '<div class="chev">›</div>';
   return `<div class="trow tb-${t.color}" onclick="location.hash='#c/${l.id}'">
@@ -1327,7 +1334,7 @@ function prodApprove(l){ var pv=l.preview_url||'';
   return '<div class="dvprev"><div class="sh">'+(pv?'<img loading="lazy" src="'+shot(pv,1000)+'">':'<div style="color:#8f8aa6;padding:95px 0;font-size:13px">Preview building…</div>')+'</div>'+
     '<div class="bar2"><div class="nm">'+esc(l.business_name||'Website')+'</div>'+
     '<div class="dvact">'+(pv?'<button class="dvb" onclick="window.open(\''+esc(absUrl(pv))+'\',\'_blank\')">Review ↗</button>':'')+
-    '<button class="dvb go" onclick="decide(\''+l.id+'\',\'APPROVED\',this)">Approve &amp; send to customer</button>'+
+    '<button class="dvb go" onclick="decide(\''+l.id+'\',\'APPROVED\',this)">Pass QC &amp; send to customer</button>'+
     '<button class="dvb warn" onclick="requestRevisionFor(\''+l.id+'\')">Request revision</button>'+
     '<button class="dvb" style="color:#f0868f;border-color:rgba(240,87,106,.3)" onclick="rejectLead(\''+l.id+'\')">Reject build</button></div></div></div>';
 }
@@ -1902,6 +1909,39 @@ function renderMarketing(){
 // ===== Learning ===== (live: reads attribution + engagement captured on every lead)
 function renderLearning(){
   const sp=l=>_sp(l);
+  // ===== Intelligence Center: is the company getting smarter? =====
+  const _num=a=>a.filter(x=>typeof x==='number');
+  const _avg=a=>{const n=_num(a);return n.length?Math.round(n.reduce((s,x)=>s+x,0)/n.length):0;};
+  const _iAgg={};
+  (BI||[]).forEach(b=>{const k=b.industry||'other';(_iAgg[k]||(_iAgg[k]={opp:[],n:0})); _iAgg[k].opp.push(b.opportunity_score); _iAgg[k].n++;});
+  const _indBars=Object.entries(_iAgg).map(([k,v])=>[k+' ('+v.n+')',_avg(v.opp)]).sort((a,b)=>b[1]-a[1]);
+  const _bestInd=Object.entries(_iAgg).map(([k,v])=>[k,_avg(v.opp)]).sort((a,b)=>b[1]-a[1])[0];
+  const _wk={}; (BI||[]).forEach(b=>((b.opportunity_reasons)||[]).forEach(r=>{_wk[r]=(_wk[r]||0)+1;}));
+  const _wkRows=Object.entries(_wk).sort((a,b)=>b[1]-a[1]).slice(0,6); const _topWk=_wkRows[0];
+  const _oSent=(OSENDS||[]).length, _oOpen=(OSENDS||[]).filter(x=>x.opened_at).length, _oRep=(OSENDS||[]).filter(x=>x.replied_at).length;
+  const intelHTML=`
+    <div class="sec"><h2>Factory Improvement Timeline</h2><span class="c">${(IMPROVE||[]).length} fixes locked in</span></div>
+    <div class="card" style="padding:4px 16px">
+      ${(IMPROVE||[]).length?(IMPROVE).map(i=>`<div style="padding:12px 0;border-bottom:1px solid rgba(255,255,255,.06)">
+        <div class="meta">${esc(i.happened_on)}${i.department?' · '+esc(i.department):''}</div>
+        <div style="margin:3px 0"><b>Problem:</b> ${esc(i.problem)}</div>
+        <div style="margin:3px 0"><b>Learning:</b> ${esc(i.learning)}</div>
+        <div style="margin:3px 0;color:#26c281"><b>Rule added, fixed forever:</b> ${esc(i.rule_added)}</div>
+      </div>`).join(''):'<div class="empty">Every mistake the company fixes forever gets recorded here: problem, lesson, new rule.</div>'}
+    </div>
+    ${(BI||[]).length?`<div class="sec"><h2>Acquisition Intelligence</h2><span class="c">${BI.length} businesses analyzed</span></div>
+      <div class="card" style="padding:16px">
+        ${_bestInd?`<div class="meta" style="margin-bottom:10px">Best opportunity industry so far: <b>${esc(_bestInd[0])}</b> (avg score ${_bestInd[1]}).${_topWk?` Most common gap: <b>${esc(_topWk[0])}</b>, in ${Math.round(_topWk[1]/BI.length*100)}% of targets.`:''}</div>`:''}
+        ${bar(_indBars)}
+        ${_wkRows.length?`<div class="meta" style="margin-top:12px;margin-bottom:6px">Common problems discovered</div>${bar(_wkRows)}`:''}
+      </div>`:''}
+    ${_oSent?`<div class="sec"><h2>Outreach Intelligence</h2><span class="c">${_oSent} sent</span></div>
+      <div class="card" style="padding:16px">
+        <div class="statrow"><div class="stat"><div class="sn">${_oSent}</div><div class="sl">Sent</div></div>
+          <div class="stat"><div class="sn">${_oOpen}</div><div class="sl">Opened</div></div>
+          <div class="stat"><div class="sn">${_oRep}</div><div class="sl">Life signals</div></div></div>
+        <div class="meta" style="margin-top:8px">${_oRep?'First responses arriving. Winning angles surface here as replies come in.':'Awaiting the first life signals. Opens and replies light up here as businesses engage.'}</div>
+      </div>`:''}`;
   let hi=0,med=0,std=0,scored=0,scoreSum=0;
   LEADS.forEach(l=>{const e=sp(l).engagement; if(e&&typeof e==='object'){let t=e.tier; if(!t){const s=+e.score||0; t=s>=5?'high':s>=2?'medium':'standard';} if(t==='high')hi++; else if(t==='medium')med++; else std++; if(typeof e.score==='number'){scored++;scoreSum+=e.score;}}});
   const engTotal=hi+med+std;
@@ -1909,6 +1949,27 @@ function renderLearning(){
   let mob=0,desk=0;
   LEADS.forEach(l=>{const d=((sp(l).meta||{}).device)||''; if(d==='mobile')mob++; else if(d==='desktop')desk++;});
   const devTotal=mob+desk;
+  // ---- QC-intervention rate (TEMPORARY-QC-LAYER.md metric). The one number this layer optimizes:
+  // the share of QC'd builds that needed a human correction. Success = it trends to zero per
+  // category, which graduates that category to direct-to-customer (Phase 5). Not approval speed.
+  const QC_DEC=new Set(['APPROVED','rejected','revision','CHANGES REQUESTED']);
+  const byLead={};
+  (SIGNALS||[]).forEach(s=>{ if(!s||!s.lead_id||!QC_DEC.has(s.decision))return; (byLead[s.lead_id]||(byLead[s.lead_id]=[])).push(s); });
+  let qcLeads=0, qcInterv=0; const perInd={};
+  const needIntv=x=>x.decision==='revision'||x.decision==='rejected'||x.decision==='CHANGES REQUESTED'||(x.decision==='APPROVED'&&x.first_pass===false);
+  Object.values(byLead).forEach(sigs=>{
+    const ind=(sigs.find(x=>x.industry)||{}).industry||'unspecified';
+    const needed=sigs.some(needIntv);
+    qcLeads++; if(needed)qcInterv++;
+    const pi=perInd[ind]||(perInd[ind]={n:0,interv:0}); pi.n++; if(needed)pi.interv++;
+  });
+  const qcRate=qcLeads?Math.round(qcInterv/qcLeads*100):null;
+  // Recurring corrections (3+ of the same industry+area) are LS-RCA candidates: they stop being
+  // per-build fixes and become locked worker defaults / QA gates (validators/capability-learn.py).
+  const areaCount={};
+  (SIGNALS||[]).forEach(s=>{ if(!s||(s.decision!=='revision'&&s.decision!=='rejected'))return;
+    const area=s.reject_reason||s.target_area||'other', ind=s.industry||'all'; const k=ind+' · '+area; areaCount[k]=(areaCount[k]||0)+1; });
+  const recurring=Object.entries(areaCount).filter(([,n])=>n>=3).sort((a,b)=>b[1]-a[1]);
   const attr={};
   LEADS.forEach(l=>{const m=sp(l).meta||{}; const k=((m.campaign||l.source||'untagged')+'').trim()||'untagged'; attr[k]=(attr[k]||0)+1;});
   const attrRows=Object.entries(attr).sort((a,b)=>b[1]-a[1]).slice(0,8);
@@ -1925,6 +1986,7 @@ function renderLearning(){
     : `<div class="card"><div class="empty">Learning begins with your first Front Door lead. Every one will land here with where it came from, what device they used, and how much effort they invested. Nothing is fabricated. The numbers fill in as real owners arrive.</div></div>`;
   $('v-learning').innerHTML=`
     <div class="pulse" style="font-size:19px">Learning<span class="s">Nothing happens inside UNVEILED without making tomorrow better. Every lead arrives tagged with where it came from, what device, and how invested they are, so we learn from lead one.</span></div>
+    ${intelHTML}
     ${headline}
     ${attrRows.length?`<div class="sec"><h2>Where leads come from</h2><span class="c">${LEADS.length} total</span></div>
       <div class="card" style="padding:16px">${bar(attrRows)}</div>`:''}
@@ -1933,6 +1995,19 @@ function renderLearning(){
         <div class="meta" style="margin-top:10px">${withAssets} shared photos or a logo. ${withNotes} wrote notes. The more they invest before submitting, the more likely they convert, so high-intent leads should be served first.</div></div>`:''}
     ${devTotal?`<div class="sec"><h2>Device</h2></div>
       <div class="card" style="padding:16px">${bar([['Mobile',mob],['Desktop',desk]])}</div>`:''}
+    ${qcLeads?`<div class="sec"><h2>QC-intervention rate</h2><span class="c">${qcInterv}/${qcLeads} builds</span></div>
+      <div class="card" style="padding:16px">
+        <div class="statrow" style="margin-bottom:12px">
+          <div class="stat"><div class="sn">${qcRate}%</div><div class="sl">Needed human QC</div></div>
+          <div class="stat"><div class="sn">${qcLeads-qcInterv}</div><div class="sl">Passed QC clean</div></div>
+          <div class="stat"><div class="sn">${Object.keys(perInd).length}</div><div class="sl">Categories</div></div></div>
+        ${bar(Object.entries(perInd).map(([ind,v])=>[ind+' · '+v.interv+'/'+v.n, Math.round(v.interv/v.n*100)]).sort((a,b)=>b[1]-a[1]))}
+        <div class="meta" style="margin-top:10px">This is the number to drive to zero, not approval speed. When a category reaches zero on real volume, it graduates to direct-to-customer and internal QC disappears for it.</div></div>`:
+      ((SIGNALS||[]).length?'':`<div class="sec"><h2>QC-intervention rate</h2></div>
+      <div class="card"><div class="empty">The QC-intervention rate appears here once builds start passing through quality control. Every pass, revision, and reject is captured as training data. Nothing is fabricated: the rate fills in as real QC decisions accumulate.</div></div>`)}
+    ${recurring.length?`<div class="sec"><h2>Recurring corrections, becoming defaults</h2><span class="c">${recurring.length}</span></div>
+      <div class="card" style="padding:16px">${bar(recurring)}
+        <div class="meta" style="margin-top:10px">Seen 3+ times. Per LS-RCA these stop being per-build fixes and become locked worker defaults or QA gates, so the factory stops making them.</div></div>`:''}
     ${instr('Learning','violet','Self-Improving System','Attribution, device, and engagement are live now. As outcomes accumulate (which leads convert, which posts produce subscribers, which industries get easier), recurring signals become locked defaults. A pattern seen 3+ times becomes the default, so we solve it once.',
       [{label:'Source, campaign, device, engagement captured on every lead',done:true},{label:'Outcomes (Reveal opens, payments, retention) instrumented',done:false},{label:'Enough volume per channel to compare fairly',done:false},{label:'Auto-promote recurring wins into defaults',done:false}],
       'Tonight this answers which post, which device, and which intent level is arriving. As outcomes connect, it will answer which of them become happy subscribers.')}`;
@@ -2174,7 +2249,7 @@ function needRow(l){
         </div>
         <div class="acard-mt">${srcTag(l)}${esc(l.industry||'')} · ready ${ago(l.updated_at)}</div>
         <div class="acard-acts">
-          <button class="btn good" onclick="event.stopPropagation();decide('${l.id}','APPROVED',this)">Approve &amp; reveal</button>
+          <button class="btn good" onclick="event.stopPropagation();decide('${l.id}','APPROVED',this)">Pass QC &amp; reveal</button>
           <button class="btn" onclick="event.stopPropagation();requestRevisionFor('${l.id}')">Request revision</button>
           ${openBtn}
         </div>
@@ -2247,7 +2322,7 @@ function renderCustomer(id){
   // Approve moves it to Communication (sends the reveal); Revision loops it back to Production;
   // Reject build archives it with a reason (training data).
   if(sg.k==='approve'){ teamActs+=`
-    <button class="btn good" onclick="decide('${id}','APPROVED',this)">✓ Approve &amp; send to customer</button>
+    <button class="btn good" onclick="decide('${id}','APPROVED',this)">✓ Pass QC &amp; send to customer</button>
     <button class="btn" onclick="requestRevisionFor('${id}')">✎ Request revision</button>
     <button class="btn ghost" onclick="rejectLead('${id}')">✕ Reject build</button>`;
   }
@@ -2472,8 +2547,13 @@ function targetArea(kind,instruction){
   return 'other';
 }
 async function emitSignal(sig){
-  try{ await sb.from('learning_signals').insert(sig); }
-  catch(e){ console.error('learning signal failed:',e); }  // never block the action
+  try{
+    const {error}=await sb.from('learning_signals').insert(sig);
+    // reject_reason is a newer column; if it isn't provisioned yet, retry without it
+    // so we never drop a signal (capture must not regress before the migration runs).
+    if(error && 'reject_reason' in sig){ const {reject_reason,...rest}=sig; await sb.from('learning_signals').insert(rest); }
+    else if(error){ console.error('learning signal failed:',error); }
+  }catch(e){ console.error('learning signal failed:',e); }  // never block the action
 }
 async function createRevision(payload,label){
   const ins=await sb.from('work_queue').insert({type:'revision',priority:2,status:'pending',payload,idempotency_key:'rev:'+payload.lead_id+':'+Date.now()});
@@ -2694,7 +2774,7 @@ async function freezeLead(id){ var l=LEADS.find(function(x){return x.id===id;})|
       var up=await sb.from('leads').update({status:'LOST',updated_at:new Date().toISOString()}).eq('id',id).select('id');
       if(up.error||!up.data||!up.data.length){ toast('Could not reject: '+((up.error&&(up.error.message||up.error.code))||'no permission')); return; }
       try{ await sb.from('activity_log').insert({entity_type:'lead',entity_id:id,action:'lead_rejected',meta:{reason:reason}}); }catch(_e){}
-      emitSignal({lead_id:id,industry:l.industry||null,decision:'rejected',revision_kind:null,target_area:reason,instruction:null,first_pass:null});
+      emitSignal({lead_id:id,industry:l.industry||null,decision:'rejected',revision_kind:null,target_area:reason,reject_reason:reason,instruction:null,first_pass:null});
       toast('Rejected — reason logged as training data.'); await load(); route();
     }
   });
