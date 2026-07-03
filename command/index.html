@@ -456,6 +456,51 @@
   .cbadge.act{color:#10b981;background:rgba(16,185,129,.18)}
   .sb-group{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);padding:20px 11px 7px}
   .sb-group:first-child{padding-top:2px}
+  /* ===== HQ strip: Needs Decision + Factory Status (workspace queue) ===== */
+  #hq-strip{margin:0 0 18px;animation:fadeUp .3s ease both}
+  #hq-strip .hq-grid{display:grid;grid-template-columns:1.35fr .65fr;gap:11px;margin-top:8px}
+  @media(max-width:900px){#hq-strip .hq-grid{grid-template-columns:1fr}}
+  #hq-strip .hq-alertline{display:flex;align-items:center;gap:9px;background:#fdecee;border:1px solid #f6cdd2;color:#a8313d;border-radius:13px;padding:10px 14px;font-size:13px;font-weight:550;margin:8px 0 10px;line-height:1.45}
+  #hq-strip .hq-ff{display:none;margin-top:11px;background:var(--panel2);border:1px dashed var(--line);border-radius:var(--radius);padding:13px 15px}
+  #hq-strip.ff-open .hq-ff{display:block}
+  #hq-strip .hq-ff h3{margin-bottom:6px}
+  #hq-strip .hq-ffnote{font-size:11.5px;color:var(--faint);line-height:1.5;margin-bottom:4px}
+  #hq-strip .hq-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--sh);padding:14px 15px;min-width:0}
+  #hq-strip .hq-card.alert{border-color:rgba(220,59,75,.3)}
+  #hq-strip h3{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:8px;margin:0 0 9px}
+  #hq-strip .hq-count{margin-left:auto;font-size:10.5px;font-weight:800;min-width:18px;height:18px;padding:0 6px;border-radius:999px;background:var(--violet);color:#fff;display:inline-flex;align-items:center;justify-content:center}
+  #hq-strip .hq-count.zero{background:#efecf8;color:var(--faint)}
+  #hq-strip .hq-count.bad{background:var(--red)}
+  #hq-strip details.hq-row{border-bottom:1px solid #f1eff7;padding:8px 0}
+  #hq-strip details.hq-row:last-child{border-bottom:0;padding-bottom:2px}
+  #hq-strip .hq-row summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--txt);min-width:0}
+  #hq-strip .hq-row summary::-webkit-details-marker{display:none}
+  #hq-strip .hq-row summary .ht{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  #hq-strip .hq-row[open] summary .ht{white-space:normal}
+  #hq-strip .hq-row summary .hcv{color:var(--faint);font-size:11px;flex:none;transition:transform .15s}
+  #hq-strip .hq-row[open] summary .hcv{transform:rotate(90deg)}
+  #hq-strip .hq-block{font-size:12.5px;color:var(--muted);line-height:1.55;margin-top:7px}
+  #hq-strip .hq-block b{color:var(--txt);font-weight:650}
+  #hq-strip .hq-co{font-size:9px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:999px;flex:none}
+  #hq-strip .hq-co.unveiled{background:rgba(124,58,237,.12);color:var(--violet2)}
+  #hq-strip .hq-co.mona{background:rgba(47,127,214,.12);color:var(--blue)}
+  #hq-strip .hq-co.studio{background:rgba(15,157,99,.12);color:var(--green)}
+  #hq-strip .hq-co.cross{background:rgba(182,124,8,.12);color:var(--amber)}
+  #hq-strip .hq-loop{padding:8px 0;border-bottom:1px solid #f1eff7}
+  #hq-strip .hq-loop:last-child{border-bottom:0;padding-bottom:2px}
+  #hq-strip .hq-loop .lrow{display:flex;align-items:center;gap:8px;font-size:13px}
+  #hq-strip .hq-loop .ln{font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  #hq-strip .hq-loop .lt{font-size:11.5px;color:var(--faint);margin-left:auto;white-space:nowrap;flex:none}
+  #hq-strip .hq-loop .lt.stall{color:var(--red);font-weight:650}
+  #hq-strip .hq-chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px}
+  #hq-strip .hq-chip{font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px;background:#f0eef6;color:var(--muted)}
+  #hq-strip .hq-chip.bad{background:#fdeaec;color:#c5303f}
+  #hq-strip .hq-chip.run{background:#f1ebff;color:var(--violet2)}
+  #hq-strip .hq-empty{color:var(--faint);font-size:12.5px;padding:8px 1px 4px;line-height:1.55}
+  #hq-strip .hq-done{display:flex;align-items:center;gap:8px;font-size:13px;padding:8px 0;border-bottom:1px solid #f1eff7}
+  #hq-strip .hq-done:last-child{border-bottom:0;padding-bottom:2px}
+  #hq-strip .hq-done .dt2{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:550}
+  #hq-strip .hq-done .tm{font-size:11px;color:var(--faint);white-space:nowrap;flex:none}
 </style>
 </head>
 <body>
@@ -515,6 +560,17 @@
       <div class="mh-title" id="mtitle">Executive</div>
       <span class="tb-bell" id="bell" style="display:none;margin-left:auto" onclick="go('exec')">🔔<span class="bdot" id="bdot">0</span></span>
     </header>
+    <!-- HQ strip: what needs Maor across the whole workspace (cloud work-order queue).
+         CEO floor by default: decisions + outcomes + exceptions only. Loop telemetry lives behind the Factory floor toggle. -->
+    <section id="hq-strip" style="display:none">
+      <div class="sec" style="margin-top:0"><h2>Headquarters</h2><span class="c" id="hq-sub">what needs you across UNVEILED · MONA · Studio</span><span class="r" id="hq-ff-toggle">Factory floor ▸</span></div>
+      <div id="hq-alert"></div>
+      <div class="hq-grid">
+        <div class="hq-card" id="hq-decisions"></div>
+        <div class="hq-card" id="hq-done"></div>
+      </div>
+      <div class="hq-ff" id="hq-factory"></div>
+    </section>
     <div class="view" id="v-exec"></div>
     <div class="view" id="v-leads"></div>
     <div class="view" id="v-allprojects"></div>
@@ -2733,6 +2789,85 @@ async function freezeLead(id){ var l=LEADS.find(function(x){return x.id===id;})|
   document.addEventListener('keydown',function(e){ if(e.key==='Enter'&&!e.shiftKey&&document.activeElement&&document.activeElement.id==='cooin'){ e.preventDefault(); send(); } });
   document.addEventListener('input',function(e){ if(e.target&&e.target.id==='cooin'){ e.target.style.height='auto'; e.target.style.height=Math.min(120,e.target.scrollHeight)+'px'; } });
 })();
+
+// ===== HQ strip: Needs Decision + Factory Status (workspace_queue / workspace_heartbeats) =====
+// Fully self-contained: own fetch, own try/catch, own refresh loop. Never touches other views.
+function initHqStrip(){
+  try{
+    var el=document.getElementById('hq-strip'); if(!el) return;
+    var esc2=function(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); };
+    var ago2=function(d){ if(!d) return 'no signal yet'; var s=(Date.now()-new Date(d).getTime())/1000; if(s<0)s=0; if(s<60)return 'just now'; if(s<3600)return Math.floor(s/60)+'m ago'; if(s<86400)return Math.floor(s/3600)+'h ago'; return Math.floor(s/86400)+'d ago'; };
+    var tm2=function(d){ try{ return new Date(d).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'}); }catch(e){ return ''; } };
+    function vis(){ var h=location.hash.replace(/^#/,''); el.style.display=h.indexOf('c/')===0?'none':'block'; }
+    async function hqq(path){ try{ var s=(await sb.auth.getSession()).data.session; if(!s) return null;
+      var r=await fetch(CFG.url+'/rest/v1/'+path,{headers:{apikey:CFG.key,Authorization:'Bearer '+s.access_token}}); if(!r.ok) return null; return await r.json(); }catch(e){ return null; } }
+    var WAIT_LABEL={waiting_approval:'Your approval',waiting_credentials:'Credentials needed',waiting_external:'External dependency'};
+    async function refresh(){
+      try{
+        var midnight=new Date(); midnight.setHours(0,0,0,0);
+        var res=await Promise.all([
+          hqq('workspace_queue?select=id,title,company,status,blocker,next_action,resume_point,updated_at&status=like.waiting_*&order=updated_at.desc&limit=30'),
+          hqq('workspace_heartbeats?select=loop_name,last_beat,counts&order=loop_name.asc&limit=20'),
+          hqq('workspace_queue?select=id,title,company,updated_at&status=eq.completed&updated_at=gte.'+encodeURIComponent(midnight.toISOString())+'&order=updated_at.desc&limit=200')
+        ]);
+        var dec=res[0]||[], beats=res[1]||[], done=res[2]||[];
+        // --- Needs Decision ---
+        var h='<h3>Needs decision<span class="hq-count '+(dec.length?'bad':'zero')+'">'+dec.length+'</span></h3>';
+        if(!dec.length){ h+='<div class="hq-empty">No decisions waiting. Every work order in the queue is either running or scheduled. Nothing is blocked on you right now.</div>'; }
+        else dec.forEach(function(o){
+          var co=String(o.company||'cross').toLowerCase(); if(['unveiled','mona','studio'].indexOf(co)<0) co='cross';
+          var kind=WAIT_LABEL[o.status]||'Waiting';
+          var next=o.next_action||o.resume_point||'';
+          h+='<details class="hq-row"><summary title="'+esc2(o.blocker||kind)+'">'
+            +'<span class="hq-co '+co+'">'+esc2(co)+'</span><span class="ht">'+esc2(o.title||o.id)+'</span><span class="hcv">›</span></summary>'
+            +'<div class="hq-block"><b>'+esc2(kind)+':</b> '+esc2(o.blocker||'No blocker text recorded.')
+            +(next?'<br><b>Once unblocked:</b> '+esc2(next):'')
+            +'<br><span style="color:var(--faint)">Filed '+esc2(ago2(o.updated_at))+' · unblocking it lets the factory continue on its own.</span></div></details>';
+        });
+        var decEl=document.getElementById('hq-decisions'); if(decEl){ decEl.innerHTML=h; decEl.classList.toggle('alert',dec.length>0); }
+        // --- Exceptions (CEO floor): stalled loops surface as ONE business blocker line; healthy execution stays invisible ---
+        var stalledLoops=[], loopRows='';
+        beats.forEach(function(b){
+          var lim=/railway/i.test(b.loop_name||'')?5:90; // minutes: railway-worker beats every minute, mac loops hourly
+          var ageMin=b.last_beat?(Date.now()-new Date(b.last_beat).getTime())/60000:1e9;
+          var ok=ageMin<lim; if(!ok) stalledLoops.push(b);
+          var chips=''; var c=b.counts||{};
+          ['runnable','running','retry','failed'].forEach(function(k){ var n=Number(c[k]||0); if(n>0) chips+='<span class="hq-chip'+(k==='failed'?' bad':(k==='running'?' run':''))+'">'+n+' '+k+'</span>'; });
+          loopRows+='<div class="hq-loop"><div class="lrow"><span class="dot '+(ok?'g':'r')+'"></span><span class="ln">'+esc2(b.loop_name)+'</span>'
+            +'<span class="lt'+(ok?'':' stall')+'">'+(ok?esc2(ago2(b.last_beat)):'stalled · '+esc2(ago2(b.last_beat)))+'</span></div>'
+            +(chips?'<div class="hq-chips">'+chips+'</div>':'')+'</div>';
+        });
+        var alertEl=document.getElementById('hq-alert');
+        if(alertEl){
+          if(stalledLoops.length){ var s0=stalledLoops[0];
+            alertEl.innerHTML='<div class="hq-alertline">⚠️ '+stalledLoops.length+' blocker'+(stalledLoops.length>1?'s':'')+': the execution factory has stalled ('+esc2(s0.loop_name)+', last pulse '+esc2(ago2(s0.last_beat))+'). Work is not moving until it restarts. Open Factory floor for detail.</div>';
+          } else alertEl.innerHTML='';
+        }
+        // --- Factory floor (hidden by default): per-loop telemetry for when Moe chooses to look ---
+        var facEl=document.getElementById('hq-factory');
+        if(facEl){
+          var fh='<h3>Factory floor<span class="hq-count '+(stalledLoops.length?'bad':'zero')+'">'+(beats.length?(stalledLoops.length?stalledLoops.length+' stalled':'all live'):'quiet')+'</span></h3>'
+            +'<div class="hq-ffnote">Every execution loop and its last pulse. Green means it beat within its window (5m for railway-worker, 90m for Mac loops).</div>';
+          facEl.innerHTML=fh+(loopRows||'<div class="hq-empty">No factory loops reporting yet. As the cloud cutover completes, each execution loop (worker, watchdog, queue) shows its pulse here.</div>');
+        }
+        // --- Done today (outcome summary, not a feed) ---
+        var dh='<h3>Done today<span class="hq-count '+(done.length?'':'zero')+'">'+done.length+'</span></h3>';
+        if(!done.length){ dh+='<div class="hq-empty">Nothing completed yet today. Finished work orders land here as the factory closes them out.</div>'; }
+        else{ dh+='<div class="hq-empty" style="padding:2px 1px 6px;color:var(--muted)">'+done.length+' order'+(done.length>1?'s':'')+' completed today, no action needed.</div>';
+          done.slice(0,3).forEach(function(o){ dh+='<div class="hq-done"><span class="dot g"></span><span class="dt2" title="'+esc2(o.title||o.id)+'">'+esc2(o.title||o.id)+'</span><span class="tm">'+esc2(tm2(o.updated_at))+'</span></div>'; }); }
+        var doneEl=document.getElementById('hq-done'); if(doneEl) doneEl.innerHTML=dh;
+        vis();
+      }catch(e){ console.error('hq-strip refresh failed:',e); }
+    }
+    window.addEventListener('hashchange',vis);
+    var ff=document.getElementById('hq-ff-toggle');
+    if(ff) ff.onclick=function(){ var open=el.classList.toggle('ff-open'); ff.textContent=open?'Factory floor ▾':'Factory floor ▸'; };
+    sb.auth.onAuthStateChange(function(_e,s){ if(s) refresh(); });
+    refresh();
+    if(!window._hq_iv) window._hq_iv=setInterval(refresh,60000);
+  }catch(e){ console.error('hq-strip init failed:',e); }
+}
+initHqStrip();
 
 sb.auth.onAuthStateChange((_e,s)=>{if(s)boot();});
 boot();
