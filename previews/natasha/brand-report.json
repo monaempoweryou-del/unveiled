@@ -1,0 +1,60 @@
+{
+  "slug": "natasha",
+  "business": "Natasha",
+  "brand_confidence": 1.0,
+  "reached_existing_website": true,
+  "existing_website": "https://evansmechanical.com/?fbclid=IwVERDUAS42HxwZG9mA2ZkaWQWUKAbVNDZP4vg1XhE9oFMGbbivvel1mV4dG4DYWVtAjEwAHNydGMGYXBwX2lkCjY2Mjg1NjgzNzkAAR5SEp3pu1vLyfUrZsrQxh7E2u1_nVr1jXtjeHmc_vjxFcDUOfAL50LpJra9dw_aem_kWGZavyXErRMvpihGCKtkw",
+  "discovered": {
+    "palette": [
+      "#003388",
+      "#1459ba",
+      "#327ee9",
+      "#3e4147",
+      "#626670",
+      "#7ab317"
+    ],
+    "fonts": [
+      "Roboto"
+    ],
+    "logo_found": true,
+    "voice_samples": [
+      "AC Service, Heating Service, Heating Repair &amp; HVAC Installation | Eureka, CA, Myrtletown, CA, Bayview, CA, Cutten, CA, Arcata, CA &amp; ",
+      "Looking for a licensed AC Service and Heating Repair company in Willow Creek, CA or Eureka, CA? Evans Mechanical offers Heating Service and more!",
+      "Evans Mechanical is Here for Your Home",
+      "HVAC Installation in Eureka, CA | Heating Service Myrtletown, CA | Heating Repair Bayview, CA"
+    ],
+    "social": {
+      "facebook": "https://www.facebook.com/EvansMechanical",
+      "linkedin": "https://www.linkedin.com/company/evans-mechanical"
+    }
+  },
+  "assets": {
+    "logo": "https://eosvftmiwndmctrqprtz.supabase.co/storage/v1/object/public/lead-assets/4142229f-957d-47a2-af2f-9fe158babf92/logo-1783363964301-IMG_9112.png",
+    "hero": "https://evansmechanical.comhttps://evansmechanical.com/media/evans-mechanical-logo.png",
+    "gallery_count": 8,
+    "real_count": 10,
+    "stock_count": 0,
+    "stock_slots": [],
+    "real_assets_available": 16,
+    "meets_minimum_5": true
+  },
+  "preserved": [
+    "Brand color palette (#003388, #1459ba, #327ee9, #3e4147)",
+    "Typography direction (Roboto)",
+    "Existing logo (presented cleanly, not replaced)",
+    "10 real business image(s) the owner will recognize"
+  ],
+  "improved": [
+    "Layout, hierarchy, mobile polish, metadata and CTA raised to the UNVEILED bar."
+  ],
+  "notes": [
+    "Customer-uploaded logo used (overrides discovery)."
+  ],
+  "decision_order": [
+    "learn business",
+    "learn brand",
+    "decide preserve",
+    "improve weak",
+    "build still-feels-like-them"
+  ]
+}
