@@ -1718,7 +1718,7 @@ async function recordPaymentManually(id){   // explicit OVERRIDE — normal path
   var nm=(LEADS.find(function(x){return x.id===id;})||{}).business_name||'Customer';
   if(!confirm('OVERRIDE: manually record that '+nm+' has paid?\n\nNormally the payment step confirms itself from a verified provider event. Only use this if payment was taken outside the system and has truly cleared.')) return;
   try{ await sb.from('activity_log').insert({entity_type:'lead',entity_id:id,action:'payment_recorded_manual'}); }catch(e){}
-  try{ if(typeof emitSignal==='function') emitSignal({lead_id:id,decision:'paid',target_area:'payment_manual'}); }catch(e){}
+  try{ if(typeof emitSignal==='function') await emitSignal({lead_id:id,decision:'paid',target_area:'payment_manual'}); }catch(e){}
   await persistOnb(id,{paid:true,payment_link_sent:true},'💳 Payment recorded for '+nm+' (manual override) ✓  Next step unlocked.');
 }
 async function goLive(id,btn){
@@ -1737,7 +1737,7 @@ async function startOnboarding(id,btn){
   if(btn){btn.disabled=true;btn.textContent='…';}
   var u=await sb.from('leads').update({status:'PENDING PAYMENT',updated_at:new Date().toISOString()}).eq('id',id).select('id,status');
   if(u.error||!u.data||!u.data.length){ toast('Could not start onboarding: '+((u.error&&(u.error.message||u.error.code))||'no rows changed')); if(btn){btn.disabled=false;btn.textContent='✓ They said yes';} return; }
-  try{ if(typeof emitSignal==='function') emitSignal({lead_id:id,decision:'committed',target_area:'onboarding'}); }catch(e){}
+  try{ if(typeof emitSignal==='function') await emitSignal({lead_id:id,decision:'committed',target_area:'onboarding'}); }catch(e){}
   toast('🎉 '+nm+' started onboarding. Next: send the payment link.');
   await load(); route();
 }
@@ -1752,7 +1752,7 @@ async function activateCustomer(id,btn,auto){
   if(btn){btn.disabled=true;btn.textContent='…';}
   var u=await sb.from('leads').update({status:'ACTIVE CUSTOMER',converted_at:new Date().toISOString(),updated_at:new Date().toISOString()}).eq('id',id).select('id,status');
   if(u.error||!u.data||!u.data.length){ toast('Could not graduate: '+((u.error&&(u.error.message||u.error.code))||'no rows changed')); if(btn){btn.disabled=false;btn.textContent='Activate customer 🎉';} return; }
-  try{ if(typeof emitSignal==='function') emitSignal({lead_id:id,decision:'activated',target_area:'conversion'}); }catch(e){}
+  try{ if(typeof emitSignal==='function') await emitSignal({lead_id:id,decision:'activated',target_area:'conversion'}); }catch(e){}
   toast('🎉 '+nm+' completed onboarding and is now an Active Customer. Welcome to the portfolio.');
   await load(); route();
 }
@@ -2590,7 +2590,7 @@ async function createRevision(payload,label){
   if(ins.error){ console.error('revision insert failed:',ins.error); toast('That didn’t go through. Nothing was sent. Give it another try in a moment.'); return false; }
   try{ await sb.from('activity_log').insert({entity_type:'lead',entity_id:payload.lead_id,action:'revision_requested',meta:{kind:payload.kind,instruction:payload.instruction||''}}); }catch(e){}
   const lead=LEADS.find(x=>x.id===payload.lead_id)||{};
-  emitSignal({lead_id:payload.lead_id,industry:lead.industry||null,decision:'revision',
+  await emitSignal({lead_id:payload.lead_id,industry:lead.industry||null,decision:'revision',
     revision_kind:payload.kind,target_area:targetArea(payload.kind,payload.instruction),
     instruction:payload.instruction||'',first_pass:false});
   await sb.from('leads').update({status:'CHANGES REQUESTED',updated_at:new Date().toISOString()}).eq('id',payload.lead_id);
@@ -2674,7 +2674,7 @@ async function decide(id,status,btn){
       firstPass=(count||0)===0;
     }catch(e){ firstPass=null; }
   }
-  emitSignal({lead_id:id,industry:lead.industry||null,decision:status,
+  await emitSignal({lead_id:id,industry:lead.industry||null,decision:status,
     revision_kind:null,target_area:null,instruction:null,first_pass:firstPass});
   await load(); route();
   if(status==='APPROVED'){
@@ -2682,11 +2682,10 @@ async function decide(id,status,btn){
     // correct preview link. Surface the live link, then verify the reveal sent.
     const link=row.preview_url||'';
     toast('Approved ✓  Reveal on its way to '+nm+(link?'  ·  '+link:''));
-    setTimeout(async()=>{ try{
-      const {data:chk}=await sb.from('leads').select('reveal_sent_at').eq('id',id);
-      if(chk&&chk[0]&&!chk[0].reveal_sent_at)
-        toast('Approved, but the reveal email has not sent yet. It is queued; if it stays unsent, the email worker needs attention.');
-    }catch(e){} }, 4500);
+    // No premature "email hasn't sent yet" check here. A 4.5s timer raced the
+    // email worker and fired a FALSE-NEGATIVE alarm on a reveal that was merely
+    // still queued — ending the action in doubt (violates the UX law: never leave
+    // the user uncertain). The delivery log is the source of truth for landing.
   } else {
     toast({'CHANGES REQUESTED':'Sent back for changes. '+nm+' left your approval queue.',LOST:nm+' passed, moved to Archived.'}[status]||'Saved.');
   }
