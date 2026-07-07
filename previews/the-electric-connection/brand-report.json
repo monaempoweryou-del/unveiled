@@ -1,0 +1,61 @@
+{
+  "slug": "the-electric-connection",
+  "business": "The Electric Connection",
+  "brand_confidence": 0.85,
+  "reached_existing_website": true,
+  "existing_website": "https://www.theelectricconnection.com/",
+  "discovered": {
+    "palette": [
+      "#003388",
+      "#32373c",
+      "#1890d7",
+      "#3c6df0",
+      "#d93025",
+      "#abb8c3"
+    ],
+    "fonts": [],
+    "logo_found": true,
+    "voice_samples": [
+      "Los Angeles Electrician | Licensed Insured Local Electrician",
+      "Local electricians providing best services near you &amp; around Los Angeles for 40+ years. Free over-the-phone estimates: 800-990-9490",
+      "Your Trusted Los Angeles Electrician Since 1979",
+      "Top Quality Electrical Services by Highly Rated Local Electrician",
+      "Photos of Our Recent Jobs",
+      "Why Choose The Electric Connection?"
+    ],
+    "social": {
+      "facebook": "https://www.facebook.com/electricconnectionlosangeles/",
+      "instagram": "https://www.instagram.com/theelectricconnection/",
+      "linkedin": "https://www.linkedin.com/company/the-electric-connection/",
+      "yelp": "https://www.yelp.com/biz/the-electric-connection-los-angeles-2",
+      "google": "https://g.page/the-electric-connection?share"
+    }
+  },
+  "assets": {
+    "logo": "https://www.theelectricconnection.com/wp-content/uploads/2021/12/ec_logo.png",
+    "hero": "https://www.theelectricconnection.com/wp-content/uploads/2022/02/website-social.jpg",
+    "gallery_count": 8,
+    "real_count": 10,
+    "stock_count": 0,
+    "stock_slots": [],
+    "real_assets_available": 25,
+    "meets_minimum_5": true
+  },
+  "preserved": [
+    "Brand color palette (#003388, #32373c, #1890d7, #3c6df0)",
+    "Existing logo (presented cleanly, not replaced)",
+    "10 real business image(s) the owner will recognize"
+  ],
+  "improved": [
+    "No distinct typography found. Chose a clean, human typeface pairing.",
+    "Layout, hierarchy, mobile polish, metadata and CTA raised to the UNVEILED bar."
+  ],
+  "notes": [],
+  "decision_order": [
+    "learn business",
+    "learn brand",
+    "decide preserve",
+    "improve weak",
+    "build still-feels-like-them"
+  ]
+}
