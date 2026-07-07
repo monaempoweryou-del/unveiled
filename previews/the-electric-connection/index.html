@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Electric Connection | Licensed Los Angeles Electrician Since 1979</title>
+  <meta name="description" content="Los Angeles's most trusted licensed and insured electrician since 1979. The Electric Connection offers top-quality residential and commercial electrical services across the greater LA area. Call 800-990-9490 for a free estimate.">
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="https://unveiled.pro/previews/the-electric-connection/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="The Electric Connection | Licensed Los Angeles Electrician Since 1979">
+  <meta property="og:description" content="Top-rated, licensed, and insured electricians serving greater Los Angeles for 40+ years. Free phone estimates. Call 800-990-9490.">
+  <meta property="og:image" content="https://www.theelectricconnection.com/wp-content/uploads/2022/02/website-social.jpg">
+  <meta property="og:url" content="https://unveiled.pro/previews/the-electric-connection/">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The Electric Connection | Licensed Los Angeles Electrician Since 1979">
+  <meta name="twitter:description" content="Top-rated, licensed, and insured electricians serving greater Los Angeles for 40+ years. Free phone estimates. Call 800-990-9490.">
+  <meta name="twitter:image" content="https://www.theelectricconnection.com/wp-content/uploads/2022/02/website-social.jpg">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "The Electric Connection",
+    "url": "https://www.theelectricconnection.com/",
+    "logo": "https://www.theelectricconnection.com/wp-content/uploads/2021/12/ec_logo.png",
+    "image": "https://www.theelectricconnection.com/wp-content/uploads/2022/02/website-social.jpg",
+    "description": "Licensed and insured Los Angeles electricians serving residential and commercial clients since 1979.",
+    "telephone": "800-990-9490",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Los Angeles",
+      "addressRegion": "CA",
+      "addressCountry": "US"
+    },
+    "areaServed": "Greater Los Angeles",
+    "foundingDate": "1979",
+    "sameAs": [
+      "https://www.facebook.com/electricconnectionlosangeles/",
+      "https://www.instagram.com/theelectricconnection/",
+      "https://www.linkedin.com/company/the-electric-connection/",
+      "https://www.yelp.com/biz/the-electric-connection-los-angeles-2"
+    ]
+  }
+  </script>
+
+  <style>
+    /* === RESET & BASE === */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #003388;
+      --dark: #32373c;
+      --sky: #1890d7;
+      --blue: #3c6df0;
+      --red: #d93025;
+      --muted: #abb8c3;
+      --white: #ffffff;
+      --off-white: #f4f7fb;
+      --text: #1a1f24;
+      --radius: 8px;
+      --shadow: 0 4px 24px rgba(0,51,136,0.10);
+      --transition: 0.22s ease;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background: var(--white);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; height: auto; }
+    a { color: inherit; text-decoration: none; }
+    h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; }
+
+    /* === UTILITIES === */
+    .container { width: 100%; max-width: 1140px; margin: 0 auto; padding: 0 20px; }
+    .btn {
+      display: inline-block;
+      padding: 15px 32px;
+      border-radius: var(--radius);
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      transition: filter var(--transition), transform var(--transition);
+      border: none;
+    }
+    .btn:hover { filter: brightness(1.12); transform: translateY(-1px); }
+    .btn-primary { background: var(--red); color: var(--white); }
+    .btn-outline { background: transparent; color: var(--white); border: 2px solid var(--white); }
+    .btn-outline:hover { background: var(--white); color: var(--navy); }
+    .section-label {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sky);
+      margin-bottom: 10px;
+    }
+    .section-title { font-size: clamp(1.6rem, 4vw, 2.4rem); color: var(--navy); margin-bottom: 14px; }
+    .section-sub { font-size: 1.05rem; color: #4a5568; max-width: 600px; }
+    .text-center { text-align: center; }
+    .text-center .section-sub { margin: 0 auto; }
+
+    /* === HEADER === */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--white);
+      border-bottom: 1px solid rgba(0,51,136,0.10);
+      box-shadow: 0 2px 12px rgba(0,51,136,0.07);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      max-width: 1140px;
+      margin: 0 auto;
+      gap: 16px;
+    }
+    .header-logo img { height: 52px; width: auto; }
+    .header-cta { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .header-phone {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .header-phone span { font-size: 1.25rem; }
+    .header-cta .btn { padding: 11px 22px; font-size: 0.9rem; }
+    @media (max-width: 540px) {
+      .header-phone { font-size: 0.95rem; }
+      .header-cta .btn { display: none; }
+    }
+
+    /* === HERO === */
+    .hero {
+      position: relative;
+      min-height: 88vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      background: var(--navy);
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://www.theelectricconnection.com/wp-content/uploads/2022/02/website-social.jpg');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.30;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0,51,136,0.92) 0%, rgba(28,100,200,0.70) 60%, rgba(0,30,80,0.85) 100%);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 80px 20px 80px;
+      max-width: 1140px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 50px;
+      padding: 6px 16px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .hero-badge::before { content: '⚡'; font-size: 1rem; }
+    .hero h1 {
+      font-size: clamp(2rem, 6vw, 3.8rem);
+      color: var(--white);
+      margin-bottom: 20px;
+      max-width: 760px;
+    }
+    .hero h1 em { font-style: normal; color: #7ab8f5; }
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: rgba(255,255,255,0.88);
+      max-width: 580px;
+      margin-bottom: 36px;
+    }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+    .hero-trust {
+      display: flex;
+      gap: 28px;
+      flex-wrap: wrap;
+      margin-top: 52px;
+      border-top: 1px solid rgba(255,255,255,0.18);
+      padding-top: 32px;
+    }
+    .hero-trust-item { color: rgba(255,255,255,0.90); font-size: 0.9rem; display: flex; align-items: center; gap: 8px; }
+    .hero-trust-item strong { color: var(--white); font-size: 1.1rem; }
+    .trust-icon { font-size: 1.3rem; }
+
+    /* === SERVICES === */
+    .services { padding: 90px 0; background: var(--off-white); }
+    .services-header { margin-bottom: 52px; }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .service-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 32px 28px;
+      border: 1px solid rgba(0,51,136,0.08);
+      box-shadow: var(--shadow);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .service-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(0,51,136,0.14); }
+    .service-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--navy), var(--sky));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 18px;
+    }
+    .service-card h3 { font-size: 1.1rem; color: var(--navy); margin-bottom: 10px; }
+    .service-card p { font-size: 0.95rem; color: #5a6472; }
+
+    /* === WHY US === */
+    .why-us { padding: 90px 0; background: var(--white); }
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    @media (max-width: 768px) { .why-grid { grid-template-columns: 1fr; gap: 40px; } }
+    .why-image-wrap { position: relative; border-radius: 16px; overflow: hidden; box-shadow: 0 16px 48px rgba(0,51,136,0.16); }
+    .why-image-wrap img { width: 100%; height: 420px; object-fit: cover; }
+    .why-badge {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      background: var(--navy);
+      color: var(--white);
+      border-radius: 10px;
+      padding: 14px 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    }
+    .why-badge strong { display: block; font-size: 1.5rem; color: #7ab8f5; }
+    .why-points { list-style: none; margin-top: 28px; display: flex; flex-direction: column; gap: 18px; }
+    .why-points li {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      font-size: 0.97rem;
+      color: #3a4252;
+    }
+    .why-check {
+      flex-shrink: 0;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--navy), var(--sky));
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 900;
+      margin-top: 2px;
+    }
+    .why-points li strong { color: var(--navy); }
+
+    /* === PROOF / GALLERY === */
+    .proof { padding: 90px 0; background: var(--off-white); }
+    .proof-header { margin-bottom: 48px; }
+    .proof-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 700px) { .proof-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 420px) { .proof-grid { grid-template-columns: 1fr; } }
+    .proof-item {
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--white);
+      box-shadow: var(--shadow);
+      transition: transform var(--transition);
+    }
+    .proof-item:hover { transform: scale(1.02); }
+    .proof-item img { width: 100%; height: 200px; object-fit: cover; }
+    .reviews-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+    @media (max-width: 500px) { .reviews-row { grid-template-columns: 1fr; } }
+    .reviews-row .proof-item img { height: 160px; }
+    .ratings-strip {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 40px;
+      padding: 28px 24px;
+      background: var(--white);
+      border-radius: 12px;
+      border: 1px solid rgba(0,51,136,0.08);
+      box-shadow: var(--shadow);
+    }
+    .rating-item { text-align: center; }
+    .rating-item .stars { font-size: 1.3rem; color: #f5a623; margin-bottom: 4px; }
+    .rating-item .platform { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+    .rating-item .score { font-size: 1.5rem; font-weight: 800; color: var(--navy); }
+
+    /* === CONTACT / CTA === */
+    .contact { padding: 90px 0; background: var(--navy); }
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+    @media (max-width: 768px) { .contact-inner { grid-template-columns: 1fr; gap: 40px; } }
+    .contact-copy .section-label { color: #7ab8f5; }
+    .contact-copy .section-title { color: var(--white); }
+    .contact-copy .section-sub { color: rgba(255,255,255,0.80); }
+    .contact-list { list-style: none; margin-top: 32px; display: flex; flex-direction: column; gap: 20px; }
+    .contact-list li { display: flex; align-items: center; gap: 14px; color: rgba(255,255,255,0.90); font-size: 0.97rem; }
+    .contact-list .ci {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .contact-list a { color: #7ab8f5; font-weight: 600; }
+    .contact-list a:hover { color: var(--white); }
+    .contact-form {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 36px 32px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+    .contact-form h3 { font-size: 1.3rem; color: var(--navy); margin-bottom: 6px; }
+    .contact-form p { font-size: 0.9rem; color: #5a6472; margin-bottom: 24px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 0.82rem; font-weight: 700; color: var(--dark); margin-bottom: 5px; letter-spacing: 0.04em; text-transform: uppercase; }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid #d0d8e4;
+      border-radius: var(--radius);
+      font-size: 0.97rem;
+      font-family: inherit;
+      color: var(--text);
+      background: #f9fafc;
+      transition: border-color var(--transition), box-shadow var(--transition);
+      outline: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--sky);
+      box-shadow: 0 0 0 3px rgba(24,144,215,0.15);
+      background: var(--white);
+    }
+    .form-group textarea { min-height: 100px; resize: vertical; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 440px) { .form-row { grid-template-columns: 1fr; } }
+    .form-submit { margin-top: 6px; }
+    .form-submit .btn { width: 100%; text-align: center; padding: 15px; font-size: 1.05rem; }
+
+    /* === FOOTER === */
+    footer { background: #1a1f24; color: rgba(255,255,255,0.70); }
+    .footer-main {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 48px;
+      padding: 60px 20px 40px;
+      max-width: 1140px;
+      margin: 0 auto;
+    }
+    @media (max-width: 700px) { .footer-main { grid-template-columns: 1fr; gap: 32px; } }
+    .footer-brand img { height: 46px; width: auto; margin-bottom: 14px; filter: brightness(0) invert(1); opacity: 0.9; }
+    .footer-brand p { font-size: 0.9rem; line-height: 1.7; margin-bottom: 20px; }
+    .social-links { display: flex; gap: 10px; flex-wrap: wrap; }
+    .social-links a {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.10);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      transition: background var(--transition);
+    }
+    .social-links a:hover { background: var(--sky); }
+    .footer-col h4 { color: var(--white); font-size: 0.88rem; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 16px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul li { font-size: 0.9rem; }
+    .footer-col ul li a { color: rgba(255,255,255,0.65); transition: color var(--transition); }
+    .footer-col ul li a:hover { color: var(--white); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 20px;
+      text-align: center;
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.40);
+      max-width: 1140px;
+      margin: 0 auto;
+    }
+
+    /* === FLOATING PHONE === */
+    .floating-phone {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 200;
+      background: var(--red);
+      color: var(--white);
+      padding: 14px 28px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1rem;
+      box-shadow: 0 8px 28px rgba(217,48,37,0.45);
+      white-space: nowrap;
+    }
+    @media (max-width: 640px) { .floating-phone { display: flex; align-items: center; gap: 8px; } }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <a href="https://www.theelectricconnection.com/" class="header-logo">
+      <img src="https://www.theelectricconnection.com/wp-content/uploads/2021/12/ec_logo.png" alt="The Electric Connection logo">
+    </a>
+    <div class="header-cta">
+      <a href="tel:8009909490" class="header-phone">
+        <span>📞</span> 800-990-9490
+      </a>
+      <a href="#contact" class="btn btn-primary">Free Estimate</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg" role="img" aria-label="Licensed electrician at work in Los Angeles"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Serving Los Angeles Since 1979</div>
+    <h1>Your Trusted Los Angeles<br><em>Electrician</em> for Over 40 Years</h1>
+    <p class="hero-sub">Licensed, insured, and highly rated local electricians ready to handle any residential or commercial electrical job right the first time. Free over-the-phone estimates, no runaround.</p>
+    <div class="hero-actions">
+      <a href="tel:8009909490" class="btn btn-primary">📞 Call 800-990-9490</a>
+      <a href="#contact" class="btn btn-outline">Request an Estimate</a>
+    </div>
+    <div class="hero-trust">
+      <div class="hero-trust-item"><span class="trust-icon">⚡</span><div><strong>40+ Years</strong><br>Serving LA</div></div>
+      <div class="hero-trust-item"><span class="trust-icon">🛡️</span><div><strong>Licensed</strong><br>and Insured</div></div>
+      <div class="hero-trust-item"><span class="trust-icon">⭐</span><div><strong>Top Rated</strong><br>Yelp and Google</div></div>
+      <div class="hero-trust-item"><span class="trust-icon">📞</span><div><strong>Free Estimates</strong><br>Over the Phone</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="container">
+    <div class="services-header text-center">
+      <span class="section-label">What We Do</span>
+      <h2 class="section-title">Full-Spectrum Electrical Services</h2>
+      <p class="section-sub text-center">From a single outlet to a full panel upgrade, our certified electricians handle every job with precision and care across all of Los Angeles County.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">🏠</div>
+        <h3>Residential Electrical</h3>
+        <p>Outlets, switches, ceiling fans, recessed lighting, home rewiring, and everything in between. We treat your home like our own.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🏢</div>
+        <h3>Commercial Electrical</h3>
+        <p>Reliable electrical work for offices, retail spaces, and commercial properties throughout the greater Los Angeles area.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🔌</div>
+        <h3>Panel Upgrades and Replacement</h3>
+        <p>Outdated breaker panels are a safety risk. We upgrade your electrical panel to handle modern demands safely and to code.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">💡</div>
+        <h3>Lighting Installation</h3>
+        <p>Interior and exterior lighting design and installation, including LED retrofits, recessed lighting, and landscape lighting.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🚗</div>
+        <h3>EV Charger Installation</h3>
+        <p>Certified EV charging station installation for your home or business. Get the right charger spec'd and installed safely.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">⚠️</div>
+        <h3>Safety Inspections and Troubleshooting</h3>
+        <p>Tripping breakers, flickering lights, or something just feels off? Our electricians diagnose and resolve electrical issues fast.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="why-us" id="why-us">
+  <div class="container">
+    <div class="why-grid">
+      <div class="why-image-wrap">
+        <img src="https://www.theelectricconnection.com/wp-content/uploads/2023/06/omar-bg-2-update.jpg" alt="The Electric Connection licensed electrician on the job in Los Angeles">
+        <div class="why-badge">
+          <strong>1979</strong>
+          Proudly serving LA
+        </div>
+      </div>
+      <div class="why-copy">
+        <span class="section-label">Why Choose Us</span>
+        <h2 class="section-title">Los Angeles's Most Reliable Electrical Team</h2>
+        <p class="section-sub">We have been doing this since 1979, and our reputation is the most important thing we own. Here is what that means for you.</p>
+        <ul class="why-points">
+          <li>
+            <span class="why-check">✓</span>
+            <div><strong>Fully Licensed and Insured</strong> so every job is protected and done to California code, no shortcuts.</div>
+          </li>
+          <li>
+            <span class="why-check">✓</span>
+            <div><strong>Free Over-the-Phone Estimates</strong> so you know what to expect before we arrive, no surprises on the invoice.</div>
+          </li>
+          <li>
+            <span class="why-check">✓</span>
+            <div><strong>Local Electricians Who Know LA</strong>, from the Valley to the Westside, we understand local codes and neighborhoods.</div>
+          </li>
+          <li>
+            <span class="why-check">✓</span>
+            <div><strong>Top Ratings on Yelp and Google</strong> earned job by job from real customers across Los Angeles.</div>
+          </li>
+          <li>
+            <span class="why-check">✓</span>
+            <div><strong>Honest, Straightforward Pricing</strong> from an established local business that values long-term relationships over one-time transactions.</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROOF / GALLERY -->
+<section class="proof" id="proof">
+  <div class="container">
+    <div class="proof-header text-center">
+      <span class="section-label">Our Work and Reputation</span>
+      <h2 class="section-title">Trusted by Homeowners and Businesses Across Los Angeles</h2>
+      <p class="section-sub">Over four decades of completed jobs and thousands of satisfied customers have made us one of LA's most recognized electrical contractors.</p>
+    </div>
+
+    <div class="proof-grid">
+      <div class="proof-item">
+        <img src="https://www.theelectricconnection.com/wp-content/uploads/2021/10/facebook-header.png" alt="The Electric Connection Facebook page header featuring our team and branding">
+      </div>
+      <div class="proof-item">
+        <img src="https://www.theelectricconnection.com/wp-content/uploads/2021/10/twitter-header.png" alt="The Electric Connection Twitter header showcasing our Los Angeles electrical services">
+      </div>
+      <div class="proof-item">
+        <img src="https://www.theelectricconnection.com/wp-content/uploads/2021/10/instagram-header.png" alt="The Electric Connection Instagram header highlighting recent electrical projects">
+      </div>
+      <div class="proof-item">
+        <img src="https://www.theelectricconnection.com/wp-content/uploads/2021/10/linkedin-header.png" alt="The Electric Connection LinkedIn company page header">
+      </div>
+      <div class="proof-item" style="grid-column: span 2 / span 2;">
+        <img src="https://www.theelectricconnection.com/wp-content/uploads/2022/02/website-social.jpg" alt="The Electric Connection licensed Los Angeles electricians serving the community since 1979" style="height:200px;width:100%;object-fit:cover;">
+      </div>
+    </div>
+
+    <div class="reviews-row">
+      <div class="proof-item">
+        <img src="https://www.theelectricconnection.com/wp-content/uploads/slider3/google-reviews.jpg" alt="Five-star Google reviews for The Electric Connection Los Angeles electrician">
+      </div>
+      <div class="proof-item">
+        <img src="https://www.theelectricconnection.com/wp-content/uploads/slider3/yelp-reviews.jpg" alt="Five-star Yelp reviews for The Electric Connection Los Angeles electrician">
+      </div>
+    </div>
+
+    <div class="ratings-strip">
+      <div class="rating-item">
+        <div class="score">5.0</div>
+        <div class="stars">★★★★★</div>
+        <div class="platform">Google</div>
+      </div>
+      <div style="width:1px;background:#e2e8f0;"></div>
+      <div class="rating-item">
+        <div class="score">5.0</div>
+        <div class="stars">★★★★★</div>
+        <div class="platform">Yelp</div>
+      </div>
+      <div style="width:1px;background:#e2e8f0;"></div>
+      <div class="rating-item">
+        <div class="score">40+</div>
+        <div class="stars" style="font-size:1rem;">Years in Business</div>
+        <div class="platform">Est. 1979</div>
+      </div>
+      <div style="width:1px;background:#e2e8f0;"></div>
+      <div class="rating-item">
+        <div class="score">100%</div>
+        <div class="stars" style="font-size:1rem;">Licensed and Insured</div>
+        <div class="platform">California</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT / BOOKING CTA -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="contact-inner">
+      <div class="contact-copy">
+        <span class="section-label">Get In Touch</span>
+        <h2 class="section-title">Ready to Get Started? We Make It Easy.</h2>
+        <p class="section-sub">Call us for a free over-the-phone estimate, or fill out the form and we will get back to you promptly. No obligation, no pressure.</p>
+        <ul class="contact-list">
+          <li>
+            <span class="ci">📞</span>
+            <div>Call us free:<br><a href="tel:8009909490">800-990-9490</a></div>
+          </li>
+          <li>
+            <span class="ci">📍</span>
+            <div>Serving all of<br><strong style="color:#7ab8f5;">Greater Los Angeles, CA</strong></div>
+          </li>
+          <li>
+            <span class="ci">🌐</span>
+            <div>Visit our website:<br><a href="https://www.theelectricconnection.com/" target="_blank" rel="noopener">theelectricconnection.com</a></div>
+          </li>
+          <li>
+            <span class="ci">⭐</span>
+            <div>Read our reviews:<br>
+              <a href="https://www.yelp.com/biz/the-electric-connection-los-angeles-2" target="_blank" rel="noopener noreferrer">Yelp</a>
+              &nbsp;|&nbsp;
+              <a href="https://g.page/the-electric-connection?share" target="_blank" rel="noopener noreferrer">Google</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="contact-form">
+        <h3>Request a Free Estimate</h3>
+        <p>Tell us about your project and we will reach out within one business day.</p>
+        <form action="https://www.theelectricconnection.com/" method="post" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fname">First Name</label>
+              <input type="text" id="fname" name="first_name" placeholder="Jane" required>
+            </div>
+            <div class="form-group">
+              <label for="lname">Last Name</label>
+              <input type="text" id="lname" name="last_name" placeholder="Smith" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" placeholder="(310) 555-0000" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="jane@email.com">
+          </div>
+          <div class="form-group">
+            <label for="service">Service Needed</label>
+            <select id="service" name="service">
+              <option value="">Select a service...</option>
+              <option>Residential Electrical</option>
+              <option>Commercial Electrical</option>
+              <option>Panel Upgrade or Replacement</option>
+              <option>Lighting Installation</option>
+              <option>EV Charger Installation</option>
+              <option>Safety Inspection or Troubleshooting</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Describe Your Project</label>
+            <textarea id="message" name="message" placeholder="Let us know what you need and where you are located in Los Angeles..."></textarea>
+          </div>
+          <div class="form-submit">
+            <button type="submit" class="btn btn-primary">Send My Free Estimate Request</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-main">
+    <div class="footer-brand">
+      <img src="https://www.theelectricconnection.com/wp-content/uploads/2021/12/ec_logo.png" alt="The Electric Connection logo">
+      <p>Licensed and insured Los Angeles electricians you can count on. Serving residential and commercial clients across the greater LA area since 1979.</p>
+      <div class="social-links">
+        <a href="https://www.facebook.com/electricconnectionlosangeles/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">📘</a>
+        <a href="https://www.instagram.com/theelectricconnection/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">📸</a>
+        <a href="https://www.linkedin.com/company/the-electric-connection/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">💼</a>
+        <a href="https://www.yelp.com/biz/the-electric-connection-los-angeles-2" target="_blank" rel="noopener noreferrer" aria-label="Yelp">⭐</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#services">Residential Electrical</a></li>
+        <li><a href="#services">Commercial Electrical</a></li>
+        <li><a href="#services">Panel Upgrades</a></li>
+        <li><a href="#services">Lighting Installation</a></li>
+        <li><a href="#services">EV Charger Installation</a></li>
+        <li><a href="#services">Safety Inspections</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="tel:8009909490">📞 800-990-9490</a></li>
+        <li><a href="#contact">Request an Estimate</a></li>
+        <li><a href="https://www.theelectricconnection.com/" target="_blank" rel="noopener">Visit Our Website</a></li>
+        <li><a href="https://g.page/the-electric-connection?share" target="_blank" rel="noopener noreferrer">Google Reviews</a></li>
+        <li><a href="https://www.yelp.com/biz/the-electric-connection-los-angeles-2" target="_blank" rel="noopener noreferrer">Yelp Reviews</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2024 The Electric Connection. All rights reserved. Licensed and Insured Electrical Contractor, Los Angeles, CA. | Preview by <a href="https://unveiled.pro" style="color:rgba(255,255,255,0.50);">UNVEILED</a></p>
+  </div>
+</footer>
+
+<!-- FLOATING MOBILE CTA -->
+<a href="tel:8009909490" class="floating-phone">
+  📞 Call 800-990-9490 Free
+</a>
+
+
+<style>
+.uv-accept{--acc-ink:#141118;--acc-soft:#6b6675;--acc-line:#ece9f2;--acc-bg:#faf9fc;--acc-brand:#7c46eb;--acc-brand-ink:#fff;
+  background:radial-gradient(120% 90% at 50% 0,#fff,var(--acc-bg) 70%);padding:64px 20px 76px;border-top:1px solid var(--acc-line);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Arial,sans-serif;color:var(--acc-ink)}
+.uv-accept *{box-sizing:border-box}
+.uv-wrap{max-width:1080px;margin:0 auto}
+.uv-head{text-align:center;max-width:640px;margin:0 auto 42px}
+.uv-eyebrow{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--acc-brand);background:rgba(124,70,235,.1);padding:6px 13px;border-radius:30px}
+.uv-h{font-size:38px;line-height:1.1;font-weight:900;letter-spacing:-.8px;margin:16px 0 0}
+.uv-sub{font-size:16px;line-height:1.6;color:var(--acc-soft);margin:14px 0 0}
+.uv-tempnote{display:inline-flex;align-items:center;gap:8px;margin-top:16px;font-size:12.5px;color:var(--acc-soft);background:#fff;border:1px solid var(--acc-line);padding:7px 13px;border-radius:30px}
+.uv-tempnote .dot{width:8px;height:8px;border-radius:50%;background:#f5a524}
+.uv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.uv-card{position:relative;display:flex;flex-direction:column;background:#fff;border:1.5px solid var(--acc-line);border-radius:20px;padding:24px 20px 20px;transition:.18s}
+.uv-card:hover{transform:translateY(-4px);box-shadow:0 22px 50px rgba(50,25,110,.13);border-color:rgba(124,70,235,.4)}
+.uv-card.reco{border-color:var(--acc-brand);box-shadow:0 18px 46px rgba(124,70,235,.18)}
+.uv-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);white-space:nowrap;background:var(--acc-brand);color:#fff;font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;padding:5px 13px;border-radius:30px}
+.uv-name{font-size:16px;font-weight:800}
+.uv-price{margin-top:12px;font-size:32px;font-weight:900;letter-spacing:-1px;line-height:1}
+.uv-once{display:inline-block;margin-top:8px;font-size:11.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:#16a34a;background:rgba(22,163,74,.1);padding:3px 9px;border-radius:20px}
+.uv-summary{margin-top:14px;font-size:13.5px;line-height:1.55;color:var(--acc-soft);flex:1}
+.uv-cta{margin-top:18px;display:block;text-align:center;text-decoration:none;font-weight:800;font-size:14.5px;padding:14px 12px;border-radius:13px;border:1.5px solid var(--acc-brand);color:var(--acc-brand);background:#fff;transition:.15s}
+.uv-card:hover .uv-cta,.uv-card.reco .uv-cta{background:var(--acc-brand);color:var(--acc-brand-ink)}
+.uv-foot{text-align:center;margin-top:30px;font-size:12.5px;color:var(--acc-soft)}
+/* in-page card form (Square Web Payments SDK) - keeps the customer on their site */
+.uv-modal{position:fixed;inset:0;background:rgba(10,7,20,.55);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:9999;padding:18px}
+.uv-modal.open{display:flex}
+.uv-pay{background:#fff;border-radius:20px;max-width:420px;width:100%;padding:26px 24px;box-shadow:0 30px 80px rgba(20,10,50,.4)}
+.uv-pay h3{margin:0;font-size:20px;font-weight:900;letter-spacing:-.4px}
+.uv-pay .p{margin:4px 0 18px;color:var(--acc-soft);font-size:14px}
+.uv-pay input{width:100%;padding:12px 14px;border:1.5px solid var(--acc-line);border-radius:11px;font-size:14px;margin-bottom:12px;font-family:inherit}
+.uv-cardbox{border:1.5px solid var(--acc-line);border-radius:11px;padding:4px 6px;margin-bottom:14px;min-height:44px}
+.uv-pay .pay{width:100%;padding:14px;border:0;border-radius:12px;background:var(--acc-brand);color:#fff;font-weight:800;font-size:15px;cursor:pointer}
+.uv-pay .pay:disabled{opacity:.6;cursor:default}
+.uv-pay .msg{margin-top:12px;font-size:13px;min-height:18px;text-align:center}
+.uv-pay .msg.err{color:#dc2626}.uv-pay .msg.ok{color:#16a34a;font-weight:700}
+.uv-pay .x{float:right;border:0;background:none;font-size:20px;color:var(--acc-soft);cursor:pointer;margin:-8px -6px 0 0}
+@media(max-width:860px){.uv-grid{grid-template-columns:repeat(2,1fr)}.uv-h{font-size:30px}}
+@media(max-width:520px){.uv-grid{grid-template-columns:1fr}}
+</style>
+<section class="uv-accept" id="get-started">
+<div class="uv-wrap">
+<div class="uv-head"><span class="uv-eyebrow">Your website is ready</span><h1 class="uv-h">Make it yours.</h1><p class="uv-sub">This is a temporary preview. Pick a plan to keep it online and connect it to your business. We handle the rest.</p><div class="uv-tempnote"><span class="dot"></span> Running on a temporary preview address</div></div>
+<div class="uv-grid"><div class="uv-card"><div class="uv-name">Website Launch</div><div class="uv-price">$297/mo</div><div class="uv-summary">We host your site, keep it updated, and keep it running. Always online.</div><a class="uv-cta" href="https://square.link/u/XkgVd0nX?ref=a307897f-8404-4e09-b270-86a9188fa046" target="_blank" rel="noopener">Keep it live</a></div><div class="uv-card"><div class="uv-name">Visibility</div><div class="uv-price">$597/mo</div><div class="uv-summary">Everything in Launch, plus monthly SEO, blog posts, and Google Business so customers find you.</div><a class="uv-cta" href="https://square.link/u/loRMrVo4?ref=a307897f-8404-4e09-b270-86a9188fa046" target="_blank" rel="noopener">Keep it live</a></div><div class="uv-card"><div class="uv-name">Growth Machine</div><div class="uv-price">$1,297/mo</div><div class="uv-summary">Your full growth engine. Site, SEO, content, and profiles, all handled for you.</div><a class="uv-cta" href="https://square.link/u/2fhUo2rJ?ref=a307897f-8404-4e09-b270-86a9188fa046" target="_blank" rel="noopener">Start growing</a></div><div class="uv-card"><div class="uv-name">Own It Forever</div><div class="uv-price">$2,997</div><span class="uv-once">One-time. Own it.</span><div class="uv-summary">Own your site outright. No subscription, no monthly fee. Yours to keep.</div><a class="uv-cta" href="https://square.link/u/UEPEm2dt?ref=a307897f-8404-4e09-b270-86a9188fa046" target="_blank" rel="noopener">Own it forever</a></div></div>
+<div class="uv-foot">Secure checkout with Square. Cancel anytime. Once you pick a plan, we set up your domain and take it live.</div>
+</div>
+</section>
+</body>
+</html>
