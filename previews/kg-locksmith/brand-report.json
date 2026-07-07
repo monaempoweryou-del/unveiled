@@ -1,0 +1,48 @@
+{
+  "slug": "kg-locksmith",
+  "business": "KG Locksmith",
+  "brand_confidence": 0.25,
+  "reached_existing_website": false,
+  "existing_website": "https://kglocksmithllc.com",
+  "discovered": {
+    "palette": [],
+    "fonts": [],
+    "logo_found": false,
+    "voice_samples": [],
+    "social": {}
+  },
+  "assets": {
+    "logo": null,
+    "hero": "https://kglocksmithllc.com/wp-content/uploads/2025/06/cropped-KG-Locksmith-logo.png",
+    "gallery_count": 3,
+    "real_count": 1,
+    "stock_count": 3,
+    "stock_slots": [
+      "gallery_0",
+      "gallery_1",
+      "gallery_2"
+    ],
+    "real_assets_available": 1,
+    "meets_minimum_5": false
+  },
+  "preserved": [
+    "1 real business image(s) the owner will recognize"
+  ],
+  "improved": [
+    "No clear existing palette found. Selected an industry-appropriate, restrained palette.",
+    "No distinct typography found. Chose a clean, human typeface pairing.",
+    "No usable logo retrieved. Used a refined wordmark lockup, NOT an AI logo clich\u00e9.",
+    "Layout, hierarchy, mobile polish, metadata and CTA raised to the UNVEILED bar."
+  ],
+  "notes": [
+    "Existing website 'https://kglocksmithllc.com' could not be reached for brand learning.",
+    "1 image(s) discovered from verified social/profile harvest added to the authentic asset pool."
+  ],
+  "decision_order": [
+    "learn business",
+    "learn brand",
+    "decide preserve",
+    "improve weak",
+    "build still-feels-like-them"
+  ]
+}
