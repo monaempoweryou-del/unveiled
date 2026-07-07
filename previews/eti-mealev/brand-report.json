@@ -1,0 +1,63 @@
+{
+  "slug": "eti-mealev",
+  "business": "Eti Mealev",
+  "brand_confidence": 1.0,
+  "reached_existing_website": true,
+  "existing_website": "https://ednegroup.com/",
+  "discovered": {
+    "palette": [
+      "#003399",
+      "#003388",
+      "#32373c",
+      "#dddddd",
+      "#313131",
+      "#00d084"
+    ],
+    "fonts": [
+      "Open Sans",
+      "Ubuntu",
+      "Roboto%3A400%2C300%2C200%2C100%2C400italic%2C700%2C900%7CMuli",
+      "Roboto"
+    ],
+    "logo_found": true,
+    "voice_samples": [
+      "Edne Group &#8211; Elevate Your Earthly Possessions",
+      "Edne Group",
+      "Welcome to our awesome website!",
+      "Some Interesting Facts",
+      "Our features"
+    ],
+    "social": {
+      "facebook": "https://www.facebook.com/EdneGroup2022/",
+      "instagram": "https://www.instagram.com/ednegroup/",
+      "tiktok": "https://www.tiktok.com/@ednegroup"
+    }
+  },
+  "assets": {
+    "logo": "https://ednegroup.com/wp-content/uploads/2023/03/POPL-LOGO.png",
+    "hero": "https://ednegroup.com/wp-content/uploads/2023/03/POPL-LOGO.png",
+    "gallery_count": 8,
+    "real_count": 10,
+    "stock_count": 0,
+    "stock_slots": [],
+    "real_assets_available": 23,
+    "meets_minimum_5": true
+  },
+  "preserved": [
+    "Brand color palette (#003399, #003388, #32373c, #dddddd)",
+    "Typography direction (Open Sans, Ubuntu)",
+    "Existing logo (presented cleanly, not replaced)",
+    "10 real business image(s) the owner will recognize"
+  ],
+  "improved": [
+    "Layout, hierarchy, mobile polish, metadata and CTA raised to the UNVEILED bar."
+  ],
+  "notes": [],
+  "decision_order": [
+    "learn business",
+    "learn brand",
+    "decide preserve",
+    "improve weak",
+    "build still-feels-like-them"
+  ]
+}
