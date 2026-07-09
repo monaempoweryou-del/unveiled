@@ -1,0 +1,50 @@
+{
+  "slug": "doreen-varon-properties",
+  "business": "Doreen Varon Properties",
+  "brand_confidence": 0.35,
+  "reached_existing_website": false,
+  "existing_website": "https://doreenvaronproperties.com",
+  "discovered": {
+    "palette": [],
+    "fonts": [],
+    "logo_found": false,
+    "voice_samples": [],
+    "social": {
+      "instagram": "https://www.instagram.com/doreenvaronproperties/"
+    }
+  },
+  "assets": {
+    "logo": null,
+    "hero": "https://scontent-sjc3-1.cdninstagram.com/v/t51.2885-19/471765506_481820411209077_169250873959083818_n.jpg?stp=dst-jpg_s100x100_tt6&amp;_nc_cat=105&amp;ccb=7-5&amp;_nc_sid=bf7eb4&amp;efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy4xMDgwLkMzIn0%3D&amp;_nc_ohc=RZ-2F-kVoycQ7kNvwGGlqLN&amp;_nc_oc=AdpM0FYZuI7XrLYP7_DDRTM13kU3RRy-hWQvTo15HCdEuz7KbsldiGVSC5_f6JnnFf4&amp;_nc_zt=24&amp;_nc_ht=scontent-sjc3-1.cdninstagram.com&amp;_nc_ss=7b60f&amp;oh=00_AQCN5ao-_BaESYji8BiqQn_k2X4GXH_13yS3eZxr4x9Lyg&amp;oe=6A550550",
+    "gallery_count": 3,
+    "real_count": 1,
+    "stock_count": 3,
+    "stock_slots": [
+      "gallery_0",
+      "gallery_1",
+      "gallery_2"
+    ],
+    "real_assets_available": 1,
+    "meets_minimum_5": false
+  },
+  "preserved": [
+    "1 real business image(s) the owner will recognize"
+  ],
+  "improved": [
+    "No clear existing palette found. Selected an industry-appropriate, restrained palette.",
+    "No distinct typography found. Chose a clean, human typeface pairing.",
+    "No usable logo retrieved. Used a refined wordmark lockup, NOT an AI logo clich\u00e9.",
+    "Layout, hierarchy, mobile polish, metadata and CTA raised to the UNVEILED bar."
+  ],
+  "notes": [
+    "Existing website 'https://doreenvaronproperties.com' could not be reached for brand learning.",
+    "1 image(s) discovered from verified social/profile harvest added to the authentic asset pool."
+  ],
+  "decision_order": [
+    "learn business",
+    "learn brand",
+    "decide preserve",
+    "improve weak",
+    "build still-feels-like-them"
+  ]
+}
