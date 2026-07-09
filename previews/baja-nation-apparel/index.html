@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Baja Nation Apparel | Born in SoCal. Built for the Wild.</title>
+<meta name="description" content="Baja Nation Apparel: graphic tees, dye shirts and crop hoodies for the adventurer. Wildlife series, coastal lifestyle. SoCal born." />
+<meta property="og:title" content="Baja Nation Apparel | Born in SoCal. Built for the Wild." />
+<meta property="og:description" content="Graphic tees and coastal apparel for the adventurer. Great White, Dolphin, Bighorn series. Born in SoCal." />
+<meta property="og:image" content="https://unveiled.pro/previews/baja-nation-apparel/product1.jpg" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://unveiled.pro/previews/baja-nation-apparel/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Baja Nation Apparel | Born in SoCal. Built for the Wild." />
+<meta name="twitter:description" content="Graphic tees and coastal apparel for the adventurer. Great White, Dolphin, Bighorn series. Born in SoCal." />
+<meta name="twitter:image" content="https://unveiled.pro/previews/baja-nation-apparel/product1.jpg" />
+<meta name="robots" content="noindex, nofollow" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌊</text></svg>" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ClothingStore",
+  "name": "Baja Nation Apparel",
+  "description": "SoCal-born apparel brand for the coastal adventurer. Wildlife graphic tees, ocean dye shirts and crop hoodies.",
+  "url": "https://unveiled.pro/previews/baja-nation-apparel/",
+  "image": "https://unveiled.pro/previews/baja-nation-apparel/product1.jpg",
+  "sameAs": [
+    "https://www.instagram.com/bajanationapparel/",
+    "https://www.facebook.com/bajanationapparel/"
+  ]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink:     #060F1E;
+    --deep:    #0A1A30;
+    --ocean:   #0B3D6B;
+    --teal:    #00B4CC;
+    --sand:    #E8D8B8;
+    --sun:     #F5C842;
+    --coral:   #E86840;
+    --white:   #F8F5F0;
+    --grey:    #8A9BAF;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--ink);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 5%;
+    background: rgba(6,15,30,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,180,204,0.12);
+  }
+  .nav-logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 1.4rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--sun); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: var(--grey);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--teal); }
+  .nav-cta {
+    background: var(--teal);
+    color: var(--ink) !important;
+    padding: 0.5rem 1.2rem;
+    border-radius: 2px;
+    font-weight: 700 !important;
+  }
+  .nav-cta:hover { background: var(--sun) !important; color: var(--ink) !important; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-left {
+    background: var(--deep);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 6% 80px;
+    position: relative;
+  }
+  .hero-left::after {
+    content: '';
+    position: absolute; top: 0; right: -1px; bottom: 0; width: 60px;
+    background: var(--deep);
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+    z-index: 2;
+  }
+  .hero-tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .hero-tag::before {
+    content: '';
+    display: inline-block;
+    width: 32px; height: 2px;
+    background: var(--teal);
+  }
+  .hero-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(3.5rem, 7vw, 6.5rem);
+    line-height: 0.92;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    color: var(--white);
+    margin-bottom: 0.3em;
+  }
+  .hero-title .accent { color: var(--teal); }
+  .hero-title .sun { color: var(--sun); }
+  .hero-sub {
+    font-size: 1rem;
+    color: var(--grey);
+    max-width: 360px;
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
+  }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn {
+    display: inline-block;
+    padding: 0.85rem 2rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-teal { background: var(--teal); color: var(--ink); }
+  .btn-teal:hover { background: var(--sun); }
+  .btn-outline {
+    background: transparent;
+    color: var(--white);
+    border: 1.5px solid rgba(248,245,240,0.25);
+  }
+  .btn-outline:hover { border-color: var(--teal); color: var(--teal); }
+
+  .hero-badges {
+    display: flex; gap: 1.5rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.07);
+  }
+  .hero-badge { text-align: center; }
+  .hero-badge-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 2rem;
+    color: var(--teal);
+    line-height: 1;
+  }
+  .hero-badge-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin-top: 0.25rem;
+  }
+
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-right img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+  .hero-right::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(10,26,48,0.4) 0%, transparent 60%);
+    z-index: 1;
+  }
+  .hero-product-label {
+    position: absolute;
+    bottom: 2rem; left: 2rem;
+    z-index: 2;
+    background: rgba(6,15,30,0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(0,180,204,0.3);
+    padding: 0.8rem 1.2rem;
+  }
+  .hero-product-label span {
+    display: block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+  .hero-product-label em {
+    font-style: normal;
+    font-size: 0.65rem;
+    color: var(--teal);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  /* MARQUEE STRIP */
+  .marquee-strip {
+    background: var(--teal);
+    padding: 0.75rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .marquee-inner {
+    display: inline-flex;
+    gap: 3rem;
+    animation: marquee 20s linear infinite;
+  }
+  .marquee-item {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* SECTION COMMON */
+  section { padding: 6rem 5%; }
+  .section-tag {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    color: var(--white);
+    margin-bottom: 1rem;
+  }
+  .section-sub {
+    font-size: 0.95rem;
+    color: var(--grey);
+    max-width: 520px;
+    line-height: 1.7;
+  }
+
+  /* COLLECTIONS */
+  .collections { background: var(--ink); }
+  .collections-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .collections-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .collection-card {
+    position: relative;
+    overflow: hidden;
+    background: var(--deep);
+    aspect-ratio: 3/4;
+    cursor: pointer;
+  }
+  .collection-card img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s;
+  }
+  .collection-card:hover img { transform: scale(1.05); }
+  .collection-card::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(6,15,30,0.85) 0%, transparent 55%);
+  }
+  .card-info {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 1.5rem;
+    z-index: 1;
+  }
+  .card-series {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 0.3rem;
+  }
+  .card-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--white);
+    line-height: 1.1;
+  }
+  .card-cta {
+    display: inline-block;
+    margin-top: 0.75rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--sun);
+    text-decoration: none;
+    border-bottom: 1px solid var(--sun);
+    padding-bottom: 1px;
+  }
+
+  /* WILD SERIES */
+  .wild { background: var(--deep); }
+  .wild-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+  .wild-images {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+  .wild-img-main {
+    grid-column: span 2;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+  }
+  .wild-img-sub { aspect-ratio: 1; overflow: hidden; }
+  .wild-img-main img,
+  .wild-img-sub img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s;
+  }
+  .wild-img-main:hover img,
+  .wild-img-sub:hover img { transform: scale(1.04); }
+  .wild-text { padding: 1rem 0; }
+  .wild-features { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+  .wild-feat {
+    display: flex; align-items: flex-start; gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .wild-feat-icon {
+    width: 36px; height: 36px;
+    background: rgba(0,180,204,0.12);
+    border: 1px solid rgba(0,180,204,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .wild-feat-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--white);
+    margin-bottom: 0.2rem;
+  }
+  .wild-feat-desc { font-size: 0.85rem; color: var(--grey); line-height: 1.5; }
+
+  /* LIFESTYLE */
+  .lifestyle { background: var(--ink); padding: 6rem 0; }
+  .lifestyle-inner { padding: 0 5%; }
+  .lifestyle-header { margin-bottom: 3rem; }
+  .lifestyle-mosaic {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 0.5rem;
+  }
+  .mosaic-big { grid-row: span 2; aspect-ratio: 3/4; }
+  .mosaic-sm { aspect-ratio: 1; }
+  .mosaic-big img, .mosaic-sm img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* BRAND STORY */
+  .story {
+    background: var(--ocean);
+    position: relative;
+    overflow: hidden;
+  }
+  .story::before {
+    content: 'BAJA';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(12rem, 25vw, 22rem);
+    text-transform: uppercase;
+    color: rgba(0,0,0,0.15);
+    letter-spacing: -0.05em;
+    white-space: nowrap;
+    pointer-events: none;
+    line-height: 1;
+  }
+  .story-inner {
+    position: relative; z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .story-quote {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(1.8rem, 3.5vw, 3rem);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+    color: var(--white);
+    margin: 1.5rem 0;
+  }
+  .story-quote .highlight { color: var(--sun); }
+  .story-body {
+    font-size: 0.95rem;
+    color: rgba(248,245,240,0.75);
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+  }
+
+  /* FOOTER */
+  footer {
+    background: #020A14;
+    padding: 3.5rem 5% 2rem;
+    border-top: 1px solid rgba(0,180,204,0.1);
+  }
+  .footer-inner {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+  }
+  .footer-brand-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--teal);
+    margin-bottom: 0.75rem;
+  }
+  .footer-brand-name span { color: var(--sun); }
+  .footer-desc { font-size: 0.85rem; color: var(--grey); line-height: 1.7; max-width: 280px; }
+  .footer-col h4 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 1rem;
+  }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+  .footer-col a { font-size: 0.85rem; color: var(--grey); text-decoration: none; transition: color 0.2s; }
+  .footer-col a:hover { color: var(--white); }
+  .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    font-size: 0.75rem;
+    color: rgba(138,155,175,0.5);
+  }
+  .footer-social { display: flex; gap: 1.2rem; }
+  .footer-social a { color: var(--grey); text-decoration: none; font-size: 0.75rem; letter-spacing: 0.1em; transition: color 0.2s; }
+  .footer-social a:hover { color: var(--teal); }
+
+  /* PREVIEW BADGE */
+  .preview-badge {
+    position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 999;
+    background: var(--teal);
+    color: var(--ink);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    border-radius: 2px;
+  }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-right { height: 55vw; }
+    .hero-left::after { display: none; }
+    .collections-grid { grid-template-columns: 1fr 1fr; }
+    .wild-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+    .lifestyle-mosaic { grid-template-columns: 1fr 1fr; }
+    .mosaic-big { grid-column: span 2; grid-row: span 1; aspect-ratio: 16/9; }
+    .footer-inner { grid-template-columns: 1fr 1fr; }
+    nav .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Baja <span>Nation</span></a>
+  <ul class="nav-links">
+    <li><a href="#collections">Collections</a></li>
+    <li><a href="#wild">Wild Series</a></li>
+    <li><a href="#story">Our Story</a></li>
+    <li><a href="#contact" class="nav-cta">Shop Now</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-left">
+    <span class="hero-tag">SoCal Born. Baja Built.</span>
+    <h1 class="hero-title">
+      Wear the<br />
+      <span class="accent">Wild</span><br />
+      <span class="sun">Side.</span>
+    </h1>
+    <p class="hero-sub">
+      Graphic tees and coastal apparel for the adventurer. From the Pacific Coast to Baja California, we make gear that moves with you.
+    </p>
+    <div class="hero-actions">
+      <a href="#collections" class="btn btn-teal">Shop Collections</a>
+      <a href="#wild" class="btn btn-outline">Wild Series</a>
+    </div>
+    <div class="hero-badges">
+      <div class="hero-badge">
+        <div class="hero-badge-num">100%</div>
+        <div class="hero-badge-label">SoCal Made</div>
+      </div>
+      <div class="hero-badge">
+        <div class="hero-badge-num">3</div>
+        <div class="hero-badge-label">Wildlife Series</div>
+      </div>
+      <div class="hero-badge">
+        <div class="hero-badge-num">1K+</div>
+        <div class="hero-badge-label">Adventurers</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img src="product1.jpg" alt="Baja Nation Dye Pocket Crew Shirt in ocean tie-dye colorway" />
+    <div class="hero-product-label">
+      <em>New Drop</em>
+      <span>Dye Pocket Crew Shirt</span>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip" aria-hidden="true">
+  <div class="marquee-inner">
+    <span class="marquee-item">Baja Nation</span>
+    <span class="marquee-item">Born in SoCal</span>
+    <span class="marquee-item">Great White Series</span>
+    <span class="marquee-item">Coastal Lifestyle</span>
+    <span class="marquee-item">Skate. Surf. Baja.</span>
+    <span class="marquee-item">Bottlenose Collection</span>
+    <span class="marquee-item">Bighorn Local Tee</span>
+    <span class="marquee-item">Baja Nation</span>
+    <span class="marquee-item">Born in SoCal</span>
+    <span class="marquee-item">Great White Series</span>
+    <span class="marquee-item">Coastal Lifestyle</span>
+    <span class="marquee-item">Skate. Surf. Baja.</span>
+    <span class="marquee-item">Bottlenose Collection</span>
+    <span class="marquee-item">Bighorn Local Tee</span>
+  </div>
+</div>
+
+<!-- COLLECTIONS -->
+<section class="collections" id="collections">
+  <div class="collections-header">
+    <div>
+      <p class="section-tag">Latest Drops</p>
+      <h2 class="section-title">Shop the Collection</h2>
+      <p class="section-sub">Wildlife graphic tees, ocean dye shirts and coastal hoodies. Built for life outside.</p>
+    </div>
+    <a href="#contact" class="btn btn-outline">View All</a>
+  </div>
+  <div class="collections-grid">
+    <div class="collection-card">
+      <img src="product2.jpg" alt="Baja Nation apparel product shot featuring coastal lifestyle design" />
+      <div class="card-info">
+        <p class="card-series">Wildlife Series</p>
+        <h3 class="card-name">Bottlenose<br />Tee</h3>
+        <a href="#contact" class="card-cta">Shop Now</a>
+      </div>
+    </div>
+    <div class="collection-card">
+      <img src="product4.jpg" alt="Baja Nation Bighorn Local tee with wildlife graphic on soft cotton" />
+      <div class="card-info">
+        <p class="card-series">Wildlife Series</p>
+        <h3 class="card-name">Bighorn<br />Local Tee</h3>
+        <a href="#contact" class="card-cta">Shop Now</a>
+      </div>
+    </div>
+    <div class="collection-card">
+      <img src="product5.jpg" alt="Baja Nation Great White Local tee with shark graphic from Isla Guadalupe" />
+      <div class="card-info">
+        <p class="card-series">Wildlife Series</p>
+        <h3 class="card-name">Great White<br />Local Tee</h3>
+        <a href="#contact" class="card-cta">Shop Now</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WILD SERIES -->
+<section class="wild" id="wild">
+  <div class="wild-layout">
+    <div class="wild-images">
+      <div class="wild-img-main">
+        <img src="product6.jpg" alt="Baja Nation coastal apparel worn in outdoor setting" />
+      </div>
+      <div class="wild-img-sub">
+        <img src="product7.jpg" alt="Baja Nation graphic tee close-up detail shot" />
+      </div>
+      <div class="wild-img-sub">
+        <img src="product8.jpg" alt="Baja Nation crop hoodie summer lightweight style" />
+      </div>
+    </div>
+    <div class="wild-text">
+      <p class="section-tag">The Wild Series</p>
+      <h2 class="section-title">Local<br />Wildlife,<br />World-Class<br />Gear</h2>
+      <p class="section-sub">Every design honors the animals that call Baja home. From the Great White of Isla Guadalupe to the Bighorn of the Cimarron Range, these tees tell a story.</p>
+      <div class="wild-features">
+        <div class="wild-feat">
+          <div class="wild-feat-icon">🦈</div>
+          <div>
+            <p class="wild-feat-title">Great White Series</p>
+            <p class="wild-feat-desc">Inspired by the legendary sharks of Isla Guadalupe. Soft 100% cotton, heavyweight feel.</p>
+          </div>
+        </div>
+        <div class="wild-feat">
+          <div class="wild-feat-icon">🐬</div>
+          <div>
+            <p class="wild-feat-title">Bottlenose Collection</p>
+            <p class="wild-feat-desc">For those who belong in the Sea of Cortez. Aquarium of the World, on your chest.</p>
+          </div>
+        </div>
+        <div class="wild-feat">
+          <div class="wild-feat-icon">🐏</div>
+          <div>
+            <p class="wild-feat-title">Bighorn Local</p>
+            <p class="wild-feat-desc">The Cimarron range. The desert mountains. Baja Nation's tribute to the high country.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIFESTYLE MOSAIC -->
+<section class="lifestyle" id="lifestyle">
+  <div class="lifestyle-inner">
+    <div class="lifestyle-header">
+      <p class="section-tag">The Vibe</p>
+      <h2 class="section-title">Perpetual Weekend</h2>
+      <p class="section-sub">Skateboards, sunsets, and the stretch of coast between here and Baja. This is what we dress for.</p>
+    </div>
+  </div>
+  <div class="lifestyle-mosaic">
+    <div class="mosaic-big">
+      <img src="product1.jpg" alt="Baja Nation Dye Pocket Crew Shirt lifestyle photo outdoors" />
+    </div>
+    <div class="mosaic-sm">
+      <img src="product2.jpg" alt="Baja Nation coastal tee lifestyle shot" />
+    </div>
+    <div class="mosaic-sm">
+      <img src="product4.jpg" alt="Baja Nation wildlife tee worn at the coast" />
+    </div>
+    <div class="mosaic-sm">
+      <img src="product6.jpg" alt="Baja Nation outdoor lifestyle apparel" />
+    </div>
+    <div class="mosaic-sm">
+      <img src="product7.jpg" alt="Baja Nation graphic tee detail" />
+    </div>
+  </div>
+</section>
+
+<!-- BRAND STORY -->
+<section class="story" id="story">
+  <div class="story-inner">
+    <p class="section-tag">Our Story</p>
+    <h2 class="story-quote">
+      Established in SoCal.<br />
+      <span class="highlight">Built for the Adventurer.</span>
+    </h2>
+    <p class="story-body">
+      Baja Nation Apparel was born from a simple desire: to make gear that captures the spirit of the people who live between the concrete of Southern California and the wild expanse of Baja. Skaters. Surfers. Desert wanderers. Ocean divers. If you chase the experience, this is your brand.
+    </p>
+    <a href="https://www.instagram.com/bajanationapparel/" target="_blank" rel="noopener" class="btn btn-teal">Follow on Instagram</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="footer-inner">
+    <div>
+      <p class="footer-brand-name">Baja <span>Nation</span></p>
+      <p class="footer-desc">SoCal-born apparel for the coastal adventurer. Wildlife series. Ocean dye. Perpetual weekend.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Collections</h4>
+      <ul>
+        <li><a href="#">Great White Series</a></li>
+        <li><a href="#">Bottlenose Collection</a></li>
+        <li><a href="#">Bighorn Local</a></li>
+        <li><a href="#">Dye Shirts</a></li>
+        <li><a href="#">Crop Hoodies</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="https://www.instagram.com/bajanationapparel/" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="https://www.facebook.com/bajanationapparel/" target="_blank" rel="noopener">Facebook</a></li>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>2026 Baja Nation Apparel. All rights reserved.</span>
+    <div class="footer-social">
+      <a href="https://www.instagram.com/bajanationapparel/" target="_blank" rel="noopener">INSTAGRAM</a>
+      <a href="https://www.facebook.com/bajanationapparel/" target="_blank" rel="noopener">FACEBOOK</a>
+    </div>
+  </div>
+</footer>
+
+<div class="preview-badge">Preview by UNVEILED</div>
+
+</body>
+</html>

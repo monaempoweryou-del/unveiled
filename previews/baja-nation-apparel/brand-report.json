@@ -1,0 +1,62 @@
+{
+  "slug": "baja-nation-apparel",
+  "business": "Baja Nation Apparel",
+  "brand_confidence": 0.80,
+  "reached_existing_website": false,
+  "existing_website": null,
+  "discovered": {
+    "palette": [
+      "#0B2545",
+      "#00B4CC",
+      "#F5C842",
+      "#E86840",
+      "#E8D8B8"
+    ],
+    "fonts": [],
+    "logo_found": false,
+    "voice_samples": [
+      "Baja Nation Apparel was established in SoCal with the desire to captivate the adventurer",
+      "Perpetual weekend on a skateboard.",
+      "Baja Nation Dye Pocket Crew Shirt",
+      "Bighorn local tee",
+      "Bottlenose Tee. Soft & fresh T-shirt.",
+      "Great White Local Tee",
+      "Baja Summer Hoodie Crop"
+    ],
+    "social": {
+      "instagram": "https://www.instagram.com/bajanationapparel/",
+      "facebook": "https://www.facebook.com/bajanationapparel/"
+    }
+  },
+  "assets": {
+    "logo": null,
+    "hero": "product1.jpg",
+    "gallery_count": 8,
+    "real_count": 8,
+    "stock_count": 0,
+    "stock_slots": [],
+    "real_assets_available": 8,
+    "meets_minimum_5": true
+  },
+  "preserved": [
+    "Brand voice: adventurous, coastal, SoCal/Baja lifestyle",
+    "Product names and wildlife series (Great White, Bottlenose, Bighorn)",
+    "8 real Instagram product images sourced from @bajanationapparel"
+  ],
+  "improved": [
+    "No website existed. Built full brand identity site from Instagram presence.",
+    "Design elevated: editorial dark ocean aesthetic matching adventurous brand DNA.",
+    "Typography: Barlow Condensed + Barlow for bold coastal energy."
+  ],
+  "notes": [
+    "No existing website. Brand discovered via Instagram @bajanationapparel (492 followers).",
+    "Images downloaded directly from official Instagram posts."
+  ],
+  "decision_order": [
+    "learn business",
+    "learn brand",
+    "decide preserve",
+    "improve weak",
+    "build still-feels-like-them"
+  ]
+}
