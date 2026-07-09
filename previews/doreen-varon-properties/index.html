@@ -117,49 +117,96 @@
 
     /* ---- HERO ---- */
     .hero {
-      position: relative; height: 100vh; min-height: 600px;
-      display: flex; align-items: flex-end;
+      background: linear-gradient(160deg, #1B2A4A 0%, #243761 55%, #1a3055 100%);
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 100px 8% 4rem;
+      position: relative;
       overflow: hidden;
     }
-    .hero-img {
+    .hero::before {
+      content: '';
       position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 30%, rgba(201,169,110,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-photo-wrap {
+      position: relative; margin-bottom: 1.75rem;
+    }
+    .hero-photo-ring {
+      width: 160px; height: 160px;
+      border-radius: 50%;
+      border: 2px solid rgba(201,169,110,0.5);
+      padding: 6px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-photo-ring::before {
+      content: '';
+      position: absolute; inset: -10px;
+      border-radius: 50%;
+      border: 1px solid rgba(201,169,110,0.2);
+    }
+    .hero-photo {
       width: 100%; height: 100%;
-      object-fit: cover; object-position: center;
+      border-radius: 50%;
+      object-fit: cover; object-position: center top;
+      display: block;
     }
-    .hero-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(
-        to bottom,
-        rgba(27,42,74,0.2) 0%,
-        rgba(27,42,74,0.1) 40%,
-        rgba(27,42,74,0.7) 75%,
-        rgba(27,42,74,0.92) 100%
-      );
+    .hero-monogram {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #243761 0%, #1B2A4A 100%);
+      border: 1px solid rgba(201,169,110,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem; font-weight: 300;
+      color: var(--gold); letter-spacing: 0.05em;
     }
-    .hero-content {
-      position: relative; z-index: 2;
-      padding: 0 8% 6% 8%;
-      max-width: 700px;
+    .hero-kw-badge {
+      position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%);
+      background: var(--gold); color: var(--navy);
+      font-size: 0.55rem; font-weight: 600; letter-spacing: 0.2em;
+      text-transform: uppercase; padding: 0.3rem 0.9rem;
+      white-space: nowrap;
     }
     .hero-eyebrow {
-      display: inline-block;
-      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.22em;
+      font-size: 0.66rem; font-weight: 500; letter-spacing: 0.2em;
       text-transform: uppercase; color: var(--gold);
-      margin-bottom: 1rem;
-      border-left: 2px solid var(--gold); padding-left: 0.75rem;
+      margin-bottom: 1rem; margin-top: 0.5rem;
     }
     .hero-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.4rem, 5vw, 3.8rem);
-      font-weight: 300; line-height: 1.15;
-      color: var(--white); margin-bottom: 1.25rem;
+      font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+      font-weight: 300; line-height: 1.2;
+      color: var(--white); margin-bottom: 2rem;
     }
     .hero-title em { font-style: italic; color: var(--gold-light); }
-    .hero-sub {
-      font-size: 0.95rem; font-weight: 300; color: rgba(255,255,255,0.82);
-      margin-bottom: 2rem; max-width: 480px; line-height: 1.7;
+    .hero-stats {
+      display: flex; gap: 0; margin-bottom: 2.5rem;
+      border: 1px solid rgba(201,169,110,0.2);
     }
-    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .hero-stat {
+      padding: 1.1rem 2rem; text-align: center;
+      border-right: 1px solid rgba(201,169,110,0.2);
+    }
+    .hero-stat:last-child { border-right: none; }
+    .hero-stat-num {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.9rem; font-weight: 300; color: var(--gold); line-height: 1;
+    }
+    .hero-stat-label {
+      display: block; margin-top: 0.25rem;
+      font-size: 0.6rem; font-weight: 400; letter-spacing: 0.13em;
+      text-transform: uppercase; color: rgba(255,255,255,0.55);
+    }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-bottom: 2rem; }
+    .hero-dre {
+      font-size: 0.65rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: rgba(255,255,255,0.35);
+    }
     .btn {
       display: inline-flex; align-items: center; gap: 0.4rem;
       padding: 0.85rem 1.8rem;
@@ -172,28 +219,6 @@
     .btn-outline { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,0.5); }
     .btn-outline:hover { border-color: var(--white); background: rgba(255,255,255,0.08); }
 
-    /* ---- STATS ---- */
-    .stats-bar {
-      background: var(--navy);
-      padding: 2.5rem 5%;
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 1px;
-    }
-    .stat {
-      text-align: center; padding: 1.5rem 1rem;
-      border-right: 1px solid rgba(201,169,110,0.2);
-    }
-    .stat:last-child { border-right: none; }
-    .stat-number {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2.6rem; font-weight: 300;
-      color: var(--gold); display: block; line-height: 1;
-    }
-    .stat-label {
-      font-size: 0.7rem; font-weight: 400; letter-spacing: 0.14em;
-      text-transform: uppercase; color: rgba(255,255,255,0.65);
-      margin-top: 0.4rem; display: block;
-    }
 
     /* ---- SECTIONS ---- */
     section { padding: 6rem 8%; }
@@ -432,10 +457,7 @@
     /* ---- RESPONSIVE ---- */
     @media (max-width: 900px) {
       .nav-links { display: none; }
-      .stats-bar { grid-template-columns: repeat(2, 1fr); }
-      .stat { border-right: none; border-bottom: 1px solid rgba(201,169,110,0.2); }
-      .stat:nth-child(odd) { border-right: 1px solid rgba(201,169,110,0.2); }
-      .about-grid { grid-template-columns: 1fr; gap: 4rem; }
+.about-grid { grid-template-columns: 1fr; gap: 4rem; }
       .about-img-wrap::before { display: none; }
       .about-badge { display: none; }
       .about-img { height: 340px; }
@@ -450,8 +472,11 @@
     }
 
     @media (max-width: 600px) {
-      .hero-content { padding: 0 6% 4rem 6%; }
-      .hero-actions { flex-direction: column; }
+      .hero { padding: 100px 6% 3rem; }
+      .hero-stats { flex-direction: column; border: none; gap: 0; }
+      .hero-stat { border-right: none; border-bottom: 1px solid rgba(201,169,110,0.2); padding: 0.9rem 1.5rem; }
+      .hero-stat:last-child { border-bottom: none; }
+      .hero-actions { flex-direction: column; width: 100%; }
       .btn { text-align: center; justify-content: center; }
     }
   </style>
@@ -479,49 +504,42 @@
   </nav>
 
   <!-- HERO -->
-  <section class="hero" aria-label="Hero: Woodland Hills luxury home exterior">
-    <img
-      class="hero-img"
-      src="https://www.compass.com/m/77ab5cdd566361c164dfad071895420ef996a73b_img_0_81733/origin.webp"
-      alt="Luxury single-family home in Woodland Hills, California"
-      loading="eager"
-      fetchpriority="high"
-    />
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-      <span class="hero-eyebrow">Woodland Hills &bull; San Fernando Valley &bull; Ventura County</span>
-      <h1 class="hero-title">
-        Guiding you home<br /><em>with expertise and care.</em>
-      </h1>
-      <p class="hero-sub">
-        Your trusted local real estate expert for over a decade. Whether you are buying, selling, or investing in Los Angeles, I bring the market knowledge, relationships, and dedication to get you the best possible outcome.
-      </p>
-      <div class="hero-actions">
-        <a href="#contact" class="btn btn-gold">Start a Conversation</a>
-        <a href="#listings" class="btn btn-outline">See Recent Properties</a>
+  <section class="hero" aria-label="Doreen Varon, KW Luxury Realtor">
+    <div class="hero-photo-wrap">
+      <div class="hero-photo-ring">
+        <!-- Replace src with Doreen's professional headshot URL when available -->
+        <div class="hero-monogram">DV</div>
+      </div>
+      <div class="hero-kw-badge">KW Luxury</div>
+    </div>
+    <span class="hero-eyebrow">Woodland Hills &bull; San Fernando Valley &bull; Ventura County</span>
+    <h1 class="hero-title">
+      Results That Speak.<br /><em>Every. Single. Time.</em>
+    </h1>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="hero-stat-num">9</span>
+        <span class="hero-stat-label">Day avg. sell time</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">+5%</span>
+        <span class="hero-stat-label">Above asking for sellers</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">-7%</span>
+        <span class="hero-stat-label">Below asking for buyers</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">10+</span>
+        <span class="hero-stat-label">Years local expertise</span>
       </div>
     </div>
+    <div class="hero-actions">
+      <a href="#contact" class="btn btn-gold">Start Your Journey</a>
+      <a href="#listings" class="btn btn-outline">See Recent Properties</a>
+    </div>
+    <p class="hero-dre">Licensed in California &bull; DRE #02056116 &bull; Keller Williams Realty</p>
   </section>
-
-  <!-- STATS -->
-  <div class="stats-bar" aria-label="Key performance statistics">
-    <div class="stat">
-      <span class="stat-number">9</span>
-      <span class="stat-label">Days Average to Sell</span>
-    </div>
-    <div class="stat">
-      <span class="stat-number">5%</span>
-      <span class="stat-label">More for My Sellers</span>
-    </div>
-    <div class="stat">
-      <span class="stat-number">7%</span>
-      <span class="stat-label">Less for My Buyers</span>
-    </div>
-    <div class="stat">
-      <span class="stat-number">10+</span>
-      <span class="stat-label">Years of Local Expertise</span>
-    </div>
-  </div>
 
   <!-- ABOUT -->
   <section id="about" aria-labelledby="about-heading">
