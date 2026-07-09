@@ -314,9 +314,19 @@
       background: var(--white);
       box-shadow: var(--shadow);
       transition: transform var(--transition);
+      position: relative;
     }
     .proof-item:hover { transform: scale(1.02); }
     .proof-item img { width: 100%; height: 200px; object-fit: cover; }
+    .proof-item--tall img { height: 416px; }
+    .proof-item--tall { grid-row: span 2; }
+    .proof-label {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(to top, rgba(0,51,136,0.85) 0%, transparent 100%);
+      color: #fff; font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 1rem 0.9rem 0.6rem;
+    }
     .reviews-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -600,31 +610,44 @@
     </div>
 
     <div class="proof-grid">
-      <div class="proof-item">
-        <img src="https://www.theelectricconnection.com/wp-content/uploads/2021/10/facebook-header.png" alt="The Electric Connection Facebook page header featuring our team and branding">
+      <div class="proof-item proof-item--tall">
+        <img src="https://www.theelectricconnection.com/wp-content/uploads/2023/06/omar-bg-2-update.jpg" alt="The Electric Connection certified electrician on a job in Los Angeles">
+        <div class="proof-label">Our Team</div>
       </div>
       <div class="proof-item">
-        <img src="https://www.theelectricconnection.com/wp-content/uploads/2021/10/twitter-header.png" alt="The Electric Connection Twitter header showcasing our Los Angeles electrical services">
+        <img src="https://www.theelectricconnection.com/wp-content/uploads/2021/12/ev-charger-install.png" alt="EV charger installation by The Electric Connection">
+        <div class="proof-label">EV Charger Install</div>
       </div>
       <div class="proof-item">
-        <img src="https://www.theelectricconnection.com/wp-content/uploads/2021/10/instagram-header.png" alt="The Electric Connection Instagram header highlighting recent electrical projects">
+        <img src="https://www.theelectricconnection.com/wp-content/uploads/2021/10/main-panel-upgrade-sm.jpg" alt="Electrical panel upgrade by The Electric Connection LA">
+        <div class="proof-label">Panel Upgrade</div>
       </div>
       <div class="proof-item">
-        <img src="https://www.theelectricconnection.com/wp-content/uploads/2021/10/linkedin-header.png" alt="The Electric Connection LinkedIn company page header">
+        <img src="https://www.theelectricconnection.com/wp-content/uploads/2026/04/panel-replacement.png" alt="Sub-panel replacement inside an apartment building in Los Angeles">
+        <div class="proof-label">Panel Replacement</div>
       </div>
-      <div class="proof-item" style="grid-column: span 2 / span 2;">
-        <img src="https://www.theelectricconnection.com/wp-content/uploads/2022/02/website-social.jpg" alt="The Electric Connection licensed Los Angeles electricians serving the community since 1979" style="height:200px;width:100%;object-fit:cover;">
+      <div class="proof-item">
+        <img src="https://www.theelectricconnection.com/wp-content/uploads/2026/02/Replace-NEMA-receptacle.jpg" alt="NEMA receptacle replacement in Van Nuys by The Electric Connection">
+        <div class="proof-label">Outlet Replacement</div>
+      </div>
+      <div class="proof-item">
+        <img src="https://www.theelectricconnection.com/wp-content/uploads/2026/02/Install-Surface-Mounted-Light.jpg" alt="Surface mounted light installation in Encino by The Electric Connection">
+        <div class="proof-label">Lighting Install</div>
+      </div>
+      <div class="proof-item">
+        <img src="https://www.theelectricconnection.com/wp-content/uploads/2021/12/house-rewire-outlet.jpg" alt="Electrician rewiring a residential outlet in Los Angeles">
+        <div class="proof-label">Residential Wiring</div>
+      </div>
+      <div class="proof-item">
+        <img src="https://www.theelectricconnection.com/wp-content/uploads/2026/02/replace-led-ballast-bypass-bulbs.jpg" alt="LED ballast bypass bulb replacement in Northridge">
+        <div class="proof-label">LED Retrofit</div>
+      </div>
+      <div class="proof-item">
+        <img src="https://www.theelectricconnection.com/wp-content/uploads/2021/12/tec-van-photo.png" alt="The Electric Connection branded service van serving greater Los Angeles">
+        <div class="proof-label">Our Fleet</div>
       </div>
     </div>
 
-    <div class="reviews-row">
-      <div class="proof-item">
-        <img src="https://www.theelectricconnection.com/wp-content/uploads/slider3/google-reviews.jpg" alt="Five-star Google reviews for The Electric Connection Los Angeles electrician">
-      </div>
-      <div class="proof-item">
-        <img src="https://www.theelectricconnection.com/wp-content/uploads/slider3/yelp-reviews.jpg" alt="Five-star Yelp reviews for The Electric Connection Los Angeles electrician">
-      </div>
-    </div>
 
     <div class="ratings-strip">
       <div class="rating-item">
