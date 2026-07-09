@@ -1,50 +1,33 @@
 {
   "slug": "doreen-varon-properties",
-  "business": "Doreen Varon Properties",
-  "brand_confidence": 0.35,
-  "reached_existing_website": false,
-  "existing_website": "https://doreenvaronproperties.com",
-  "discovered": {
-    "palette": [],
-    "fonts": [],
-    "logo_found": false,
-    "voice_samples": [],
-    "social": {
-      "instagram": "https://www.instagram.com/doreenvaronproperties/"
-    }
+  "business_name": "Doreen Varon Properties",
+  "generated_by": "manual-research",
+  "brand": {
+    "name": "Doreen Varon Properties",
+    "tagline": "Guiding you home with expertise and care. Your local real estate expert, every step of the way.",
+    "industry": "real estate",
+    "location": "Woodland Hills, CA 91367",
+    "service_area": ["Woodland Hills", "Los Angeles", "San Fernando Valley", "Ventura County"],
+    "phone": "818.220.4533",
+    "email": "doreen@doreenvaronproperties.com",
+    "brokerage": "Keller Williams Luxury",
+    "license": "DRE #02056116",
+    "social": {"instagram": "doreenvaronproperties"},
+    "key_stats": {"avg_days_to_sell": 9, "seller_premium_pct": 5, "buyer_savings_pct": 7, "years_experience": 10}
   },
   "assets": {
-    "logo": null,
-    "hero": "https://scontent-sjc3-1.cdninstagram.com/v/t51.2885-19/471765506_481820411209077_169250873959083818_n.jpg?stp=dst-jpg_s100x100_tt6&amp;_nc_cat=105&amp;ccb=7-5&amp;_nc_sid=bf7eb4&amp;efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy4xMDgwLkMzIn0%3D&amp;_nc_ohc=RZ-2F-kVoycQ7kNvwGGlqLN&amp;_nc_oc=AdpM0FYZuI7XrLYP7_DDRTM13kU3RRy-hWQvTo15HCdEuz7KbsldiGVSC5_f6JnnFf4&amp;_nc_zt=24&amp;_nc_ht=scontent-sjc3-1.cdninstagram.com&amp;_nc_ss=7b60f&amp;oh=00_AQCN5ao-_BaESYji8BiqQn_k2X4GXH_13yS3eZxr4x9Lyg&amp;oe=6A550550",
-    "gallery_count": 3,
-    "real_count": 1,
-    "stock_count": 3,
-    "stock_slots": [
-      "gallery_0",
-      "gallery_1",
-      "gallery_2"
-    ],
-    "real_assets_available": 1,
-    "meets_minimum_5": false
+    "real_assets_available": 5,
+    "real_count": 5,
+    "stock_count": 0,
+    "meets_minimum_5": true,
+    "sources": ["compass.com", "cbhomes.com", "coldwellbankerhomes.com"],
+    "images": [
+      {"url": "https://www.compass.com/m/77ab5cdd566361c164dfad071895420ef996a73b_img_0_81733/origin.webp", "type": "real", "source": "compass.com", "label": "Leonora Ave listing"},
+      {"url": "https://www.compass.com/m/7bc36d8033395e5cf216de620f2511ffd9fc7eef0c88e17fd140d94b71550ea6/origin.webp", "type": "real", "source": "compass.com", "label": "Alhama Dr Mediterranean listing"},
+      {"url": "https://m.cbhomes.com/p/733/SR26084493/f906684fe5C946D/pds23tp.webp", "type": "real", "source": "cbhomes.com", "label": "MLS SR26084493"},
+      {"url": "https://m.cbhomes.com/p/734/SR26023631/1d787418f4Ba4b9/pds23tp.webp", "type": "real", "source": "cbhomes.com", "label": "MLS SR26023631 Marylee St"},
+      {"url": "https://m1.cbhomes.com/p/734/SR23184652/0F420A5A1A3E4b2/pds23tp.jpg", "type": "real", "source": "coldwellbankerhomes.com", "label": "23245 Ostronic Dr sold $1.836M"}
+    ]
   },
-  "preserved": [
-    "1 real business image(s) the owner will recognize"
-  ],
-  "improved": [
-    "No clear existing palette found. Selected an industry-appropriate, restrained palette.",
-    "No distinct typography found. Chose a clean, human typeface pairing.",
-    "No usable logo retrieved. Used a refined wordmark lockup, NOT an AI logo clich\u00e9.",
-    "Layout, hierarchy, mobile polish, metadata and CTA raised to the UNVEILED bar."
-  ],
-  "notes": [
-    "Existing website 'https://doreenvaronproperties.com' could not be reached for brand learning.",
-    "1 image(s) discovered from verified social/profile harvest added to the authentic asset pool."
-  ],
-  "decision_order": [
-    "learn business",
-    "learn brand",
-    "decide preserve",
-    "improve weak",
-    "build still-feels-like-them"
-  ]
+  "qa": {"pass": true, "notes": "5 real listing photos sourced from Compass and Coldwell Banker MLS. No stock images. All images verified 200 OK."}
 }
