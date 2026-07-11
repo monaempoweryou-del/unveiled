@@ -1,0 +1,65 @@
+{
+  "slug": "royal-roofing-company",
+  "business": "Royal Roofing Company",
+  "brand_confidence": 1.0,
+  "reached_existing_website": true,
+  "existing_website": "https://royalroofing.com/",
+  "discovered": {
+    "palette": [
+      "#333333",
+      "#666666",
+      "#2ea3f2",
+      "#003388",
+      "#040266",
+      "#999999"
+    ],
+    "fonts": [
+      "Inter",
+      "eicons",
+      "ETmodules",
+      "ETmodules!important"
+    ],
+    "logo_found": true,
+    "voice_samples": [
+      "Best Roofing Contractor - Orange &amp; Los Angeles County, CA",
+      "Royal Roofing is your trusted roofing contractor serving Orange and Los Angeles County, CA for roof repairs, replacements, and inspections. Call us today!",
+      "The Roofing Contractor Southern California Property Owners have trusted since 1982.",
+      "Trusted by thousands of SoCal homeowners.",
+      "One roofer for every kind of property.",
+      "Four things you won't find at a corporate roofing company."
+    ],
+    "social": {
+      "facebook": "https://www.facebook.com/royalroofingcompany/",
+      "instagram": "https://www.instagram.com/royalroofingcompany/",
+      "linkedin": "https://www.linkedin.com/company/royal-roofing-company/",
+      "google": "https://maps.app.goo.gl/mUHDZcnGEi8X8N2Y9"
+    }
+  },
+  "assets": {
+    "logo": "https://royalroofing.com/wp-content/uploads/2025/05/logo.png",
+    "hero": "https://seal-sanjose.bbb.org/seals/blue-seal-293-61-whitetxt-bbb-28708.png",
+    "gallery_count": 8,
+    "real_count": 10,
+    "stock_count": 0,
+    "stock_slots": [],
+    "real_assets_available": 25,
+    "meets_minimum_5": true
+  },
+  "preserved": [
+    "Brand color palette (#333333, #666666, #2ea3f2, #003388)",
+    "Typography direction (Inter, eicons)",
+    "Existing logo (presented cleanly, not replaced)",
+    "10 real business image(s) the owner will recognize"
+  ],
+  "improved": [
+    "Layout, hierarchy, mobile polish, metadata and CTA raised to the UNVEILED bar."
+  ],
+  "notes": [],
+  "decision_order": [
+    "learn business",
+    "learn brand",
+    "decide preserve",
+    "improve weak",
+    "build still-feels-like-them"
+  ]
+}
