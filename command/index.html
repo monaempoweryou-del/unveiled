@@ -597,7 +597,7 @@ const esc=s=>(s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;
 const ago=d=>{if(!d)return'';const s=(Date.now()-new Date(d).getTime())/1000;if(s<60)return'just now';if(s<3600)return Math.floor(s/60)+'m ago';if(s<86400)return Math.floor(s/3600)+'h ago';return Math.floor(s/86400)+'d ago';};
 const clock=d=>new Date(d).toLocaleString([], {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
 const initials=n=>(n||'?').split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase();
-let LEADS=[], WQ=[], ACTS=[], BEAT=null, PKGS=[], DISC=[], CE=[], SIGNALS=[], BI=[], OSENDS=[], IMPROVE=[], FILTER=null, CURLEAD=null, PENDING_REPLACE=null;
+let LEADS=[], WQ=[], ACTS=[], BEAT=null, PKGS=[], DISC=[], CE=[], SIGNALS=[], BI=[], OSENDS=[], IMPROVE=[], OMSGS=[], EDLOG=[], FILTER=null, CURLEAD=null, PENDING_REPLACE=null;
 
 // ---- auth ----
 async function signIn(){const email=$('email').value.trim(),password=$('pass').value;$('gmsg').textContent='Signing in…';
@@ -635,7 +635,7 @@ function signal(l){
 
 async function load(){
   try{
-    [LEADS,WQ,ACTS,BEAT,PKGS,DISC,CE,SIGNALS,BI,OSENDS,IMPROVE]=await Promise.all([
+    [LEADS,WQ,ACTS,BEAT,PKGS,DISC,CE,SIGNALS,BI,OSENDS,IMPROVE,OMSGS,EDLOG]=await Promise.all([
       q('leads?select=*&order=updated_at.desc&limit=500'),
       q('work_queue?select=id,type,status,claimed_at,created_at,updated_at,payload,blocker_reason,result&order=updated_at.desc&limit=200'),
       q('activity_log?select=action,meta,created_at,entity_id&action=neq.heartbeat&order=created_at.desc&limit=400'),
@@ -647,9 +647,11 @@ async function load(){
       // Tolerate absence: if the table/columns aren't provisioned yet, fall back to [] so the view still renders.
       q('learning_signals?select=*&order=created_at.desc&limit=1000').catch(()=>[]),
       // Learning Center intelligence sources (Acquisition / Outreach / Factory Timeline)
-      q('business_intelligence?select=industry,city,state,stage,opportunity_score,business_potential,digital_opportunity,opportunity_reasons&limit=1000').catch(()=>[]),
-      q('outreach_sends?select=status,strategy,industry,sent_at,opened_at,replied_at&limit=1000').catch(()=>[]),
+      q('business_intelligence?select=id,business_name,industry,city,state,domain,contact,stage,opportunity_score,business_potential,digital_opportunity,opportunity_reasons,engaged_via,engaged_evidence,source,research,created_at,updated_at&order=updated_at.desc&limit=1000').catch(()=>[]),
+      q('outreach_sends?select=id,business_name,email,domain,status,strategy,industry,city,subject,positive,sent_at,opened_at,replied_at,qualified_at,token,created_at,updated_at&order=created_at.desc&limit=1000').catch(()=>[]),
       q('factory_improvements?select=*&order=happened_on.desc&limit=100').catch(()=>[]),
+      q('outreach_messages?select=id,send_id,lead_id,direction,channel,from_addr,to_addr,subject,body,status,occurred_at&order=occurred_at.desc&limit=800').catch(()=>[]),
+      q('email_delivery_log?select=recipient,status,sent_at&order=sent_at.desc&limit=1000').catch(()=>[]),
     ]);
   }catch(e){ console.error('load failed:',e); toast('Could not load your company data. Pull to refresh in a moment.'); }
 }
@@ -2236,6 +2238,47 @@ function leadDossier(l){
       </div>
     </div></div>`;
 }
+// ===== Outreach 360: the complete per-lead source of truth =====
+function o360(bi){
+  var email=((bi.contact||{}).email||'').toLowerCase();
+  var send=email?OSENDS.find(function(s){return (s.email||'').toLowerCase()===email;}):null;
+  var del=email?EDLOG.find(function(d){return (d.recipient||'').toLowerCase()===email;}):null;
+  var lead=email?LEADS.find(function(l){return (l.email||'').toLowerCase()===email;}):null;
+  var msgs=OMSGS.filter(function(m){return (send&&m.send_id===send.id)||(lead&&m.lead_id===lead.id);}).sort(function(a,b){return new Date(a.occurred_at||0)-new Date(b.occurred_at||0);});
+  var build=lead?activeBuildJob(lead.id):null;
+  var st=(bi.stage||'').toLowerCase();
+  var delivered=!!(del&&/deliver|sent/i.test(del.status||''))||!!(send&&['sent','opened','replied','qualified'].indexOf(send.status)>=0);
+  var opened=!!(send&&(send.opened_at||['opened','replied'].indexOf(send.status)>=0));
+  var replied=!!(send&&(send.replied_at||send.status==='replied'||send.positive));
+  var engaged=st==='engaged'||st==='in_production'||st==='customer'||!!(send&&send.positive);
+  var intent=engaged?'positive':(replied?'neutral':((send&&['failed','bounced'].indexOf(send.status)>=0)?'negative':(send?'pending':'—')));
+  var prod=build?('Building · '+(build.status||'')):(lead?(lead.status||'—'):(engaged?'Handoff queued':'—'));
+  var times=[bi.updated_at,send&&(send.replied_at||send.opened_at||send.sent_at||send.created_at),lead&&lead.updated_at,build&&(build.updated_at||build.created_at)].filter(Boolean).map(function(t){return new Date(t).getTime();});
+  var last=times.length?Math.max.apply(null,times):new Date(bi.created_at||0).getTime();
+  var next=(build&&build.status==='running')?'Building preview':(engaged?'Preview build → reveal':(replied?'Reply received → advancing':(opened?'Opened, awaiting reply':(delivered?'Delivered, awaiting open':(send?'Sent, awaiting delivery':(st==='qualified'?'Queued for next outreach batch':(st==='discovered'?'Enrich → qualify':'—')))))));
+  var auto=(build&&build.status==='running')?'Production worker building':(engaged&&!build?'Handoff → build queued':(st==='qualified'&&!send?'Outreach sender (queued)':(st==='discovered'?'Enrichment / qualification':'')));
+  var err=(build&&build.blocker_reason)||(bi.disqualification_reason)||'';
+  return {bi:bi,email:email,send:send,lead:lead,msgs:msgs,build:build,stage:bi.stage||'discovered',score:bi.opportunity_score||0,discovered:bi.created_at,delivered:delivered,opened:opened,replied:replied,engaged:engaged,intent:intent,prod:prod,last:last,next:next,auto:auto,err:err};
+}
+function o360Intent(i){ var c={positive:'good',neutral:'warn',negative:'bad',pending:'mut','—':'mut'}[i]||'mut'; return '<span class="o-pill o-'+c+'">'+esc(i)+'</span>'; }
+function o360Tick(on){ return on?'<span class="o-yes">✓</span>':'<span class="o-no">·</span>'; }
+function o360Kv(k,v){ return '<div class="o-kv"><span>'+esc(k)+'</span><b>'+esc(String(v==null||v===''?'—':v))+'</b></div>'; }
+function o360Detail(d){
+  var conv=d.msgs.length?d.msgs.map(function(m){var out=m.direction==='outbound';return '<div class="o-msg '+(out?'out':'in')+'"><span class="o-dir">'+(out?'UNVEILED':esc(m.from_addr||'them'))+'</span><span class="o-bd">'+esc((m.body||m.subject||'').slice(0,240))+'</span><span class="o-tm">'+ago(m.occurred_at)+'</span></div>';}).join(''):(d.send?'<div class="o-msg out"><span class="o-dir">UNVEILED</span><span class="o-bd">'+esc(d.send.subject||'outreach sent')+'</span><span class="o-tm">'+ago(d.send.sent_at||d.send.created_at)+'</span></div>':'<div class="o-empty">No messages logged yet.</div>');
+  return '<div class="o-grid">'+o360Kv('Discovered',d.discovered?ago(d.discovered):'—')+o360Kv('Qualification',(d.score||0)+' / 100')+o360Kv('Outreach',d.send?(d.send.subject||d.send.status):'not yet sent')+o360Kv('Delivery',d.delivered?'delivered':(d.send?'pending':'—'))+o360Kv('Opened',d.opened?'yes':'no')+o360Kv('Replied',d.replied?'yes':'no')+o360Kv('Intent',d.intent)+o360Kv('Stage',d.stage)+o360Kv('Production',d.prod)+o360Kv('Automation',d.auto||'idle')+o360Kv('Next action',d.next)+(d.err?o360Kv('⚠ Blocker',d.err):'')+'</div><div class="o-conv"><div class="o-convh">Conversation</div>'+conv+'</div>';
+}
+function toggleO360(el){ el.classList.toggle('open'); }
+function renderOutreachFunnel(){
+  var rows=(BI||[]).filter(function(b){var s=(b.stage||'').toLowerCase();return s==='outreach_sent'||s==='engaged'||s==='in_production'||s==='customer'||((b.contact||{}).email&&OSENDS.some(function(o){return (o.email||'').toLowerCase()===((b.contact||{}).email||'').toLowerCase();}));});
+  var data=rows.map(o360).sort(function(a,b){return b.last-a.last;});
+  if(!data.length) return '';
+  var f={sent:data.length,delivered:data.filter(function(d){return d.delivered;}).length,opened:data.filter(function(d){return d.opened;}).length,replied:data.filter(function(d){return d.replied;}).length,engaged:data.filter(function(d){return d.engaged;}).length};
+  var funnel='<div class="of-funnel"><div class="of-fc"><b>'+f.sent+'</b><span>Contacted</span></div><div class="of-fc"><b>'+f.delivered+'</b><span>Delivered</span></div><div class="of-fc"><b>'+f.opened+'</b><span>Opened</span></div><div class="of-fc"><b>'+f.replied+'</b><span>Replied</span></div><div class="of-fc good"><b>'+f.engaged+'</b><span>Engaged</span></div></div>';
+  var rowsHtml=data.map(function(d){return '<div class="of-row" onclick="toggleO360(this)"><div class="of-cells"><div class="of-nm"><b>'+esc(d.bi.business_name||'—')+'</b><span>'+esc(d.bi.industry||'')+(d.bi.city?' · '+esc(d.bi.city):'')+'</span></div><div class="of-sc">'+(d.score||0)+'</div><div class="of-stg">'+esc(d.stage)+'</div><div class="of-t">'+o360Tick(d.delivered)+'</div><div class="of-t">'+o360Tick(d.opened)+'</div><div class="of-t">'+o360Tick(d.replied)+'</div><div class="of-int">'+o360Intent(d.intent)+'</div><div class="of-nx">'+esc(d.next)+'</div><div class="of-la">'+ago(new Date(d.last).toISOString())+'</div></div><div class="of-detail">'+o360Detail(d)+'</div></div>';}).join('');
+  return OUTREACH_CSS+'<div class="of-wrap"><div class="of-head"><h2>Outreach funnel</h2><p>Every business in outreach and beyond — the complete source of truth. Tap any row for its full lifecycle and conversation.</p></div>'+funnel+'<div class="of-tblhead"><span>Business</span><span>Score</span><span>Stage</span><span>Del</span><span>Open</span><span>Reply</span><span>Intent</span><span>Next action</span><span>Last</span></div>'+rowsHtml+'</div>';
+}
+var OUTREACH_CSS='<style>.of-wrap{margin:0 0 26px}.of-head h2{font-size:19px;margin:0 0 3px}.of-head p{color:var(--mut,#8b83a6);font-size:13px;margin:0 0 14px}.of-funnel{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}.of-fc{flex:1;min-width:82px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px 10px;text-align:center}.of-fc b{display:block;font-size:22px;font-weight:800}.of-fc span{font-size:11px;color:var(--mut,#8b83a6)}.of-fc.good b{color:#34d399}.of-tblhead,.of-cells{display:grid;grid-template-columns:2.4fr .5fr 1.1fr .5fr .5fr .5fr .9fr 1.8fr .8fr;gap:8px;align-items:center}.of-tblhead{padding:6px 12px;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut,#8b83a6)}.of-row{border:1px solid rgba(255,255,255,.07);border-radius:11px;margin-bottom:7px;background:rgba(255,255,255,.02);cursor:pointer;overflow:hidden}.of-row:hover{background:rgba(124,77,255,.07)}.of-cells{padding:11px 12px;font-size:13px}.of-nm b{display:block;font-weight:650;font-size:13.5px}.of-nm span{font-size:11px;color:var(--mut,#8b83a6)}.of-sc{font-weight:700;font-variant-numeric:tabular-nums}.of-stg{font-size:11.5px;color:#c9c2e6}.of-t{text-align:center}.o-yes{color:#34d399;font-weight:800}.o-no{color:#6b6386}.o-pill{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:999px}.o-good{background:rgba(52,211,153,.16);color:#34d399}.o-warn{background:rgba(251,191,36,.16);color:#fbbf24}.o-bad{background:rgba(251,113,133,.16);color:#fb7185}.o-mut{background:rgba(139,131,166,.16);color:#a9a3c2}.of-nx{font-size:12px;color:#c9c2e6}.of-la{font-size:11.5px;color:var(--mut,#8b83a6)}.of-detail{max-height:0;opacity:0;transition:max-height .25s,opacity .2s;padding:0 14px}.of-row.open .of-detail{max-height:900px;opacity:1;padding:4px 14px 16px;border-top:1px solid rgba(255,255,255,.07)}.o-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:12px 0}.o-kv{background:rgba(255,255,255,.03);border-radius:9px;padding:8px 10px}.o-kv span{display:block;font-size:10.5px;color:var(--mut,#8b83a6);text-transform:uppercase;letter-spacing:.05em}.o-kv b{font-size:13px;font-weight:600}.o-conv{margin-top:8px}.o-convh{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut,#8b83a6);margin-bottom:6px}.o-msg{display:flex;gap:8px;align-items:baseline;padding:7px 10px;border-radius:9px;margin-bottom:5px;font-size:12.5px}.o-msg.out{background:rgba(124,77,255,.1)}.o-msg.in{background:rgba(52,211,153,.1)}.o-dir{font-weight:700;font-size:10.5px;flex:none;min-width:70px}.o-bd{flex:1;color:#d8d3ee}.o-tm{font-size:10.5px;color:var(--mut,#8b83a6);flex:none}.o-empty{color:var(--mut,#8b83a6);font-size:12px}@media(max-width:820px){.of-tblhead{display:none}.of-cells{grid-template-columns:1.6fr .5fr .5fr .5fr .5fr;grid-template-areas:"nm sc del open reply"}.of-nm{grid-area:nm}.of-stg,.of-int,.of-nx,.of-la{display:none}}</style>';
+
 function renderLeads(){
   var list=(LEADS||[]).filter(function(l){return dept(l)==='leads';}).sort(function(a,b){
     var af=a.status==='FROZEN'?1:0, bf=b.status==='FROZEN'?1:0; if(af!==bf) return af-bf;
@@ -2243,9 +2286,9 @@ function renderLeads(){
     return oppScore(b).pct-oppScore(a).pct; });
   var news=list.filter(function(l){return l.status!=='FROZEN';}).length, frozen=list.length-news;
   var sbb=$('sbb-leads'); if(sbb){ if(news){sbb.textContent=news;sbb.classList.add('show');} else sbb.classList.remove('show'); }
-  $('v-leads').innerHTML=LEADS_CSS+`
+  $('v-leads').innerHTML=LEADS_CSS+(function(){try{return renderOutreachFunnel();}catch(e){console.error('o360 funnel error',e);return '';}})()+`
    <div class="ldept">
-    <div class="ldhead"><div><h1>Leads</h1><p>The qualification queue. Decide who deserves production — every decision trains the system on what we build and what we decline.</p></div>
+    <div class="ldhead"><div><h1>Qualification queue</h1><p>New inbound waiting for a decision. The full outreach funnel — every lead's discovery, delivery, opens, replies, stage, conversation and production — is the source of truth above.</p></div>
       <div class="ldcount"><span>${news}</span> to qualify${frozen?` · <span class="fz">${frozen} frozen</span>`:''}</div></div>
     ${list.length? list.map(leadDossier).join('') : '<div class="ldempty">No leads waiting for qualification. New inbound opportunities land here first.</div>'}
    </div>`;
