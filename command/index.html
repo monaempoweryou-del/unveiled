@@ -2498,9 +2498,12 @@ function renderCompany(key){
   H.push('<div class="cp-head"><div class="ava">'+esc(initials(C.name))+'</div><div><h1>'+esc(C.name)+'</h1>'+(metaBits.length?'<div class="meta">'+metaBits.map(esc).join(' · ')+'</div>':'')+'</div></div>');
 
   // depth ribbon + fullness + plain-language line
+  // Monotonic fill: a company at Preview necessarily passed the earlier stages
+  // (an inbound lead may skip discovery/outreach), so light everything up to the
+  // furthest stage reached. No holes. Data completeness is shown by the fill bar.
   var ribbon='';
-  STAGES.forEach(function(s,i){ if(i>0) ribbon+='<div class="cp-seg'+(STAGES[i-1][1]&&s[1]?' on':'')+'"></div>';
-    ribbon+='<div class="cp-st '+(i===cur?'cur':(s[1]?'on':''))+'"><span class="d"></span><span class="l">'+s[0]+'</span></div>'; });
+  STAGES.forEach(function(s,i){ if(i>0) ribbon+='<div class="cp-seg'+(i<=cur?' on':'')+'"></div>';
+    ribbon+='<div class="cp-st '+(i===cur?'cur':(i<cur?'on':''))+'"><span class="d"></span><span class="l">'+s[0]+'</span></div>'; });
   H.push('<div class="cp-depthcard"><div class="cp-depth">'+ribbon+'</div>'+
     '<div class="cp-fillrow"><div class="cp-fill"><i style="width:'+pct+'%"></i></div><div class="cp-filln">'+known+' of '+total+' known</div></div>'+
     '<div class="cp-line"><b>'+LINES[cur]+'</b></div></div>');
@@ -2588,7 +2591,7 @@ function renderCompany(key){
       H.push('<div class="wcard"><h3>Website assets <span class="soon" id="assetcap"></span></h3><div id="assetmgr"><div class="soonbox">Loading asset library…</div></div></div>');
       H.push(revisionsHTML(lead.id));
     }
-    if(isCustomer||lead.package||lead.onboarding) H.push(onboardingHTML(lead));
+    if(isCustomer||lead.package||(lead.onboarding&&Object.keys(lead.onboarding).length)) H.push(onboardingHTML(lead));
   }
 
   // contact (shown once we know how to reach them)
@@ -2605,9 +2608,8 @@ function renderCompany(key){
   if(lead) H.push('<div class="wcard"><h3>Notes</h3><textarea id="notes" placeholder="Private notes on this company…">'+esc(lead.cc_notes||'')+'</textarea><div class="savebar"><button class="btn" onclick="saveNotes(\''+lead.id+'\',this)">Save note</button><span class="ok" id="noteok"></span></div></div>');
 
   // not-yet-reached stages: compact inactive markers, never big empty cards
-  var futures=[];
-  if(!researched) futures.push('🔎 Research'); if(!contacted) futures.push('✉ Outreach'); if(!engaged) futures.push('💬 Reply');
-  if(!built) futures.push('🏭 Production'); if(!previewed) futures.push('👁 Preview'); if(!isCustomer) futures.push('🏆 Customer');
+  var FUT_ICON={Researched:'🔎 Research',Contacted:'✉ Outreach',Replied:'💬 Reply',Building:'🏭 Production',Preview:'👁 Preview',Customer:'🏆 Customer'};
+  var futures=STAGES.slice(cur+1).map(function(s){return FUT_ICON[s[0]]||s[0];});
   if(futures.length) H.push('<div class="wcard"><h3>Not yet</h3><div class="cp-fut">'+futures.map(function(f){return '<span class="cp-futc">'+f+'</span>';}).join('')+'</div><div class="soonbox" style="margin-top:9px">These open automatically as the company moves through the machine.</div></div>');
 
   $('ws').innerHTML=H.join('');
