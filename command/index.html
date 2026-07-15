@@ -2420,6 +2420,9 @@ function custUploadsHTML(l){
 // ===================================================================
 function _norm(s){ return (s==null?'':String(s)).toLowerCase().replace(/[^a-z0-9]+/g,''); }
 function _domOf(u){ return (u||'').replace(/^https?:\/\//,'').replace(/^www\./,'').split('/')[0].toLowerCase(); }
+// Real-content check: empty strings, [], and {} count as "no data" so a stage
+// never lights up on a hollow object (prevents stage/label/data mismatch).
+function _has(v){ if(v==null) return false; if(typeof v==='string') return v.trim()!==''; if(Array.isArray(v)) return v.length>0; if(typeof v==='object') return Object.keys(v).some(function(k){return _has(v[k]);}); return !!v; }
 function cpCell(k,v){ return '<div class="cp-cell"><span>'+esc(k)+'</span><b>'+esc(v==null||v===''?'—':String(v))+'</b></div>'; }
 function cpLink(u,label){ var h=/^https?:/i.test(u)?u:('https://'+u); return '<a class="btn" href="'+esc(h)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'+esc(label)+' ↗</a>'; }
 function fmtDate(d){ if(!d)return '—'; try{return new Date(d).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})+' · '+ago(d);}catch(e){return ago(d);} }
@@ -2469,7 +2472,8 @@ function renderCompany(key){
   // ---- depth flags: how far through the machine ----
   var built=!!(lead&&(lead.preview_url||['BUILDING','QA','PREVIEW READY','PREVIEW DELIVERED','APPROVED'].indexOf(lead.status)>=0||C.jobs.some(function(j){return j.type==='build_website';})));
   var previewed=!!(lead&&(lead.preview_url||lead.reveal_sent_at||['PREVIEW READY','PREVIEW DELIVERED','APPROVED'].indexOf(lead.status)>=0));
-  var researched=!!(bi&&((bi.opportunity_score||0)>0||bi.research||bi.business_potential||bi.digital_opportunity))||!!(C.disc&&C.disc.report);
+  var researchObj=(bi&&bi.research); if(typeof researchObj==='string'){try{researchObj=JSON.parse(researchObj);}catch(e){researchObj=null;}}
+  var researched=!!(bi&&((bi.opportunity_score||0)>0)) || _has(bi&&bi.business_potential) || _has(bi&&bi.digital_opportunity) || _has(bi&&bi.opportunity_reasons) || _has(researchObj&&researchObj.weakness_observed) || _has(researchObj&&researchObj.summary) || _has(researchObj&&researchObj.services) || _has(C.disc&&C.disc.report) || (bi&&['qualified','analyzed','verified','outreach_ready'].indexOf((bi.stage||'').toLowerCase())>=0);
   var engaged=replied||(bi&&['engaged','in_production','customer'].indexOf((bi.stage||'').toLowerCase())>=0)||!!(lead&&typeof highIntent==='function'&&highIntent(lead));
   var isCustomer=!!(lead&&(lead.status==='APPROVED'||lead.package||(lead.onboarding&&Object.keys(lead.onboarding||{}).length)));
 
@@ -2523,22 +2527,25 @@ function renderCompany(key){
     '</div></div>');
 
   // business research & opportunity (fills in as attention is invested)
+  // links we found — surfaced even for early leads (source links Moe asked for)
+  var research=researchObj||{};
+  var links=[];
+  if(lead&&lead.website) links.push(cpLink(lead.website,'Current website')); else if(bi&&bi.domain) links.push(cpLink(bi.domain,'Current website'));
+  if(bi&&(bi.contact||{}).yelp) links.push(cpLink(bi.contact.yelp,'Yelp profile'));
+  var sp=(lead&&lead.social_profiles)||{}; if(typeof sp==='string'){try{sp=JSON.parse(sp);}catch(e){sp={};}}
+  ['facebook','instagram','linkedin','google'].forEach(function(k){ if(sp&&sp[k]&&typeof sp[k]==='string') links.push(cpLink(sp[k],k.charAt(0).toUpperCase()+k.slice(1))); });
   if(researched){
     var reasons=(bi&&bi.opportunity_reasons)||[];
-    var research=(bi&&bi.research)||{}; if(typeof research==='string'){try{research=JSON.parse(research);}catch(e){research={};}}
     var report=(C.disc&&C.disc.report)||{};
     var weakness=research.weakness_observed||report.weakness||'';
     var summary=report.summary||report.brand_summary||research.summary||'';
-    var links=[];
-    if(lead&&lead.website) links.push(cpLink(lead.website,'Current website')); else if(bi&&bi.domain) links.push(cpLink(bi.domain,'Current website'));
-    if(bi&&(bi.contact||{}).yelp) links.push(cpLink(bi.contact.yelp,'Yelp profile'));
-    var sp=(lead&&lead.social_profiles)||{}; if(typeof sp==='string'){try{sp=JSON.parse(sp);}catch(e){sp={};}}
-    ['facebook','instagram','linkedin','google'].forEach(function(k){ if(sp&&sp[k]&&typeof sp[k]==='string') links.push(cpLink(sp[k],k.charAt(0).toUpperCase()+k.slice(1))); });
     H.push('<div class="wcard"><h3>Business research &amp; opportunity'+(score?' <span class="soon">'+score+'/100</span>':'')+'</h3>'+
       (summary?'<div class="soonbox" style="margin-bottom:11px">'+esc(summary)+'</div>':'')+
-      '<div class="cp-grid">'+(bi&&bi.business_potential?cpCell('Business potential',bi.business_potential):'')+(bi&&bi.digital_opportunity?cpCell('Digital opportunity',bi.digital_opportunity):'')+(weakness?cpCell('What is weak now',weakness):'')+'</div>'+
+      '<div class="cp-grid">'+(_has(bi&&bi.business_potential)?cpCell('Business potential',bi.business_potential):'')+(_has(bi&&bi.digital_opportunity)?cpCell('Digital opportunity',bi.digital_opportunity):'')+(weakness?cpCell('What is weak now',weakness):'')+'</div>'+
       (reasons&&reasons.length?'<div class="cp-reasons">'+reasons.slice(0,8).map(function(r){return '<span class="cp-chip">'+esc(r)+'</span>';}).join('')+'</div>':'')+
       (links.length?'<div class="acts" style="margin-top:12px">'+links.join('')+'</div>':'')+'</div>');
+  } else if(links.length){
+    H.push('<div class="wcard"><h3>Links we found</h3><div class="acts">'+links.join('')+'</div></div>');
   }
 
   // outreach & conversation
