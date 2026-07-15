@@ -2436,6 +2436,7 @@ function resolveCompany(key){
   if(!lead && nk) lead=LEADS.find(function(l){return _norm(l.business_name)===nk;})||null;
   if(lead) name=lead.business_name||name;
   var bi=nk?(BI.find(function(b){return _norm(b.business_name)===nk;})||null):null;
+  if(!lead && bi) name=bi.business_name||name;   // canonical display name, not the typed variant
   var doms={}, emails={};
   if(lead){ if(lead.website)doms[_domOf(lead.website)]=1; if(lead.email){emails[lead.email.toLowerCase()]=1; doms[(lead.email.split('@')[1]||'').toLowerCase()]=1;} }
   if(bi){ if(bi.domain)doms[bi.domain.toLowerCase()]=1; var be=(bi.contact||{}).email; if(be){emails[be.toLowerCase()]=1; doms[(be.split('@')[1]||'').toLowerCase()]=1;} }
@@ -2446,6 +2447,7 @@ function resolveCompany(key){
     if(s.domain && doms[s.domain.toLowerCase()]) return true;
     return false;
   });
+  if(!lead && !bi && sends.length) name=sends[0].business_name||name;   // canonical from outreach when no lead/bi
   var sendIds={}; sends.forEach(function(s){sendIds[s.id]=1;});
   var msgs=OMSGS.filter(function(m){return (m.send_id&&sendIds[m.send_id])||(lead&&m.lead_id===lead.id);})
     .sort(function(a,b){return new Date(a.occurred_at||0)-new Date(b.occurred_at||0);});
