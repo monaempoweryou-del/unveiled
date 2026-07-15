@@ -1204,6 +1204,43 @@ function miniRing(pct,color){
 
 // HOME = the reference layout, wired to real data. Navigation, not execution:
 // every card opens the customer/lead page; no approve/promote/revise buttons here.
+// ===== Machine status: the company's live operational view (surfaces the backend) =====
+function machineStatus(){
+  var now=Date.now(), acts=ACTS||[], os=OSENDS||[], bi=BI||[];
+  var disc=acts.filter(function(a){return a.action==='discovery_run';})[0];
+  var discAdded=(disc&&disc.meta&&(disc.meta.inserted||0))||0;
+  var discAge=disc?((now-new Date(disc.created_at).getTime())/3600000):null;
+  var today=new Date(); today.setHours(0,0,0,0); var t=today.getTime();
+  var sentToday=os.filter(function(s){return new Date(s.created_at||s.sent_at||0).getTime()>=t;}).length;
+  var contacted=os.length;
+  var delivered=os.filter(function(s){return ['sent','opened','replied','qualified'].indexOf(s.status)>=0;}).length;
+  var opened=os.filter(function(s){return s.opened_at||['opened','replied'].indexOf(s.status)>=0;}).length;
+  var replied=os.filter(function(s){return s.replied_at||s.status==='replied'||s.positive;}).length;
+  var lastReply=acts.filter(function(a){return a.action==='inbound_reply';})[0];
+  var stg=function(s){return bi.filter(function(b){return (b.stage||'')===s;}).length;};
+  var engaged=stg('engaged');
+  var building=(WQ||[]).filter(function(j){return j.type==='build_website'&&(j.status==='pending'||j.status==='running');}).length;
+  var beatAge=BEAT?((now-new Date(BEAT.created_at).getTime())/60000):null;
+  return {discAdded:discAdded,discAge:discAge,sentToday:sentToday,contacted:contacted,delivered:delivered,
+    opened:opened,replied:replied,lastReply:lastReply,engaged:engaged,building:building,beatAge:beatAge};
+}
+function renderMachineStatus(){
+  var m=machineStatus();
+  var discOk=m.discAge!=null&&m.discAge<8, workerOk=m.beatAge!=null&&m.beatAge<20;
+  function auto(name,val,sub,ok){return '<div class="ms-auto '+(ok?'ok':'warn')+'"><div class="ms-dot"></div><div><div class="ms-an">'+name+'</div><div class="ms-av">'+val+'</div><div class="ms-al">'+sub+'</div></div></div>';}
+  function fc(n,l,good){return '<div class="ms-fc'+(good?' good':'')+'"><b>'+n+'</b><span>'+l+'</span></div>';}
+  return MS_CSS+'<div class="ms-wrap"><div class="ms-head"><span class="ms-live"></span><h2>Machine status</h2><span class="ms-sub">what\'s running automatically, right now</span></div>'+
+    '<div class="ms-autos">'+
+      auto('Discovery', m.discAdded+' found', m.discAge!=null?('ran '+Math.round(m.discAge)+'h ago · cloud'):'cloud, hourly', discOk)+
+      auto('Outreach', m.sentToday+' sent today', 'cloud sender, capped', true)+
+      auto('Reply capture', m.lastReply?'live':'armed', 'Resend inbound · 24/7', true)+
+      auto('Production', m.building+' building', m.beatAge!=null?('worker '+Math.round(m.beatAge)+'m ago'):'worker', workerOk)+
+    '</div>'+
+    '<div class="ms-funnel">'+fc(m.contacted,'Contacted')+fc(m.delivered,'Delivered')+fc(m.opened,'Opened')+fc(m.replied,'Replied')+fc(m.engaged,'Engaged',true)+'</div>'+
+  '</div>';
+}
+var MS_CSS='<style>.ms-wrap{background:linear-gradient(180deg,rgba(124,77,255,.08),rgba(124,77,255,.02));border:1px solid rgba(124,77,255,.18);border-radius:16px;padding:16px 16px 14px;margin:14px 0}.ms-head{display:flex;align-items:center;gap:9px;margin-bottom:13px}.ms-head h2{font-size:15px;margin:0;font-weight:750}.ms-sub{color:var(--mut,#8b83a6);font-size:12px;margin-left:auto}.ms-live{width:8px;height:8px;border-radius:50%;background:#34d399;box-shadow:0 0 0 0 rgba(52,211,153,.6);animation:mspulse 2s infinite}@keyframes mspulse{0%{box-shadow:0 0 0 0 rgba(52,211,153,.5)}70%{box-shadow:0 0 0 7px rgba(52,211,153,0)}100%{box-shadow:0 0 0 0 rgba(52,211,153,0)}}.ms-autos{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:12px}.ms-auto{display:flex;gap:9px;align-items:flex-start;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:11px;padding:11px}.ms-dot{width:8px;height:8px;border-radius:50%;flex:none;margin-top:4px}.ms-auto.ok .ms-dot{background:#34d399}.ms-auto.warn .ms-dot{background:#fbbf24}.ms-an{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut,#8b83a6);font-weight:700}.ms-av{font-size:15px;font-weight:750;margin:1px 0}.ms-al{font-size:11px;color:var(--mut,#8b83a6)}.ms-funnel{display:flex;gap:6px}.ms-fc{flex:1;text-align:center;background:rgba(255,255,255,.03);border-radius:9px;padding:9px 4px}.ms-fc b{display:block;font-size:19px;font-weight:800;font-variant-numeric:tabular-nums}.ms-fc span{font-size:10.5px;color:var(--mut,#8b83a6)}.ms-fc.good b{color:#34d399}@media(max-width:760px){.ms-autos{grid-template-columns:repeat(2,1fr)}}</style>';
+
 function renderExec(){
   const c=counts(), opps=oppList(), approvals=c.appr, nl=newSince();
   const dc=(typeof deptCounts==='function'?deptCounts():{leads:0,production:0,pending:0,active:0});
@@ -1238,6 +1275,7 @@ function renderExec(){
   $('v-exec').innerHTML=EXEC_CSS+`
    <div class="execv2">
     <div class="v2top"><h1>Good ${dayPart()}, Moe.</h1><p>Here's what happened while you were away.</p></div>
+    ${(function(){try{return renderMachineStatus();}catch(e){console.error('machine status',e);return '';}})()}
     ${celebrate}
     <div class="v2depts">
       <a class="v2dep leads" onclick="go('leads')"><span class="darr">›</span><div class="dn">${c.newlead.length}</div><div class="dl">Leads</div><div class="dsub">waiting for qualification</div></a>
