@@ -19,7 +19,7 @@ Optional:
   GITHUB_REPO (default monaempoweryou-del/unveiled), MODEL (default claude-sonnet-4-6),
   BUILD_POLL_INTERVAL (default 20), WORKER_ID (default railway-builder-1)
 """
-import os, sys, time, json, uuid, base64, re, datetime, traceback, unicodedata, urllib.request, urllib.error
+import os, sys, time, json, uuid, base64, re, datetime, traceback, unicodedata, urllib.request, urllib.error, urllib.parse
 import brand_profile   # LS-BRAND-PRESERVE + LS-ASSET-STRUCTURE: learn the brand before building
 import brand_research  # LS-BRAND-RESEARCH: resolve loose identifiers -> verified profiles first
 
@@ -546,11 +546,13 @@ def process(job):
         except Exception as _le:
             log_line(f"non-fatal activity log skipped: {_le!r}")
 
+        html = ensure_absolute_meta(html, slug)
         ok, issues = qa(html, report)
         if not ok:
             # one corrective retry
             log_line(f"QA failed: {issues}; retrying once")
             html, report = generate_site(lead_ctx, slug)
+            html = ensure_absolute_meta(html, slug)
             ok, issues = qa(html, report)
         if not ok:
             finish_job(job["id"], "blocked", blocker=f"QA failed: {issues}")
@@ -664,6 +666,28 @@ def ensure_canonical(html, slug):
     return html
 
 
+def ensure_absolute_meta(html, slug):
+    """QA (locked LS standard) requires og:image and twitter:image to be absolute
+    https URLs; the LLM occasionally emits a relative or http path, which blocked
+    an otherwise-finished build (South Bay Door, 2026-07-15). Normalize both social
+    image tags to absolute https under the preview's canonical base BEFORE QA, so a
+    single meta tag can never strand a finished site again. Mirrors QA's own regex,
+    so anything QA would flag is fixed by construction."""
+    base = f"https://unveiled.pro/previews/{slug}/"
+    def _abs(u):
+        u = (u or "").strip()
+        if u.startswith("https://"): return u
+        if u.startswith("http://"):  return "https://" + u[len("http://"):]
+        if u.startswith("//"):       return "https:" + u
+        if u and not u.startswith("data:"):
+            j = urllib.parse.urljoin(base, u)
+            if j.startswith("https://"): return j
+        return base  # empty / data: / unresolvable -> canonical https keeps the build shippable
+    def _fix(m):
+        return f'{m.group(1)}"{m.group(2)}content="{_abs(m.group(3))}"'
+    return re.sub(r'(og:image|twitter:image)"([^>]*?)content="([^"]*)"', _fix, html)
+
+
 def process_revision(job):
     payload = job.get("payload") or {}
     lead_id = payload.get("lead_id")
@@ -717,6 +741,7 @@ def process_revision(job):
             html = apply_edit(html, instruction)
 
         html = ensure_canonical(html, slug)
+        html = ensure_absolute_meta(html, slug)
         ok, issues = qa(html)
         if not ok:
             finish_job(job["id"], "blocked", blocker=f"QA failed: {issues}")
