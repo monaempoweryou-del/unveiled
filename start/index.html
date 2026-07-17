@@ -899,6 +899,11 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
     sp.engagement = { score:eng, tier:tier, signals:{ website:!!val('url'), socials:collectSocial().length, logo:!!UPLOADS.logo, hero:!!UPLOADS.hero, gallery:gallN, notes:!!story } };
     // Analytics = learning. Capture what's cheap now (device/source/referrer); funnel hesitation needs the event pipeline.
     try{ sp.meta = {
+      // preserve the step-1 delivery routing: whoever can't be emailed must stay flagged,
+      // otherwise the one person we can't reach is the one who quietly gets lost.
+      contact_method: (typeof CMETHOD!=='undefined'?CMETHOD:'email'),
+      delivery_channel: (email ? 'email' : (typeof CMETHOD!=='undefined'?CMETHOD:'email')),
+      needs_manual_delivery: (!email && !!val('phone')),
       device: (window.matchMedia && window.matchMedia('(max-width:560px)').matches)?'mobile':'desktop',
       viewport: (window.innerWidth||0)+'x'+(window.innerHeight||0),
       src: SOURCE, campaign: CAMPAIGN||null, lang: LANG,
@@ -909,7 +914,8 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
       id: LEADID, business_name: biz, contact_name: val('name')||null, email: email,
       phone: val('phone')||null, website: val('url')||null,
       social_profiles: sp,
-      about: story||null, requirements: story||null, additional_notes: 'Engagement: '+eng+' ('+tier+' intent)',
+      about: story||null, requirements: story||null, additional_notes: (email ? ('Engagement: '+eng+' ('+tier+' intent)')
+        : ('MANUAL DELIVERY REQUIRED - no email. Customer chose '+((typeof CMETHOD!=='undefined'?CMETHOD:'?').toUpperCase())+' at '+(val('phone')||'?')+'. We have no SMS/WhatsApp automation. Engagement: '+eng+' ('+tier+' intent)')),
       status:'NEW LEAD', source: SOURCE,
       discovery_method: 'unveiled-start'+(LANG==='he'?'-he':'')+(CAMPAIGN?(':'+CAMPAIGN):'')
     };
