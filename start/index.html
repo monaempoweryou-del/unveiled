@@ -752,6 +752,7 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
       if(!r.ok) throw new Error('insert '+r.status);
       clearState();
       // === THE conversion. Optimize the TikTok campaign on this event, not clicks. ===
+      try{ if(window.uvFunnel) window.uvFunnel('funnel_complete', {lead_id: (LEADID||'')}); }catch(_f){}
       try{ window.uvTrack('CompleteRegistration', {
         content_name: 'unveiled-free-website-onboarding',
         content_type: 'lead', content_id: (LEADID||''),
@@ -767,6 +768,95 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
       showErr(LANG==='he'?T('errFail'):'Something went wrong sending that. Please try again, or email unveiled@monadigitalmarketing.com.');
     }
   });
+</script>
+
+<script>
+/* ===== UNVEILED funnel telemetry =====
+   Answers the question the ad platform never will: where exactly do people leave?
+   Tracks: arrival (with source), scroll depth, dwell time, furthest onboarding step,
+   and the drop-off point on exit. One row per event in activity_log(entity_type='funnel').
+   Fire-and-forget: never blocks, never breaks lead capture. */
+(function(){
+  try{
+    var SID = (function(){ try{
+      var s=sessionStorage.getItem('uv_sid');
+      if(!s){ s=(crypto&&crypto.randomUUID)?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2);
+              sessionStorage.setItem('uv_sid',s); }
+      return s; }catch(e){ return String(Date.now()); } })();
+    function qp(n){ try{ return new URLSearchParams(location.search).get(n)||''; }catch(e){ return ''; } }
+    var T0 = Date.now();
+    var MAXSCROLL = 0, MAXSTEP = 0, SENT = {};
+    var BASE = {
+      src: qp('src')||qp('utm_source')||'direct',
+      campaign: qp('campaign')||qp('utm_campaign')||'',
+      creative: qp('cid')||qp('creative')||'',
+      ttclid: (window.UV_TTCLID||'')
+    };
+    function secs(){ return Math.round((Date.now()-T0)/1000); }
+    function send(action, extra){
+      try{
+        var meta = Object.assign({}, BASE, extra||{}, {secs: secs(), maxScroll: MAXSCROLL, maxStep: MAXSTEP});
+        var body = JSON.stringify({entity_type:'funnel', entity_id:SID, action:action, actor:'start-page', meta:meta});
+        var url = SUPA_URL + '/rest/v1/activity_log';
+        // sendBeacon survives page-unload (that is how we capture the drop-off)
+        if(navigator.sendBeacon){
+          var blob = new Blob([body], {type:'application/json'});
+          // beacon cannot set headers, so pass the key on the query string (anon key is public by design)
+          navigator.sendBeacon(url + '?apikey=' + encodeURIComponent(SUPA_KEY), blob);
+        } else {
+          fetch(url, {method:'POST', keepalive:true,
+            headers:{apikey:SUPA_KEY, Authorization:'Bearer '+SUPA_KEY, 'Content-Type':'application/json', Prefer:'return=minimal'},
+            body: body});
+        }
+      }catch(e){}
+    }
+    function once(action, extra){ if(SENT[action]) return; SENT[action]=1; send(action, extra); }
+
+    // 1) arrival
+    once('funnel_view', {ref: (document.referrer||'').slice(0,120)});
+
+    // 2) scroll depth (25/50/75/100)
+    window.addEventListener('scroll', function(){
+      try{
+        var d=document.documentElement, b=document.body;
+        var h=Math.max(b.scrollHeight,d.scrollHeight)-window.innerHeight;
+        if(h<=0) return;
+        var pct=Math.min(100, Math.round((window.pageYOffset/h)*100));
+        if(pct>MAXSCROLL) MAXSCROLL=pct;
+        [25,50,75,100].forEach(function(m){ if(MAXSCROLL>=m) once('funnel_scroll_'+m); });
+      }catch(e){}
+    }, {passive:true});
+
+    // 3) dwell milestones — separates readers from bouncers
+    [10,30,60,120].forEach(function(s){ setTimeout(function(){ once('funnel_dwell_'+s+'s'); }, s*1000); });
+
+    // 4) onboarding step progression — the money data.
+    //    The form is multi-step; watch which step panel is visible.
+    function stepScan(){
+      try{
+        var n=0;
+        document.querySelectorAll('[class*="step"],[data-step],[id*="step"]').forEach(function(el){
+          if(el.offsetParent===null) return; // not visible
+          var m=(el.getAttribute('data-step')||el.id||el.className||'').match(/(\d+)/);
+          if(m){ var v=parseInt(m[1],10); if(v>n && v<30) n=v; }
+        });
+        if(n>MAXSTEP){ MAXSTEP=n; once('funnel_step_'+n, {step:n}); }
+      }catch(e){}
+    }
+    setInterval(stepScan, 1200);
+    document.addEventListener('click', function(){ setTimeout(stepScan, 400); }, true);
+
+    // 5) first real interaction with the form (started, not just landed)
+    document.addEventListener('input', function(){ once('funnel_form_start'); }, true);
+
+    // 6) THE DROP-OFF: fires on exit with furthest point reached
+    function exit(){ once('funnel_exit', {reason:'unload'}); }
+    window.addEventListener('pagehide', exit);
+    document.addEventListener('visibilitychange', function(){ if(document.visibilityState==='hidden') exit(); });
+
+    window.uvFunnel = send; // so the success path can mark completion
+  }catch(e){}
+})();
 </script>
 </body>
 </html>
