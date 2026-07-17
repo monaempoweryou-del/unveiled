@@ -256,6 +256,36 @@
   .upthumb.busy{display:grid;place-items:center}
   .upthumb.busy .spin{border-top-color:var(--violet);border-color:rgba(108,60,224,.25)}
 </style>
+
+<!-- ===== TikTok Pixel + conversion tracking (UNVEILED paid-acquisition) =====
+     Paste the Pixel ID from TikTok Ads Manager > Assets > Events > Web Events.
+     While TT_PIXEL_ID is empty every call is a safe no-op, so the page never breaks. -->
+<script>
+  window.TT_PIXEL_ID = ""; // <-- PASTE TIKTOK PIXEL ID HERE (e.g. "C1A2B3...")
+  (function () {
+    if (!window.TT_PIXEL_ID) { window.ttq = window.ttq || {track:function(){},page:function(){},identify:function(){}}; return; }
+    !function (w, d, t) {
+      w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"],
+      ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};
+      for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);
+      ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e};
+      ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js";ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};
+        var o=d.createElement("script");o.type="text/javascript",o.async=!0,o.src=r+"?sdkid="+e+"&lib="+t;var a=d.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)};
+      ttq.load(w.TT_PIXEL_ID); ttq.page();
+    }(window, document, 'ttq');
+  })();
+
+  // Single funnel-event helper. Safe if the pixel is absent.
+  window.uvTrack = function (event, props) {
+    try { if (window.ttq && window.ttq.track) window.ttq.track(event, props || {}); } catch (e) {}
+  };
+  // Capture the TikTok click id so a lead can be tied back to the exact click (and CAPI later).
+  window.UV_TTCLID = (function(){ try{
+    var v=new URLSearchParams(location.search).get('ttclid')||'';
+    if(v) sessionStorage.setItem('uv_ttclid', v);
+    return v || sessionStorage.getItem('uv_ttclid') || '';
+  }catch(e){ return ''; } })();
+</script>
 </head>
 <body>
 
@@ -388,7 +418,8 @@
 
   var SRC_MAP = {facebook:'facebook', fb:'facebook', organic:'organic-post', 'organic-post':'organic-post',
     instagram:'instagram', ig:'instagram', referral:'referral', ref:'referral', linkedin:'linkedin',
-    google:'google-business', gbp:'google-business', qr:'qr', email:'email-campaign', ads:'facebook-ads'};
+    google:'google-business', gbp:'google-business', qr:'qr', email:'email-campaign', ads:'facebook-ads',
+    tiktok:'tiktok', tt:'tiktok', 'tiktok-ads':'tiktok-ads', ttads:'tiktok-ads', 'tt-ads':'tiktok-ads'};
   function param(n){ try{ return new URLSearchParams(location.search).get(n)||''; }catch(e){ return ''; } }
   var SOURCE = SRC_MAP[(param('src')||param('utm_source')||'').toLowerCase().trim()] || 'website-onboarding';
   var CAMPAIGN = param('campaign')||param('utm_campaign')||'';
@@ -702,6 +733,7 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
     // Forward-compatible attribution: send the top-level columns the marketing schema adds.
     // If the migration isn't applied yet, the columns don't exist and PostgREST 400s —
     // so we retry WITHOUT them. Lead capture must never break; attribution is also safe in sp.meta.
+    try{ if(window.UV_TTCLID){ sp.meta = Object.assign({}, sp.meta||{}, {ttclid: window.UV_TTCLID}); } }catch(_e){}
     var leadAttr = Object.assign({}, lead, {
       channel: SOURCE, campaign: CAMPAIGN||null, offer: OFFER||null,
       creative_id: CREATIVE||null, creative_version: CVER||null, landing_variant: LVAR||null,
@@ -719,6 +751,13 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
       if(!r.ok && (r.status===400||r.status===404||r.status===422)){ r = await postLead(lead); } // pre-migration fallback
       if(!r.ok) throw new Error('insert '+r.status);
       clearState();
+      // === THE conversion. Optimize the TikTok campaign on this event, not clicks. ===
+      try{ window.uvTrack('CompleteRegistration', {
+        content_name: 'unveiled-free-website-onboarding',
+        content_type: 'lead', content_id: (LEADID||''),
+        currency: 'USD', value: 1,
+        description: (SOURCE||'')+'|'+(CAMPAIGN||'')+'|'+(CREATIVE||'')
+      }); }catch(_e){}
       document.getElementById('main').style.display='none';
       try{ var cb=document.getElementById('compbtn'); if(cb){ cb.href='/app?lead='+encodeURIComponent(LEADID)+'&biz='+encodeURIComponent(biz)+(email?('&email='+encodeURIComponent(email)):''); } }catch(_){}
       var d=document.getElementById('done'); d.style.display='block'; d.classList.add('on');
