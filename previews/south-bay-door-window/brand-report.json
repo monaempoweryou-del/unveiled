@@ -1,0 +1,50 @@
+{
+  "slug": "south-bay-door-window",
+  "business": "South Bay Door & Window",
+  "brand_confidence": 0.55,
+  "reached_existing_website": true,
+  "existing_website": "https://www.southbaydoorinc.com",
+  "discovered": {
+    "palette": [],
+    "fonts": [],
+    "logo_found": true,
+    "voice_samples": [
+      "South Bay Door &amp; Window",
+      "About Us",
+      "Our Services"
+    ],
+    "social": {
+      "facebook": "http://www.facebook.com/2008/fbml",
+      "instagram": "https://www.instagram.com/southbaydoor/",
+      "linkedin": "https://www.linkedin.com/company/south-bay-door-&-window/",
+      "yelp": "https://www.yelp.com/biz/south-bay-door-and-window-redondo-beach-2"
+    }
+  },
+  "assets": {
+    "logo": "https://images.squarespace-cdn.com/content/v1/6074baab98a2832c98a96c2d/ec7262fa-86f7-408d-99a6-251c58f11605/favicon.ico?format=100w",
+    "hero": "http://static1.squarespace.com/static/6074baab98a2832c98a96c2d/t/6128207b5f5c8e1bfbd51104/1630019707046/SOUTH+BAY+gray+c1-on+white.png?format=1500w",
+    "gallery_count": 8,
+    "real_count": 10,
+    "stock_count": 0,
+    "stock_slots": [],
+    "real_assets_available": 12,
+    "meets_minimum_5": true
+  },
+  "preserved": [
+    "Existing logo (presented cleanly, not replaced)",
+    "10 real business image(s) the owner will recognize"
+  ],
+  "improved": [
+    "No clear existing palette found. Selected an industry-appropriate, restrained palette.",
+    "No distinct typography found. Chose a clean, human typeface pairing.",
+    "Layout, hierarchy, mobile polish, metadata and CTA raised to the UNVEILED bar."
+  ],
+  "notes": [],
+  "decision_order": [
+    "learn business",
+    "learn brand",
+    "decide preserve",
+    "improve weak",
+    "build still-feels-like-them"
+  ]
+}
