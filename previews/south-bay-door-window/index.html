@@ -13,13 +13,13 @@
   <meta property="og:title" content="South Bay Door &amp; Window | Redondo Beach, CA">
   <meta property="og:description" content="Premium door and window installation, replacement, and repair serving Redondo Beach and the South Bay. Trusted craftsmanship since day one.">
   <meta property="og:url" content="https://unveiled.pro/previews/south-bay-door-window/">
-  <meta property="og:image" content="https://eosvftmiwndmctrqprtz.supabase.co/storage/v1/object/public/assets/8b5da58b-6b7e-40ef-b0ff-5721dfc76851/1784248459690-2830-0E8E9236-AC2B-4C23-89BB-D014ED757046.png">
+  <meta property="og:image" content="https://unveiled.pro/previews/south-bay-door-window/assets/hero-coastal-window.jpg">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="South Bay Door &amp; Window | Redondo Beach, CA">
   <meta name="twitter:description" content="Premium door and window installation, replacement, and repair serving Redondo Beach and the South Bay.">
-  <meta name="twitter:image" content="https://eosvftmiwndmctrqprtz.supabase.co/storage/v1/object/public/assets/8b5da58b-6b7e-40ef-b0ff-5721dfc76851/1784248459690-2830-0E8E9236-AC2B-4C23-89BB-D014ED757046.png">
+  <meta name="twitter:image" content="https://unveiled.pro/previews/south-bay-door-window/assets/hero-coastal-window.jpg">
 
   <!-- Favicon -->
   <link rel="icon" href="https://images.squarespace-cdn.com/content/v1/6074baab98a2832c98a96c2d/ec7262fa-86f7-408d-99a6-251c58f11605/favicon.ico?format=100w" type="image/x-icon">
@@ -215,29 +215,24 @@
       padding: 8rem 1.25rem 5rem;
       background: var(--navy);
     }
-    .hero__bg {
-      position: absolute; inset: 0; z-index: 0;
-      background:
-        radial-gradient(130% 100% at 50% -10%, #2f455c 0%, #1b2a3b 55%, #14212d 100%);
-    }
-    .hero__bg::after{content:"";position:absolute;inset:0;pointer-events:none;
-      background:radial-gradient(55% 45% at 50% 40%, rgba(200,164,74,0.12), transparent 70%);}
-    .hero__logo{position:relative;display:inline-block;max-width:min(640px,86vw);margin:0.5rem auto 1.75rem;
-      border-radius:16px;overflow:hidden;
-      box-shadow:0 30px 80px -30px rgba(0,0,0,0.85), 0 0 0 1px rgba(255,255,255,0.05) inset;
-      opacity:0;transform:translateY(24px) scale(1.04);
-      animation:heroReveal 1.1s cubic-bezier(.2,.7,.2,1) 0.15s forwards;}
-    .hero__logo-img{display:block;width:100%;height:auto}
-    .hero__sheen{position:absolute;top:0;left:0;height:100%;width:60%;pointer-events:none;
-      background:linear-gradient(105deg,transparent 0%,rgba(255,255,255,0.16) 45%,rgba(255,255,255,0.42) 50%,rgba(255,255,255,0.16) 55%,transparent 100%);
-      transform:translateX(-130%) skewX(-12deg);
-      animation:heroSheen 6.5s ease-in-out 1.2s infinite;}
-    @keyframes heroReveal{to{opacity:1;transform:translateY(0) scale(1)}}
-    @keyframes heroSheen{0%{transform:translateX(-130%) skewX(-12deg)}
-      45%{transform:translateX(130%) skewX(-12deg)}100%{transform:translateX(130%) skewX(-12deg)}}
-    .hero__title{color:#fff;font-size:clamp(1.9rem,4.4vw,3.1rem);line-height:1.08;margin-bottom:1.1rem;letter-spacing:-0.01em}
-    @media (prefers-reduced-motion: reduce){
-      .hero__logo{animation:none;opacity:1;transform:none}.hero__sheen{display:none}}
+    .hero__bg { position:absolute; inset:0; z-index:0; overflow:hidden; }
+    .hero__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+      transform:scale(1.06);will-change:transform;opacity:0;animation:heroFade 1.5s ease .1s forwards;}
+    .hero__scrim{position:absolute;inset:0;
+      background:linear-gradient(180deg,rgba(15,25,35,0.52) 0%,rgba(15,25,35,0.30) 40%,rgba(15,25,35,0.74) 100%);}
+    .hero__scrim::after{content:"";position:absolute;inset:0;
+      background:radial-gradient(85% 75% at 50% 48%,transparent 42%,rgba(15,25,35,0.42) 100%);}
+    .hero__sheen{position:absolute;top:0;left:0;width:42%;height:100%;pointer-events:none;z-index:1;
+      background:linear-gradient(105deg,transparent 0,rgba(255,255,255,0.07) 45%,rgba(255,255,255,0.20) 50%,rgba(255,255,255,0.07) 55%,transparent 100%);
+      transform:translateX(-170%) skewX(-14deg);animation:heroSheen 7.5s ease-in-out 1.3s infinite;}
+    .hero__title{color:#fff;font-size:clamp(2rem,5vw,3.4rem);line-height:1.06;margin-bottom:1.2rem;
+      letter-spacing:-0.01em;text-shadow:0 2px 30px rgba(0,0,0,0.5);}
+    .hero__content .hero__sub{color:rgba(255,255,255,0.9);text-shadow:0 1px 18px rgba(0,0,0,0.45);}
+    .nav__mark{height:40px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.45));}
+    @keyframes heroFade{to{opacity:1}}
+    @keyframes heroSheen{0%{transform:translateX(-170%) skewX(-14deg)}
+      55%{transform:translateX(240%) skewX(-14deg)}100%{transform:translateX(240%) skewX(-14deg)}}
+    @media (prefers-reduced-motion: reduce){.hero__img{animation:none;opacity:1;transform:scale(1.02)}.hero__sheen{display:none}}
     .hero__content {
       position: relative;
       z-index: 1;
@@ -578,7 +573,7 @@
   <nav class="nav" role="navigation" aria-label="Main navigation">
     <div class="nav__inner">
       <a href="#hero" class="nav__logo" aria-label="South Bay Door and Window home">
-        <img src="https://images.squarespace-cdn.com/content/v1/6074baab98a2832c98a96c2d/ec7262fa-86f7-408d-99a6-251c58f11605/favicon.ico?format=100w" alt="South Bay Door and Window logo mark">
+        <img src="https://unveiled.pro/previews/south-bay-door-window/assets/window-mark.png" alt="South Bay Door and Window window mark" class="nav__mark">
         <span class="nav__logo-text">
           South Bay Door
           <span class="nav__logo-sub">&amp; Window</span>
@@ -599,15 +594,15 @@
 
   <!-- HERO -->
   <section class="hero" id="hero" aria-label="Hero">
-    <div class="hero__bg" role="presentation"></div>
+    <div class="hero__bg" role="presentation">
+      <img src="https://unveiled.pro/previews/south-bay-door-window/assets/hero-coastal-window.jpg" alt="Luxury coastal home with floor-to-ceiling sliding glass windows opening onto the Pacific Ocean" class="hero__img" width="1376" height="768">
+      <span class="hero__scrim"></span>
+      <span class="hero__sheen" aria-hidden="true"></span>
+    </div>
     <div class="hero__content">
       <span class="hero__eyebrow">Redondo Beach, California</span>
-      <div class="hero__logo">
-        <img src="https://eosvftmiwndmctrqprtz.supabase.co/storage/v1/object/public/assets/8b5da58b-6b7e-40ef-b0ff-5721dfc76851/1784248459690-2830-0E8E9236-AC2B-4C23-89BB-D014ED757046.png" alt="South Bay Door and Window" class="hero__logo-img" width="1536" height="1024">
-        <span class="hero__sheen" aria-hidden="true"></span>
-      </div>
       <h1 class="hero__title">Doors and Windows, Done Right</h1>
-      <p class="hero__sub">Precision installation, premium products, and genuine craftsmanship for homes and businesses across the South Bay.</p>
+      <p class="hero__sub">Premium windows and doors, precision installed. Craftsmanship that frames the view and elevates every home across the South Bay.</p>
       <div class="hero__actions">
         <a href="#contact" class="btn btn--primary">Request a Free Quote</a>
         <a href="#services" class="btn btn--outline">Explore Services</a>
@@ -773,7 +768,7 @@
         </div>
 
         <div class="gallery__item">
-          <img src="https://images.squarespace-cdn.com/content/v1/6074baab98a2832c98a96c2d/24ebce69-957c-4864-b26a-20b464f80577/SOUTH+BAY+gray+c1-on+white.png?format=1500w" alt="South Bay Door and Window brand signage and company identity">
+          <img src="https://eosvftmiwndmctrqprtz.supabase.co/storage/v1/object/public/assets/8b5da58b-6b7e-40ef-b0ff-5721dfc76851/1784248459690-2830-0E8E9236-AC2B-4C23-89BB-D014ED757046.png" alt="South Bay Door and Window brand signage and company identity">
         </div>
 
       </div>
@@ -951,10 +946,10 @@
 <div class="uv-foot">Secure checkout with Square. Cancel anytime. Once you pick a plan, we set up your domain and take it live.</div>
 </div>
 </section>
-<script>(function(){var l=document.querySelector('.hero__logo');if(!l)return;
+<script>(function(){var im=document.querySelector('.hero__img');if(!im)return;
 if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-var t=false;function u(){t=false;var y=window.pageYOffset||0;if(y<900){l.style.willChange='transform';
-l.style.transform='translateY('+(y*0.12)+'px) scale('+(1-Math.min(y,600)*0.00006)+')';}}
+var t=false;function u(){t=false;var y=window.pageYOffset||0;if(y<1000){
+im.style.transform='scale(1.06) translateY('+(y*0.09)+'px)';}}
 window.addEventListener('scroll',function(){if(!t){t=true;requestAnimationFrame(u);}},{passive:true});})();</script>
 </body>
 </html>
