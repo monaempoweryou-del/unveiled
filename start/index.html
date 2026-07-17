@@ -286,6 +286,24 @@
     return v || sessionStorage.getItem('uv_ttclid') || '';
   }catch(e){ return ''; } })();
 </script>
+
+<style>
+  .reassure{display:none}
+  .reassure.on{display:block;background:linear-gradient(180deg,#f2fbf5,#eaf7ef);border:1px solid #bfe6cd;
+    border-radius:12px;padding:14px 16px;margin-bottom:18px;animation:rIn .45s ease}
+  .reassure.on b{display:block;font-size:15px;color:#136c37;margin-bottom:4px}
+  .reassure.on span{display:block;font-size:13.5px;line-height:1.55;color:#3f5c4a}
+  @keyframes rIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+  .proof{margin:26px 0 6px}
+  .proof h3{font-size:14px;font-weight:700;letter-spacing:.02em;margin:0 0 4px;color:#1a1a1a}
+  .proof p.psub{font-size:12.5px;color:#6b7280;margin:0 0 12px}
+  .proofgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .proofcard{border:1px solid #e6e6ee;border-radius:10px;overflow:hidden;background:#fff;text-decoration:none;display:block;transition:.25s}
+  .proofcard:hover{transform:translateY(-3px);box-shadow:0 12px 26px -16px rgba(0,0,0,.4)}
+  .proofcard img{width:100%;height:96px;object-fit:cover;object-position:top;display:block}
+  .proofcard span{display:block;font-size:11px;color:#6b7280;padding:7px 9px;line-height:1.35}
+  @media(max-width:560px){.proofgrid{grid-template-columns:repeat(3,1fr);gap:6px}.proofcard img{height:70px}.proofcard span{font-size:10px;padding:5px 6px}}
+</style>
 </head>
 <body>
 
@@ -298,7 +316,7 @@
     <!-- hero -->
     <div class="herotop">
       <span class="badge" data-i18n="badge">WE BUILD FIRST. YOU DECIDE.</span>
-      <h1 data-i18n-html="h1">The website your business <span class="v">deserves.</span></h1>
+      <h1 data-i18n-html="h1">Your new website. <span class="v">Free, in 72 hours.</span></h1>
       <p class="lead" data-i18n="lead">We design it custom and build it in 72 hours, completely free. You only pay if you love it.</p>
     </div>
 
@@ -316,6 +334,23 @@
     </div>
 
     <!-- form -->
+    
+      <div class="proof">
+        <h3 data-i18n="proofH">Real previews we built this week</h3>
+        <p class="psub" data-i18n="proofP">Local businesses. Built free, in 72 hours. No payment taken.</p>
+        <div class="proofgrid">
+          <a class="proofcard" href="https://unveiled.pro/previews/south-bay-door-window/" target="_blank" rel="noopener">
+            <img src="assets/proof-1.jpg" alt="Website built for a windows and doors company" loading="lazy">
+            <span>Windows &amp; doors · Redondo Beach</span></a>
+          <a class="proofcard" href="https://unveiled.pro/previews/royal-roofing-company/" target="_blank" rel="noopener">
+            <img src="assets/proof-2.jpg" alt="Website built for a roofing contractor" loading="lazy">
+            <span>Roofing · Los Angeles</span></a>
+          <a class="proofcard" href="https://unveiled.pro/previews/the-electric-connection/" target="_blank" rel="noopener">
+            <img src="assets/proof-3.jpg" alt="Website built for an electrical contractor" loading="lazy">
+            <span>Electrical · Los Angeles</span></a>
+        </div>
+      </div>
+
     <div class="formcol">
       <form id="f" class="card" autocomplete="on" novalidate>
         <div class="steptop">
@@ -442,7 +477,7 @@
     he:{
       promo:'⏱ תצוגה תוך 72 שעות &nbsp;·&nbsp; <b>$0 מראש</b> &nbsp;·&nbsp; ללא התחייבות',
       badge:'בונים קודם. אתם מחליטים.',
-      h1:'האתר שהעסק שלכם <span class="v">ראוי לו.</span>',
+      h1:'האתר החדש שלכם. <span class="v">חינם, תוך 72 שעות.</span>',
       lead:'נעצב אותו בהתאמה אישית ונבנה אותו תוך 72 שעות, בחינם לגמרי. משלמים רק אם אתם מתאהבים.',
       tick1:'התצוגה המלאה שלכם תוך 72 שעות',
       tick2:'בלי תשלום מראש, אף פעם',
@@ -666,20 +701,74 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
   function M(k,en){ return (LANG==='he'? T(k):'') || en; }
   window.next=function(step){
     hideStepErrs();
-    if(step===2){ // leaving step 1
+    if(step===2){ // leaving step 1 -> business name is all we need to CAPTURE
       if(!val('biz')){ go(1); document.getElementById('biz').focus(); return; }
+      earlySave('name_only');   // create the lead NOW. never lose intent.
+      showReassure();           // "you're in" — value first, enrichment second
     }
-    if(step===3){ // leaving step 2: name, email, phone all required
+    if(step===3){ // leaving step 2: email is the one thing we still need to DELIVER
       if(!val('name')){ go(2); stepErr('err2', M('errName','Please add your name so we know who we’re building for.'), 'name'); return; }
-      if(val('email').indexOf('@')<1){ go(2); stepErr('err2', M('errEmail','Please enter a valid email. It’s where your Reveal arrives.'), 'email'); return; }
-      if(!val('phone')){ go(2); stepErr('err2', M('errPhone','A phone number lets us reach you about your website.'), 'phone'); return; }
+      if(val('email').indexOf('@')<1){ go(2); stepErr('err2', M('errEmail','Please enter a valid email. It’s where your free preview arrives.'), 'email'); return; }
+      // phone is OPTIONAL — email delivers the reveal; requiring a phone leaks cold traffic.
+      earlySave('contact');     // upsert: now the lead is deliverable
     }
-    if(step===4){ // leaving step 3: at least one source required
-      if(!val('url') && collectSocial().length===0){ go(3); stepErr('err3', M('errSource','Add at least one link or profile so we can learn about your business.'), 'url'); return; }
+    if(step===4){
+      // website/social is OPTIONAL — our discovery engine finds it from name + city.
+      // Never make the visitor do the machine's job.
+      earlySave('sources');
     }
     go(step);
   };
 
+
+  /* ===== EARLY CAPTURE =====
+     Intent is the most perishable thing on this page. The moment we know the business
+     name we create the lead, then every later step UPSERTs onto the same id (LEADID).
+     Someone who abandons at step 3 is still in the machine instead of lost forever.
+     NOTE: capture != build. A name-only lead lands as NEW LEAD in triage and is NOT
+     built until it has a contact channel — see additional_notes. */
+  var EARLY_SAVED = false;
+  async function earlySave(stage){
+    try{
+      var biz = val('biz'); if(!biz) return;
+      var em  = val('email');
+      var sp = {};
+      try{ sp.meta = { partial:!em, capture_stage:stage, src:SOURCE, campaign:CAMPAIGN||null,
+        creative_id:CREATIVE||null, creative_version:CVER||null, lang:LANG,
+        ttclid:(window.UV_TTCLID||''), referrer:(document.referrer||'').slice(0,300),
+        device:(window.matchMedia&&window.matchMedia('(max-width:560px)').matches)?'mobile':'desktop',
+        ts:new Date().toISOString() }; }catch(_e){}
+      var payload = {
+        id: LEADID, business_name: biz,
+        contact_name: val('name')||null, email: em||null, phone: val('phone')||null,
+        website: val('url')||null, social_profiles: sp,
+        status: 'NEW LEAD', source: SOURCE,
+        discovery_method: 'unveiled-start'+(LANG==='he'?'-he':'')+(CAMPAIGN?(':'+CAMPAIGN):''),
+        additional_notes: em
+          ? ('Partial capture ('+stage+') - enrichment in progress')
+          : ('PARTIAL - business name only, no contact channel yet. Do NOT build until an email exists.')
+      };
+      var r = await postLead(payload);
+      if(r && r.ok){
+        EARLY_SAVED = true;
+        try{ if(window.uvFunnel) window.uvFunnel('funnel_lead_captured', {stage:stage, hasEmail:!!em}); }catch(_f){}
+      }
+    }catch(e){}
+  }
+
+  /* Reassure without discouraging: they already have the value, more detail makes it better. */
+  function showReassure(){
+    try{
+      var el = document.getElementById('reassure');
+      if(!el || el.getAttribute('data-on')) return;
+      el.setAttribute('data-on','1');
+      var he = (LANG==='he');
+      el.innerHTML = he
+        ? '<b>נכנסתם! כבר התחלנו לעבוד על האתר שלכם.</b><span>כל פרט נוסף שתשתפו יעזור לנו לבנות אתר אישי ומדויק יותר, אבל החלק החשוב כבר קרה: אתם בתור. התצוגה החינמית שלכם תגיע תוך 72 שעות.</span>'
+        : '<b>You\'re in. We\'ve already started on your website.</b><span>Every extra detail you share helps us build something more personal to your business, but the important part is done: you\'re in the queue. Your free preview arrives within 72 hours.</span>';
+      el.classList.add('on');
+    }catch(e){}
+  }
   function uuid(){ return (window.crypto&&crypto.randomUUID)?crypto.randomUUID():(Date.now()+'-'+Math.random().toString(36).slice(2)); }
 
   // autosave the simple fields too, so nothing is ever lost on a tab switch / app hop
@@ -742,7 +831,7 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
     async function postLead(payload){
       return fetch(SUPA_URL+'/rest/v1/leads', {
         method:'POST',
-        headers:{ apikey:SUPA_KEY, Authorization:'Bearer '+SUPA_KEY, 'Content-Type':'application/json', Prefer:'return=minimal' },
+        headers:{ apikey:SUPA_KEY, Authorization:'Bearer '+SUPA_KEY, 'Content-Type':'application/json', Prefer:'resolution=merge-duplicates,return=minimal' },
         body: JSON.stringify(payload)
       });
     }
