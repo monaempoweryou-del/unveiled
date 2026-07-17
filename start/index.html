@@ -304,6 +304,17 @@
   .proofcard span{display:block;font-size:11px;color:#6b7280;padding:7px 9px;line-height:1.35}
   @media(max-width:560px){.proofgrid{grid-template-columns:repeat(3,1fr);gap:6px}.proofcard img{height:70px}.proofcard span{font-size:10px;padding:5px 6px}}
 </style>
+
+<style>
+  .ctcblock{margin-top:18px}
+  .ctclbl{display:block;font-size:14px;font-weight:600;color:#1a1a1a;margin-bottom:8px}
+  .ctcchips{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}
+  .ctcchip{font:inherit;font-size:12.5px;padding:6px 12px;border:1px solid #dcdce6;background:#fff;color:#4b5563;
+    border-radius:999px;cursor:pointer;transition:.18s}
+  .ctcchip:hover{border-color:#b9b9cc}
+  .ctcchip.on{background:#111;border-color:#111;color:#fff}
+  .ctchint{font-size:11.5px;color:#8b8b9a;margin-top:6px}
+</style>
 </head>
 <body>
 
@@ -361,10 +372,23 @@
 
         <!-- step 1: business name -->
         <div class="step on" data-step="1">
-          <h2 data-i18n="s1h">What's your business called?</h2>
-          <p class="hand" data-i18n="s1hand">Let's begin. About a minute ✦</p>
+          <h2 data-i18n="s1h">Let's start your free website</h2>
+          <p class="hand" data-i18n="s1hand">Two quick things and we're building. ✦</p>
           <label for="biz" class="sr-only" data-i18n="lblBiz">What's your business called?</label>
           <input id="biz" name="organization" autocomplete="organization" autocapitalize="words" enterkeyhint="next" data-i18n-ph="phBiz" placeholder="e.g. Bella Hair Studio">
+
+          <div class="ctcblock">
+            <label for="contact" class="ctclbl" data-i18n="lblContact">Where should we send your website?</label>
+            <div class="ctcchips" id="ctcchips">
+              <button type="button" class="ctcchip on" data-m="email" onclick="setMethod('email')">✉️ Email</button>
+              <button type="button" class="ctcchip" data-m="sms" onclick="setMethod('sms')">💬 Text</button>
+              <button type="button" class="ctcchip" data-m="whatsapp" onclick="setMethod('whatsapp')">🟢 WhatsApp</button>
+            </div>
+            <input id="contact" autocomplete="email" enterkeyhint="go" placeholder="you@business.com">
+            <div class="ctchint" id="ctchint" data-i18n="ctcHint">Whatever's easiest. This is the only way we can reach you.</div>
+            <div class="err" id="err1" style="display:none"></div>
+          </div>
+
           <div class="btnrow"><button type="button" class="btn btn-primary" onclick="next(2)"><span data-i18n="btnContinue">Continue</span> <span class="arr">→</span></button></div>
           <div class="secure" data-i18n="secure">🔒 Your information is safe and secure.</div>
         </div>
@@ -680,7 +704,7 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
       var s=JSON.parse(raw); if(!s) return null;
       if(s.leadid) LEADID=s.leadid;
       if(s.uploads && typeof s.uploads==='object') UPLOADS={logo:s.uploads.logo||null,hero:s.uploads.hero||null,gallery:Array.isArray(s.uploads.gallery)?s.uploads.gallery:[]};
-      ['biz','name','email','phone','url','story'].forEach(function(k){ var el=document.getElementById(k); if(el && s[k]) el.value=s[k]; });
+      ['biz','contact','name','email','phone','url','story'].forEach(function(k){ var el=document.getElementById(k); if(el && s[k]) el.value=s[k]; });
       if(s.plats && typeof s.plats==='object') PLATSEL=s.plats;
       renderPlats(); renderPlatFields(); renderUploads();
       if(s.plinks){ Object.keys(s.plinks).forEach(function(k){ var i=document.querySelector('.prow[data-k="'+k+'"] input'); if(i) i.value=s.plinks[k]; }); }
@@ -701,22 +725,22 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
   function M(k,en){ return (LANG==='he'? T(k):'') || en; }
   window.next=function(step){
     hideStepErrs();
-    if(step===2){ // leaving step 1 -> business name is all we need to CAPTURE
+    if(step===2){ // leaving step 1: business name + a way to reach them = CAPTURE
       if(!val('biz')){ go(1); document.getElementById('biz').focus(); return; }
-      earlySave('name_only');   // create the lead NOW. never lose intent.
-      showReassure();           // "you're in" — value first, enrichment second
+      if(!contactIsValid()){
+        go(1);
+        stepErr('err1', M('errContact', CMETHOD==='email'
+          ? 'Add an email so we can send your finished website.'
+          : 'Add a number so we can send your finished website.'), 'contact');
+        return;
+      }
+      earlySave('captured');   // lead exists from here on. intent is never lost.
+      showReassure();          // "you're in" — value first, enrichment second
+      prefillContact();        // don't ask twice for what they just gave us
     }
-    if(step===3){ // leaving step 2: email is the one thing we still need to DELIVER
-      if(!val('name')){ go(2); stepErr('err2', M('errName','Please add your name so we know who we’re building for.'), 'name'); return; }
-      if(val('email').indexOf('@')<1){ go(2); stepErr('err2', M('errEmail','Please enter a valid email. It’s where your free preview arrives.'), 'email'); return; }
-      // phone is OPTIONAL — email delivers the reveal; requiring a phone leaks cold traffic.
-      earlySave('contact');     // upsert: now the lead is deliverable
-    }
-    if(step===4){
-      // website/social is OPTIONAL — our discovery engine finds it from name + city.
-      // Never make the visitor do the machine's job.
-      earlySave('sources');
-    }
+    // Everything below is ENRICHMENT. Nothing is required — the lead is already ours.
+    if(step===3){ earlySave('enrich_contact'); }
+    if(step===4){ earlySave('enrich_sources'); }
     go(step);
   };
 
@@ -727,26 +751,62 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
      Someone who abandons at step 3 is still in the machine instead of lost forever.
      NOTE: capture != build. A name-only lead lands as NEW LEAD in triage and is NOT
      built until it has a contact channel — see additional_notes. */
+  var CMETHOD = 'email';
+  window.setMethod = function(m){
+    CMETHOD = m;
+    try{
+      var chips = document.querySelectorAll('#ctcchips .ctcchip');
+      for(var i=0;i<chips.length;i++) chips[i].classList.toggle('on', chips[i].getAttribute('data-m')===m);
+      var el = document.getElementById('contact');
+      if(el){
+        if(m==='email'){ el.placeholder='you@business.com'; el.setAttribute('autocomplete','email'); el.setAttribute('inputmode','email'); }
+        else { el.placeholder='(555) 123-4567'; el.setAttribute('autocomplete','tel'); el.setAttribute('inputmode','tel'); }
+      }
+      var hint=document.getElementById('ctchint');
+      if(hint) hint.textContent = (m==='email')
+        ? "Whatever's easiest. This is the only way we can reach you."
+        : "We'll message you the link when your preview is ready.";
+    }catch(e){}
+  };
+  // Auto-detect so nobody has to think: an "@" means email, digits mean phone.
+  (function(){
+    var el=document.getElementById('contact'); if(!el) return;
+    el.addEventListener('input', function(){
+      var v=el.value||'';
+      if(v.indexOf('@')>0 && CMETHOD!=='email') setMethod('email');
+      else if(/^[\d\s()+.-]{6,}$/.test(v) && CMETHOD==='email') setMethod('sms');
+    });
+  })();
+  function contactIsValid(){
+    var v=(document.getElementById('contact')||{}).value||''; v=v.trim();
+    if(CMETHOD==='email') return v.indexOf('@')>0 && v.indexOf('.')>0;
+    return (v.replace(/\D/g,'').length>=7);
+  }
   var EARLY_SAVED = false;
   async function earlySave(stage){
     try{
       var biz = val('biz'); if(!biz) return;
-      var em  = val('email');
+      // step-1 contact routes into the right column based on the channel they chose
+      var c = (val('contact')||'').trim();
+      var em = val('email') || (CMETHOD==='email' ? c : '');
+      var ph = val('phone') || (CMETHOD!=='email' && c ? c : '');
       var sp = {};
-      try{ sp.meta = { partial:!em, capture_stage:stage, src:SOURCE, campaign:CAMPAIGN||null,
+      try{ sp.meta = { partial:!(em||ph), capture_stage:stage, contact_method:CMETHOD, delivery_channel:(em?'email':CMETHOD),
+        needs_manual_delivery: !em && !!ph, src:SOURCE, campaign:CAMPAIGN||null,
         creative_id:CREATIVE||null, creative_version:CVER||null, lang:LANG,
         ttclid:(window.UV_TTCLID||''), referrer:(document.referrer||'').slice(0,300),
         device:(window.matchMedia&&window.matchMedia('(max-width:560px)').matches)?'mobile':'desktop',
         ts:new Date().toISOString() }; }catch(_e){}
       var payload = {
         id: LEADID, business_name: biz,
-        contact_name: val('name')||null, email: em||null, phone: val('phone')||null,
+        contact_name: val('name')||null, email: em||null, phone: ph||null,
         website: val('url')||null, social_profiles: sp,
         status: 'NEW LEAD', source: SOURCE,
         discovery_method: 'unveiled-start'+(LANG==='he'?'-he':'')+(CAMPAIGN?(':'+CAMPAIGN):''),
         additional_notes: em
-          ? ('Partial capture ('+stage+') - enrichment in progress')
-          : ('PARTIAL - business name only, no contact channel yet. Do NOT build until an email exists.')
+          ? ('Captured ('+stage+') - deliverable by email, enrichment in progress')
+          : (ph ? ('Captured ('+stage+') - customer chose '+CMETHOD.toUpperCase()+' at '+ph+'. NO EMAIL: reveal must be sent MANUALLY, we have no '+CMETHOD+' automation.')
+                : 'PARTIAL - no contact channel yet. Do NOT build until we can reach them.')
       };
       var r = await postLead(payload);
       if(r && r.ok){
@@ -757,6 +817,15 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
   }
 
   /* Reassure without discouraging: they already have the value, more detail makes it better. */
+  /* They already gave us a channel in step 1 — mirror it into step 2 so we never re-ask. */
+  function prefillContact(){
+    try{
+      var c=(val('contact')||'').trim(); if(!c) return;
+      if(CMETHOD==='email'){ var e=document.getElementById('email'); if(e && !e.value) e.value=c; }
+      else { var p=document.getElementById('phone'); if(p && !p.value) p.value=c; }
+      saveState();
+    }catch(e){}
+  }
   function showReassure(){
     try{
       var el = document.getElementById('reassure');
