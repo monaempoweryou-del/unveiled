@@ -798,16 +798,11 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
         var meta = Object.assign({}, BASE, extra||{}, {secs: secs(), maxScroll: MAXSCROLL, maxStep: MAXSTEP});
         var body = JSON.stringify({entity_type:'funnel', entity_id:SID, action:action, actor:'start-page', meta:meta});
         var url = SUPA_URL + '/rest/v1/activity_log';
-        // sendBeacon survives page-unload (that is how we capture the drop-off)
-        if(navigator.sendBeacon){
-          var blob = new Blob([body], {type:'application/json'});
-          // beacon cannot set headers, so pass the key on the query string (anon key is public by design)
-          navigator.sendBeacon(url + '?apikey=' + encodeURIComponent(SUPA_KEY), blob);
-        } else {
-          fetch(url, {method:'POST', keepalive:true,
-            headers:{apikey:SUPA_KEY, Authorization:'Bearer '+SUPA_KEY, 'Content-Type':'application/json', Prefer:'return=minimal'},
-            body: body});
-        }
+        // keepalive fetch survives page-unload AND can set the auth headers Supabase requires.
+        // (sendBeacon cannot set headers, so it fails auth here.)
+        fetch(url, {method:'POST', keepalive:true, mode:'cors',
+          headers:{apikey:SUPA_KEY, Authorization:'Bearer '+SUPA_KEY, 'Content-Type':'application/json', Prefer:'return=minimal'},
+          body: body}).catch(function(){});
       }catch(e){}
     }
     function once(action, extra){ if(SENT[action]) return; SENT[action]=1; send(action, extra); }
