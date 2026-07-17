@@ -315,6 +315,12 @@
   .ctcchip.on{background:#111;border-color:#111;color:#fff}
   .ctchint{font-size:11.5px;color:#8b8b9a;margin-top:6px}
 </style>
+
+<style>
+  .reassure.plain{background:#f7f7fb;border:1px solid #e6e6ee;border-radius:10px;padding:9px 12px;
+    font-size:12.5px;font-weight:600;color:#6c3ce0;margin-bottom:14px}
+  .reassure.plain b,.reassure.plain span{display:inline;font-size:inherit;color:inherit}
+</style>
 </head>
 <body>
 
@@ -561,7 +567,8 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
   function showErr(m){ var e=document.getElementById('err'); e.textContent=m; e.style.display='block'; }
   function curStep(){ var c=document.querySelector('.step.on'); return c?+c.dataset.step:1; }
   // subtle reassurance after committing (not celebration, just "you're moving")
-  var REASSURE={2:{en:'✓ Great. Now, how do we reach you?',he:'✓ יופי. איך ניצור איתכם קשר?'},
+  var REASSURE={2:{en:"<b>You're in. We've already started on your website.</b><span>Every extra detail you share helps us make it more personal to your business — but the important part is done: you're in the queue. Your free preview arrives within 72 hours.</span>",
+                   he:'<b>נכנסתם! כבר התחלנו לעבוד על האתר שלכם.</b><span>כל פרט נוסף שתשתפו יעזור לנו לבנות אתר אישי ומדויק יותר, אבל החלק החשוב כבר קרה: אתם בתור. התצוגה החינמית שלכם תגיע תוך 72 שעות.</span>'},
                 3:{en:'Almost there. Show us where you live online.',he:'כמעט סיימנו. איפה אתם נמצאים אונליין?'},
                 4:{en:'Last step, and it’s optional, but it makes your Reveal shine.',he:'שלב אחרון, אופציונלי, אבל הוא גורם ל-Reveal לזרוח.'}};
   function go(step, noFocus){
@@ -570,7 +577,10 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
     document.getElementById('stepn').textContent=(LANG==='he'?T('stepFmt').replace('{n}',step):'Step '+step+' of 4');
     var main=document.getElementById('main'); if(main) main.classList.toggle('beyond1', step>1);
     var re=document.getElementById('reassure');
-    if(re){ var r=REASSURE[step]; var msg=r?(r[LANG]||r.en):''; re.textContent=msg; re.style.display=msg?'block':'none'; }
+    if(re){ var r=REASSURE[step]; var msg=r?(r[LANG]||r.en):'';
+      re.innerHTML=msg; re.style.display=msg?'block':'none';
+      re.classList.toggle('on', step===2);   // step 2 = the "you're in" confirmation
+      re.classList.toggle('plain', step>2); }
     try{ document.getElementById('f').scrollIntoView({behavior:'smooth',block:'nearest'}); }catch(e){}
     if(!noFocus){ try{ var f=document.querySelector('.step.on input, .step.on textarea'); if(f) f.focus({preventScroll:true}); }catch(e){} }
     saveState();
@@ -808,10 +818,19 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
           : (ph ? ('Captured ('+stage+') - customer chose '+CMETHOD.toUpperCase()+' at '+ph+'. NO EMAIL: reveal must be sent MANUALLY, we have no '+CMETHOD+' automation.')
                 : 'PARTIAL - no contact channel yet. Do NOT build until we can reach them.')
       };
-      var r = await postLead(payload);
+      // NOTE: postLead() lives inside the submit handler's scope — unreachable from here.
+      // earlySave owns its own request. Upsert on the PK so this and the final save merge.
+      var r = await fetch(SUPA_URL+'/rest/v1/leads', {
+        method:'POST', keepalive:true,
+        headers:{ apikey:SUPA_KEY, Authorization:'Bearer '+SUPA_KEY, 'Content-Type':'application/json',
+                  Prefer:'resolution=merge-duplicates,return=minimal' },
+        body: JSON.stringify(payload)
+      });
       if(r && r.ok){
         EARLY_SAVED = true;
-        try{ if(window.uvFunnel) window.uvFunnel('funnel_lead_captured', {stage:stage, hasEmail:!!em}); }catch(_f){}
+        try{ if(window.uvFunnel) window.uvFunnel('funnel_lead_captured', {stage:stage, hasEmail:!!em, channel:(em?'email':CMETHOD)}); }catch(_f){}
+      } else {
+        try{ if(window.uvFunnel) window.uvFunnel('funnel_capture_failed', {stage:stage, status:(r&&r.status)||0}); }catch(_f){}
       }
     }catch(e){}
   }
@@ -826,11 +845,12 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
       saveState();
     }catch(e){}
   }
-  function showReassure(){
+  function showReassure(){ /* go(step) renders REASSURE[2]; kept for call-site compatibility */
     try{
       var el = document.getElementById('reassure');
       if(!el || el.getAttribute('data-on')) return;
       el.setAttribute('data-on','1');
+      return;
       var he = (LANG==='he');
       el.innerHTML = he
         ? '<b>נכנסתם! כבר התחלנו לעבוד על האתר שלכם.</b><span>כל פרט נוסף שתשתפו יעזור לנו לבנות אתר אישי ומדויק יותר, אבל החלק החשוב כבר קרה: אתם בתור. התצוגה החינמית שלכם תגיע תוך 72 שעות.</span>'
