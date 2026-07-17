@@ -744,7 +744,7 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
           : 'Add a number so we can send your finished website.'), 'contact');
         return;
       }
-      earlySave('captured');   // no-op until the edge function ships (anon lacks UPDATE)
+      earlySave('captured');   // lead exists from here on. intent is never lost.
       showReassure();          // "you're in" — value first, enrichment second
       prefillContact();        // don't ask twice for what they just gave us
     }
@@ -793,7 +793,7 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
     return (v.replace(/\D/g,'').length>=7);
   }
   var EARLY_SAVED = false;
-  var EARLY_CAPTURE_ENABLED = false;  // flip on when /functions/v1/lead-capture is live
+  var EARLY_CAPTURE_ENABLED = true;   // /functions/v1/lead-capture is live (service-role upsert)
   async function earlySave(stage){
     if(!EARLY_CAPTURE_ENABLED) return;
     try{
@@ -820,12 +820,15 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
           : (ph ? ('Captured ('+stage+') - customer chose '+CMETHOD.toUpperCase()+' at '+ph+'. NO EMAIL: reveal must be sent MANUALLY, we have no '+CMETHOD+' automation.')
                 : 'PARTIAL - no contact channel yet. Do NOT build until we can reach them.')
       };
-      // NOTE: postLead() lives inside the submit handler's scope — unreachable from here.
-      // earlySave owns its own request. Upsert on the PK so this and the final save merge.
-      var r = await fetch(SUPA_URL+'/rest/v1/leads', {
+      // The browser only holds the anon key, which RLS gives INSERT but not UPDATE
+      // (correct — a public page must never modify customer rows). The edge function
+      // does the create-or-enrich server-side with the service key.
+      payload.channel = SOURCE; payload.campaign = CAMPAIGN||null; payload.offer = OFFER||null;
+      payload.creative_id = CREATIVE||null; payload.creative_version = CVER||null;
+      payload.landing_variant = LVAR||null; payload.attribution_confidence = CREATIVE?'exact':'unattributed';
+      var r = await fetch(SUPA_URL+'/functions/v1/lead-capture', {
         method:'POST', keepalive:true,
-        headers:{ apikey:SUPA_KEY, Authorization:'Bearer '+SUPA_KEY, 'Content-Type':'application/json',
-                  Prefer:'resolution=merge-duplicates,return=minimal' },
+        headers:{ apikey:SUPA_KEY, 'Content-Type':'application/json' },
         body: JSON.stringify(payload)
       });
       if(r && r.ok){
@@ -920,9 +923,11 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
       attribution_confidence: CREATIVE?'exact':'unattributed'
     });
     async function postLead(payload){
-      return fetch(SUPA_URL+'/rest/v1/leads', {
+      // Same endpoint as the step-1 capture: creates the lead if this is the first we've
+      // seen it, enriches it if step 1 already captured it. One row, never a duplicate.
+      return fetch(SUPA_URL+'/functions/v1/lead-capture', {
         method:'POST',
-        headers:{ apikey:SUPA_KEY, Authorization:'Bearer '+SUPA_KEY, 'Content-Type':'application/json', Prefer:'return=minimal' },
+        headers:{ apikey:SUPA_KEY, 'Content-Type':'application/json' },
         body: JSON.stringify(payload)
       });
     }
