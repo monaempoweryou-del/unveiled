@@ -744,7 +744,7 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
           : 'Add a number so we can send your finished website.'), 'contact');
         return;
       }
-      earlySave('captured');   // lead exists from here on. intent is never lost.
+      earlySave('captured');   // no-op until the edge function ships (anon lacks UPDATE)
       showReassure();          // "you're in" — value first, enrichment second
       prefillContact();        // don't ask twice for what they just gave us
     }
@@ -793,7 +793,9 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
     return (v.replace(/\D/g,'').length>=7);
   }
   var EARLY_SAVED = false;
+  var EARLY_CAPTURE_ENABLED = false;  // flip on when /functions/v1/lead-capture is live
   async function earlySave(stage){
+    if(!EARLY_CAPTURE_ENABLED) return;
     try{
       var biz = val('biz'); if(!biz) return;
       // step-1 contact routes into the right column based on the channel they chose
@@ -920,7 +922,7 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
     async function postLead(payload){
       return fetch(SUPA_URL+'/rest/v1/leads', {
         method:'POST',
-        headers:{ apikey:SUPA_KEY, Authorization:'Bearer '+SUPA_KEY, 'Content-Type':'application/json', Prefer:'resolution=merge-duplicates,return=minimal' },
+        headers:{ apikey:SUPA_KEY, Authorization:'Bearer '+SUPA_KEY, 'Content-Type':'application/json', Prefer:'return=minimal' },
         body: JSON.stringify(payload)
       });
     }
