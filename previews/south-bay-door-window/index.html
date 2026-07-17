@@ -13,13 +13,13 @@
   <meta property="og:title" content="South Bay Door &amp; Window | Redondo Beach, CA">
   <meta property="og:description" content="Premium door and window installation, replacement, and repair serving Redondo Beach and the South Bay. Trusted craftsmanship since day one.">
   <meta property="og:url" content="https://unveiled.pro/previews/south-bay-door-window/">
-  <meta property="og:image" content="https://static1.squarespace.com/static/6074baab98a2832c98a96c2d/t/6128207b5f5c8e1bfbd51104/1630019707046/SOUTH+BAY+gray+c1-on+white.png?format=1500w">
+  <meta property="og:image" content="https://eosvftmiwndmctrqprtz.supabase.co/storage/v1/object/public/assets/8b5da58b-6b7e-40ef-b0ff-5721dfc76851/1784248459690-2830-0E8E9236-AC2B-4C23-89BB-D014ED757046.png">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="South Bay Door &amp; Window | Redondo Beach, CA">
   <meta name="twitter:description" content="Premium door and window installation, replacement, and repair serving Redondo Beach and the South Bay.">
-  <meta name="twitter:image" content="https://static1.squarespace.com/static/6074baab98a2832c98a96c2d/t/6128207b5f5c8e1bfbd51104/1630019707046/SOUTH+BAY+gray+c1-on+white.png?format=1500w">
+  <meta name="twitter:image" content="https://eosvftmiwndmctrqprtz.supabase.co/storage/v1/object/public/assets/8b5da58b-6b7e-40ef-b0ff-5721dfc76851/1784248459690-2830-0E8E9236-AC2B-4C23-89BB-D014ED757046.png">
 
   <!-- Favicon -->
   <link rel="icon" href="https://images.squarespace-cdn.com/content/v1/6074baab98a2832c98a96c2d/ec7262fa-86f7-408d-99a6-251c58f11605/favicon.ico?format=100w" type="image/x-icon">
@@ -216,13 +216,28 @@
       background: var(--navy);
     }
     .hero__bg {
-      position: absolute;
-      inset: 0;
+      position: absolute; inset: 0; z-index: 0;
       background:
-        linear-gradient(to bottom, rgba(27,42,59,0.72) 0%, rgba(27,42,59,0.55) 50%, rgba(27,42,59,0.82) 100%),
-        url('http://static1.squarespace.com/static/6074baab98a2832c98a96c2d/t/6128207b5f5c8e1bfbd51104/1630019707046/SOUTH+BAY+gray+c1-on+white.png?format=1500w') center/cover no-repeat;
-      z-index: 0;
+        radial-gradient(130% 100% at 50% -10%, #2f455c 0%, #1b2a3b 55%, #14212d 100%);
     }
+    .hero__bg::after{content:"";position:absolute;inset:0;pointer-events:none;
+      background:radial-gradient(55% 45% at 50% 40%, rgba(200,164,74,0.12), transparent 70%);}
+    .hero__logo{position:relative;display:inline-block;max-width:min(640px,86vw);margin:0.5rem auto 1.75rem;
+      border-radius:16px;overflow:hidden;
+      box-shadow:0 30px 80px -30px rgba(0,0,0,0.85), 0 0 0 1px rgba(255,255,255,0.05) inset;
+      opacity:0;transform:translateY(24px) scale(1.04);
+      animation:heroReveal 1.1s cubic-bezier(.2,.7,.2,1) 0.15s forwards;}
+    .hero__logo-img{display:block;width:100%;height:auto}
+    .hero__sheen{position:absolute;top:0;left:0;height:100%;width:60%;pointer-events:none;
+      background:linear-gradient(105deg,transparent 0%,rgba(255,255,255,0.16) 45%,rgba(255,255,255,0.42) 50%,rgba(255,255,255,0.16) 55%,transparent 100%);
+      transform:translateX(-130%) skewX(-12deg);
+      animation:heroSheen 6.5s ease-in-out 1.2s infinite;}
+    @keyframes heroReveal{to{opacity:1;transform:translateY(0) scale(1)}}
+    @keyframes heroSheen{0%{transform:translateX(-130%) skewX(-12deg)}
+      45%{transform:translateX(130%) skewX(-12deg)}100%{transform:translateX(130%) skewX(-12deg)}}
+    .hero__title{color:#fff;font-size:clamp(1.9rem,4.4vw,3.1rem);line-height:1.08;margin-bottom:1.1rem;letter-spacing:-0.01em}
+    @media (prefers-reduced-motion: reduce){
+      .hero__logo{animation:none;opacity:1;transform:none}.hero__sheen{display:none}}
     .hero__content {
       position: relative;
       z-index: 1;
@@ -587,8 +602,12 @@
     <div class="hero__bg" role="presentation"></div>
     <div class="hero__content">
       <span class="hero__eyebrow">Redondo Beach, California</span>
-      <h1>Doors and Windows<br>Done Right</h1>
-      <p class="hero__sub">South Bay Door &amp; Window brings precision installation, quality products, and genuine craftsmanship to homes and businesses throughout the South Bay.</p>
+      <div class="hero__logo">
+        <img src="https://eosvftmiwndmctrqprtz.supabase.co/storage/v1/object/public/assets/8b5da58b-6b7e-40ef-b0ff-5721dfc76851/1784248459690-2830-0E8E9236-AC2B-4C23-89BB-D014ED757046.png" alt="South Bay Door and Window" class="hero__logo-img" width="1536" height="1024">
+        <span class="hero__sheen" aria-hidden="true"></span>
+      </div>
+      <h1 class="hero__title">Doors and Windows, Done Right</h1>
+      <p class="hero__sub">Precision installation, premium products, and genuine craftsmanship for homes and businesses across the South Bay.</p>
       <div class="hero__actions">
         <a href="#contact" class="btn btn--primary">Request a Free Quote</a>
         <a href="#services" class="btn btn--outline">Explore Services</a>
@@ -932,5 +951,10 @@
 <div class="uv-foot">Secure checkout with Square. Cancel anytime. Once you pick a plan, we set up your domain and take it live.</div>
 </div>
 </section>
+<script>(function(){var l=document.querySelector('.hero__logo');if(!l)return;
+if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+var t=false;function u(){t=false;var y=window.pageYOffset||0;if(y<900){l.style.willChange='transform';
+l.style.transform='translateY('+(y*0.12)+'px) scale('+(1-Math.min(y,600)*0.00006)+')';}}
+window.addEventListener('scroll',function(){if(!t){t=true;requestAnimationFrame(u);}},{passive:true});})();</script>
 </body>
 </html>
