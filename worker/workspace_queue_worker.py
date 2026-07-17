@@ -113,7 +113,7 @@ def beat():
 
 
 def promote():
-    now = _now()
+    now = urllib.parse.quote(_now())  # '+' in the ISO offset decodes to ' ' server-side
     due = _req("GET", f"workspace_queue?status=eq.retry&next_retry_at=lte.{now}&select=id") or []
     for r in due:
         _patch_order(r["id"], {"status": "runnable", "blocker": None},
@@ -180,7 +180,13 @@ def run_workspace_loop():
         time.sleep(300)
         return
     counts = beat()
-    promote()
+    # Scheduler rule 1: a failing step never halts the others. promote() is
+    # isolated so a bad query can't stop drain() from running (this exact
+    # shape hid a 14-day drain outage behind a healthy heartbeat).
+    try:
+        promote()
+    except Exception as e:
+        print(f"[workspace] promote failed (continuing to drain): {e!r}", flush=True)
     ran = drain()
     print(f"[workspace] beat ok, counts={counts}, ran={ran}", flush=True)
 
