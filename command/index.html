@@ -1607,14 +1607,14 @@ function onbDate(d){ if(!d) return 'recently'; try{ return new Date(d).toLocaleD
 function activeCard(l){
   var pv=l.preview_url||'', since=l.converted_at||l.approved_at||l.updated_at;
   var thumb=pv?'<img loading="lazy" src="'+shot(pv,400)+'">':'<div class="ini">'+esc(initials(l.business_name))+'</div>';
-  return '<div class="onbc"><div class="onbtop">'+
+  return '<div class="onbc" onclick="location.hash=\'#c/'+l.id+'\'" style="cursor:pointer"><div class="onbtop">'+
     '<div class="onbthumb">'+thumb+'</div>'+
     '<div class="onbmeta"><div class="onbnm">'+esc(l.business_name||'Customer')+' <span class="badgeok">● Active</span></div>'+
       '<div class="onbsub">Customer since '+esc(onbDate(since))+'</div>'+
       '<div class="onbchips"><span class="dch on">✓ Delivered</span><span class="dch on">✓ Paid</span><span class="dch on">✓ Launched</span>'+
         '<span class="dch pend">Portal · soon</span><span class="dch pend">Support · soon</span><span class="dch pend">Analytics · soon</span><span class="dch pend">Billing · Square soon</span></div>'+
     '</div>'+
-    (pv?'<button class="dvb" onclick="window.open(\''+esc(absUrl(pv))+'\',\'_blank\')">Live site ↗</button>':'')+
+    (pv?'<button class="dvb" onclick="event.stopPropagation();window.open(\''+esc(absUrl(pv))+'\',\'_blank\')">Live site ↗</button>':'')+
   '</div></div>';
 }
 function renderCustomers(){
@@ -1703,28 +1703,28 @@ function pendingCard(l){
         (s.state==='active'?stepAction(l,s):'')+
       '</div></div>';
   }).join('');
-  return '<div class="onbc hot"><div class="onbtop">'+
+  return '<div class="onbc hot" onclick="location.hash=\'#c/'+l.id+'\'" style="cursor:pointer"><div class="onbtop">'+
       '<div class="onbthumb">'+thumb+'</div>'+
       '<div class="onbmeta"><div class="onbnm">'+esc(l.business_name||'Customer')+'</div>'+
         '<div class="onbsub">'+(active?('Now: '+esc(active.label)):'Onboarding complete — graduating to Active 🎉')+'</div>'+
         '<div class="onbbar"><i style="width:'+pr.pct+'%"></i></div>'+
         '<div class="onbpct">'+pr.done+' of '+pr.total+' steps complete · '+pr.pct+'%</div>'+
       '</div>'+
-      (pv?'<button class="dvb" onclick="window.open(\''+esc(absUrl(pv))+'\',\'_blank\')">Preview ↗</button>':'')+
+      (pv?'<button class="dvb" onclick="event.stopPropagation();window.open(\''+esc(absUrl(pv))+'\',\'_blank\')">Preview ↗</button>':'')+
     '</div><div class="onbpipe">'+pipe+'</div></div>';
 }
 function awaitingCard(l){
   var pv=l.preview_url||''; var days=l.reveal_sent_at?Math.floor((Date.now()-new Date(l.reveal_sent_at).getTime())/86400000):null;
   var atRisk=days!=null&&days>=7;
-  return '<div class="dvcard" style="align-items:flex-start">'+
+  return '<div class="dvcard" style="align-items:flex-start;cursor:pointer" onclick="location.hash=\'#c/'+l.id+'\'">'+
     '<div class="dvthumb">'+(pv?'<img loading="lazy" src="'+shot(pv,300)+'">':'<div class="ini">'+esc(initials(l.business_name))+'</div>')+'</div>'+
     '<div class="dvmain"><div class="dvnm">'+esc(l.business_name||'Customer')+(atRisk?' <span style="color:#f0576a;font-size:11px;font-weight:800;letter-spacing:.5px">AT RISK</span>':'')+'</div>'+
       '<div class="dvst">'+(l.reveal_sent_at?('Reveal delivered '+ago(l.reveal_sent_at)+(days!=null?' · '+days+'d ago':'')):'Approved — reveal queued')+'</div>'+
       '<div class="dvchips"><span class="dch on">✓ Reveal delivered</span><span class="dch pend">Awaiting their yes</span></div></div>'+
     '<div class="dvact">'+
-      (pv?'<button class="dvb" onclick="window.open(\''+esc(absUrl(pv))+'\',\'_blank\')">Preview ↗</button>':'')+
-      (l.email?'<button class="dvb" onclick="resendReveal(\''+l.id+'\',this)">Resend</button>':'')+
-      '<button class="dvb go" onclick="startOnboarding(\''+l.id+'\',this)">✓ They said yes</button>'+
+      (pv?'<button class="dvb" onclick="event.stopPropagation();window.open(\''+esc(absUrl(pv))+'\',\'_blank\')">Preview ↗</button>':'')+
+      (l.email?'<button class="dvb" onclick="event.stopPropagation();resendReveal(\''+l.id+'\',this)">Resend</button>':'')+
+      '<button class="dvb go" onclick="event.stopPropagation();startOnboarding(\''+l.id+'\',this)">✓ They said yes</button>'+
     '</div></div>';
 }
 function renderComms(){
@@ -2723,8 +2723,9 @@ function _renderCustomer_legacy(id){
   if(phone) teamActs+=`<a class="btn" href="tel:${esc(phone.replace(/[^0-9+]/g,''))}">📞 Call</a>`;
   if(email) teamActs+=`<a class="btn" href="mailto:${esc(email)}">✉ Email</a>`;
   if(l.preview_url) custActs+=`<button class="btn" onclick="openRevisionModal()">✎ Request a change</button>`;
-  // Cancel & remove from the production queue — available for any business still in production
-  if(dept(l)==='production') teamActs+=`<button class="btn ghost" style="color:#f0576a;border-color:rgba(240,87,106,.4)" onclick="cancelFromQueue('${id}')">🗑 Cancel &amp; remove from queue</button>`;
+  // Cancel / delete the build — a management function that must ALWAYS be available on the
+  // Company Profile, at any stage (except already-archived). Reversible via Reopen.
+  if(dept(l)!=='archived') teamActs+=`<button class="btn ghost" style="color:#f0576a;border-color:rgba(240,87,106,.4)" onclick="cancelFromQueue('${id}')">🗑 Cancel &amp; delete build</button>`;
 
   $('ws').innerHTML=`
     <div class="back" onclick="go('customers')">‹ All customers</div>
