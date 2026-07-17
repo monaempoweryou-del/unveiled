@@ -930,6 +930,30 @@ async function requeueBuild(id, btn){
   await load(); route();
 }
 
+// Cancel a business out of the production queue: stop any in-flight build/revision work
+// and move the lead out of Production (LOST -> archived dept). Reversible via Reopen.
+// Nothing is emailed. Mirrors the requeueBuild session/RLS + toast pattern.
+async function cancelFromQueue(id){
+  const l=LEADS.find(x=>x.id===id)||{}; const nm=l.business_name||'this business';
+  if(!confirm('Cancel and remove '+nm+' from the production queue?\n\nThis stops any in-progress build or revision and moves the business out of Production. Nothing is emailed to the customer. You can still find it under archived and reopen it later.')) return;
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){ toast('Sign in first. Removing from the queue needs a signed-in staff session.'); return; }
+  try{
+    // 1) stop any queued/active work for this lead so the worker stops building it
+    await sb.from('work_queue')
+      .update({status:'cancelled',blocker_reason:'cancelled from queue by staff',updated_at:new Date().toISOString()})
+      .filter('payload->>lead_id','eq',id).in('status',['pending','blocked','retry','running']);
+    // 2) move the lead out of Production (dept('LOST') === 'archived'); reversible via Reopen
+    const {data,error}=await sb.from('leads')
+      .update({status:'LOST',disqualification_reason:'Cancelled from production queue by staff',updated_at:new Date().toISOString()})
+      .eq('id',id).select('id,status');
+    if(error) throw error;
+    if(!data||!data.length){ toast('Not saved — your account may lack permission (RLS). Sign in as staff and retry.'); return; }
+    toast(nm+' removed from the production queue.');
+    await load(); go('production');
+  }catch(e){ toast('Could not remove: '+((e&&(e.message||e.code))||'unknown error')); }
+}
+
 // ===== Executive Home helpers: away-digest, opportunity scoring, live screenshots =====
 // Capture the moment of THIS load once, then stamp "now" for next time, so the home
 // screen can honestly answer "what changed since I last looked?" (fixes the stale feel).
@@ -2699,6 +2723,8 @@ function _renderCustomer_legacy(id){
   if(phone) teamActs+=`<a class="btn" href="tel:${esc(phone.replace(/[^0-9+]/g,''))}">📞 Call</a>`;
   if(email) teamActs+=`<a class="btn" href="mailto:${esc(email)}">✉ Email</a>`;
   if(l.preview_url) custActs+=`<button class="btn" onclick="openRevisionModal()">✎ Request a change</button>`;
+  // Cancel & remove from the production queue — available for any business still in production
+  if(dept(l)==='production') teamActs+=`<button class="btn ghost" style="color:#f0576a;border-color:rgba(240,87,106,.4)" onclick="cancelFromQueue('${id}')">🗑 Cancel &amp; remove from queue</button>`;
 
   $('ws').innerHTML=`
     <div class="back" onclick="go('customers')">‹ All customers</div>
