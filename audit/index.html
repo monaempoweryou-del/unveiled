@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI Profit Audit — UNVEILED</title>
+<meta name="description" content="You already know AI can help your business. We show you exactly where it saves your team time, speeds up your customers, and grows profit — then we build it with you.">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FFFFFF;--cream:#FAF8F5;--sand:#F4EFE8;--ink:#16130F;--text:#1C1917;--muted:#6B6560;--faint:#A8A29E;--line:#ECE7DF;
+    --violet:#6C3CE0;--violet-l:#8B5CF6;--indigo:#4338CA;--green:#0FA574;
+    --grad:linear-gradient(120deg,#7C4DFF 0%,#4338CA 100%);
+    --r:22px;--shadow:0 40px 90px -46px rgba(48,22,120,.45);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--cream);color:var(--text);font-family:'Space Grotesk',-apple-system,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:960px;margin:0 auto;padding:28px 24px 90px}
+  .nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:56px}
+  .logo{font-weight:700;letter-spacing:.2em;font-size:15px}
+  .logo b{color:var(--violet)}
+  .navtag{color:var(--muted);font-size:13px}
+  section{margin:104px 0}
+
+  /* HERO */
+  .hero{text-align:center;margin:20px 0 0}
+  .eyebrow{color:var(--violet);font-weight:600;letter-spacing:.14em;font-size:13px;text-transform:uppercase;margin-bottom:18px}
+  h1{font-size:clamp(34px,5.6vw,58px);line-height:1.05;font-weight:700;letter-spacing:-.02em;margin:0 auto 20px;max-width:16ch}
+  h1 .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero .sub{color:var(--muted);font-size:clamp(17px,2.4vw,20px);max-width:56ch;margin:0 auto 40px}
+
+  /* PREMIUM VIDEO THUMBNAIL */
+  .videoframe{position:relative;border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);aspect-ratio:16/9;
+    background:radial-gradient(120% 140% at 78% 20%,#3A2A66 0%,#221A3A 45%,#141024 100%);cursor:pointer}
+  .videoframe .glow{position:absolute;inset:0;background:radial-gradient(60% 80% at 80% 30%,rgba(140,90,255,.35),transparent 60%)}
+  .videoframe .wm{position:absolute;top:20px;left:22px;color:#EDE6FF;font-weight:700;letter-spacing:.2em;font-size:12px;opacity:.9}
+  .videoframe .dur{position:absolute;top:20px;right:22px;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:12px;font-weight:600;padding:5px 12px;border-radius:99px;backdrop-filter:blur(4px)}
+  .vf-grid{position:absolute;inset:0;display:grid;grid-template-columns:1fr 0.82fr;align-items:center}
+  .vf-copy{padding:0 6%;text-align:left}
+  .vf-copy .tt{color:#fff;font-size:clamp(20px,3.4vw,34px);font-weight:700;line-height:1.1;letter-spacing:-.01em}
+  .vf-copy .tt em{color:#C9B6FF;font-style:normal}
+  .vf-copy .by{color:#B7ADD6;font-size:14px;margin-top:12px;font-weight:500}
+  .portrait{justify-self:center;width:min(30vw,220px);aspect-ratio:1;border-radius:50%;
+    background:linear-gradient(160deg,#4B3A7A,#2A2140);border:2px solid rgba(180,150,255,.35);
+    box-shadow:0 0 0 12px rgba(140,90,255,.08),inset 0 -20px 40px rgba(0,0,0,.35);
+    display:flex;align-items:center;justify-content:center;position:relative}
+  .portrait span{color:#8E7FBE;font-size:13px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+  .play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:88px;height:88px;border-radius:50%;
+    background:var(--grad);display:flex;align-items:center;justify-content:center;box-shadow:0 20px 50px rgba(108,60,224,.55);transition:transform .2s}
+  .videoframe:hover .play{transform:translate(-50%,-50%) scale(1.06)}
+  .play svg{margin-left:6px}
+  .undervid{display:flex;align-items:center;justify-content:center;gap:14px;color:var(--muted);font-size:14.5px;margin-top:20px}
+  .undervid .ph{width:44px;height:44px;border-radius:50%;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
+  .undervid b{color:var(--text)}
+  .cta-row{display:flex;gap:14px;justify-content:center;margin-top:34px;flex-wrap:wrap}
+  .btn{background:var(--grad);color:#fff;border:none;border-radius:14px;padding:16px 30px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;box-shadow:0 18px 40px -18px rgba(67,32,160,.6)}
+  .btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line);box-shadow:none}
+
+  /* TRUST BAND */
+  .trust{margin-top:64px;background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:40px 30px;
+    display:grid;grid-template-columns:repeat(3,1fr);gap:20px;text-align:center}
+  .trust .t .n{font-size:clamp(34px,4.6vw,46px);font-weight:700;letter-spacing:-.03em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+  .trust .t .l{color:var(--muted);font-size:14px;margin-top:10px;line-height:1.4;max-width:24ch;margin-left:auto;margin-right:auto}
+
+  /* SECTION HEADS */
+  h2{font-size:clamp(26px,3.6vw,38px);font-weight:700;letter-spacing:-.02em;text-align:center;margin-bottom:14px;line-height:1.1}
+  h2 .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lede{color:var(--muted);font-size:18px;text-align:center;max-width:52ch;margin:0 auto 56px}
+
+  /* PROBLEM — overwhelm → clarity */
+  .stmt{text-align:center}
+  .stmt .big{font-size:clamp(28px,4.4vw,44px);font-weight:700;letter-spacing:-.02em;line-height:1.15;max-width:22ch;margin:0 auto}
+  .stmt .big .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .stmt .note{color:var(--muted);font-size:18px;max-width:50ch;margin:24px auto 0}
+  .flow{display:flex;gap:26px;justify-content:center;align-items:center;margin-top:52px;flex-wrap:wrap}
+  .chaos{display:flex;flex-direction:column;gap:10px;background:var(--sand);border:1px solid var(--line);border-radius:var(--r);padding:26px;min-width:280px;max-width:360px;flex:1}
+  .chaos .h{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);font-weight:600;margin-bottom:4px}
+  .chaos .row{display:flex;flex-wrap:wrap;gap:8px}
+  .tchip{background:#EFE9E1;color:#8B8178;border:1px solid #E3DBD0;border-radius:99px;padding:7px 13px;font-size:13px;font-weight:500}
+  .chaos .pct{margin-top:8px;font-size:14px;color:#9A8F84}.chaos .pct b{color:#7A6F64;font-weight:700}
+  .flowarrow{color:var(--violet);font-size:32px}
+  .clarity{background:var(--paper);border:1px solid #D9CCFF;border-radius:var(--r);padding:30px 28px;min-width:260px;max-width:340px;flex:1;box-shadow:0 24px 60px -40px rgba(108,60,224,.5);text-align:left}
+  .clarity .h{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);font-weight:600;margin-bottom:12px}
+  .clarity .big2{font-size:24px;font-weight:700;letter-spacing:-.01em;line-height:1.2}
+  .clarity .big2 .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .clarity .sm{color:var(--muted);font-size:14.5px;margin-top:10px}
+
+  /* VALUE — the real differentiation */
+  .valuegrid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:8px}
+  .val{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:26px 22px;text-align:center}
+  .val .ic{width:40px;height:40px;margin:0 auto 16px}
+  .val h4{font-size:16px;font-weight:600;margin-bottom:6px}
+  .val p{color:var(--muted);font-size:14px}
+  /* PLEDGE — the test-before-launch differentiator, made obvious */
+  .pledge{margin-top:22px;background:linear-gradient(135deg,#F3EEFF,#FBF8F5);border:1px solid #E2D6FF;border-radius:var(--r);padding:28px 32px;display:flex;align-items:center;gap:22px}
+  .pledge .picon{width:52px;height:52px;border-radius:14px;background:var(--grad);flex:none;display:flex;align-items:center;justify-content:center}
+  .pledge .pl{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);font-weight:700;margin-bottom:7px}
+  .pledge p{font-size:clamp(17px,2.1vw,21px);font-weight:600;letter-spacing:-.01em;line-height:1.35;color:var(--text)}
+  /* OUTCOMES — what you actually get */
+  .outs{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:840px;margin:0 auto}
+  .outcol{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:32px 30px}
+  .outcol.hi{background:var(--ink);border-color:transparent}
+  .ocl{font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--violet);margin-bottom:20px}
+  .outcol.hi .ocl{color:#C4AFFF}
+  .outcol ul{list-style:none;display:flex;flex-direction:column;gap:14px}
+  .outcol li{position:relative;padding-left:32px;font-size:15.5px;line-height:1.45;font-weight:500}
+  .outcol.hi li{color:#EDE9E3}
+  .outcol li::before{content:"";position:absolute;left:0;top:2px;width:19px;height:19px;border-radius:50%;background:var(--grad)}
+  .outcol li::after{content:"";position:absolute;left:6.5px;top:7px;width:6px;height:3px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg)}
+
+  /* STEPS */
+  .three{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .step{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:34px 28px}
+  .step .idx{font-size:14px;font-weight:700;color:var(--violet);letter-spacing:.1em;margin-bottom:22px}
+  .step .ic{width:46px;height:46px;margin-bottom:18px}
+  .step h3{font-size:19px;font-weight:600;margin-bottom:8px;letter-spacing:-.01em}
+  .step p{color:var(--muted);font-size:15px}
+
+  /* STACK — overwhelmed pile → essential systems (outcome, not dashboard) */
+  .stackviz{background:var(--ink);border-radius:calc(var(--r) + 6px);padding:52px 44px;color:#fff}
+  .stackviz h2{color:#fff}.stackviz .lede{color:#B9B2AA}
+  .svrow{display:flex;gap:28px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:10px}
+  .pile{flex:1;min-width:280px;max-width:400px}
+  .pile .h{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#8B837B;font-weight:600;margin-bottom:16px}
+  .pile .row{display:flex;flex-wrap:wrap;gap:9px}
+  .pchip{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#948C84;border-radius:99px;padding:8px 14px;font-size:13px}
+  .svarrow{color:var(--violet-l);font-size:34px}
+  .essent{flex:1;min-width:240px;max-width:340px}
+  .essent .h{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#C4AFFF;font-weight:600;margin-bottom:16px}
+  .echip{display:block;background:rgba(124,77,255,.14);border:1px solid rgba(160,120,255,.35);color:#fff;border-radius:14px;padding:15px 18px;font-size:15px;font-weight:600;margin-bottom:10px}
+  .echip span{display:block;font-size:12.5px;font-weight:400;color:#B9AEDD;margin-top:3px}
+  .method{display:flex;gap:22px;flex-wrap:wrap;justify-content:center;margin-top:40px;padding-top:28px;border-top:1px solid rgba(255,255,255,.1)}
+  .m{display:flex;align-items:center;gap:9px;font-size:13.5px;color:#CFC8C0}
+  .m .d{width:9px;height:9px;border-radius:50%}
+  .m.k .d{background:#4FE0AE}.m.r .d{background:#C4AFFF}.m.c .d{background:#F2C877}.m.x .d{background:#F29A9A}
+  .m b{color:#fff;font-weight:600;letter-spacing:.02em}
+
+  /* PROOF — visual case-study posters */
+  .cases{display:grid;gap:28px}
+  .casev{background:var(--paper);border:1px solid var(--line);border-radius:calc(var(--r) + 6px);padding:30px 30px 28px;box-shadow:0 30px 70px -50px rgba(48,22,120,.5)}
+  .chead{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:24px}
+  .clogo{display:flex;align-items:center;gap:13px}
+  .cmark{width:48px;height:48px;border-radius:13px;display:flex;align-items:center;justify-content:center;flex:none}
+  .clogo .cn{font-weight:700;font-size:18px;letter-spacing:-.01em}
+  .clogo .ci{font-size:12px;color:var(--muted);font-weight:500;margin-top:1px}
+  .cresult{font-size:15px;font-weight:600;color:var(--violet);text-align:right;max-width:24ch;line-height:1.35}
+  /* journey: before -> systems -> after */
+  .cjourney{display:grid;grid-template-columns:1fr auto 1.35fr auto 1fr;align-items:center;gap:16px;background:var(--cream);border:1px solid var(--line);border-radius:16px;padding:22px 24px}
+  .jstate .jl,.jsys .sl{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;margin-bottom:7px}
+  .jstate .jl{color:var(--faint)}
+  .jstate .jv{font-size:14.5px;font-weight:600}
+  .jstate.old .jv{color:#A79D93}
+  .jsys .sl{color:var(--violet)}
+  .jsys .row{display:flex;flex-wrap:wrap;gap:7px}
+  .syschip{display:inline-flex;align-items:center;gap:6px;background:#F1ECFF;border:1px solid #E1D6FF;color:#4B32A6;border-radius:99px;padding:6px 11px;font-size:12px;font-weight:600}
+  .syschip svg{width:13px;height:13px}
+  .jarrow{color:var(--violet);font-size:22px;font-weight:700}
+  /* metrics + monthly investment */
+  .cmetrics{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+  .mtile{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .mtile .ml{font-size:11.5px;color:var(--muted);font-weight:500;margin-bottom:9px;line-height:1.3}
+  .mtile .mv{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+  .mtile .mv .old{color:#B4AAA0;font-size:15px;font-weight:600;text-decoration:line-through}
+  .mtile .mv .new{font-size:23px;font-weight:700;letter-spacing:-.02em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .mtile.invest{background:linear-gradient(160deg,#FBF9F4,#F3EDE3)}
+  .mtile.invest .ml{color:#8A8177}
+  /* story + chips */
+  .cstory{margin-top:20px;font-size:14.5px;line-height:1.55}
+  .cstory .cl{color:var(--muted)}.cstory .cl b{color:var(--text);font-weight:600}
+  .cstory .cl.res{color:var(--text);margin-top:6px}
+  .chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}
+  .chip{display:inline-flex;align-items:center;gap:7px;background:var(--cream);border:1px solid var(--line);border-radius:99px;padding:8px 14px;font-size:13px;font-weight:500}
+  .chip .cd{width:7px;height:7px;border-radius:50%;background:var(--green)}
+
+  /* FEATURED testimonial — the DIY-to-handover story */
+  .featured{background:var(--ink);border-radius:calc(var(--r) + 6px);padding:52px 46px;color:#fff;text-align:center;max-width:840px;margin:0 auto}
+  .featured .jtag{display:inline-block;background:rgba(124,77,255,.2);border:1px solid rgba(160,120,255,.4);color:#C4AFFF;border-radius:99px;padding:6px 15px;font-size:12px;font-weight:600;letter-spacing:.03em;margin-bottom:24px}
+  .featured .fq{font-size:clamp(18px,2.5vw,24px);font-weight:500;line-height:1.5;letter-spacing:-.01em}
+  .featured .fq em{color:#C9B6FF;font-style:normal;font-weight:600}
+  .featured .fwho{margin-top:28px;color:#B9B2AA;font-size:14px}
+  .featured .fwho b{color:#fff;display:block;font-size:15px;margin-bottom:2px}
+
+  /* TESTIMONIALS */
+  .tstm{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .quote-c{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:28px 26px;display:flex;flex-direction:column}
+  .quote-c .mark{font-size:44px;line-height:.6;color:#D8CCFF;font-weight:700;margin-bottom:14px;height:22px}
+  .quote-c p{color:var(--text);font-size:15px;line-height:1.55;flex:1}
+  .quote-c .who{display:flex;align-items:center;gap:12px;margin-top:22px}
+  .quote-c .av{width:40px;height:40px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px}
+  .quote-c .who b{font-size:14px;display:block}
+  .quote-c .who span{font-size:12.5px;color:var(--muted)}
+
+  /* PATHS */
+  .paths{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:8px}
+  .path{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:30px 26px;position:relative}
+  .path.mid{border-color:#D9CCFF;box-shadow:0 20px 50px -30px rgba(108,60,224,.4)}
+  .path .n{width:40px;height:40px;border-radius:12px;background:var(--grad);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+  .path .pr{color:var(--violet);font-weight:600;font-size:12.5px;letter-spacing:.03em;margin-bottom:6px}
+  .path h3{font-size:18px;font-weight:600;margin-bottom:8px}
+  .path p{color:var(--muted);font-size:14.5px}
+  .pathnote{text-align:center;color:var(--muted);font-size:15px;margin-top:26px;max-width:52ch;margin-left:auto;margin-right:auto}
+
+  /* OFFER */
+  .offer{background:var(--paper);border:1px solid var(--line);border-radius:calc(var(--r) + 6px);padding:48px 40px;max-width:560px;margin:0 auto;box-shadow:var(--shadow)}
+  .badge{display:inline-block;background:#EFE9FF;color:var(--indigo);border-radius:99px;padding:7px 16px;font-size:12.5px;font-weight:700;letter-spacing:.06em;margin-bottom:18px}
+  .price{font-size:46px;font-weight:700;letter-spacing:-.03em}
+  .price s{color:var(--faint);font-weight:400;font-size:24px;margin-left:12px}
+  .price .after{display:block;color:var(--muted);font-size:14px;font-weight:400;margin-top:8px}
+  form{display:flex;flex-direction:column;gap:12px;margin-top:26px}
+  input,select{background:var(--cream);border:1px solid var(--line);border-radius:13px;padding:15px 17px;font-size:16px;font-family:inherit;color:var(--text)}
+  input:focus,select:focus{outline:none;border-color:var(--violet)}
+  .offer button{width:100%}
+  .fine{color:var(--faint);font-size:13px;margin-top:10px;text-align:center}
+  .ok{display:none;background:#EAFBF3;border:1px solid var(--green);color:#0A6B4B;border-radius:13px;padding:15px;margin-top:12px;text-align:center}
+
+  .closing{text-align:center;max-width:24ch;margin:0 auto;font-size:clamp(24px,3.4vw,34px);font-weight:600;letter-spacing:-.02em;line-height:1.25}
+  .closing em{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-style:normal}
+  .closing .attr{display:block;font-size:15px;font-weight:500;color:var(--muted);margin-top:20px;letter-spacing:.02em}
+  /* PEOPLE NOTE + VISION CLOSING */
+  .peoplenote{max-width:60ch;margin:26px auto 0;text-align:center;font-size:clamp(16px,2vw,18.5px);color:var(--muted);line-height:1.55}
+  .peoplenote b{color:var(--text);font-weight:600}
+  .vision{text-align:center;max-width:24ch;margin:0 auto;display:none}
+  .visionwrap{text-align:center;max-width:760px;margin:0 auto}
+  .visionwrap .vt{font-size:clamp(22px,3vw,31px);font-weight:600;letter-spacing:-.015em;line-height:1.35}
+  .visionwrap .vt em{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-style:normal}
+  .visionwrap .vsub{font-size:clamp(17px,2.1vw,20px);color:var(--muted);margin-top:24px;line-height:1.55;font-weight:500}
+  .visionwrap .vsub b{color:var(--text);font-weight:600}
+  .visionwrap .sig{display:block;margin-top:34px;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);font-weight:700}
+
+  @media(max-width:760px){
+    .vf-grid{grid-template-columns:1fr}.portrait{display:none}.vf-copy{text-align:center;padding:0 24px}
+    .three,.paths,.tstm,.valuegrid{grid-template-columns:1fr}
+    .valuegrid{gap:14px}
+    .trust{grid-template-columns:1fr;gap:28px}
+    .chead{flex-direction:column;align-items:flex-start}.cresult{text-align:left}
+    .cjourney{grid-template-columns:1fr;gap:18px;text-align:center}
+    .cjourney .jsys .row{justify-content:center}
+    .jarrow{transform:rotate(90deg)}
+    .cmetrics{grid-template-columns:1fr}
+    .featured{padding:40px 26px}
+    .pledge{flex-direction:column;text-align:center}
+    .outs{grid-template-columns:1fr}
+    section{margin:76px 0}
+    .flow{flex-direction:column}.flowarrow{transform:rotate(90deg)}
+    .svrow{flex-direction:column}.svarrow{transform:rotate(90deg)}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="nav">
+    <div class="logo">UNVEILED<b>.</b></div>
+    <div class="navtag">AI, implemented where it pays.</div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="eyebrow">The AI Profit Audit</div>
+    <h1>You already know AI can help. <span class="g">We show you exactly where.</span></h1>
+    <p class="sub">You don't need convincing that AI works — you need someone who's already climbed the learning curve. We find the few places AI saves your team time, gets your customers faster answers, and helps you grow with the people you already have — then we build it and make sure your team actually uses it.</p>
+
+    <div class="videoframe" id="foundervideo" role="button" aria-label="Play founder video">
+      <div class="glow"></div>
+      <div class="wm">UNVEILED</div>
+      <div class="dur">45 SEC WATCH</div>
+      <div class="vf-grid">
+        <div class="vf-copy">
+          <div class="tt">Why I built<br>the <em>AI Profit Audit</em></div>
+          <div class="by">Maor Shaya · 25 years an operator</div>
+        </div>
+        <div class="portrait"><span>Maor</span></div>
+      </div>
+      <div class="play"><svg width="28" height="32" viewBox="0 0 28 32" fill="#fff"><path d="M0 0 L28 16 L0 32 Z"/></svg></div>
+    </div>
+    <div class="undervid"><div class="ph" id="photo">MS</div><div>Under a minute, in his own voice — <b>why this exists, and why your business needs it.</b></div></div>
+
+    <div class="cta-row">
+      <a href="#get" class="btn">Show me my AI opportunities →</a>
+      <a href="#proof" class="btn ghost">See real results →</a>
+    </div>
+
+    <div class="trust">
+      <div class="t"><div class="n">300+</div><div class="l">businesses helped to run leaner, faster, and more profitably</div></div>
+      <div class="t"><div class="n">Hundreds</div><div class="l">of AI and automation systems built inside real companies</div></div>
+      <div class="t"><div class="n">25+ yrs</div><div class="l">building and running real businesses, not just talking about them</div></div>
+    </div>
+  </div>
+
+  <!-- PROBLEM: overwhelm → clarity -->
+  <section class="stmt">
+    <div class="big">You already know AI could <span class="g">make your business better.</span></div>
+    <p class="note">Maybe you tried. Maybe it felt overwhelming. Maybe you never trusted it enough to put it in front of your customers. That's exactly where we come in.</p>
+    <div class="flow">
+      <div class="chaos">
+        <div class="h">Today</div>
+        <div class="row">
+          <span class="tchip">Manual, repetitive work</span>
+          <span class="tchip">Slow customer responses</span>
+          <span class="tchip">Too many disconnected tools</span>
+          <span class="tchip">Your team overwhelmed</span>
+          <span class="tchip">Subscriptions nobody uses</span>
+          <span class="tchip">"Which one even matters?"</span>
+        </div>
+        <div class="pct">Paying for it all. Using about <b>10%</b>.</div>
+      </div>
+      <div class="flowarrow">→</div>
+      <div class="clarity">
+        <div class="h">Tomorrow</div>
+        <div class="big2">A business that <span class="g">runs on the right AI.</span></div>
+        <div class="sm">Faster customer service, less busywork, more done with the same team — and AI quietly handling the repetitive work in the background.</div>
+      </div>
+    </div>
+    <p class="note" style="margin-top:44px;font-weight:600;color:var(--text)">We don't start with AI. We start with your business.</p>
+  </section>
+
+  <!-- VALUE: the real differentiation -->
+  <section>
+    <h2>We've already made the mistakes. <span class="g">So you don't have to.</span></h2>
+    <p class="lede">You've seen what AI can do. The hard part is the months of testing, breaking, and rebuilding to make it work inside a real business. We've already done that — hundreds of times, across real companies. We don't hand you a list of tools. We build the system your business actually needs, and prove it before it ever touches your customers.</p>
+    <div class="valuegrid">
+      <div class="val">
+        <svg class="ic" viewBox="0 0 40 40" fill="none" stroke="url(#v1)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><defs><linearGradient id="v1" x1="0" y1="0" x2="40" y2="40"><stop stop-color="#7C4DFF"/><stop offset="1" stop-color="#4338CA"/></linearGradient></defs><path d="M20 5l3.6 8.4L32 15l-6 6 1.4 9L20 25.6 12.6 30 14 21l-6-6 8.4-1.6z"/></svg>
+        <h4>The right AI for your business</h4><p>The exact systems your business needs — not a pile of tools everyone else is buying.</p>
+      </div>
+      <div class="val">
+        <svg class="ic" viewBox="0 0 40 40" fill="none" stroke="url(#v2)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><defs><linearGradient id="v2" x1="0" y1="0" x2="40" y2="40"><stop stop-color="#7C4DFF"/><stop offset="1" stop-color="#4338CA"/></linearGradient></defs><path d="M10 30l6-6M8 32l4-1 16-16a3 3 0 0 0-4-4L8 27z"/><path d="M26 8l6 6"/></svg>
+        <h4>We build it, not just advise</h4><p>We design and set up the systems for you — hands-on, not a list of recommendations you're left to figure out.</p>
+      </div>
+      <div class="val">
+        <svg class="ic" viewBox="0 0 40 40" fill="none" stroke="url(#v3)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><defs><linearGradient id="v3" x1="0" y1="0" x2="40" y2="40"><stop stop-color="#7C4DFF"/><stop offset="1" stop-color="#4338CA"/></linearGradient></defs><circle cx="20" cy="14" r="6"/><path d="M9 32c0-6 5-10 11-10s11 4 11 10"/></svg>
+        <h4>Your team actually uses it</h4><p>We train your people so the new systems get used from day one, not feared or ignored.</p>
+      </div>
+      <div class="val">
+        <svg class="ic" viewBox="0 0 40 40" fill="none" stroke="url(#v4)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><defs><linearGradient id="v4" x1="0" y1="0" x2="40" y2="40"><stop stop-color="#7C4DFF"/><stop offset="1" stop-color="#4338CA"/></linearGradient></defs><path d="M6 22c6 0 6-8 14-8s8 8 14 8"/><path d="M28 16l6-2-2 6"/></svg>
+        <h4>It sticks</h4><p>We stay until AI is a natural part of your day, not another abandoned subscription.</p>
+      </div>
+    </div>
+    <div class="pledge">
+      <div class="picon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+      <div><div class="pl">Our promise</div><p>We test everything, and we never put AI in front of your customers until both you and we are confident it's ready.</p></div>
+    </div>
+    <p class="peoplenote">We're not here to replace your people. We're here to make the team you already have <b>dramatically more productive</b> — doing more of the work that grows the business, and less of the work that drains it.</p>
+  </section>
+
+  <!-- HOW -->
+  <section id="how">
+    <h2>Here's exactly how it works</h2>
+    <p class="lede">Three steps. Every one about your business, not our process.</p>
+    <div class="three">
+      <div class="step">
+        <div class="idx">STEP 1</div>
+        <svg class="ic" viewBox="0 0 48 48" fill="none" stroke="url(#g1)" stroke-width="2.4" stroke-linecap="round"><defs><linearGradient id="g1" x1="0" y1="0" x2="48" y2="48"><stop stop-color="#7C4DFF"/><stop offset="1" stop-color="#4338CA"/></linearGradient></defs><circle cx="21" cy="21" r="13"/><path d="M31 31 L41 41"/></svg>
+        <h3>We learn how your business really works</h3>
+        <p>A working session to map how you actually run, day to day — where your time goes, where money leaks, and where AI can genuinely help.</p>
+      </div>
+      <div class="step">
+        <div class="idx">STEP 2</div>
+        <svg class="ic" viewBox="0 0 48 48" fill="none" stroke="url(#g2)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><defs><linearGradient id="g2" x1="0" y1="0" x2="48" y2="48"><stop stop-color="#7C4DFF"/><stop offset="1" stop-color="#4338CA"/></linearGradient></defs><rect x="10" y="7" width="28" height="34" rx="4"/><path d="M17 18h14M17 25h14M17 32h9"/></svg>
+        <h3>We design the AI that saves you the most</h3>
+        <p>The few systems that will save you the most time, cut the most cost, and make your business run smoother — each with a real dollar value, so you see what it's worth before anything is built.</p>
+      </div>
+      <div class="step">
+        <div class="idx">STEP 3</div>
+        <svg class="ic" viewBox="0 0 48 48" fill="none" stroke="url(#g3)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><defs><linearGradient id="g3" x1="0" y1="0" x2="48" y2="48"><stop stop-color="#7C4DFF"/><stop offset="1" stop-color="#4338CA"/></linearGradient></defs><path d="M8 24l8 8 20-20"/></svg>
+        <h3>We build, test, and roll it out with you</h3>
+        <p>We build the systems, test them until they're solid, and help your team adopt them — so AI actually gets used instead of abandoned.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- OUTCOMES: what this actually gets you -->
+  <section>
+    <h2>What this actually gets you</h2>
+    <p class="lede">In plain terms, here's what changes for your business.</p>
+    <div class="outs">
+      <div class="outcol">
+        <div class="ocl">You leave the Audit with</div>
+        <ul>
+          <li>AI systems designed for your business, not generic advice</li>
+          <li>A clear, step-by-step plan to put them in place</li>
+          <li>Your current tools sorted out — what to keep, replace, or cut</li>
+        </ul>
+      </div>
+      <div class="outcol hi">
+        <div class="ocl">So your business gets</div>
+        <ul>
+          <li>Less manual, repetitive work</li>
+          <li>Better, faster customer service</li>
+          <li>Lower operating and software costs</li>
+          <li>Your existing team getting more done, never replaced</li>
+          <li>AI that works for you, not you working for AI</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- STACK: overwhelmed pile -> essentials -->
+  <section class="stackviz">
+    <h2>From overwhelmed to essential</h2>
+    <p class="lede">You stop paying for tools you never use, and end up with a few systems that actually run your business — and a smaller monthly bill.</p>
+    <div class="svrow">
+      <div class="pile">
+        <div class="h">Your stack today</div>
+        <div class="row">
+          <span class="pchip">Chatbot</span><span class="pchip">2 CRMs</span><span class="pchip">Zapier</span>
+          <span class="pchip">Note app</span><span class="pchip">Scheduler</span><span class="pchip">Email tool</span>
+          <span class="pchip">AI writer</span><span class="pchip">Transcriber</span><span class="pchip">"That one from the webinar"</span>
+        </div>
+      </div>
+      <div class="svarrow">→</div>
+      <div class="essent">
+        <div class="h">Your stack after</div>
+        <span class="echip">New customer intake<span>From first message to booked, handled for you.</span></span>
+        <span class="echip">Automatic follow-up<span>Every lead gets chased, so none go cold.</span></span>
+        <span class="echip">Everyday operations<span>The repetitive daily work, done in the background.</span></span>
+      </div>
+    </div>
+    <div class="method">
+      <div class="m k"><span class="d"></span><b>Keep</b> — it's earning its seat</div>
+      <div class="m r"><span class="d"></span><b>Replace</b> — same job, less cost</div>
+      <div class="m c"><span class="d"></span><b>Consolidate</b> — three become one</div>
+      <div class="m x"><span class="d"></span><b>Remove</b> — paid for, never used</div>
+    </div>
+  </section>
+
+  <!-- PROOF: visual case-study posters -->
+  <section id="proof">
+    <h2>The transformations we build</h2>
+    <p class="lede" style="margin-bottom:14px">See what changes before you read a word about it — the kind of results our implementations deliver for owners like you.</p>
+    <p style="text-align:center;color:var(--faint);font-size:12.5px;margin:0 auto 46px;max-width:56ch">Representative examples. Company details are illustrative; verified client stories replace them as they're approved for use.</p>
+    <div class="cases">
+
+      <!-- CASE 1 — Finish Line Taxi (REAL) -->
+      <div class="casev">
+        <div class="chead">
+          <div class="clogo">
+            <div class="cmark" style="background:linear-gradient(150deg,#F2B937,#D98A17)">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11"/><path d="M3 11h18v6H3z"/><circle cx="7.5" cy="17.5" r="1.5"/><circle cx="16.5" cy="17.5" r="1.5"/></svg>
+            </div>
+            <div><div class="cn">Finish Line Taxi</div><div class="ci">Transportation &amp; Dispatch · Illustrative example</div></div>
+          </div>
+          <div class="cresult">Dispatch that runs itself, and scales without new office staff.</div>
+        </div>
+        <div class="cjourney">
+          <div class="jstate old"><div class="jl">Before</div><div class="jv">Phone &amp; whiteboard dispatch</div></div>
+          <div class="jarrow">→</div>
+          <div class="jsys"><div class="sl">What we built</div><div class="row">
+            <span class="syschip">AI intake</span><span class="syschip">Smart routing</span><span class="syschip">Driver alerts</span><span class="syschip">Auto-pay</span>
+          </div></div>
+          <div class="jarrow">→</div>
+          <div class="jstate"><div class="jl">After</div><div class="jv">Hands-off AI dispatch</div></div>
+        </div>
+        <div class="cmetrics">
+          <div class="mtile"><div class="ml">Time to dispatch a ride</div><div class="mv"><span class="old">6 min</span><span class="new">90 sec</span></div></div>
+          <div class="mtile"><div class="ml">Manual steps per booking</div><div class="mv"><span class="old">9</span><span class="new">2</span></div></div>
+          <div class="mtile invest"><div class="ml">Monthly software</div><div class="mv"><span class="old">$390</span><span class="new">$170/mo</span></div></div>
+        </div>
+        <div class="cstory">
+          <div class="cl"><b>The challenge:</b> manual dispatching and customer calls created constant overhead and slowed every ride.</div>
+          <div class="cl res"><b>The result:</b> faster dispatch, far less manual work, a smoother ride for customers, and a process that scales without hiring.</div>
+        </div>
+        <div class="chips">
+          <span class="chip"><span class="cd"></span>Faster dispatch</span>
+          <span class="chip"><span class="cd"></span>Less manual work</span>
+          <span class="chip"><span class="cd"></span>Scales without hiring</span>
+        </div>
+      </div>
+
+      <!-- CASE 2 — Ironpeak Construction (DRAFT — swap for a real client at production) -->
+      <div class="casev">
+        <div class="chead">
+          <div class="clogo">
+            <div class="cmark" style="background:linear-gradient(150deg,#E4762E,#C0561A)">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M6 21V9l6-4 6 4v12"/><path d="M10 21v-5h4v5"/></svg>
+            </div>
+            <div><div class="cn">Ironpeak Construction</div><div class="ci">Construction &amp; Contracting · Illustrative example</div></div>
+          </div>
+          <div class="cresult">Same-day quotes, and not a single warm lead left to go cold.</div>
+        </div>
+        <div class="cjourney">
+          <div class="jstate old"><div class="jl">Before</div><div class="jv">Quotes days later, leads slipping</div></div>
+          <div class="jarrow">→</div>
+          <div class="jsys"><div class="sl">What we built</div><div class="row">
+            <span class="syschip">Lead capture</span><span class="syschip">AI estimator</span><span class="syschip">Instant follow-up</span>
+          </div></div>
+          <div class="jarrow">→</div>
+          <div class="jstate"><div class="jl">After</div><div class="jv">Same-day quotes, every lead answered</div></div>
+        </div>
+        <div class="cmetrics">
+          <div class="mtile"><div class="ml">Quote turnaround</div><div class="mv"><span class="old">5 days</span><span class="new">same day</span></div></div>
+          <div class="mtile"><div class="ml">New leads followed up</div><div class="mv"><span class="old">40%</span><span class="new">100%</span></div></div>
+          <div class="mtile invest"><div class="ml">Monthly software</div><div class="mv"><span class="old">$310</span><span class="new">$150/mo</span></div></div>
+        </div>
+        <div class="cstory">
+          <div class="cl"><b>The challenge:</b> estimates took days and warm leads went cold in the inbox while the crew was on site.</div>
+          <div class="cl res"><b>The result:</b> quotes go out the same day, every lead gets a reply, and the office closes work instead of chasing it.</div>
+        </div>
+        <div class="chips">
+          <span class="chip"><span class="cd"></span>Quotes out same day</span>
+          <span class="chip"><span class="cd"></span>No lead left behind</span>
+          <span class="chip"><span class="cd"></span>Less back-office admin</span>
+        </div>
+      </div>
+
+      <!-- CASE 3 — Lumière Aesthetics (DRAFT — swap for a real client at production) -->
+      <div class="casev">
+        <div class="chead">
+          <div class="clogo">
+            <div class="cmark" style="background:linear-gradient(150deg,#D96A9A,#B24478)">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c2 4 5 5 5 9a5 5 0 0 1-10 0c0-4 3-5 5-9z"/></svg>
+            </div>
+            <div><div class="cn">Lumière Aesthetics</div><div class="ci">Med Spa &amp; Customer Care · Illustrative example</div></div>
+          </div>
+          <div class="cresult">A front desk that never sleeps, and a team with room to breathe.</div>
+        </div>
+        <div class="cjourney">
+          <div class="jstate old"><div class="jl">Before</div><div class="jv">After-hours inquiries missed</div></div>
+          <div class="jarrow">→</div>
+          <div class="jsys"><div class="sl">What we built</div><div class="row">
+            <span class="syschip">24/7 concierge</span><span class="syschip">Auto-booking</span><span class="syschip">Reminders</span>
+          </div></div>
+          <div class="jarrow">→</div>
+          <div class="jstate"><div class="jl">After</div><div class="jv">Instant answers, books 24/7</div></div>
+        </div>
+        <div class="cmetrics">
+          <div class="mtile"><div class="ml">Inquiry response time</div><div class="mv"><span class="old">hours</span><span class="new">instant</span></div></div>
+          <div class="mtile"><div class="ml">Front-desk admin / week</div><div class="mv"><span class="old">15 hr</span><span class="new">4 hr</span></div></div>
+          <div class="mtile invest"><div class="ml">Monthly software</div><div class="mv"><span class="old">$280</span><span class="new">$140/mo</span></div></div>
+        </div>
+        <div class="cstory">
+          <div class="cl"><b>The challenge:</b> after-hours inquiries went unanswered and the front desk was buried in booking and reminder calls.</div>
+          <div class="cl res"><b>The result:</b> no missed inquiries, a better experience for clients, a lighter front desk, and a rollout the team adopted within a week.</div>
+        </div>
+        <div class="chips">
+          <span class="chip"><span class="cd"></span>Better customer experience</span>
+          <span class="chip"><span class="cd"></span>Less work for staff</span>
+          <span class="chip"><span class="cd"></span>Adopted in days</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS — each reinforces its case study -->
+  <section>
+    <h2>What owners say</h2>
+    <p class="lede" style="margin-bottom:14px">The kind of feedback these implementations earn.</p>
+    <p style="text-align:center;color:var(--faint);font-size:12.5px;margin:0 auto 46px;max-width:56ch">Illustrative quotes representing typical outcomes, not statements from named clients. Replaced with approved client testimonials as they come in.</p>
+    <div class="tstm">
+      <div class="quote-c">
+        <div class="mark">&ldquo;</div>
+        <p>Dispatch used to run on three people and a lot of yelling. Now it's smooth and mostly hands-off, and we've added cars without adding a single office hire.</p>
+        <div class="who"><div class="av" style="background:linear-gradient(150deg,#F2B937,#D98A17)">R</div><div><b>Owner</b><span>Finish Line Taxi</span></div></div>
+      </div>
+      <div class="quote-c">
+        <div class="mark">&ldquo;</div>
+        <p>We were losing jobs purely because quotes went out too slow. Now they go out the same day, and we're closing work we used to let slip away.</p>
+        <div class="who"><div class="av" style="background:linear-gradient(150deg,#E4762E,#C0561A)">M</div><div><b>Owner</b><span>Ironpeak Construction</span></div></div>
+      </div>
+      <div class="quote-c">
+        <div class="mark">&ldquo;</div>
+        <p>Our clients get instant answers day or night, and my front desk finally has room to breathe. The experience got better and the workload got lighter.</p>
+        <div class="who"><div class="av" style="background:linear-gradient(150deg,#D96A9A,#B24478)">L</div><div><b>Owner</b><span>Lumière Aesthetics</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED testimonial — the DIY-to-handover story (bridges into the paths) -->
+  <section>
+    <div class="featured">
+      <div class="jtag">STARTED DIY → MOVED TO DONE-FOR-YOU</div>
+      <div class="fq">I started with the AI Blueprint thinking I'd build everything myself. A couple of weeks in, I realized I was spending more time learning AI than running my business. That's when I asked the team to take over. <em>Looking back, it was one of the best decisions I made.</em> They didn't just build the systems — they guided the transition, trained my team, tested everything, and only went live once we were completely comfortable using it.</div>
+      <div class="fwho"><b>Founder</b>Professional services firm</div>
+    </div>
+  </section>
+
+  <!-- PATHS -->
+  <section>
+    <h2>Then choose your path</h2>
+    <p class="lede">The plan is yours either way. You just decide how much of the building you want to hand to us.</p>
+    <div class="paths">
+      <div class="path"><div class="n">1</div><div class="pr">INCLUDED WITH YOUR AUDIT</div><h3>Do It Yourself</h3><p>The whole plan is yours to keep. Build it at your own pace — we're a call away when you want us.</p></div>
+      <div class="path mid"><div class="n">2</div><div class="pr">FROM $1,500/MO</div><h3>We Guide You</h3><p>Your team does the building, we guide every step — weekly sessions to keep it moving and nothing gets stuck.</p></div>
+      <div class="path"><div class="n">3</div><div class="pr">FROM $4,500 / SYSTEM</div><h3>We Do It For You</h3><p>We build everything, test it, and train your team. You just start using it — and see the before-and-after.</p></div>
+    </div>
+    <p class="pathnote">We only quote the work <b style="color:var(--text)">after</b> the Audit, once we actually know your business. No generic packages, no guessing.</p>
+  </section>
+
+  <!-- OFFER -->
+  <section id="get">
+    <div class="offer">
+      <span class="badge">FOUNDING RATE · 3 SPOTS</span>
+      <div class="price">$497 <s>$1,500</s><span class="after">First three clients, in exchange for case-study rights (anonymized if you prefer). Then $997, then $1,500.</span></div>
+      <p style="color:var(--muted);font-size:15px;line-height:1.5;margin-top:16px">Two weeks from now, you'll know exactly where AI makes your business better, with the numbers to back it. And you're never locked in: the plan is yours to build however you choose.</p>
+      <form id="lead" onsubmit="return sendLead(event)">
+        <input name="name" placeholder="Your name" required>
+        <input name="email" type="email" placeholder="Email" required>
+        <input name="business" placeholder="Business name & what it does" required>
+        <select name="interest" required>
+          <option value="" disabled selected>What are you most interested in?</option>
+          <option>The AI Profit Audit ($497 founding)</option>
+          <option>Just send me the free AI Profit Checklist</option>
+          <option>Not sure — let's talk</option>
+        </select>
+        <button class="btn" type="submit">Get my AI Profit Audit →</button>
+        <div class="ok" id="ok">Got it — check your email. Maor replies personally, usually same day.</div>
+        <p class="fine">No spam. You'll get the free AI Profit Checklist either way. Maor reads every submission himself.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- CLOSING: the vision -->
+  <section>
+    <div class="visionwrap">
+      <div class="vt">A year from now, your competitors will either still be experimenting with AI — or <em>already using it every day</em> to serve customers faster, run leaner, and grow with the same team.</div>
+      <div class="vsub">The difference was never whether AI works. It's <b>whether someone helps you do it right.</b> You don't have to figure this out alone.</div>
+      <span class="sig">Human Before the Machine</span>
+    </div>
+  </section>
+</div>
+<script>
+// Wired to Supabase leads (publishable key is client-safe by design). Payload maps to real leads columns.
+// DO NOT DEPLOY until Backend/audit-funnel.sql is applied, or a new lead triggers the OLD website confirmation.
+const SUPABASE_URL="https://eosvftmiwndmctrqprtz.supabase.co";
+const SUPABASE_ANON_KEY="sb_publishable_BYxqF1ViwTrfaI4RGhciVw_kgbt-pSA";
+const LEADS_TABLE="leads";
+async function sendLead(e){e.preventDefault();const f=new FormData(e.target);
+const lead={contact_name:f.get("name"),business_name:f.get("business"),email:f.get("email"),
+requirements:f.get("interest"),source:"unveiled-audit-landing",offer:"ai-profit-audit",status:"AUDIT NEW"};
+if(SUPABASE_URL&&SUPABASE_ANON_KEY){try{const r=await fetch(`${SUPABASE_URL}/rest/v1/${LEADS_TABLE}`,{method:"POST",
+headers:{"Content-Type":"application/json","apikey":SUPABASE_ANON_KEY,"Authorization":`Bearer ${SUPABASE_ANON_KEY}`,"Prefer":"return=minimal"},
+body:JSON.stringify(lead)});if(!r.ok)throw new Error(r.status);}catch(err){mailFallback(lead);}}else{mailFallback(lead);}
+document.getElementById("ok").style.display="block";e.target.querySelector("button").disabled=true;return false;}
+function mailFallback(l){location.href=`mailto:monaempoweryou@gmail.com?subject=Audit lead: ${encodeURIComponent(l.contact_name||"")}&body=${encodeURIComponent(JSON.stringify(l,null,2))}`;}
+</script>
+</body>
+</html>
