@@ -3,35 +3,37 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>UNVEILED. You run your business. We'll take care of the digital side.</title>
-<meta name="description" content="We build your new website first, free, custom to your brand, in 72 hours. You only pay if you love it. No templates, no risk, nothing to do but run your business.">
+<title>UNVEILED · Expert AI Implementation for Your Business</title>
+<meta name="description" content="You already know AI matters. The hard part is implementing it correctly. We're the experts who implement AI the right way from day one, so you skip months of trial and error and go straight to results.">
 <link rel="canonical" href="https://unveiled.pro/">
 <meta name="theme-color" content="#FAF8F5">
 
-<!-- Open Graph (WhatsApp, Facebook, LinkedIn, iMessage): LS-METADATA -->
+<!-- Open Graph (WhatsApp, Facebook, LinkedIn, iMessage) -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="UNVEILED">
 <meta property="og:url" content="https://unveiled.pro/">
-<meta property="og:title" content="See your business become the one customers choose | UNVEILED">
-<meta property="og:description" content="We build your new website first, free, custom to your brand, in 72 hours. You only pay if you love it.">
-<meta property="og:image" content="https://unveiled.pro/og-image.jpg?v=3">
-<meta property="og:image:secure_url" content="https://unveiled.pro/og-image.jpg?v=3">
+<meta property="og:title" content="Expert AI Implementation for Your Business · UNVEILED">
+<meta property="og:description" content="You run your business. We implement the AI that grows it, correctly, from day one, so you skip months of trial and error and go straight to results.">
+<meta property="og:image" content="https://unveiled.pro/og-home.jpg?v=1">
+<meta property="og:image:secure_url" content="https://unveiled.pro/og-home.jpg?v=1">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="UNVEILED. Your business, elevated.">
+<meta property="og:image:alt" content="UNVEILED. Your business needs AI implemented the right way. Let the experts guide you.">
+<meta property="og:locale" content="en_US">
 
 <!-- Twitter / X -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="See your business become the one customers choose | UNVEILED">
-<meta name="twitter:description" content="We build your new website first, free, custom to your brand, in 72 hours. You only pay if you love it.">
-<meta name="twitter:image" content="https://unveiled.pro/og-image.jpg?v=3">
+<meta name="twitter:title" content="Expert AI Implementation for Your Business · UNVEILED">
+<meta name="twitter:description" content="You run your business. We implement the AI that grows it, correctly, from day one.">
+<meta name="twitter:image" content="https://unveiled.pro/og-home.jpg?v=1">
+<meta name="twitter:image:alt" content="UNVEILED. AI implemented the right way. Let the experts guide you.">
 
 <link rel="icon" href="https://unveiled.pro/sphere-core.png">
 <link rel="apple-touch-icon" href="https://unveiled.pro/sphere-core.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unveiled.pro/sphere.css">
 <script src="https://unveiled.pro/sphere.js" defer></script>
 
@@ -42,9 +44,9 @@
   "name": "UNVEILED",
   "url": "https://unveiled.pro/",
   "logo": "https://unveiled.pro/unveiled-logo.png",
-  "image": "https://unveiled.pro/og-image.jpg?v=3",
-  "description": "UNVEILED is a Business Elevation Company. We build your new website first, free, custom to your brand, in 72 hours. You only pay if you love it.",
-  "slogan": "You run your business. We'll take care of the digital side.",
+  "image": "https://unveiled.pro/og-home.jpg",
+  "description": "UNVEILED is an expert AI implementation company. We implement AI in your business correctly from day one, so you skip months of trial and error and go straight to results.",
+  "slogan": "You run your business. We implement the AI that grows it.",
   "email": "unveiled@monadigitalmarketing.com",
   "parentOrganization": { "@type": "Organization", "name": "MONA Digital Marketing" }
 }
@@ -75,16 +77,9 @@
   a{color:var(--violet);text-decoration:none}
   .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
 
-  /* ============ FLOW ARCHITECTURE ============
-     Sections are no longer identical cards on one cream field. Each "band" is a
-     full-bleed scene with its own background; seams between them are deliberately
-     designed (overlap, seamless continuation, dark contrast, curved divider).
-     .band = full-bleed background; .band > .wrap keeps content contained. */
   .band{position:relative}
   .band-inner{max-width:1120px;margin:0 auto;padding:0 24px}
-
-  /* tonal vocabulary for the bands */
-  .band--cream{background:transparent}                 /* lets the body cream/halo show through */
+  .band--cream{background:transparent}
   .band--paper{background:var(--paper)}
   .band--violet{background:
       radial-gradient(900px 500px at 80% -10%, rgba(108,60,224,.07), transparent 60%),
@@ -96,53 +91,37 @@
       linear-gradient(165deg,#171327 0%,#211A3A 45%,#2A2138 100%);
       color:#fff}
 
-  /* ---- per-seam layout & bridges ---- */
-
-  /* SEAM 1: promises overlap hero, then steps grow from the same violet scene.
-     Top padding clears the overlapping ticks; a faint vertical thread descends
-     from the promises into the steps to tie the scene together. */
   .flow-promise-steps{padding:64px 0 90px;margin-top:-12px}
   .seam-thread{position:absolute;top:-12px;left:50%;width:2px;height:62px;transform:translateX(-50%);
     background:linear-gradient(180deg,rgba(108,60,224,0),rgba(108,60,224,.35));pointer-events:none}
   .sec--steps{margin-top:26px}
-  /* the steps connector line reads on the violet band */
   .band--violet .steps::before{background:linear-gradient(90deg,transparent,rgba(108,60,224,.34) 18%,rgba(108,60,224,.34) 82%,transparent)}
-
-  /* SEAM 2: violet → paper. A single hairline connector carries the eye across. */
   .flow-made{padding:84px 0 92px}
   .seam-line{position:absolute;top:0;left:50%;width:1px;height:40px;transform:translateX(-50%);
     background:linear-gradient(180deg,rgba(108,60,224,.4),rgba(108,60,224,0));pointer-events:none}
-
-  /* SEAM 3 + 4: paper → DARK premium band, ending in a curved divider into cream. */
   .flow-obj{padding:90px 0 0;margin-top:0}
   .flow-obj .sec{padding-bottom:96px}
   .curve-divider{display:block;width:100%;height:90px;margin-top:-1px}
-
-  /* SEAM 5: cream proof scene. Bottom padding makes room for the close card to
-     overlap down into the gradient band below. */
   .flow-proof{padding:78px 0 0}
   .flow-proof .sec{padding-bottom:0}
-
-  /* the brand-gradient finale; the close card pulls UP to straddle the seam */
   .flow-close{padding:0 0 70px}
   .close{margin:-72px auto 0}
   .closecard{box-shadow:0 60px 130px -42px rgba(20,10,50,.6),0 18px 50px -28px rgba(20,10,50,.4)}
 
-  /* ---- top bar: brand only, never competes with "begin" ---- */
+  /* top bar */
   .topbar{max-width:1120px;margin:0 auto;padding:24px 24px 6px;display:flex;align-items:center;justify-content:space-between;gap:16px}
   .logo{display:flex;align-items:center;gap:11px;font-weight:700;letter-spacing:.22em;font-size:18px;color:var(--text)}
   .logo img{width:34px;height:34px;object-fit:contain}
-  .langbtn{font:inherit;font-size:13px;font-weight:600;color:var(--muted);background:var(--paper);border:1px solid var(--border);border-radius:999px;padding:8px 15px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:.16s}
-  .langbtn:hover{border-color:var(--violet-l);color:var(--violet)}
+  .navtag{font-size:13px;font-weight:500;color:var(--muted);letter-spacing:.01em}
 
-  /* ---- hero ---- */
+  /* hero */
   .hero{display:grid;grid-template-columns:1.02fr 1.05fr;gap:40px;align-items:center;padding:30px 0 18px}
   .badge{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.11em;color:var(--violet);background:rgba(108,60,224,.09);border:1px solid rgba(108,60,224,.18);padding:7px 13px 7px 10px;border-radius:999px}
   .badge svg{width:15px;height:15px}
-  h1{font-size:55px;line-height:1.02;letter-spacing:-.028em;font-weight:700;margin:20px 0 16px}
+  h1{font-size:54px;line-height:1.03;letter-spacing:-.028em;font-weight:700;margin:20px 0 16px}
   h1 .v{color:var(--violet)}
-  .lead{font-size:18.5px;color:var(--muted);max-width:430px;margin:0 0 14px;line-height:1.58}
-  .thread{font-family:'Caveat',cursive;font-size:25px;color:var(--violet);margin:0 0 26px;line-height:1.22}
+  .lead{font-size:18.5px;color:var(--muted);max-width:470px;margin:0 0 22px;line-height:1.58}
+  .thread{font-size:16px;font-weight:600;color:var(--violet);margin:0 0 26px;line-height:1.35;letter-spacing:.01em}
 
   .cta{font:inherit;font-size:17px;font-weight:600;cursor:pointer;border-radius:14px;padding:17px 28px;min-height:56px;border:0;
     display:inline-flex;align-items:center;justify-content:center;gap:10px;color:#fff;background:var(--grad);
@@ -155,88 +134,10 @@
   .cta:focus-visible{outline:none;box-shadow:0 0 0 4px rgba(139,92,246,.35),0 18px 36px -14px rgba(108,60,224,.6)}
   .ctasub{display:block;font-size:13.5px;color:var(--faint);margin-top:13px;letter-spacing:.01em}
 
-  /* ============ HERO DEVICE PRESENTATION (Apple-keynote: desktop + phone) ============ */
   .stage{position:relative;justify-self:end;width:100%;max-width:560px;padding:8px 0}
   .stage .halo{position:absolute;inset:-8% -6% -14% -6%;background:radial-gradient(60% 55% at 62% 38%,rgba(139,92,246,.22),transparent 70%);filter:blur(6px);pointer-events:none}
 
-  /* browser (the hero desktop site) */
-  .browser{position:relative;background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;
-    box-shadow:0 60px 120px -40px rgba(67,32,160,.45),0 18px 44px -28px rgba(67,32,160,.32);
-    transform:perspective(1600px) rotateY(-7deg) rotateX(1.5deg);transform-origin:center right;
-    transition:transform .6s cubic-bezier(.2,.8,.2,1)}
-  .stage:hover .browser{transform:perspective(1600px) rotateY(-3deg) rotateX(.5deg) translateY(-4px)}
-  .chrome{display:flex;align-items:center;gap:8px;padding:11px 14px;background:#F6F3EE;border-bottom:1px solid var(--border)}
-  .chrome i{width:10px;height:10px;border-radius:50%;background:#E0D9CE}
-  .chrome i:nth-child(1){background:#FF5F57}.chrome i:nth-child(2){background:#FEBC2E}.chrome i:nth-child(3){background:#28C840}
-  .chrome .url{margin-left:8px;display:flex;align-items:center;gap:7px;height:24px;flex:1;border-radius:7px;background:#fff;border:1px solid var(--border);padding:0 11px;font-size:11px;color:var(--faint);letter-spacing:.02em}
-  .chrome .url svg{width:11px;height:11px;color:var(--green)}
-
-  /* the fictional site rendered inside the browser */
-  .site{font-size:0}
-  .site .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;background:#fff}
-  .site .nav .mark{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;letter-spacing:.04em;color:#1A1714}
-  .site .nav .mark .gem{width:18px;height:18px}
-  .site .nav .links{display:flex;gap:16px}
-  .site .nav .links span{font-size:10px;font-weight:600;color:#8B857C;letter-spacing:.03em}
-  .site .nav .navbtn{font-size:10px;font-weight:700;color:#fff;background:#1A1714;padding:7px 13px;border-radius:8px;letter-spacing:.03em}
-
-  .site .shero{position:relative;padding:40px 30px 44px;overflow:hidden;color:#fff;
-    background:
-      radial-gradient(120% 120% at 80% 0%, rgba(255,255,255,.16), transparent 55%),
-      linear-gradient(150deg,#2A2138 0%,#3B2C66 42%,#6C3CE0 100%);}
-  .site .shero .ph-grain{position:absolute;inset:0;opacity:.5;mix-blend-mode:soft-light;
-    background:radial-gradient(50% 80% at 15% 110%, rgba(255,255,255,.35),transparent 60%),
-      radial-gradient(40% 70% at 95% -10%, rgba(167,139,250,.6),transparent 60%)}
-  .site .shero .kicker{position:relative;font-size:9.5px;font-weight:700;letter-spacing:.26em;opacity:.78;text-transform:uppercase}
-  .site .shero h3{position:relative;font-size:27px;line-height:1.08;letter-spacing:-.02em;font-weight:700;margin:11px 0 0;max-width:300px}
-  .site .shero h3 em{font-style:normal;color:#D8C8FF}
-  .site .shero .sub{position:relative;font-size:11.5px;line-height:1.5;opacity:.8;margin:11px 0 0;max-width:250px}
-  .site .shero .sbtns{position:relative;display:flex;gap:9px;margin-top:18px}
-  .site .shero .sbtn{font-size:10px;font-weight:700;padding:9px 15px;border-radius:9px;letter-spacing:.02em}
-  .site .shero .sbtn.p{background:#fff;color:#3B2C66}
-  .site .shero .sbtn.o{border:1px solid rgba(255,255,255,.4);color:#fff}
-  .site .shero .reviews{position:relative;display:flex;align-items:center;gap:8px;margin-top:20px;font-size:10px;opacity:.85}
-  .site .shero .stars{display:flex;gap:2px}
-  .site .shero .stars svg{width:11px;height:11px;color:#FFD479}
-
-  .site .feat{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;padding:22px}
-  .site .feat .card{border:1px solid #EFEAE2;border-radius:12px;overflow:hidden;background:#fff}
-  .site .feat .card .img{height:54px}
-  .site .feat .card:nth-child(1) .img{background:linear-gradient(135deg,#6C3CE0,#4338CA)}
-  .site .feat .card:nth-child(2) .img{background:linear-gradient(135deg,#A78BFA,#6C3CE0)}
-  .site .feat .card:nth-child(3) .img{background:linear-gradient(135deg,#4338CA,#7C5BE6)}
-  .site .feat .card .body{padding:9px 10px 11px}
-  .site .feat .card .t{height:6px;width:70%;border-radius:3px;background:#E4DED4;margin-bottom:6px}
-  .site .feat .card .l{height:4px;border-radius:3px;background:#EEE9E0;margin-bottom:4px}
-  .site .feat .card .l.s{width:55%}
-
-  /* the phone, sitting beside / overlapping the desktop */
-  .phone{position:absolute;right:-6px;bottom:-30px;width:148px;border-radius:24px;background:#1A1714;padding:7px;
-    box-shadow:0 40px 70px -26px rgba(20,12,40,.6),0 8px 20px -10px rgba(20,12,40,.4);
-    transform:rotate(3.5deg);transition:transform .6s cubic-bezier(.2,.8,.2,1);z-index:3}
-  .stage:hover .phone{transform:rotate(1.5deg) translateY(-6px)}
-  .phone .notch{position:absolute;top:13px;left:50%;transform:translateX(-50%);width:46px;height:5px;border-radius:3px;background:#000;opacity:.55;z-index:2}
-  .phone .pscreen{border-radius:18px;overflow:hidden;background:#fff}
-  .phone .pnav{display:flex;align-items:center;justify-content:space-between;padding:14px 12px 9px}
-  .phone .pnav .gem{width:14px;height:14px}
-  .phone .pnav .burger{display:flex;flex-direction:column;gap:3px}
-  .phone .pnav .burger b{display:block;width:14px;height:2px;border-radius:2px;background:#2A2622}
-  .phone .phero{position:relative;padding:18px 14px 20px;color:#fff;overflow:hidden;
-    background:linear-gradient(160deg,#2A2138 0%,#3B2C66 45%,#6C3CE0 100%)}
-  .phone .phero .kk{font-size:7px;font-weight:700;letter-spacing:.22em;opacity:.78;text-transform:uppercase}
-  .phone .phero h4{font-size:16px;line-height:1.1;letter-spacing:-.02em;margin:7px 0 0;font-weight:700}
-  .phone .phero h4 em{font-style:normal;color:#D8C8FF}
-  .phone .phero .pb{display:inline-block;margin-top:12px;font-size:8px;font-weight:700;background:#fff;color:#3B2C66;padding:7px 12px;border-radius:7px}
-  .phone .pcards{padding:11px}
-  .phone .pcards .pc{height:30px;border-radius:8px;margin-bottom:8px}
-  .phone .pcards .pc:nth-child(1){background:linear-gradient(135deg,#EDE7FB,#F4EFE6)}
-  .phone .pcards .pc:nth-child(2){background:linear-gradient(135deg,#F4EFE6,#E9E2F8)}
-
-  /* the handwritten promise tucked under the stage */
-  .stagenote{position:absolute;left:4px;bottom:-58px;font-family:'Caveat',cursive;font-size:20px;color:var(--violet);opacity:.92;transform:rotate(-2deg);max-width:230px;line-height:1.15}
-  .stagenote svg{width:30px;height:30px;vertical-align:middle;margin-right:2px;transform:rotate(8deg)}
-
-  /* ---- reassurance row: the three promises RISE OUT of the hero (overlap the seam) ---- */
+  /* reassurance row */
   .ticks{max-width:1120px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
     position:relative;z-index:4;margin-top:-26px}
   .tick{display:flex;align-items:center;gap:13px;background:var(--paper);border:1px solid rgba(231,226,218,.85);border-radius:16px;padding:15px 18px;
@@ -246,20 +147,18 @@
   .tick .i svg{width:21px;height:21px}
   .tick span{font-size:14.5px;font-weight:600;color:#2A2622;line-height:1.3}
 
-  /* ---- section heads (shared) ---- */
+  /* section heads */
   .sec{max-width:1120px;margin:0 auto;padding:0 24px}
   .eyebrow{display:block;text-align:center;font-size:12px;font-weight:700;letter-spacing:.2em;color:var(--violet);text-transform:uppercase;margin:0 0 12px}
-  .sechead{text-align:center;max-width:620px;margin:0 auto 38px}
+  .sechead{text-align:center;max-width:640px;margin:0 auto 38px}
   .sechead h2{font-size:36px;font-weight:700;letter-spacing:-.025em;margin:0;line-height:1.08}
   .sechead p{font-size:16.5px;color:var(--muted);margin:12px 0 0;line-height:1.55}
-
-  /* band-aware heading colors: on dark/gradient bands, eyebrow & body lighten */
   .band--dark .eyebrow,.band--grad .eyebrow{color:var(--violet-lll)}
   .band--dark .sechead h2,.band--grad .sechead h2{color:#fff}
   .band--dark .sechead p{color:rgba(255,255,255,.78)}
   .band--grad .sechead p{color:rgba(255,255,255,.86)}
 
-  /* ---- "Here's what happens": 3 illustrated steps ---- */
+  /* steps */
   .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;position:relative}
   .steps::before{content:"";position:absolute;top:54px;left:16%;right:16%;height:2px;
     background:linear-gradient(90deg,transparent,rgba(108,60,224,.28) 18%,rgba(108,60,224,.28) 82%,transparent);z-index:0}
@@ -270,9 +169,9 @@
   .step .art svg{width:58px;height:58px}
   .step .n{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;font-size:12px;font-weight:700;color:#fff;background:var(--grad);margin-bottom:10px;box-shadow:0 6px 14px -6px rgba(108,60,224,.7)}
   .step h3{font-size:19px;font-weight:700;letter-spacing:-.01em;margin:0 0 6px}
-  .step p{font-size:14.5px;color:var(--muted);margin:0 auto;max-width:240px;line-height:1.5}
+  .step p{font-size:14.5px;color:var(--muted);margin:0 auto;max-width:250px;line-height:1.5}
 
-  /* ---- "made for you" confidence band (alternating, flows on) ---- */
+  /* confidence cards */
   .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
   .ic{position:relative;background:var(--paper);border:1px solid rgba(231,226,218,.85);border-radius:22px;padding:28px 26px;
     box-shadow:0 30px 70px -42px rgba(67,32,160,.26);transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s}
@@ -283,7 +182,7 @@
   .ic h3{font-size:18.5px;font-weight:700;letter-spacing:-.01em;margin:0 0 8px}
   .ic p{font-size:14.5px;color:var(--muted);margin:0;line-height:1.55}
 
-  /* ---- objections (the questions they're already asking) ---- */
+  /* objections */
   .qs{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
   .q{display:flex;gap:16px;align-items:flex-start;background:var(--paper);border:1px solid rgba(231,226,218,.85);border-radius:18px;padding:22px 22px;
     box-shadow:0 20px 50px -42px rgba(67,32,160,.3)}
@@ -292,52 +191,48 @@
   .q .qi svg{width:22px;height:22px}
   .q h3{font-size:15.5px;font-weight:700;margin:1px 0 5px;letter-spacing:-.01em}
   .q p{font-size:14px;color:var(--muted);margin:0;line-height:1.5}
-
-  /* objection cards living on the DARK band: frosted, legible, premium */
   .band--dark .q{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.10);
     box-shadow:0 30px 60px -40px rgba(0,0,0,.6);backdrop-filter:blur(2px)}
   .band--dark .q .qi{color:var(--violet-lll);background:linear-gradient(135deg,rgba(139,92,246,.28),rgba(99,102,241,.16));border:1px solid rgba(139,92,246,.28)}
   .band--dark .q h3{color:#fff}
   .band--dark .q p{color:rgba(255,255,255,.72)}
 
-  /* ---- proof scaffold (honest, designed-when-empty) ---- */
+  /* proof: representative implementation cards */
   .proof{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-  .reveal{position:relative;border-radius:20px;overflow:hidden;border:1px solid rgba(231,226,218,.9);background:var(--paper);
-    box-shadow:0 30px 70px -44px rgba(67,32,160,.28)}
-  .reveal .frame{position:relative;aspect-ratio:4/3;overflow:hidden}
-  .reveal .browser-mini{position:absolute;inset:14px 14px auto 14px;border-radius:10px;overflow:hidden;background:#fff;border:1px solid var(--border);box-shadow:0 18px 36px -22px rgba(67,32,160,.4)}
-  .reveal .browser-mini .mc{display:flex;gap:4px;padding:7px 9px;background:#F6F3EE;border-bottom:1px solid var(--border)}
-  .reveal .browser-mini .mc i{width:6px;height:6px;border-radius:50%;background:#E0D9CE}
-  .reveal .browser-mini .mb{height:78px;background:linear-gradient(150deg,#EEE9F8,#F4EFE7)}
-  .reveal .ph-soon{position:absolute;inset:0;display:grid;place-items:center;background:
-    repeating-linear-gradient(135deg,rgba(108,60,224,.04) 0 12px,rgba(108,60,224,.07) 12px 24px)}
-  .reveal .ph-soon .lock{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;color:var(--violet);background:#fff;border:1px solid rgba(108,60,224,.18);box-shadow:0 10px 24px -12px rgba(108,60,224,.5)}
-  .reveal .ph-soon .lock svg{width:24px;height:24px}
-  .reveal .cap{padding:15px 18px}
-  .reveal .cap .t{font-size:14.5px;font-weight:700;color:#2A2622}
-  .reveal .cap .s{font-size:12.5px;color:var(--faint);margin-top:3px}
-  .reveal.you{display:grid;place-items:center;text-align:center;background:var(--grad-soft);color:#fff;border:0}
-  .reveal.you .youin{padding:30px 22px}
-  .reveal.you .youin svg{width:38px;height:38px;margin-bottom:12px;opacity:.95}
-  .reveal.you .youin h3{font-size:19px;font-weight:700;margin:0 0 6px;letter-spacing:-.01em}
-  .reveal.you .youin p{font-size:13.5px;opacity:.9;margin:0 0 16px;line-height:1.45}
-  .reveal.you .youin a{display:inline-flex;align-items:center;gap:7px;font-size:14px;font-weight:700;color:#fff;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);padding:11px 18px;border-radius:11px;transition:.2s}
-  .reveal.you .youin a:hover{background:rgba(255,255,255,.28)}
+  .pcase{position:relative;border-radius:20px;overflow:hidden;border:1px solid rgba(231,226,218,.9);background:var(--paper);
+    box-shadow:0 30px 70px -44px rgba(67,32,160,.28);display:flex;flex-direction:column}
+  .pcase .ptop{display:flex;align-items:center;gap:12px;padding:20px 20px 0}
+  .pcase .pmark{width:44px;height:44px;border-radius:12px;flex:none;display:grid;place-items:center;color:#fff}
+  .pcase .pmark svg{width:23px;height:23px}
+  .pcase .pn{font-size:15.5px;font-weight:700;letter-spacing:-.01em;line-height:1.1}
+  .pcase .pi{font-size:11.5px;color:var(--faint);font-weight:500;margin-top:2px}
+  .pcase .presult{padding:14px 20px 4px;font-size:14.5px;font-weight:600;color:#2A2622;line-height:1.4}
+  .pcase .pkpi{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;padding:6px 20px 20px;margin-top:auto}
+  .pcase .pkpi .old{color:#B4AAA0;font-size:14px;font-weight:600;text-decoration:line-through}
+  .pcase .pkpi .arrk{color:var(--violet);font-weight:700}
+  .pcase .pkpi .new{font-size:19px;font-weight:700;letter-spacing:-.02em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .pyou{display:grid;place-items:center;text-align:center;background:var(--grad-soft);color:#fff;border:0;border-radius:20px;padding:30px 22px}
+  .pyou svg{width:38px;height:38px;margin-bottom:12px;opacity:.95}
+  .pyou h3{font-size:19px;font-weight:700;margin:0 0 6px;letter-spacing:-.01em}
+  .pyou p{font-size:13.5px;opacity:.9;margin:0 0 16px;line-height:1.45}
+  .pyou a{display:inline-flex;align-items:center;gap:7px;font-size:14px;font-weight:700;color:#fff;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);padding:11px 18px;border-radius:11px;transition:.2s}
+  .pyou a:hover{background:rgba(255,255,255,.28)}
+  .proofnote{text-align:center;color:var(--faint);font-size:12.5px;margin:26px auto 0;max-width:60ch;line-height:1.5}
 
-  /* ---- closing CTA ---- */
+  /* closing */
   .close{max-width:780px;margin:84px auto 0;padding:0 24px}
   .closecard{position:relative;overflow:hidden;background:var(--grad);color:#fff;border-radius:30px;padding:56px 40px;text-align:center;
     box-shadow:0 50px 110px -40px rgba(67,32,160,.55)}
   .closecard .glow{position:absolute;inset:0;background:radial-gradient(440px 300px at 80% -20%,rgba(255,255,255,.22),transparent 60%);pointer-events:none}
   .closecard .orb{position:absolute;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.18),transparent 70%);left:-60px;bottom:-80px;pointer-events:none}
-  .closecard .thread-w{position:relative;font-family:'Caveat',cursive;font-size:22px;opacity:.92;margin:0 0 10px}
+  .closecard .thread-w{position:relative;font-size:15px;font-weight:600;letter-spacing:.03em;opacity:.9;margin:0 0 10px;text-transform:uppercase}
   .closecard h2{font-size:35px;font-weight:700;letter-spacing:-.025em;margin:0 0 12px;position:relative;line-height:1.08}
-  .closecard p{font-size:17px;opacity:.92;max-width:440px;margin:0 auto 28px;line-height:1.55;position:relative}
+  .closecard p{font-size:17px;opacity:.92;max-width:460px;margin:0 auto 28px;line-height:1.55;position:relative}
   .cta-light{background:#fff;color:var(--violet);box-shadow:0 18px 38px -14px rgba(0,0,0,.4);position:relative}
   .cta-light:hover{filter:brightness(1);box-shadow:0 26px 50px -16px rgba(0,0,0,.5)}
   .closecard .note{display:block;margin-top:16px;font-size:13.5px;opacity:.82;position:relative}
 
-  /* ---- footer: a quiet dark base the gradient finale settles onto (seamless tail) ---- */
+  /* footer */
   footer{background:#13101F;color:rgba(255,255,255,.5);margin:0}
   .footer-inner{max-width:1120px;margin:0 auto;padding:30px 24px 40px;
     display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:13px}
@@ -348,20 +243,15 @@
 
   @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}}
 
-  /* ---- responsive ---- */
   @media(max-width:980px){
-    .hero{grid-template-columns:1fr;gap:54px;text-align:center;padding:24px 0 14px}
+    .hero{grid-template-columns:1fr;gap:48px;text-align:center;padding:24px 0 14px}
     .lead,.thread{margin-left:auto;margin-right:auto}
     .hero .ctawrap{display:flex;flex-direction:column;align-items:center}
-    .stage{justify-self:center;max-width:480px}
-    .browser{transform:none}
-    .stage:hover .browser{transform:translateY(-4px)}
-    .stagenote{position:static;margin:54px auto 0;text-align:center;transform:none;max-width:none}
+    .stage{justify-self:center;max-width:460px}
     .steps{grid-template-columns:1fr;gap:30px}
     .steps::before{display:none}
     .cards,.proof{grid-template-columns:1fr}
     .qs{grid-template-columns:1fr}
-    /* on stacked layout the promises become a normal row again (overlap would crowd the phone mockup) */
     .ticks{grid-template-columns:1fr;margin-top:40px}
     .flow-promise-steps{padding:48px 0 70px;margin-top:0}
     .seam-thread{display:none}
@@ -375,14 +265,12 @@
   }
   @media(max-width:560px){
     .topbar{padding:18px 18px 4px}
+    .navtag{display:none}
     .wrap{padding:0 18px}
     h1{font-size:37px;line-height:1.05}
     .lead{font-size:16px}
-    .thread{font-size:21px}
     .cta{width:100%;font-size:16px}
-    .stage{max-width:340px}
-    .phone{width:118px;right:-2px;bottom:-22px}
-    .site .shero h3{font-size:22px}
+    .stage{max-width:320px}
     .sec{margin-top:60px;padding:0 18px}
     .sechead h2,.closecard h2{font-size:28px}
     .sechead{margin-bottom:30px}
@@ -394,32 +282,13 @@
     .curve-divider{height:48px}
     .footer-inner{flex-direction:column;text-align:center;padding:28px 18px 36px}
   }
-
-  /* ---- RTL / Hebrew (same engine, mirrored presentation) ---- */
-  [dir="rtl"] .arr{display:inline-block;transform:scaleX(-1)}
-  [dir="rtl"] .cta:hover .arr{transform:scaleX(-1) translateX(4px)}
-  [dir="rtl"] h1,[dir="rtl"] .lead,[dir="rtl"] .thread{text-align:right}
-  [dir="rtl"] .step p,[dir="rtl"] .q h3,[dir="rtl"] .q p{text-align:right}
-  [dir="rtl"] .browser{transform:perspective(1600px) rotateY(7deg) rotateX(1.5deg);transform-origin:center left}
-  [dir="rtl"] .stage:hover .browser{transform:perspective(1600px) rotateY(3deg) rotateX(.5deg) translateY(-4px)}
-  [dir="rtl"] .phone{right:auto;left:-6px;transform:rotate(-3.5deg)}
-  [dir="rtl"] .stage:hover .phone{transform:rotate(-1.5deg) translateY(-6px)}
-  [dir="rtl"] .stage{justify-self:start}
-  [dir="rtl"] .stagenote{left:auto;right:4px}
-  [dir="rtl"] .stagenote svg{margin-right:0;margin-left:2px;transform:scaleX(-1) rotate(8deg)}
-  @media(max-width:980px){
-    [dir="rtl"] h1,[dir="rtl"] .lead,[dir="rtl"] .thread,[dir="rtl"] .step p,[dir="rtl"] .q h3,[dir="rtl"] .q p{text-align:center}
-    [dir="rtl"] .stage{justify-self:center}
-    [dir="rtl"] .q{text-align:right}
-  }
-  [dir="rtl"] .q{flex-direction:row}
 </style>
 </head>
 <body>
 
   <div class="topbar">
     <div class="logo"><img src="https://unveiled.pro/sphere-core.png" alt="">UNVEILED</div>
-    <button class="langbtn" id="langbtn" type="button" data-i18n="langLabel">עברית</button>
+    <div class="navtag">AI, implemented correctly.</div>
   </div>
 
   <main class="wrap">
@@ -428,236 +297,205 @@
       <div class="herocopy">
         <span class="badge">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.2 5.4L20 9.2l-4 3.9.95 5.6L12 16.1 7.05 18.7 8 13.1 4 9.2l5.8-.8z"/></svg>
-          <span data-i18n="badge">WE BUILD FIRST. YOU DECIDE.</span>
+          <span>EXPERT AI IMPLEMENTATION</span>
         </span>
-        <h1 data-i18n-html="h1">Your new website,<br>built before you <span class="v">spend a cent.</span></h1>
-        <p class="lead" data-i18n="lead">A real website for your business, custom to your brand, ready in 72 hours. Free to see. You pay only if you love it.</p>
-        <p class="thread" data-i18n="thread">You run your business. We'll take care of the digital side.</p>
+        <h1>You run your business.<br>We implement the AI that <span class="v">grows it.</span></h1>
+        <p class="lead">You already know AI can move your business forward. The hard part is implementing it correctly. We're the experts who build it in the right way from day one, so you skip months of trial and error and go straight to results.</p>
+        <p class="thread">We don't sell you AI. We implement it correctly, and stay until it runs.</p>
         <div class="ctawrap">
-          <a class="cta" href="/start?src=website"><span data-i18n="cta1">See what we'd build for you</span> <span class="arr">→</span></a>
-          <span class="ctasub" data-i18n="ctasub1">About a minute · $0 upfront · no obligation</span>
+          <a class="cta" href="/audit/"><span>Build your AI roadmap</span> <span class="arr">→</span></a>
+          <span class="ctasub">About a minute · free roadmap · no obligation</span>
         </div>
       </div>
 
-      <!-- device presentation: a real-looking premium business site (desktop + phone) -->
       <div class="stage" aria-hidden="true">
         <div class="unv-sphere" data-alt="UNVEILED"></div>
       </div>
     </section>
   </main>
 
-  <!-- ============================================================
-       SEAM 1, Hero → promises: the three promises RISE OUT of the hero
-       (negative-margin overlap, no gap), then the same scene continues
-       SEAMLESSLY into the "how it works" steps on one soft-violet band.
-       ============================================================ -->
-  <!-- ===== reassurance row: three promises that answer "what's the catch?" ===== -->
+  <!-- ===== reassurance row ===== -->
   <div class="ticks">
     <div class="tick">
-      <span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4.5 13.5H11l-1 8.5L19.5 10H13z"/></svg></span>
-      <span data-i18n="tick1">Your full preview in 72 hours</span>
+      <span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.5V12a8.5 8.5 0 1 1-5-7.75"/><path d="M9 11.5l3 3 8.5-8.7"/></svg></span>
+      <span>Implemented correctly, from day one</span>
     </div>
     <div class="tick">
-      <span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="13" rx="2.5"/><path d="M2.5 10h19"/></svg></span>
-      <span data-i18n="tick2">No upfront payment, ever</span>
+      <span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7.5 3v5c0 4.6-3.1 8.4-7.5 9.8C7.6 19.4 4.5 15.6 4.5 11V6z"/><path d="M9 12l2.2 2.2L15.5 10"/></svg></span>
+      <span>Built for your business, never generic</span>
     </div>
     <div class="tick">
-      <span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.5V12a8.5 8.5 0 1 1-5-7.75"/><path d="M9 11.5l3 3 8.5-8.7"/></svg></span>
-      <span data-i18n="tick3">You only pay if you love it</span>
+      <span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 20v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1"/><circle cx="9.5" cy="8" r="3.2"/><path d="M17 11l2 2 4-4"/></svg></span>
+      <span>Your team amplified, never replaced</span>
     </div>
   </div>
 
-  <!-- soft-violet band: promises settle into it and the steps grow out of the same scene -->
+  <!-- ===== HOW WE WORK ===== -->
   <div class="band band--violet flow-promise-steps">
     <span class="seam-thread" aria-hidden="true"></span>
-  <!-- ===== HERE'S WHAT HAPPENS: 3 illustrated steps ===== -->
   <section class="sec sec--steps">
-    <span class="eyebrow" data-i18n="stepsEy">How it works</span>
+    <span class="eyebrow">How we work</span>
     <div class="sechead">
-      <h2 data-i18n="stepsH">Three steps. Almost all of them ours.</h2>
+      <h2>Three steps to AI that actually works.</h2>
     </div>
     <div class="steps">
       <div class="step">
         <div class="art">
-          <!-- step 1: tell us. chat bubble with a small spark -->
           <svg viewBox="0 0 64 64" fill="none">
             <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8B5CF6"/><stop offset="1" stop-color="#4338CA"/></linearGradient></defs>
-            <path d="M12 16h40a6 6 0 0 1 6 6v16a6 6 0 0 1-6 6H30l-10 8v-8h-8a6 6 0 0 1-6-6V22a6 6 0 0 1 6-6z" fill="url(#g1)" opacity=".12"/>
-            <path d="M12 16h40a6 6 0 0 1 6 6v16a6 6 0 0 1-6 6H30l-10 8v-8h-8a6 6 0 0 1-6-6V22a6 6 0 0 1 6-6z" stroke="url(#g1)" stroke-width="3" stroke-linejoin="round"/>
-            <path d="M22 28h20M22 35h12" stroke="url(#g1)" stroke-width="3" stroke-linecap="round"/>
-            <path d="M48 12l1.4 3.4L53 17l-3.6 1.6L48 22l-1.4-3.4L43 17l3.6-1.6z" fill="url(#g1)"/>
+            <circle cx="28" cy="28" r="16" stroke="url(#g1)" stroke-width="3.4"/>
+            <path d="M39 39 L52 52" stroke="url(#g1)" stroke-width="3.4" stroke-linecap="round"/>
+            <path d="M22 28h12M22 34h8" stroke="url(#g1)" stroke-width="3" stroke-linecap="round"/>
           </svg>
         </div>
         <span class="n">1</span>
-        <h3 data-i18n="step1h">Tell us about your business</h3>
-        <p data-i18n="step1p">A minute, a few details. That's your whole part.</p>
+        <h3>We learn how your business runs</h3>
+        <p>A short working session. Where your time goes, where money leaks, and where AI will genuinely pay off.</p>
       </div>
       <div class="step">
         <div class="art">
-          <!-- step 2: we build. layered window being crafted -->
           <svg viewBox="0 0 64 64" fill="none">
             <defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8B5CF6"/><stop offset="1" stop-color="#4338CA"/></linearGradient></defs>
-            <rect x="10" y="14" width="44" height="34" rx="6" fill="url(#g2)" opacity=".12"/>
-            <rect x="10" y="14" width="44" height="34" rx="6" stroke="url(#g2)" stroke-width="3"/>
-            <path d="M10 24h44" stroke="url(#g2)" stroke-width="3"/>
-            <circle cx="16" cy="19" r="1.6" fill="url(#g2)"/><circle cx="21" cy="19" r="1.6" fill="url(#g2)"/>
-            <rect x="17" y="30" width="14" height="12" rx="2.5" stroke="url(#g2)" stroke-width="3"/>
-            <path d="M37 31h11M37 37h8" stroke="url(#g2)" stroke-width="3" stroke-linecap="round"/>
-            <path d="M46 44l1.2 3 3 1.2-3 1.2L46 53l-1.2-3.6-3-1.2 3-1.2z" fill="url(#g2)"/>
+            <rect x="12" y="10" width="34" height="44" rx="5" fill="url(#g2)" opacity=".12"/>
+            <rect x="12" y="10" width="34" height="44" rx="5" stroke="url(#g2)" stroke-width="3.2"/>
+            <path d="M20 22h18M20 30h18M20 38h11" stroke="url(#g2)" stroke-width="3" stroke-linecap="round"/>
+            <path d="M46 44l1.4 3.4L51 49l-3.6 1.6L46 54l-1.4-3.4L41 49l3.6-1.6z" fill="url(#g2)"/>
           </svg>
         </div>
         <span class="n">2</span>
-        <h3 data-i18n="step2h">We build your website</h3>
-        <p data-i18n="step2p">Design, copy, images, the technical work. All ours.</p>
+        <h3>We design the AI that makes you money</h3>
+        <p>The few systems worth building, each with a real dollar value, so you see what it's worth before we build a thing.</p>
       </div>
       <div class="step">
         <div class="art">
-          <!-- step 3: we reveal, you decide. curtain/eye reveal with a check -->
           <svg viewBox="0 0 64 64" fill="none">
             <defs><linearGradient id="g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8B5CF6"/><stop offset="1" stop-color="#4338CA"/></linearGradient></defs>
-            <path d="M6 32s9-14 26-14 26 14 26 14-9 14-26 14S6 32 6 32z" fill="url(#g3)" opacity=".12"/>
-            <path d="M6 32s9-14 26-14 26 14 26 14-9 14-26 14S6 32 6 32z" stroke="url(#g3)" stroke-width="3" stroke-linejoin="round"/>
-            <circle cx="32" cy="32" r="8" stroke="url(#g3)" stroke-width="3"/>
-            <path d="M29 32l2.2 2.2L36 29.5" stroke="url(#g3)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="32" cy="32" r="22" fill="url(#g3)" opacity=".12"/>
+            <path d="M20 33l8 8 17-18" stroke="url(#g3)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
         <span class="n">3</span>
-        <h3 data-i18n="step3h">We reveal it. You decide.</h3>
-        <p data-i18n="step3p">Love it, we talk. Don't, you've lost nothing.</p>
+        <h3>We implement it and train your team</h3>
+        <p>Built, tested until it's solid, rolled out, and adopted. Real systems your people use, not advice left on a slide.</p>
       </div>
     </div>
   </section>
   </div><!-- /band--violet -->
 
-  <!-- ============================================================
-       SEAM 2, steps → why-it-feels-different: tonal lift from soft violet
-       up to clean PAPER. A hairline connector line carries the eye down
-       across the seam (used once, not on every break).
-       ============================================================ -->
+  <!-- ===== WHY IT'S DIFFERENT ===== -->
   <div class="band band--paper flow-made">
     <span class="seam-line" aria-hidden="true"></span>
-  <!-- ===== MADE FOR YOU: confidence, not features ===== -->
   <section class="sec">
-    <span class="eyebrow" data-i18n="madeEy">Why it feels different</span>
+    <span class="eyebrow">Why it's different</span>
     <div class="sechead">
-      <h2 data-i18n="madeH">Built around your business. Not a template.</h2>
-      <p data-i18n="madeP">We study your brand first, then elevate it. The moment you open it, you think "that's my business, at its best."</p>
+      <h2>Expertise, not experiments.</h2>
+      <p>We don't hand you tools and wish you luck. We implement the right AI into your business, correctly, and stay until it runs.</p>
     </div>
     <div class="cards">
       <div class="ic">
-        <span class="badge-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 0 0 0 18 2.4 2.4 0 0 0 2.4-2.4c0-.6-.25-1.1-.6-1.5-.34-.4-.55-.86-.55-1.35A2.25 2.25 0 0 1 15.5 13.5H17a4 4 0 0 0 4-4c0-3.6-4-6.5-9-6.5z"/><circle cx="7.5" cy="11" r="1.1" fill="currentColor"/><circle cx="11" cy="7" r="1.1" fill="currentColor"/><circle cx="15.5" cy="8" r="1.1" fill="currentColor"/></svg></span>
-        <h3 data-i18n="c1h">Made for your brand</h3>
-        <p data-i18n="c1p">Your real logo, colors, photos and story. Never a template, never anyone else's.</p>
-      </div>
-      <div class="ic">
         <span class="badge-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7.5 3v5c0 4.6-3.1 8.4-7.5 9.8C7.6 19.4 4.5 15.6 4.5 11V6z"/><path d="M9 12l2.2 2.2L15.5 10"/></svg></span>
-        <h3 data-i18n="c2h">We handle everything</h3>
-        <p data-i18n="c2p">Design, copy, images, the technical side. You don't lift a finger.</p>
+        <h3>We've done it hundreds of times</h3>
+        <p>Skip the learning curve. We already know what works and what doesn't, so you don't pay to find out the hard way.</p>
       </div>
       <div class="ic">
-        <span class="badge-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l2.6 6.4 6.9.5-5.3 4.5 1.7 6.7L12 17.4 6.1 21.1l1.7-6.7L2.5 9.9l6.9-.5z"/></svg></span>
-        <h3 data-i18n="c3h">Zero risk to see it</h3>
-        <p data-i18n="c3p">Nothing to pay, nothing to commit. We reveal it first. Then you choose.</p>
+        <span class="badge-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9 9 0 0 1 9 9 9 9 0 0 1-9 9"/><path d="M12 7v5l3 2"/></svg></span>
+        <h3>Built around your business</h3>
+        <p>Your workflows, your customers, your goals. Real systems designed for how you actually operate, never generic advice.</p>
+      </div>
+      <div class="ic">
+        <span class="badge-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 1 0 5.6l-8 8-4 1 1-4 8-8a4 4 0 0 1 3-1z"/><path d="M18 8l3 3"/></svg></span>
+        <h3>We implement, you don't guess</h3>
+        <p>Hands-on until the systems run and your team owns them. Not a plan you're left to execute alone.</p>
       </div>
     </div>
   </section>
   </div><!-- /band--paper -->
 
-  <!-- ============================================================
-       SEAM 3, why-it-works → honest answers: hard cut into a DARK premium
-       band. The contrast is the moment: questions answered in a calm, focused,
-       night-mode space. The band ends in a CURVED SVG divider that lifts the
-       eye back up into the cream proof scene below.
-       ============================================================ -->
+  <!-- ===== HONEST ANSWERS ===== -->
   <div class="band band--dark flow-obj">
-  <!-- ===== OBJECTIONS: the questions they're already thinking ===== -->
   <section class="sec">
-    <span class="eyebrow" data-i18n="objEy">Honest answers</span>
+    <span class="eyebrow">Honest answers</span>
     <div class="sechead">
-      <h2 data-i18n="objH">The questions you're already asking.</h2>
+      <h2>The questions you're already asking.</h2>
     </div>
     <div class="qs">
       <div class="q">
-        <span class="qi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M11 8v3l2 2"/><path d="M16.5 16.5L21 21"/></svg></span>
-        <div><h3 data-i18n="o1h">Is it really customized?</h3><p data-i18n="o1p">Built from your brand, by hand. No two ever look alike.</p></div>
+        <span class="qi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 0 1 4.5 1.5c0 1.5-2 2-2 3"/><path d="M12 17h.01"/></svg></span>
+        <div><h3>Do I need to understand AI?</h3><p>No. That's our job. You stay focused on running the business.</p></div>
       </div>
       <div class="q">
-        <span class="qi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
-        <div><h3 data-i18n="o2h">How much work is it for me?</h3><p data-i18n="o2p">A minute up front. We take it from there.</p></div>
+        <span class="qi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 20v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1"/><circle cx="9.5" cy="8" r="3.2"/><path d="M17 11l2 2 4-4"/></svg></span>
+        <div><h3>Will this replace my people?</h3><p>Never. It makes the team you already have far more productive.</p></div>
       </div>
       <div class="q">
-        <span class="qi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V5a2 2 0 0 1 2-2h2"/><path d="M16 3h2a2 2 0 0 1 2 2v2"/><path d="M20 17v2a2 2 0 0 1-2 2h-2"/><path d="M8 21H6a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3.2"/></svg></span>
-        <div><h3 data-i18n="o3h">What's the catch?</h3><p data-i18n="o3p">There isn't one. You pay only if you keep it.</p></div>
+        <span class="qi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20l3-8 4 3 5-11"/><path d="M18 4h3v3"/></svg></span>
+        <div><h3>How do you know it'll pay off?</h3><p>We only build systems with a clear dollar value, agreed with you up front.</p></div>
       </div>
       <div class="q">
-        <span class="qi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="3.4"/></svg></span>
-        <div><h3 data-i18n="o4h">Why build it before I pay?</h3><p data-i18n="o4p">Because seeing beats being sold. Decide on the real thing.</p></div>
+        <span class="qi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6L17 7M7 17l-1.4 1.4"/><circle cx="12" cy="12" r="3.4"/></svg></span>
+        <div><h3>What if I've already tried AI?</h3><p>Most of our clients had. The tools were never the problem, the implementation was.</p></div>
       </div>
     </div>
   </section>
-    <!-- curved divider: the dark band's floor curves up, releasing into the cream proof scene -->
     <svg class="curve-divider" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true" focusable="false">
       <path d="M0,90 L0,46 C280,4 560,4 720,30 C920,62 1180,72 1440,30 L1440,90 Z" fill="var(--cream)"/>
     </svg>
   </div><!-- /band--dark -->
 
-  <!-- ============================================================
-       SEAM 4, honest answers → recent reveals: the curved divider above
-       merges the dark band into cream; the proof gallery emerges quietly.
-       SEAM 5, recent reveals → close: the closing CTA card STRADDLES the
-       seam, overlapping up out of the proof scene and down into the brand
-       gradient band, bridging the two as one motion.
-       ============================================================ -->
+  <!-- ===== WHAT WE'VE IMPLEMENTED ===== -->
   <div class="band band--cream flow-proof">
-  <!-- ===== PROOF SCAFFOLD: honest, designed-when-empty. NO fabricated names/quotes (LOCKED). ===== -->
   <section class="sec">
-    <span class="eyebrow" data-i18n="proofEy">Recent reveals</span>
+    <span class="eyebrow">What we've implemented</span>
     <div class="sechead">
-      <h2 data-i18n="proofH">Real businesses, revealed.</h2>
-      <p data-i18n="proofP">Live previews land here as we ship them. Yours could be next.</p>
+      <h2>Real businesses, running on AI.</h2>
+      <p>The kind of change correct implementation delivers for owners like you.</p>
     </div>
     <div class="proof">
-      <!-- DROP-IN: real reveal #1. Replace .ph-soon block with a customer screenshot + real caption (business name + city). Do NOT invent. -->
-      <div class="reveal">
-        <div class="frame">
-          <div class="browser-mini"><div class="mc"><i></i><i></i><i></i></div><div class="mb"></div></div>
-          <div class="ph-soon"><span class="lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span></div>
+      <div class="pcase">
+        <div class="ptop">
+          <div class="pmark" style="background:linear-gradient(150deg,#F2B937,#D98A17)"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11"/><path d="M3 11h18v6H3z"/><circle cx="7.5" cy="17.5" r="1.5"/><circle cx="16.5" cy="17.5" r="1.5"/></svg></div>
+          <div><div class="pn">Finish Line Taxi</div><div class="pi">Transportation · Illustrative example</div></div>
         </div>
-        <div class="cap"><div class="t" data-i18n="rv1t">Your reveal could be here</div><div class="s" data-i18n="rv1s">A real preview, built for a real business.</div></div>
+        <div class="presult">Dispatch that runs itself, and scales without new office staff.</div>
+        <div class="pkpi"><span class="old">6 min</span><span class="arrk">→</span><span class="new">90 sec</span></div>
       </div>
-      <!-- DROP-IN: real reveal #2. Same structure. Optional before/after: place two .browser-mini frames side by side when available. -->
-      <div class="reveal">
-        <div class="frame">
-          <div class="browser-mini"><div class="mc"><i></i><i></i><i></i></div><div class="mb"></div></div>
-          <div class="ph-soon"><span class="lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span></div>
+      <div class="pcase">
+        <div class="ptop">
+          <div class="pmark" style="background:linear-gradient(150deg,#E4762E,#C0561A)"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M6 21V9l6-4 6 4v12"/><path d="M10 21v-5h4v5"/></svg></div>
+          <div><div class="pn">Ironpeak Construction</div><div class="pi">Contracting · Illustrative example</div></div>
         </div>
-        <div class="cap"><div class="t" data-i18n="rv2t">Coming soon</div><div class="s" data-i18n="rv2s">We're choosing which to show first.</div></div>
+        <div class="presult">Same-day quotes, and not a single warm lead left to go cold.</div>
+        <div class="pkpi"><span class="old">5 days</span><span class="arrk">→</span><span class="new">same day</span></div>
       </div>
-      <!-- "You're next" invitation tile. This stays. -->
-      <div class="reveal you">
-        <div class="youin">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.5 6.1 6.5.5-5 4.2 1.6 6.4L12 17.3 5.9 20.2 7.5 13.8l-5-4.2 6.5-.5z"/></svg>
-          <h3 data-i18n="youH">Your business could be next.</h3>
-          <p data-i18n="youP">See your reveal in 72 hours.</p>
-          <a href="/start?src=website"><span data-i18n="youCta">Start free</span> <span class="arr">→</span></a>
+      <div class="pcase">
+        <div class="ptop">
+          <div class="pmark" style="background:linear-gradient(150deg,#D96A9A,#B24478)"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c2 4 5 5 5 9a5 5 0 0 1-10 0c0-4 3-5 5-9z"/></svg></div>
+          <div><div class="pn">Lumière Aesthetics</div><div class="pi">Med spa · Illustrative example</div></div>
         </div>
+        <div class="presult">A front desk that never sleeps, and a team with room to breathe.</div>
+        <div class="pkpi"><span class="old">hours</span><span class="arrk">→</span><span class="new">instant</span></div>
+      </div>
+      <div class="pyou">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.5 6.1 6.5.5-5 4.2 1.6 6.4L12 17.3 5.9 20.2 7.5 13.8l-5-4.2 6.5-.5z"/></svg>
+        <h3>Your business could be next.</h3>
+        <p>Start with a roadmap and see where AI will pay off for you.</p>
+        <a href="/audit/"><span>See what we'd build</span> <span class="arr">→</span></a>
       </div>
     </div>
-    <!-- DROP-IN: real testimonials. Only with genuine consented quotes + attributable names. Never fabricate. -->
+    <p class="proofnote">Representative examples. Company details are illustrative; verified client stories replace them as they're approved for use.</p>
   </section>
   </div><!-- /band--cream (proof) -->
 
-  <!-- full-bleed brand-gradient finale; the close card overlaps up into the proof above -->
-  <div class="band band--grad flow-close">
   <!-- ===== CLOSE ===== -->
+  <div class="band band--grad flow-close">
   <section class="close">
     <div class="closecard">
       <div class="glow"></div><div class="orb"></div>
-      <p class="thread-w" data-i18n="closeThread">You run your business.</p>
-      <h2 data-i18n="closeH">Let's reveal what yours could look like.</h2>
-      <p data-i18n="closeP">Tell us a little about you. In 72 hours, you'll see a website built just for your business. Free.</p>
-      <a class="cta cta-light" href="/start?src=website"><span data-i18n="cta2">Start my free website</span> <span class="arr">→</span></a>
-      <span class="note" data-i18n="closeNote">No card. No obligation. You only pay if you love it.</span>
+      <p class="thread-w">You run your business</p>
+      <h2>Let's implement the AI that grows it.</h2>
+      <p>Start with a roadmap. In about a minute, tell us about your business. We'll show you exactly where AI will pay off, and how we'd build it.</p>
+      <a class="cta cta-light" href="/audit/"><span>Build your AI roadmap</span> <span class="arr">→</span></a>
+      <span class="note">Free roadmap. No obligation. Built by people who've done it hundreds of times.</span>
     </div>
   </section>
   </div><!-- /band--grad -->
@@ -665,134 +503,10 @@
   <footer>
     <div class="footer-inner">
       <div class="fl"><img src="https://unveiled.pro/sphere-core.png" alt="">UNVEILED</div>
-      <div data-i18n="footNote">A Business Elevation Company · You run your business. We'll take care of the digital side.</div>
-      <a href="/privacy/" data-i18n="footPrivacy">Privacy</a>
+      <div>Expert AI implementation · You run your business. We implement the AI that grows it.</div>
+      <a href="/privacy/">Privacy</a>
     </div>
   </footer>
 
-<script>
-  function param(n){ try{ return new URLSearchParams(location.search).get(n)||''; }catch(e){ return ''; } }
-
-  /* ===== One story, two languages (mirrors the Front Door's LS-FRONT-DOOR i18n).
-     English lives in the HTML defaults; Hebrew is applied from STRINGS + RTL.
-     Pick via ?lang=he, a hebrew src, or the language toggle. ===== */
-  var LANG=(param('lang')||'').toLowerCase();
-  if(LANG!=='he'){ var _sc=(param('src')||'').toLowerCase(); if(_sc==='he'||_sc==='hebrew'||_sc.indexOf('-he')>-1) LANG='he'; }
-  if(LANG!=='he') LANG='en';
-
-  var STRINGS={
-    en:{}, // English lives in the HTML defaults; we only translate away from it
-    he:{
-      langLabel:'English',
-      badge:'בונים קודם. אתם מחליטים.',
-      h1:'האתר החדש שלכם,<br>נבנה עוד לפני <span class="v">שתשלמו שקל.</span>',
-      lead:'אתר אמיתי לעסק שלכם, מותאם למותג, מוכן תוך 72 שעות. חינם לראות. משלמים רק אם מתאהבים.',
-      thread:'אתם מנהלים את העסק. אנחנו נדאג לצד הדיגיטלי.',
-      cta1:'בואו נראה מה נבנה עבורכם',
-      ctasub1:'בערך דקה · $0 מראש · ללא התחייבות',
-
-      tick1:'התצוגה המלאה שלכם תוך 72 שעות',
-      tick2:'בלי תשלום מראש, אף פעם',
-      tick3:'משלמים רק אם אתם מתאהבים',
-
-      stepsEy:'איך זה עובד',
-      stepsH:'שלושה צעדים. כמעט כולם עלינו.',
-      step1h:'ספרו לנו על העסק',
-      step1p:'דקה, כמה פרטים. זה כל החלק שלכם.',
-      step2h:'אנחנו בונים את האתר',
-      step2p:'עיצוב, תוכן, תמונות, הצד הטכני. הכול עלינו.',
-      step3h:'אנחנו חושפים. אתם מחליטים.',
-      step3p:'אהבתם, נדבר. לא, לא הפסדתם כלום.',
-
-      madeEy:'למה זה מרגיש אחרת',
-      madeH:'נבנה סביב העסק שלכם. לא תבנית.',
-      madeP:'קודם לומדים את המותג שלכם, ואז מעלים רמה. ברגע שתפתחו, תחשבו "זה העסק שלי, במיטבו".',
-      c1h:'מותאם למותג שלכם',
-      c1p:'הלוגו, הצבעים, התמונות והסיפור האמיתיים שלכם. אף פעם לא תבנית, אף פעם לא של מישהו אחר.',
-      c2h:'אנחנו מטפלים בהכול',
-      c2p:'עיצוב, תוכן, תמונות, הצד הטכני. אתם לא נוגעים בכלום.',
-      c3h:'אפס סיכון לראות',
-      c3p:'אין מה לשלם, אין למה להתחייב. חושפים קודם. ואז אתם בוחרים.',
-
-      objEy:'תשובות כנות',
-      objH:'השאלות שאתם כבר שואלים.',
-      o1h:'זה באמת מותאם אישית?',
-      o1p:'נבנה מהמותג שלכם, ביד. אין שניים שנראים אותו דבר.',
-      o2h:'כמה עבודה זה בשבילי?',
-      o2p:'דקה בהתחלה. משם זה עלינו.',
-      o3h:'מה הקאץ\'?',
-      o3p:'אין קאץ\'. משלמים רק אם נשארים עם זה.',
-      o4h:'למה לבנות לפני שאני משלם?',
-      o4p:'כי לראות עדיף על למכור. תחליטו על הדבר האמיתי.',
-
-      proofEy:'חשיפות אחרונות',
-      proofH:'עסקים אמיתיים, נחשפים.',
-      proofP:'תצוגות חיות נוחתות כאן ככל שאנחנו משחררים. שלכם יכול להיות הבא.',
-      rv1t:'החשיפה שלכם יכולה להיות כאן',
-      rv1s:'תצוגה אמיתית, שנבנתה לעסק אמיתי.',
-      rv2t:'בקרוב',
-      rv2s:'אנחנו בוחרים מה להראות קודם.',
-      youH:'העסק שלכם יכול להיות הבא.',
-      youP:'תראו את החשיפה שלכם תוך 72 שעות.',
-      youCta:'מתחילים בחינם',
-
-      closeThread:'אתם מנהלים את העסק.',
-      closeH:'בואו נחשוף איך שלכם יכול להיראות.',
-      closeP:'ספרו לנו קצת עליכם. תוך 72 שעות תראו אתר שנבנה במיוחד לעסק שלכם. בחינם.',
-      cta2:'בנו לי אתר בחינם',
-      closeNote:'בלי כרטיס. בלי התחייבות. משלמים רק אם אתם מתאהבים.',
-      footNote:'חברת Business Elevation · אתם מנהלים את העסק. אנחנו נדאג לצד הדיגיטלי.',
-      footPrivacy:'פרטיות'
-    }
-  };
-
-  // Inside-the-mockup copy for the fictional demo site (decorative; mirrored in Hebrew).
-  var SITEKIT={
-    en:{}, // English in the HTML defaults
-    he:{
-      'Studio':'סטודיו','Work':'עבודות','About':'אודות','Book a call':'לתיאום שיחה',
-      'Interior Design Studio':'סטודיו לעיצוב פנים','Interior Design':'עיצוב פנים',
-      'Spaces that feel <em>like home.</em>':'חללים שמרגישים <em>כמו בית.</em>',
-      'Warm, timeless interiors designed around the way you actually live.':'עיצוב חמים ונצחי, סביב הדרך שבה אתם באמת חיים.',
-      'View our work':'לעבודות שלנו','Our story':'הסיפור שלנו',
-      'Loved by local homeowners':'אהוב על בעלי בתים מקומיים',
-      'Yours could look like this.':'שלכם יכול להיראות ככה.'
-    }
-  };
-
-  function applyI18n(){
-    document.documentElement.lang=LANG;
-    document.documentElement.dir=(LANG==='he'?'rtl':'ltr');
-    if(LANG==='en') return; // English is the HTML default
-    var d=STRINGS[LANG];
-    document.querySelectorAll('[data-i18n]').forEach(function(el){var k=el.getAttribute('data-i18n'); if(d[k]!=null) el.textContent=d[k];});
-    document.querySelectorAll('[data-i18n-html]').forEach(function(el){var k=el.getAttribute('data-i18n-html'); if(d[k]!=null) el.innerHTML=d[k];});
-    // translate the decorative demo-site copy (keyed off its English text)
-    var s=SITEKIT[LANG]||{};
-    document.querySelectorAll('[data-sk]').forEach(function(el){var t=(el.textContent||'').trim(); if(s[t]!=null) el.textContent=s[t];});
-    document.querySelectorAll('[data-sk-html]').forEach(function(el){var t=(el.innerHTML||'').trim(); if(s[t]!=null) el.innerHTML=s[t];});
-  }
-
-  // Language toggle: flips ?lang and reloads, so the choice persists into the Front Door links too.
-  (function wireLang(){
-    var btn=document.getElementById('langbtn'); if(!btn) return;
-    btn.addEventListener('click', function(){
-      var to=(LANG==='he')?'en':'he';
-      try{
-        var u=new URL(location.href); u.searchParams.set('lang', to); location.href=u.toString();
-      }catch(e){ location.search='?lang='+to; }
-    });
-  })();
-
-  // Carry the chosen language into every doorway so the journey stays in one language.
-  (function carryLang(){
-    if(LANG!=='he') return;
-    document.querySelectorAll('a[href^="/start"]').forEach(function(a){
-      try{ var u=new URL(a.getAttribute('href'), location.origin); u.searchParams.set('lang','he'); a.setAttribute('href', u.pathname+u.search); }catch(e){}
-    });
-  })();
-
-  applyI18n();
-</script>
 </body>
 </html>
