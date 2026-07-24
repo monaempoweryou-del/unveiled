@@ -1,0 +1,63 @@
+{
+  "slug": "caspers-construction-corporation",
+  "business": "Caspers Construction Corporation",
+  "brand_confidence": 1.0,
+  "reached_existing_website": true,
+  "existing_website": "https://caspersconstruction.net/",
+  "discovered": {
+    "palette": [
+      "#1890d7",
+      "#0073aa",
+      "#003388",
+      "#abb8c3",
+      "#f78da7",
+      "#cf2e2e"
+    ],
+    "fonts": [
+      "var( --e-global-typography-text-font-family )",
+      "var( --e-global-typography-accent-font-family )",
+      "var( --e-global-typography-primary-font-family )"
+    ],
+    "logo_found": true,
+    "voice_samples": [
+      "Long Beach General Contractor and Home Remodeling",
+      "Licensed general contractor since 1968. We are a full-service home remodeling company in Long Beach, California. Call (562)-987-1716.",
+      "Long Beach General Contractor",
+      "Services",
+      "Custom Additions",
+      "Custom Homes"
+    ],
+    "social": {
+      "facebook": "https://www.facebook.com/CaspersConstructionCorp/",
+      "instagram": "https://www.instagram.com/caspersconstructionco/?fbclid=IwAR0zvjv0C_7N9K67o2Gicq4G4sS0RefdNiWPctjAbDFwwczcPSR1dSk45f8",
+      "google": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15769.587085543122!2d-118.18902843608134!3d33.80851130923421!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80dd339148575c5f%3A0xd0213e405d23ddaa!2sCaspers%20Construction%20Long%20Beach!5e0!3m2!1sen!2sus!4v1705189505766!5m2!1sen!2sus"
+    }
+  },
+  "assets": {
+    "logo": "https://caspersconstruction.net/wp-content/uploads/2024/01/caspers-construction.png",
+    "hero": "https://caspersconstruction.net/wp-content/uploads/elementor/thumbs/homepage2-qij3tzc3gse5a191nk1zd79e7zkegy547ko6r7c9hk.jpg",
+    "gallery_count": 8,
+    "real_count": 10,
+    "stock_count": 0,
+    "stock_slots": [],
+    "real_assets_available": 12,
+    "meets_minimum_5": true
+  },
+  "preserved": [
+    "Brand color palette (#1890d7, #0073aa, #003388, #abb8c3)",
+    "Typography direction (var( --e-global-typography-text-font-family ), var( --e-global-typography-accent-font-family ))",
+    "Existing logo (presented cleanly, not replaced)",
+    "10 real business image(s) the owner will recognize"
+  ],
+  "improved": [
+    "Layout, hierarchy, mobile polish, metadata and CTA raised to the UNVEILED bar."
+  ],
+  "notes": [],
+  "decision_order": [
+    "learn business",
+    "learn brand",
+    "decide preserve",
+    "improve weak",
+    "build still-feels-like-them"
+  ]
+}
