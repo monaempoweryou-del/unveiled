@@ -38,6 +38,11 @@
   .ph .play svg{width:20px;height:20px;fill:#fff;margin-left:3px}
   .ph .chip{background:var(--paper);border:1px solid var(--line);border-radius:99px;font-size:11.5px;font-weight:700;letter-spacing:.08em;padding:5px 12px;color:var(--violet)}
   .ph.tall{aspect-ratio:9/16;width:100%;max-width:320px;margin:40px auto 0}
+  .herovid{position:relative;width:100%;max-width:344px;margin:40px auto 0;aspect-ratio:9/16;border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);background:#0e0b16}
+  .herovid video{width:100%;height:100%;object-fit:cover;display:block}
+  .vsound{position:absolute;bottom:14px;right:14px;display:inline-flex;align-items:center;gap:7px;background:rgba(22,19,15,.6);color:#fff;border:1px solid rgba(255,255,255,.28);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border-radius:99px;padding:8px 13px;font:600 12.5px/1 'Space Grotesk',sans-serif;cursor:pointer}
+  .vsound svg{width:15px;height:15px}
+  .vsound.hidden{display:none}
   .ph.half{aspect-ratio:4/5;width:100%}
   .band{background:var(--ink);color:#EDE6FF;border-radius:var(--r);padding:64px 46px}
   .band h2{color:#fff;max-width:24ch}
@@ -107,11 +112,14 @@
       <span class="ctasub">Two ways in: learn to build it yourself, or we deliver the complete system</span>
       <a class="btn soft" href="/v2/create-your-ai-avatar/">Not ready? Take the free avatar starter guide</a>
     </div>
-    <div class="ph tall" data-brief="AVATAR-V1">
-      <span class="chip">IN PRODUCTION · AVATAR-V1</span>
-      <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-      <strong>"You've Been Watching the Product" · 70s</strong>
-      <span style="font-size:13px;max-width:34ch">The sales video, delivered by the avatar itself. Reveal at the end.</span>
+    <div class="herovid" data-asset="AVATAR-V1">
+      <video id="herovideo" playsinline autoplay muted loop preload="metadata" poster="hero-avatar-poster.jpg">
+        <source src="hero-avatar.mp4" type="video/mp4">
+      </video>
+      <button class="vsound" id="vsound" aria-label="Turn sound on" onclick="toggleSound()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+        <span>Tap for sound</span>
+      </button>
     </div>
   </section>
 
@@ -233,6 +241,7 @@
 <script>
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
 document.querySelectorAll('.fade').forEach(el=>io.observe(el));
+function toggleSound(){var v=document.getElementById('herovideo');var b=document.getElementById('vsound');v.muted=!v.muted;if(!v.muted){v.currentTime=0;v.play();b.classList.add('hidden');}else{b.classList.remove('hidden');}}
 const SUPABASE_URL="https://eosvftmiwndmctrqprtz.supabase.co";
 const SUPABASE_ANON_KEY="sb_publishable_BYxqF1ViwTrfaI4RGhciVw_kgbt-pSA";
 async function sendLead(e){e.preventDefault();const f=new FormData(e.target);
