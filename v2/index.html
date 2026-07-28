@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>UNVEILED V2 Preview · Expert AI Implementation</title>
+<meta name="description" content="You run your business. We implement the AI that grows it. Correctly, the first time.">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FFFFFF;--cream:#FAF8F5;--sand:#F4EFE8;--ink:#16130F;--text:#1C1917;--muted:#6B6560;--faint:#A8A29E;--line:#ECE7DF;
+    --violet:#6C3CE0;--violet-l:#8B5CF6;--indigo:#4338CA;--green:#0FA574;
+    --grad:linear-gradient(120deg,#7C4DFF 0%,#4338CA 100%);
+    --r:22px;--shadow:0 40px 90px -46px rgba(48,22,120,.45);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--cream);color:var(--text);font-family:'Space Grotesk',-apple-system,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1020px;margin:0 auto;padding:28px 24px 90px}
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:20px;flex-wrap:wrap}
+  .logo{font-weight:700;letter-spacing:.2em;font-size:15px;text-decoration:none;color:var(--text)}
+  .logo b{color:var(--violet)}
+  .menu{display:flex;gap:22px;flex-wrap:wrap}
+  .menu a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500}
+  .menu a:hover{color:var(--text)}
+  .v2chip{background:#FFF3D6;border:1px solid #F0DFAE;color:#8a6d1a;font-size:12px;font-weight:600;border-radius:99px;padding:6px 14px;letter-spacing:.06em}
+  section{margin:96px 0}
+  .eyebrow{color:var(--violet);font-weight:600;letter-spacing:.14em;font-size:13px;text-transform:uppercase;margin-bottom:16px}
+  h1{font-size:clamp(34px,5.4vw,56px);line-height:1.06;font-weight:700;letter-spacing:-.02em;margin-bottom:18px}
+  h1 .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  h2{font-size:clamp(26px,3.6vw,38px);font-weight:700;letter-spacing:-.02em;line-height:1.12;margin:0 auto 14px;max-width:26ch;text-align:center}
+  .lead{color:var(--muted);font-size:clamp(16px,2.2vw,19px);text-align:center;max-width:62ch;margin:0 auto 40px}
+  .hero{text-align:center;margin-top:26px}
+  .hero .sub{color:var(--muted);font-size:clamp(17px,2.4vw,20px);max-width:56ch;margin:0 auto 8px}
+  .thread{color:var(--text);font-weight:600;margin:14px auto 26px;font-size:15.5px}
+  .btn{background:var(--grad);color:#fff;border:none;border-radius:14px;padding:16px 30px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;box-shadow:0 18px 40px -18px rgba(67,32,160,.6);display:inline-block}
+  .btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line);box-shadow:none}
+  .ctasub{display:block;color:var(--faint);font-size:13px;margin-top:12px}
+  /* Placeholder component: every future asset lives here with its brief ID */
+  .ph{position:relative;border:2px dashed rgba(108,60,224,.35);background:linear-gradient(160deg,#F6F2FF,#FAF8F5);border-radius:var(--r);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--muted);text-align:center;padding:26px}
+  .ph .play{width:54px;height:54px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;box-shadow:0 14px 30px -12px rgba(67,32,160,.55)}
+  .ph .play svg{width:20px;height:20px;fill:#fff;margin-left:3px}
+  .ph .chip{background:var(--paper);border:1px solid var(--line);border-radius:99px;font-size:11.5px;font-weight:700;letter-spacing:.08em;padding:5px 12px;color:var(--violet)}
+  .ph .why{font-size:13.5px;max-width:38ch;color:var(--faint)}
+  .ph.wide{aspect-ratio:16/9;width:100%;max-width:860px;margin:34px auto 0}
+  .ph.tall{aspect-ratio:9/16;width:100%;max-width:300px}
+  .ph.card{aspect-ratio:4/3;width:100%;padding:14px}
+  .ph.card .play{width:38px;height:38px}
+  .ph.card .why{display:none}
+  .band{background:var(--ink);color:#EDE6FF;border-radius:var(--r);padding:54px 42px;text-align:center}
+  .band .pt{font-size:clamp(22px,3.2vw,32px);font-weight:700;line-height:1.2;letter-spacing:-.01em;max-width:26ch;margin:0 auto 14px}
+  .band .ps{color:#B7ADD6;font-size:17px;max-width:56ch;margin:0 auto}
+  .band em{color:#C9B6FF;font-style:normal}
+  .split{display:grid;grid-template-columns:1.2fr .8fr;gap:34px;align-items:center}
+  @media(max-width:820px){.split{grid-template-columns:1fr}}
+  .num{display:flex;gap:14px;margin-bottom:20px;align-items:flex-start}
+  .num .n{flex:0 0 38px;height:38px;border-radius:50%;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+  .num h3{font-size:17.5px;font-weight:600;margin-bottom:4px}
+  .num p{color:var(--muted);font-size:15px}
+  .philo{text-align:center;max-width:64ch;margin:0 auto}
+  .philo .vt{font-size:clamp(20px,2.8vw,28px);font-weight:600;line-height:1.35;letter-spacing:-.01em}
+  .philo .vt em{color:var(--violet);font-style:normal}
+  .philo .vsub{color:var(--muted);font-size:17px;margin-top:16px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  @media(max-width:860px){.grid3{grid-template-columns:1fr}}
+  .path{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:12px;box-shadow:0 24px 60px -46px rgba(48,22,120,.4);text-decoration:none;color:inherit;transition:transform .15s}
+  .path:hover{transform:translateY(-3px)}
+  .path h3{font-size:17px;font-weight:700}
+  .path p{color:var(--muted);font-size:14px;flex:1}
+  .path .go{color:var(--violet);font-weight:600;font-size:14px}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:34px;margin-top:36px}
+  @media(max-width:700px){.stats{grid-template-columns:1fr}}
+  .stat{text-align:center}
+  .stat .v{font-size:clamp(26px,4vw,40px);font-weight:700;color:var(--violet)}
+  .stat .l{color:var(--muted);font-size:14px;margin-top:4px}
+  .about{display:grid;grid-template-columns:.7fr 1.3fr;gap:34px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:26px;padding:38px;box-shadow:var(--shadow)}
+  @media(max-width:820px){.about{grid-template-columns:1fr}}
+  .about h2{text-align:left;margin:0 0 12px}
+  .about p{color:var(--muted);font-size:16px;margin-bottom:12px}
+  .finale{background:var(--paper);border:1px solid var(--line);border-radius:26px;padding:52px 40px;text-align:center;box-shadow:var(--shadow)}
+  .foot{text-align:center;color:var(--faint);font-size:13px;margin-top:80px}
+  .foot a{color:var(--muted);text-decoration:none;margin:0 8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="nav">
+    <a class="logo" href="/">UN<b>V</b>EILED</a>
+    <nav class="menu">
+      <a href="#opportunity">Where AI pays off</a>
+      <a href="#pathways">How we help</a>
+      <a href="#proof">Proof</a>
+      <a href="/about/">About</a>
+    </nav>
+    <span class="v2chip">V2 PREVIEW · placeholders = production briefs</span>
+  </div>
+
+  <!-- 1 · HERO — who we are, in one breath -->
+  <section class="hero" style="margin-top:8px">
+    <div class="eyebrow">Expert AI Implementation</div>
+    <h1>You run your business.<br>We implement the AI that <span class="g">grows it.</span></h1>
+    <p class="sub">You already know AI can move your business forward. The hard part is implementing it correctly. We build it right the first time, so you skip the months of trial and error and go straight to results.</p>
+    <p class="thread">We don't sell you AI. We implement it correctly, and stay until it runs.</p>
+    <a class="btn" href="/audit/">Build your AI roadmap →</a>
+    <span class="ctasub">About a minute · free roadmap · no obligation</span>
+    <div class="ph wide" data-brief="HOME-V1">
+      <span class="chip">IN PRODUCTION · HOME-V1</span>
+      <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      <strong>Hero brand film · 30s</strong>
+      <span class="why">Who we are and what we promise, felt in ten seconds. Calm confidence, premium, loops muted.</span>
+    </div>
+  </section>
+
+  <!-- 2 · RECOGNITION — why should I care / what happens if I do nothing -->
+  <section>
+    <div class="band">
+      <div class="pt">You've already tried AI. The problem was never the tools.</div>
+      <div class="ps">ChatGPT, Claude, a dozen tutorials and a hundred prompts later, and still nothing you can actually run your business on. The gap was never access to AI. It's knowing how to implement it correctly inside a real business. <em>That's the part we do.</em> And every month you wait, a competitor gets those hours back instead of you.</div>
+    </div>
+  </section>
+
+  <!-- 3 · THE AI OPPORTUNITY — educate before selling -->
+  <section id="opportunity">
+    <div class="eyebrow" style="text-align:center">Where AI pays off first</div>
+    <h2>The first three systems we'd build in your business</h2>
+    <p class="lead">Not fifty tools. Three systems, chosen because they pay for themselves fastest in almost every business we walk into.</p>
+    <div class="split">
+      <div>
+        <div class="num"><div class="n">1</div><div><h3>Every lead answered in seconds</h3><p>Day or night. Because the business that answers first usually wins the job, and yours will answer first every time.</p></div></div>
+        <div class="num"><div class="n">2</div><div><h3>The 20 answers you retype every week, handled</h3><p>Hours, pricing, availability, directions. Answered instantly, in your voice, without you touching the phone.</p></div></div>
+        <div class="num"><div class="n">3</div><div><h3>The admin that eats your evenings, gone</h3><p>Follow-ups, reminders, scheduling, the paperwork loop. Running quietly in the background while you're home on time.</p></div></div>
+      </div>
+      <div class="ph tall" data-brief="HOME-V2" style="justify-self:center">
+        <span class="chip">IN PRODUCTION · HOME-V2</span>
+        <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <strong>"The first 3 systems" · 35s</strong>
+        <span class="why">Teach first. The viewer recognizes their own week and sees the starting point.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · PHILOSOPHY — why implementation beats tools -->
+  <section>
+    <div class="philo">
+      <div class="vt">AI was never about ChatGPT. It's about <em>redesigning how your business operates.</em> Strategy before technology. Implementation before automation.</div>
+      <div class="vsub">That's why we start every relationship with a roadmap of your business, not a demo of our tools. First we find where AI pays off for you. Then we build it, correctly, and stay until it runs.</div>
+    </div>
+  </section>
+
+  <!-- 5 · SOLUTION PATHWAYS — which solution is right for me -->
+  <section id="pathways">
+    <div class="eyebrow" style="text-align:center">How we help</div>
+    <h2>Whatever your business needs next, it's one relationship</h2>
+    <p class="lead">Every service below is delivered by the same team, inside the same plan, toward the same goal: your business running better than it did last month.</p>
+    <div class="grid3">
+      <a class="path" href="/audit/"><div class="ph card" data-brief="HOME-V3-1"><span class="chip">HOME-V3-1</span><div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><h3>Know where AI pays off</h3><p>An implementation roadmap of your exact business: where the hours leak, what to build first, what it's worth.</p><span class="go">Start with the free roadmap →</span></a>
+      <a class="path" href="/avatar/"><div class="ph card" data-brief="HOME-V3-2"><span class="chip">HOME-V3-2</span><div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><h3>Show up daily without filming</h3><p>Your AI avatar: your face and voice publishing every day while you run the business.</p><span class="go">Meet your avatar →</span></a>
+      <a class="path" href="/start/"><div class="ph card" data-brief="HOME-V3-3"><span class="chip">HOME-V3-3</span><div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><h3>Look like the obvious choice</h3><p>A website that earns trust before the first call, built and shown to you before you pay anything.</p><span class="go">See yours free →</span></a>
+      <a class="path" href="/audit/"><div class="ph card" data-brief="HOME-V3-4"><span class="chip">HOME-V3-4</span><div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><h3>Never lose another lead</h3><p>Follow-up and CRM that answers, nurtures, and books while you work, so nothing slips.</p><span class="go">See how it works →</span></a>
+      <a class="path" href="/audit/"><div class="ph card" data-brief="HOME-V3-5"><span class="chip">HOME-V3-5</span><div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><h3>Get your evenings back</h3><p>Custom automations for the repetitive work that eats your week: quotes, reminders, paperwork, reports.</p><span class="go">Automate the busywork →</span></a>
+      <a class="path" href="/audit/"><div class="ph card" data-brief="HOME-V3-6"><span class="chip">HOME-V3-6</span><div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><h3>Stay visible without the grind</h3><p>Done-for-you monthly content: planned, produced, and published so your business never goes quiet.</p><span class="go">Keep your presence alive →</span></a>
+    </div>
+  </section>
+
+  <!-- 6 · PROOF — can they actually do this? -->
+  <section id="proof">
+    <div class="eyebrow" style="text-align:center">Proof, not promises</div>
+    <h2>Watch it working, before you decide anything</h2>
+    <p class="lead">Real businesses, real transformations, and an avatar that runs our own content every day. We use everything we sell.</p>
+    <div class="ph wide" data-brief="HOME-V4">
+      <span class="chip">IN PRODUCTION · HOME-V4</span>
+      <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      <strong>Proof reel · 25s</strong>
+      <span class="why">Before/after site reveals, avatar demos, automations running. Evidence, not claims.</span>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="v">300+</div><div class="l">businesses guided through practical AI implementation</div></div>
+      <div class="stat"><div class="v">Hundreds</div><div class="l">of AI and automation systems inside real companies</div></div>
+      <div class="stat"><div class="v">25+ yrs</div><div class="l">implementing technology that gets used, not just installed</div></div>
+    </div>
+  </section>
+
+  <!-- 7 · ABOUT — who are you / why should I trust you -->
+  <section>
+    <div class="about">
+      <div class="ph card" data-brief="HOME-IMG-1" style="aspect-ratio:3/4">
+        <span class="chip">REAL PHOTO · HOME-IMG-1</span>
+        <span class="why" style="display:block">Maor's real portrait. The one non-generated asset on this page, on purpose.</span>
+      </div>
+      <div>
+        <h2>People buy people. So here's the person.</h2>
+        <p>I'm Maor. Before UNVEILED I spent years inside real local businesses: builders, locksmiths, salons, family companies. I watched smart owners waste months on AI tools that never became results.</p>
+        <p>The avatar you'll see in our videos is my own AI twin, running my content every day while I'm with clients. Everything we sell you, we run on ourselves first.</p>
+        <a class="btn ghost" href="/about/">Read my story →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 · FINAL CTA — how do I get started -->
+  <section>
+    <div class="finale">
+      <div class="eyebrow">The next step</div>
+      <h2>Stop wondering what AI could do for your business. See it.</h2>
+      <p class="lead" style="margin-bottom:26px">Tell us about your business. In about a minute you'll have a free roadmap showing exactly where AI pays off for you, and how we'd build it.</p>
+      <a class="btn" href="/audit/">Build my AI roadmap →</a>
+      <span class="ctasub">Free · specific to your business · yours to keep either way</span>
+    </div>
+  </section>
+
+  <div class="foot">
+    <a href="/">Home</a>·<a href="/audit/">AI Roadmap</a>·<a href="/avatar/">AI Avatars</a>·<a href="/start/">Websites</a>·<a href="/about/">About</a>
+    <div style="margin-top:10px">UNVEILED · unveiled.pro · V2 preview, not linked from the live site</div>
+  </div>
+</div>
+</body>
+</html>
