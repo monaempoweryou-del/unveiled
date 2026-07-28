@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Operations | UNVEILED</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#FAF8F5;--cream-2:#F2EEE8;--cream-3:#E8E2D8;
+  --violet:#6C3CE0;--violet-l:#8B5CF6;--violet-bg:rgba(108,60,224,0.06);--violet-border:rgba(108,60,224,0.12);
+  --dark:#12100E;--text:#1C1917;--muted:#78716C;--muted-2:#A8A29E;
+  --border:#E5E0D8;--border-l:#F0EBE4;
+  --green:#10B981;--green-bg:rgba(16,185,129,0.08);--green-border:rgba(16,185,129,0.2);
+  --amber:#F59E0B;--amber-bg:rgba(245,158,11,0.08);--amber-border:rgba(245,158,11,0.2);
+  --red:#EF4444;--red-bg:rgba(239,68,68,0.06);--red-border:rgba(239,68,68,0.15);
+  --blue:#3B82F6;--blue-bg:rgba(59,130,246,0.06);
+  --white:#FFFFFF;
+  --radius:14px;--radius-sm:10px;--radius-xs:8px;
+  --shadow:0 1px 3px rgba(0,0,0,0.04),0 8px 24px rgba(0,0,0,0.03);
+  --font-h:'Space Grotesk',sans-serif;
+  --font-b:'Inter',sans-serif;
+  --sidebar-w:240px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-b);background:var(--cream);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:var(--font-h);line-height:1.15;letter-spacing:-0.02em}
+
+/* Auth overlay */
+.auth-overlay{position:fixed;inset:0;z-index:9999;background:var(--cream);display:flex;align-items:center;justify-content:center;transition:opacity .4s,visibility .4s}
+.auth-overlay.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.auth-box{text-align:center;max-width:360px;padding:40px}
+.auth-box img{height:36px;margin-bottom:8px}
+.auth-box .auth-wordmark{height:22px;opacity:0.8;margin-bottom:32px;display:block}
+.auth-box h2{font-size:22px;font-weight:700;margin-bottom:6px;color:var(--text)}
+.auth-box p{font-size:14px;color:var(--muted);margin-bottom:24px}
+.auth-input{width:100%;padding:12px 16px;border:1px solid var(--border);border-radius:var(--radius-xs);font-size:14px;font-family:var(--font-b);background:var(--white);outline:none;transition:border-color .15s}
+.auth-input:focus{border-color:var(--violet)}
+.auth-btn{width:100%;margin-top:12px;padding:12px;border:none;border-radius:var(--radius-xs);background:var(--violet);color:#fff;font-size:14px;font-weight:600;font-family:var(--font-b);cursor:pointer;transition:background .15s}
+.auth-btn:hover{background:#5b2ec7}
+.auth-error{color:var(--red);font-size:12px;margin-top:8px;display:none}
+.auth-note{font-size:11px;color:var(--muted-2);margin-top:20px;line-height:1.5}
+
+/* Layout */
+.app{display:flex;min-height:100vh}
+.sidebar{width:var(--sidebar-w);background:var(--dark);padding:24px 16px;display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;transition:transform .3s ease}
+.sidebar-logo{display:flex;align-items:center;gap:10px;margin-bottom:32px;padding:0 8px}
+.sidebar-logo img{height:28px}
+.sidebar-logo .wordmark{height:18px;opacity:0.85}
+.sidebar-nav{flex:1;display:flex;flex-direction:column;gap:1px}
+.nav-section{font-size:9px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.3);padding:18px 10px 6px}
+.nav-item{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:var(--radius-xs);font-size:13px;font-weight:500;color:rgba(255,255,255,0.55);text-decoration:none;transition:all .15s}
+.nav-item:hover{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.85)}
+.nav-item.active{background:rgba(108,60,224,0.2);color:#A78BFA;font-weight:600}
+.nav-item svg{width:17px;height:17px;flex-shrink:0;opacity:0.7}
+.nav-badge{margin-left:auto;background:var(--violet);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:100px;min-width:18px;text-align:center}
+.nav-badge-red{background:var(--red)}
+.sidebar-footer{border-top:1px solid rgba(255,255,255,0.08);padding-top:14px;margin-top:8px}
+.sidebar-user{display:flex;align-items:center;gap:9px;padding:6px 4px}
+.sidebar-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--violet),var(--violet-l));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:11px}
+.sidebar-user-name{font-size:12px;font-weight:600;color:rgba(255,255,255,0.85)}
+.sidebar-user-role{font-size:10px;color:rgba(255,255,255,0.4)}
+
+.main{flex:1;margin-left:var(--sidebar-w);padding:28px 32px 60px}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+.topbar h1{font-size:24px;font-weight:700}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.topbar-date{font-size:12px;color:var(--muted)}
+
+/* Note banner */
+.note-banner{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:20px;font-size:11.5px;color:#92400E;display:flex;align-items:flex-start;gap:8px;line-height:1.5}
+.note-banner svg{width:15px;height:15px;flex-shrink:0;margin-top:1px}
+
+/* Pipeline */
+.pipeline{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:24px}
+.pipe-col{background:var(--white);border:1px solid var(--border-l);border-radius:var(--radius);overflow:hidden}
+.pipe-header{padding:14px 16px 10px;border-bottom:1px solid var(--border-l);display:flex;align-items:center;justify-content:space-between}
+.pipe-title{font-size:11px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:var(--muted)}
+.pipe-count{font-family:var(--font-h);font-size:20px;font-weight:700;color:var(--text)}
+.pipe-body{padding:10px 12px;min-height:100px}
+.pipe-card{padding:10px 12px;background:var(--cream);border-radius:var(--radius-xs);margin-bottom:6px;cursor:default;transition:box-shadow .15s}
+.pipe-card:hover{box-shadow:var(--shadow)}
+.pipe-card-name{font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px}
+.pipe-card-meta{font-size:10px;color:var(--muted-2)}
+.pipe-card-tag{display:inline-block;font-size:9px;font-weight:600;padding:2px 6px;border-radius:100px;margin-top:4px}
+.tag-research{background:var(--blue-bg);color:var(--blue)}
+.tag-build{background:var(--violet-bg);color:var(--violet)}
+.tag-approval{background:var(--amber-bg);color:#B45309}
+.tag-live{background:var(--green-bg);color:#059669}
+.tag-new{background:var(--red-bg);color:var(--red)}
+
+/* Metrics row */
+.metrics{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:24px}
+.metric-card{background:var(--white);border:1px solid var(--border-l);border-radius:var(--radius-sm);padding:16px 18px;transition:border-color .15s}
+.metric-card:hover{border-color:var(--border)}
+.metric-label{font-size:11px;font-weight:500;color:var(--muted);margin-bottom:8px}
+.metric-value{font-family:var(--font-h);font-size:24px;font-weight:700;color:var(--text);letter-spacing:-0.02em}
+.metric-sub{font-size:10.5px;color:var(--muted-2);margin-top:4px}
+.metric-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px}
+
+/* Grid sections */
+.section-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.section-grid-3{grid-template-columns:3fr 2fr}
+.card{background:var(--white);border:1px solid var(--border-l);border-radius:var(--radius);overflow:hidden}
+.card-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 0}
+.card-title{font-family:var(--font-h);font-size:14px;font-weight:600;color:var(--text)}
+.card-link{font-size:11px;font-weight:500;color:var(--violet);text-decoration:none}
+.card-body{padding:12px 20px 18px}
+
+/* Timeline */
+.timeline-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border-l);font-size:12px}
+.timeline-item:last-child{border-bottom:none}
+.tl-time{width:50px;flex-shrink:0;color:var(--muted-2);font-size:11px;padding-top:1px}
+.tl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.tl-content{flex:1;min-width:0}
+.tl-title{font-weight:500;color:var(--text)}
+.tl-meta{font-size:11px;color:var(--muted-2);margin-top:1px}
+
+/* System health */
+.health-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border-l);font-size:13px}
+.health-row:last-child{border-bottom:none}
+.health-label{display:flex;align-items:center;gap:8px;color:var(--text);font-weight:500}
+.health-label svg{width:16px;height:16px;color:var(--muted)}
+.health-status{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:600}
+.hs-green{color:var(--green)}
+.hs-amber{color:var(--amber)}
+.hs-red{color:var(--red)}
+.status-dot{width:7px;height:7px;border-radius:50%;display:inline-block}
+.dot-green{background:var(--green);box-shadow:0 0 5px rgba(16,185,129,0.4)}
+.dot-amber{background:var(--amber);box-shadow:0 0 5px rgba(245,158,11,0.4)}
+.dot-red{background:var(--red);box-shadow:0 0 5px rgba(239,68,68,0.4)}
+
+/* Table */
+.data-table{width:100%;border-collapse:collapse}
+.data-table th{text-align:left;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted-2);padding:8px 0;border-bottom:1px solid var(--border-l)}
+.data-table td{padding:10px 0;border-bottom:1px solid var(--border-l);font-size:12.5px;vertical-align:middle}
+.data-table tr:last-child td{border-bottom:none}
+.client-name{font-weight:600;color:var(--text)}
+.client-biz{font-size:11px;color:var(--muted)}
+
+/* Revenue */
+.revenue-row{display:flex;align-items:baseline;gap:6px;margin-bottom:4px}
+.revenue-big{font-family:var(--font-h);font-size:36px;font-weight:700;color:var(--text);letter-spacing:-0.02em}
+.revenue-label{font-size:13px;color:var(--muted)}
+.revenue-bar{height:8px;border-radius:4px;background:var(--cream-2);margin:16px 0 8px;overflow:hidden}
+.revenue-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--violet),var(--violet-l))}
+.revenue-targets{display:flex;justify-content:space-between;font-size:11px;color:var(--muted-2)}
+
+/* Mobile */
+.mobile-header{display:none;position:fixed;top:0;left:0;right:0;z-index:200;background:var(--dark);padding:12px 16px;align-items:center;justify-content:space-between}
+.mobile-header img{height:18px}
+.hamburger{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:none;background:none;cursor:pointer}
+.hamburger svg{width:22px;height:22px;color:rgba(255,255,255,0.8)}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99}
+.sidebar-close{display:none;position:absolute;top:14px;right:14px;width:26px;height:26px;border:none;background:rgba(255,255,255,0.08);border-radius:50%;cursor:pointer;align-items:center;justify-content:center;color:rgba(255,255,255,0.6)}
+.sidebar-close svg{width:14px;height:14px}
+
+@media(max-width:1200px){
+  .pipeline{grid-template-columns:repeat(3,1fr)}
+  .metrics{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:900px){
+  .section-grid,.section-grid-3{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .sidebar-overlay.open{display:block}
+  .sidebar-close{display:flex}
+  .mobile-header{display:flex}
+  .main{margin-left:0;padding:68px 14px 40px}
+  .pipeline{grid-template-columns:1fr 1fr}
+  .metrics{grid-template-columns:1fr 1fr}
+  .topbar h1{font-size:20px}
+}
+@media(max-width:480px){
+  .pipeline{grid-template-columns:1fr}
+  .metrics{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- Auth overlay -->
+<div class="auth-overlay" id="authOverlay">
+  <div class="auth-box">
+    <img src="../sphere-core.png" alt="">
+    <img src="../wordmark-dark.png" alt="UNVEILED" class="auth-wordmark">
+    <h2>Operations</h2>
+    <p>Internal access only. Enter the team password.</p>
+    <input type="password" class="auth-input" id="authInput" placeholder="Password" autocomplete="off" autofocus>
+    <button class="auth-btn" id="authBtn" onclick="tryAuth()">Sign in</button>
+    <div class="auth-error" id="authError">Incorrect password. Try again.</div>
+    <div class="auth-note">Temporary prototype authentication.<br>Production will use proper auth (Supabase Auth / OAuth).</div>
+  </div>
+</div>
+
+<!-- Mobile header -->
+<div class="mobile-header">
+  <img src="../wordmark-light.png" alt="UNVEILED">
+  <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu">
+    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+  </button>
+</div>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<!-- Sidebar -->
+<nav class="sidebar" id="sidebar">
+  <button class="sidebar-close" onclick="toggleSidebar()" aria-label="Close"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M6 18L18 6M6 6l12 12"/></svg></button>
+  <div class="sidebar-logo">
+    <img src="../sphere-core.png" alt="">
+    <img src="../wordmark-light.png" alt="UNVEILED" class="wordmark">
+  </div>
+  <div class="sidebar-nav">
+    <a class="nav-item active" href="#">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm0 8a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zm10 0a1 1 0 011-1h4a1 1 0 011 1v6a1 1 0 01-1 1h-4a1 1 0 01-1-1v-6z"/></svg>
+      Command center
+    </a>
+    <a class="nav-item" href="#">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/></svg>
+      Leads
+      <span class="nav-badge">4</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+      Clients
+    </a>
+    <div class="nav-section">Production</div>
+    <a class="nav-item" href="#">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+      Pipeline
+      <span class="nav-badge">6</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+      Email delivery
+    </a>
+    <a class="nav-item" href="#">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+      SMS delivery
+    </a>
+    <div class="nav-section">System</div>
+    <a class="nav-item" href="#">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/></svg>
+      Worker health
+    </a>
+    <a class="nav-item" href="#">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      Revenue
+    </a>
+    <a class="nav-item" href="#">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+      Settings
+    </a>
+  </div>
+  <div class="sidebar-footer">
+    <div class="sidebar-user">
+      <div class="sidebar-avatar">M</div>
+      <div>
+        <div class="sidebar-user-name">Maor & Natasha</div>
+        <div class="sidebar-user-role">Operators</div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Main content -->
+<main class="main" id="mainContent" style="display:none">
+  <div class="topbar">
+    <div><h1>Command center</h1></div>
+    <div class="topbar-right">
+      <span class="topbar-date">June 15, 2026</span>
+    </div>
+  </div>
+
+  <div class="note-banner">
+    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+    <span><strong>Preview mode.</strong> Sample data shown. Real-time connections (Supabase tasks/leads, SMTP logs, Stripe) will be wired in the next phase. Password protection is temporary — production will use Supabase Auth.</span>
+  </div>
+
+  <!-- Pipeline Kanban -->
+  <div class="pipeline">
+    <div class="pipe-col">
+      <div class="pipe-header"><span class="pipe-title">New leads</span><span class="pipe-count">4</span></div>
+      <div class="pipe-body">
+        <div class="pipe-card"><div class="pipe-card-name">Sofia Martinez</div><div class="pipe-card-meta">Dental clinic &middot; 2h ago</div><span class="pipe-card-tag tag-new">New</span></div>
+        <div class="pipe-card"><div class="pipe-card-name">David Cohen</div><div class="pipe-card-meta">Law firm &middot; 5h ago</div><span class="pipe-card-tag tag-new">New</span></div>
+        <div class="pipe-card"><div class="pipe-card-name">Rachel Kim</div><div class="pipe-card-meta">Bakery &middot; Yesterday</div><span class="pipe-card-tag tag-new">New</span></div>
+        <div class="pipe-card"><div class="pipe-card-name">עמית לוי</div><div class="pipe-card-meta">מספרה &middot; Yesterday</div><span class="pipe-card-tag tag-new">New · HE</span></div>
+      </div>
+    </div>
+    <div class="pipe-col">
+      <div class="pipe-header"><span class="pipe-title">In research</span><span class="pipe-count">2</span></div>
+      <div class="pipe-body">
+        <div class="pipe-card"><div class="pipe-card-name">Marcus Johnson</div><div class="pipe-card-meta">Auto repair &middot; Phase 1</div><span class="pipe-card-tag tag-research">Research</span></div>
+        <div class="pipe-card"><div class="pipe-card-name">Lisa Wong</div><div class="pipe-card-meta">Yoga studio &middot; Phase 1</div><span class="pipe-card-tag tag-research">Research</span></div>
+      </div>
+    </div>
+    <div class="pipe-col">
+      <div class="pipe-header"><span class="pipe-title">In build</span><span class="pipe-count">3</span></div>
+      <div class="pipe-body">
+        <div class="pipe-card"><div class="pipe-card-name">Jake Thompson</div><div class="pipe-card-meta">Plumbing &middot; Phase 4</div><span class="pipe-card-tag tag-build">Build</span></div>
+        <div class="pipe-card"><div class="pipe-card-name">Priya Patel</div><div class="pipe-card-meta">Restaurant &middot; Phase 3</div><span class="pipe-card-tag tag-build">Assets</span></div>
+        <div class="pipe-card"><div class="pipe-card-name">נועה כהן</div><div class="pipe-card-meta">קייטרינג &middot; Phase 4</div><span class="pipe-card-tag tag-build">Build · HE</span></div>
+      </div>
+    </div>
+    <div class="pipe-col">
+      <div class="pipe-header"><span class="pipe-title">Awaiting approval</span><span class="pipe-count">2</span></div>
+      <div class="pipe-body">
+        <div class="pipe-card"><div class="pipe-card-name">Tom Richards</div><div class="pipe-card-meta">Landscaping &middot; Sent Jun 12</div><span class="pipe-card-tag tag-approval">Pending 3d</span></div>
+        <div class="pipe-card"><div class="pipe-card-name">Amanda Lee</div><div class="pipe-card-meta">Florist &middot; Sent Jun 14</div><span class="pipe-card-tag tag-approval">Pending 1d</span></div>
+      </div>
+    </div>
+    <div class="pipe-col">
+      <div class="pipe-header"><span class="pipe-title">Live</span><span class="pipe-count">5</span></div>
+      <div class="pipe-body">
+        <div class="pipe-card"><div class="pipe-card-name">Mike's HVAC</div><div class="pipe-card-meta">Growth plan &middot; Since Mar</div><span class="pipe-card-tag tag-live">Active</span></div>
+        <div class="pipe-card"><div class="pipe-card-name">Sunrise Cafe</div><div class="pipe-card-meta">Growth plan &middot; Since Apr</div><span class="pipe-card-tag tag-live">Active</span></div>
+        <div class="pipe-card"><div class="pipe-card-name">Elite Fitness</div><div class="pipe-card-meta">Starter plan &middot; Since May</div><span class="pipe-card-tag tag-live">Active</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Metrics -->
+  <div class="metrics">
+    <div class="metric-card"><div class="metric-label">Active clients</div><div class="metric-value">5</div><div class="metric-sub">3 Growth, 2 Starter</div></div>
+    <div class="metric-card"><div class="metric-label">MRR</div><div class="metric-value">$645</div><div class="metric-sub">+$149 from last month</div></div>
+    <div class="metric-card"><div class="metric-label">Open leads</div><div class="metric-value">4</div><div class="metric-sub">2 EN, 2 HE</div></div>
+    <div class="metric-card"><div class="metric-label">In production</div><div class="metric-value">5</div><div class="metric-sub">Research → Build</div></div>
+    <div class="metric-card"><div class="metric-label">Emails sent (30d)</div><div class="metric-value">47</div><div class="metric-sub"><span class="metric-dot dot-green" style="margin-right:2px"></span>96% delivered</div></div>
+    <div class="metric-card"><div class="metric-label">Failed tasks (7d)</div><div class="metric-value" style="color:var(--green)">0</div><div class="metric-sub">Queue clean</div></div>
+  </div>
+
+  <!-- Activity + System health -->
+  <div class="section-grid section-grid-3">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Recent activity</span><a href="#" class="card-link">View all</a></div>
+      <div class="card-body">
+        <div class="timeline-item"><span class="tl-time">2:15p</span><div class="tl-dot dot-green"></div><div class="tl-content"><div class="tl-title">Email delivered to Sofia Martinez</div><div class="tl-meta">email-1-received &middot; maor455@hotmail.com</div></div></div>
+        <div class="timeline-item"><span class="tl-time">2:14p</span><div class="tl-dot" style="background:var(--violet)"></div><div class="tl-content"><div class="tl-title">New lead: Sofia Martinez — dental clinic</div><div class="tl-meta">Source: unveiled-en &middot; Form submission</div></div></div>
+        <div class="timeline-item"><span class="tl-time">11:30a</span><div class="tl-dot dot-green"></div><div class="tl-content"><div class="tl-title">Phase 4 complete for Jake Thompson</div><div class="tl-meta">Build finished &middot; Moving to QA</div></div></div>
+        <div class="timeline-item"><span class="tl-time">10:05a</span><div class="tl-dot dot-amber"></div><div class="tl-content"><div class="tl-title">Awaiting approval: Amanda Lee</div><div class="tl-meta">email-5-approval sent &middot; Florist preview ready</div></div></div>
+        <div class="timeline-item"><span class="tl-time">9:22a</span><div class="tl-dot dot-green"></div><div class="tl-content"><div class="tl-title">SMS sent to David Cohen</div><div class="tl-meta">Lead notification &middot; Law firm inquiry</div></div></div>
+        <div class="timeline-item"><span class="tl-time">8:00a</span><div class="tl-dot" style="background:var(--blue)"></div><div class="tl-content"><div class="tl-title">Worker restarted automatically</div><div class="tl-meta">Scheduled daily restart &middot; PID 34421</div></div></div>
+        <div class="timeline-item"><span class="tl-time">Yest</span><div class="tl-dot dot-green"></div><div class="tl-content"><div class="tl-title">unveiled.pro domain configured</div><div class="tl-meta">HTTPS active &middot; DNS propagated &middot; SPF+DMARC live</div></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">System health</span></div>
+      <div class="card-body">
+        <div class="health-row">
+          <span class="health-label"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2"/></svg>Task worker</span>
+          <span class="health-status hs-green"><span class="status-dot dot-green"></span>Running</span>
+        </div>
+        <div class="health-row">
+          <span class="health-label"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>SMTP (Gmail)</span>
+          <span class="health-status hs-green"><span class="status-dot dot-green"></span>Connected</span>
+        </div>
+        <div class="health-row">
+          <span class="health-label"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/></svg>Supabase</span>
+          <span class="health-status hs-green"><span class="status-dot dot-green"></span>Connected</span>
+        </div>
+        <div class="health-row">
+          <span class="health-label"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>SPF / DMARC</span>
+          <span class="health-status hs-green"><span class="status-dot dot-green"></span>Verified</span>
+        </div>
+        <div class="health-row">
+          <span class="health-label"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>DKIM</span>
+          <span class="health-status hs-amber"><span class="status-dot dot-amber"></span>Propagating</span>
+        </div>
+        <div class="health-row">
+          <span class="health-label"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9"/></svg>unveiled.pro</span>
+          <span class="health-status hs-green"><span class="status-dot dot-green"></span>HTTPS live</span>
+        </div>
+        <div class="health-row">
+          <span class="health-label"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/></svg>Claude binary</span>
+          <span class="health-status hs-green"><span class="status-dot dot-green"></span>Dynamic path</span>
+        </div>
+        <div class="health-row">
+          <span class="health-label"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>Task queue</span>
+          <span class="health-status hs-green"><span class="status-dot dot-green"></span>0 pending</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Revenue + Clients -->
+  <div class="section-grid">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Monthly revenue</span></div>
+      <div class="card-body">
+        <div class="revenue-row"><span class="revenue-big">$645</span><span class="revenue-label">/ $2,000 goal</span></div>
+        <div class="revenue-bar"><div class="revenue-fill" style="width:32.25%"></div></div>
+        <div class="revenue-targets"><span>$0</span><span>$500</span><span>$1,000</span><span>$1,500</span><span>$2,000</span></div>
+        <div style="margin-top:20px">
+          <table class="data-table">
+            <thead><tr><th>Client</th><th>Plan</th><th>MRR</th><th>Since</th></tr></thead>
+            <tbody>
+              <tr><td class="client-name">Mike's HVAC</td><td>Growth</td><td style="font-weight:600">$149</td><td>Mar 2026</td></tr>
+              <tr><td class="client-name">Sunrise Cafe</td><td>Growth</td><td style="font-weight:600">$149</td><td>Apr 2026</td></tr>
+              <tr><td class="client-name">Elite Fitness</td><td>Starter</td><td style="font-weight:600">$99</td><td>May 2026</td></tr>
+              <tr><td class="client-name">Jake's Plumbing</td><td>Growth</td><td style="font-weight:600">$149</td><td>Jun 2026</td></tr>
+              <tr><td class="client-name">Sarah's Bakery</td><td>Starter</td><td style="font-weight:600">$99</td><td>Jun 2026</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">Priority follow-ups</span></div>
+      <div class="card-body">
+        <div class="timeline-item"><span class="tl-time" style="width:auto"></span><div class="tl-dot dot-red"></div><div class="tl-content"><div class="tl-title">Tom Richards — no response in 3 days</div><div class="tl-meta">Approval email sent Jun 12 &middot; Landscaping</div></div></div>
+        <div class="timeline-item"><span class="tl-time" style="width:auto"></span><div class="tl-dot dot-amber"></div><div class="tl-content"><div class="tl-title">Amanda Lee — check back tomorrow</div><div class="tl-meta">Approval sent yesterday &middot; Florist</div></div></div>
+        <div class="timeline-item"><span class="tl-time" style="width:auto"></span><div class="tl-dot dot-amber"></div><div class="tl-content"><div class="tl-title">David Cohen — waiting on content</div><div class="tl-meta">Requested headshots + team bios &middot; Law firm</div></div></div>
+        <div class="timeline-item"><span class="tl-time" style="width:auto"></span><div class="tl-dot" style="background:var(--blue)"></div><div class="tl-content"><div class="tl-title">Elite Fitness — upsell to Growth?</div><div class="tl-meta">High engagement, hitting Starter limits</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:20px 0 8px">
+    <img src="../sphere-core.png" alt="" style="width:24px;height:24px;opacity:0.2;margin-bottom:6px"><br>
+    <span style="font-size:10px;color:var(--muted-2)">UNVEILED Operations &middot; Internal use only</span>
+  </div>
+</main>
+
+<script>
+var AUTH_HASH='a3c2f8e1';
+function simpleHash(s){var h=0;for(var i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0}return(h>>>0).toString(16).slice(0,8)}
+
+function tryAuth(){
+  var input=document.getElementById('authInput').value;
+  if(input==='Hoby0101'){
+    sessionStorage.setItem('unveiled_auth','1');
+    showApp();
+  } else {
+    document.getElementById('authError').style.display='block';
+    document.getElementById('authInput').value='';
+    document.getElementById('authInput').focus();
+  }
+}
+
+function showApp(){
+  document.getElementById('authOverlay').classList.add('hidden');
+  document.getElementById('mainContent').style.display='block';
+}
+
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('open');
+}
+
+document.getElementById('authInput').addEventListener('keydown',function(e){
+  if(e.key==='Enter')tryAuth();
+});
+
+if(sessionStorage.getItem('unveiled_auth')==='1'){showApp()}
+</script>
+</body>
+</html>
