@@ -63,6 +63,7 @@
   .vdur{position:absolute;top:18px;right:20px;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:12px;font-weight:600;padding:5px 12px;border-radius:99px;backdrop-filter:blur(4px);pointer-events:none}
   .undervid{display:flex;align-items:center;justify-content:center;gap:14px;color:var(--muted);font-size:14.5px;margin-top:20px;max-width:52ch;margin-left:auto;margin-right:auto}
   .undervid .ph{width:44px;height:44px;border-radius:50%;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex:none}
+  .undervid .mbadge{width:44px;height:44px;border-radius:50%;object-fit:cover;flex:none;border:2px solid #fff;box-shadow:0 4px 12px rgba(0,0,0,.14)}
   .undervid b{color:var(--text)}
   .cta-row{display:flex;gap:14px;justify-content:center;margin-top:34px;flex-wrap:wrap}
   .btn{background:var(--grad);color:#fff;border:none;border-radius:14px;padding:16px 30px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;box-shadow:0 18px 40px -18px rgba(67,32,160,.6)}
@@ -262,16 +263,10 @@
     <p class="sub">You already know AI can transform your business. But weeks of trial and error with ChatGPT, Claude, and a dozen tools rarely turn into anything you can actually use. We're the experts who implement AI correctly from day one, so you skip the learning curve and go straight to results that make money.</p>
 
     <div class="videowrap" id="vwrap">
-      <video id="herovid" poster="hero-poster.jpg" playsinline preload="none">
-        <source src="hero.mp4" type="video/mp4">
-      </video>
-      <div class="vwm" id="vwm">UNVEILED</div>
-      <div class="vdur" id="vdur">1 MIN</div>
-      <button class="playbtn" id="playbtn" aria-label="Play video" onclick="playHero()">
-        <svg width="28" height="32" viewBox="0 0 28 32" fill="#fff"><path d="M0 0 L28 16 L0 32 Z"/></svg>
-      </button>
+      <img src="consult-hero.jpg" width="1400" height="933" alt="Maor advising a business owner on AI implementation at the UNVEILED office" fetchpriority="high" style="display:block;width:100%;height:auto">
+      <div class="vwm">UNVEILED</div>
     </div>
-    <div class="undervid"><div class="ph">MS</div><div>One minute with Maor Shaya: <b>why the smart move isn't more AI, it's implementing it correctly.</b></div></div>
+    <div class="undervid"><img class="mbadge" src="maor-badge.jpg" width="44" height="44" alt="Maor Shaya"><div>Sit down with Maor Shaya: <b>the smart move isn't more AI, it's implementing it correctly.</b></div></div>
 
     <div class="cta-row">
       <a href="#get" class="btn">Get expert AI guidance →</a>
@@ -616,7 +611,6 @@
   </section>
 </div>
 <script>
-function playHero(){var v=document.getElementById('herovid');v.setAttribute('controls','');v.play();document.getElementById('playbtn').style.display='none';document.getElementById('vdur').style.display='none';document.getElementById('vwm').style.display='none';}
 const SUPABASE_URL="https://eosvftmiwndmctrqprtz.supabase.co";
 const SUPABASE_ANON_KEY="sb_publishable_BYxqF1ViwTrfaI4RGhciVw_kgbt-pSA";
 const LEADS_TABLE="leads";
