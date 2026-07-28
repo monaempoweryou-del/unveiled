@@ -81,6 +81,13 @@
   .foot a{color:var(--muted);text-decoration:none;margin:0 8px}
   .fade{opacity:0;transform:translateY(22px);transition:opacity .45s ease-out,transform .45s ease-out}
   .fade.in{opacity:1;transform:none}
+  @media(max-width:480px){
+    body{overflow-x:hidden}
+    .wrap{padding-left:18px;padding-right:18px}
+    h1{font-size:30px;line-height:1.08;overflow-wrap:break-word}
+    h2{font-size:26px}
+    section{padding-top:80px}
+  }
 </style>
 </head>
 <body>
