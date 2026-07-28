@@ -1,0 +1,46 @@
+{
+  "slug": "zz-disarm-proof",
+  "business": "ZZ Disarm Proof",
+  "brand_confidence": 0.0,
+  "reached_existing_website": false,
+  "existing_website": null,
+  "discovered": {
+    "palette": [],
+    "fonts": [],
+    "logo_found": false,
+    "voice_samples": [],
+    "social": {}
+  },
+  "assets": {
+    "logo": null,
+    "hero": "https://images.unsplash.com/featured/1200x800/?business",
+    "gallery_count": 3,
+    "real_count": 0,
+    "stock_count": 4,
+    "stock_slots": [
+      "hero",
+      "gallery_0",
+      "gallery_1",
+      "gallery_2"
+    ],
+    "real_assets_available": 0,
+    "meets_minimum_5": false
+  },
+  "preserved": [],
+  "improved": [
+    "No clear existing palette found. Selected an industry-appropriate, restrained palette.",
+    "No distinct typography found. Chose a clean, human typeface pairing.",
+    "No usable logo retrieved. Used a refined wordmark lockup, NOT an AI logo clich\u00e9.",
+    "Layout, hierarchy, mobile polish, metadata and CTA raised to the UNVEILED bar."
+  ],
+  "notes": [
+    "No existing website on the lead \u2014 brand learned from socials/lead fields only."
+  ],
+  "decision_order": [
+    "learn business",
+    "learn brand",
+    "decide preserve",
+    "improve weak",
+    "build still-feels-like-them"
+  ]
+}
