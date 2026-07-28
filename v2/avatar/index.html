@@ -93,21 +93,31 @@
     h2{font-size:26px}
     section{padding-top:80px}
   }
+  .avhero{display:flex;flex-direction:column}
+  .avhero .mono{order:1}
+  .avhero h1{order:2}
+  .avhero .lead{order:3}
+  .avhero .ctawrap{order:4}
+  .avhero .herovid{order:5}
+  @media(max-width:480px){
+    .avhero .herovid{order:3;margin-top:22px}
+    .avhero .lead{order:4}
+    .avhero .ctawrap{order:5}
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="nav">
     <a class="logo" href="/v2/">UN<b>V</b>EILED</a>
-    <span class="v2chip">V2 PREVIEW</span>
   </div>
 
   <!-- 1.0 HERO -->
-  <section class="fade" style="padding-top:76px">
+  <section class="fade avhero" style="padding-top:76px">
     <span class="mono">1.0 · The AI avatar program</span>
     <h1>Show up every day.<br><span class="g">Never film again.</span></h1>
     <p class="lead">Your face, your voice, answering your customers' questions in today's post, while you were actually working. The video below was made by an avatar. That's the product.</p>
-    <div style="margin-top:30px">
+    <div class="ctawrap" style="margin-top:30px">
       <a class="btn" href="#build">Start my avatar →</a>
       <span class="ctasub">Two ways in: learn to build it yourself, or we deliver the complete system</span>
       <a class="btn soft" href="/v2/create-your-ai-avatar/">Not ready? Take the free avatar starter guide</a>
