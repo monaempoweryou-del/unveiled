@@ -43,6 +43,11 @@
   .logo{font-weight:700;letter-spacing:.2em;font-size:15px}
   .logo b{color:var(--violet)}
   .navtag{color:var(--muted);font-size:13px}
+  .sitemenu{display:flex;gap:20px;flex-wrap:wrap}
+  .sitemenu a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500}
+  .sitemenu a:hover{color:var(--text)}
+  .sitemenu a.on{color:var(--violet,#6C3CE0);font-weight:600}
+
   section{margin:104px 0}
 
   /* HERO */
@@ -252,7 +257,7 @@
 <div class="wrap">
   <div class="nav">
     <div class="logo">UNVEILED<b>.</b></div>
-    <div class="navtag">AI, implemented correctly.</div>
+    <nav class="sitemenu"><a href="/">Home</a><a class="on" href="/audit/">AI Implementation</a><a href="/avatar/">AI Avatars</a><a href="/about/">About</a></nav>
   </div>
 
   <!-- HERO -->

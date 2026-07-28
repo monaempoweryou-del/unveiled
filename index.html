@@ -113,6 +113,11 @@
   .logo{display:flex;align-items:center;gap:11px;font-weight:700;letter-spacing:.22em;font-size:18px;color:var(--text)}
   .logo img{width:34px;height:34px;object-fit:contain}
   .navtag{font-size:13px;font-weight:500;color:var(--muted);letter-spacing:.01em}
+  .sitemenu{display:flex;gap:20px;flex-wrap:wrap}
+  .sitemenu a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500}
+  .sitemenu a:hover{color:var(--text)}
+  .sitemenu a.on{color:var(--violet,#6C3CE0);font-weight:600}
+
 
   /* hero */
   .hero{display:grid;grid-template-columns:1.02fr 1.05fr;gap:40px;align-items:center;padding:30px 0 18px}
@@ -265,7 +270,8 @@
   }
   @media(max-width:560px){
     .topbar{padding:18px 18px 4px}
-    .navtag{display:none}
+    .sitemenu{gap:14px}
+    .sitemenu a{font-size:13px}
     .wrap{padding:0 18px}
     h1{font-size:37px;line-height:1.05}
     .lead{font-size:16px}
@@ -288,7 +294,7 @@
 
   <div class="topbar">
     <div class="logo"><img src="https://unveiled.pro/sphere-core.png" alt="">UNVEILED</div>
-    <div class="navtag">AI, implemented correctly.</div>
+    <nav class="sitemenu"><a class="on" href="/">Home</a><a href="/audit/">AI Implementation</a><a href="/avatar/">AI Avatars</a><a href="/about/">About</a></nav>
   </div>
 
   <main class="wrap">
