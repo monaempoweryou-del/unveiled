@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The AI Avatar Masterclass · Live Events · UNVEILED</title>
-<meta name="description" content="Create your own AI avatar, live and in person with Maor. A hands-on masterclass coming to Riverside, Los Angeles, San Diego, Florida and more. Free to attend, seats limited.">
+<title>The AI Implementation Masterclass · Become AI-Ready · UNVEILED</title>
+<meta name="description" content="Learn how to implement AI into your business in a single masterclass. Leave with a personalized AI roadmap you can use immediately, the systems that save time and cut costs, and your AI foundation started. Free, seats limited.">
 <link rel="canonical" href="https://unveiled.pro/v2/masterclass/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="UNVEILED">
-<meta property="og:title" content="The AI Avatar Masterclass · Live Events · UNVEILED">
-<meta property="og:description" content="Create your own AI avatar, live with Maor. Coming to a city near you. Free to attend, seats limited. Reserve your seat.">
+<meta property="og:title" content="The AI Implementation Masterclass · Become AI-Ready · UNVEILED">
+<meta property="og:description" content="Put AI to work in your business in one session. Leave with a personalized roadmap you can start using immediately. Free, seats limited. Reserve your spot.">
 <meta property="og:url" content="https://unveiled.pro/v2/masterclass/">
 <meta property="og:image" content="https://unveiled.pro/v2/img/masterclass.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="1280">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="The AI Avatar Masterclass · Live Events · UNVEILED">
-<meta name="twitter:description" content="Create your own AI avatar, live with Maor. Coming to a city near you. Reserve your seat.">
+<meta name="twitter:title" content="The AI Implementation Masterclass · Become AI-Ready · UNVEILED">
+<meta name="twitter:description" content="Put AI to work in your business in one session. Leave with a personalized roadmap. Free, seats limited.">
 <meta name="twitter:image" content="https://unveiled.pro/v2/img/masterclass.jpg">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -38,19 +38,18 @@
   .menu{display:flex;gap:22px;flex-wrap:wrap}
   .menu a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500}
   .menu a:hover{color:var(--text)}
+  .menu a.on{color:var(--violet);font-weight:600}
   h1{font-size:clamp(36px,5.6vw,60px);line-height:1.05;font-weight:700;letter-spacing:-.02em;margin:16px 0}
   h1 .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
   h2{font-size:clamp(27px,3.7vw,42px);font-weight:700;letter-spacing:-.02em;line-height:1.1;margin-bottom:12px}
   .center{text-align:center}
-  .lead{color:var(--muted);font-size:clamp(16px,2.2vw,19px);max-width:60ch}
+  .lead{color:var(--muted);font-size:clamp(16px,2.2vw,19px);max-width:62ch}
   .center .lead{margin:0 auto}
   .btn{background:var(--grad);color:#fff;border:none;border-radius:14px;padding:16px 30px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;box-shadow:0 18px 40px -18px rgba(67,32,160,.6);display:inline-block}
   .btn.block{display:block;width:100%;text-align:center}
   .ctasub{display:block;color:var(--faint);font-size:13px;margin-top:12px}
-  /* live badge */
-  .livepill{display:inline-flex;align-items:center;gap:8px;background:#FCECEC;border:1px solid #F3D2D0;color:var(--red);font-weight:700;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:7px 14px;border-radius:99px}
-  .livedot{width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 0 0 rgba(192,57,43,.6);animation:pulse 1.6s infinite}
-  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 8px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+  .seatpill{display:inline-flex;align-items:center;gap:8px;background:#F1ECFB;border:1px solid #E0D4F7;color:var(--violet);font-weight:700;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:7px 14px;border-radius:99px}
+  .seatpill .d{width:8px;height:8px;border-radius:50%;background:var(--violet)}
   /* hero */
   .herogrid{display:grid;grid-template-columns:1.08fr .92fr;grid-template-areas:"top fig" "bot fig";column-gap:44px;align-items:center}
   .htop{grid-area:top}.hbot{grid-area:bot}
@@ -58,12 +57,17 @@
   .herofig img{width:100%;border-radius:var(--r);box-shadow:var(--shadow);display:block}
   .herocta{margin-top:26px}
   .statrow{display:flex;gap:26px;flex-wrap:wrap;margin-top:26px}
-  .statrow .s b{font-size:26px;font-weight:700;display:block;letter-spacing:-.02em}
+  .statrow .s b{font-size:22px;font-weight:700;display:block;letter-spacing:-.02em}
   .statrow .s span{font-size:13px;color:var(--muted)}
   @media(max-width:860px){
     .herogrid{grid-template-columns:1fr;grid-template-areas:"top" "fig" "bot";row-gap:22px}
     .herofig{max-width:440px;margin:0 auto}
   }
+  /* outcomes strip */
+  .promise{background:var(--ink);color:#EDE6FF;border-radius:var(--r);padding:44px 40px;margin-top:44px;display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+  @media(max-width:760px){.promise{grid-template-columns:1fr;gap:22px;padding:34px 28px}}
+  .promise .p b{color:#fff;font-size:17px;display:block;margin-bottom:5px}
+  .promise .p span{color:#B7ADD6;font-size:14.5px;line-height:1.5}
   /* schedule */
   .evgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:40px}
   @media(max-width:760px){.evgrid{grid-template-columns:1fr}}
@@ -94,6 +98,12 @@
   .lcard .li svg{width:22px;height:22px;stroke:var(--violet);fill:none;stroke-width:1.9}
   .lcard b{font-size:16px;font-weight:700;display:block;margin-bottom:5px}
   .lcard p{color:var(--muted);font-size:13.5px;line-height:1.5}
+  /* who */
+  .who{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:36px}
+  @media(max-width:760px){.who{grid-template-columns:1fr}}
+  .whocard{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:24px 26px}
+  .whocard b{font-size:16px;display:block;margin-bottom:6px}
+  .whocard p{color:var(--muted);font-size:14.5px}
   /* form */
   .reserve{background:var(--ink);color:#EDE6FF;border-radius:26px;padding:48px 44px;margin-top:40px}
   .reserve h2{color:#fff}
@@ -133,7 +143,7 @@
     <nav class="menu">
       <a href="/v2/audit/">AI Implementation</a>
       <a href="/v2/avatar/">AI Avatars</a>
-      <a href="/v2/masterclass/">Live Events</a>
+      <a class="on" href="/v2/masterclass/">AI Masterclass</a>
       <a href="/v2/about/">About</a>
     </nav>
   </div>
@@ -142,127 +152,135 @@
   <section class="fade" style="padding-top:52px">
     <div class="herogrid">
       <div class="htop">
-        <span class="livepill"><span class="livedot"></span>Live · On tour now</span>
-        <h1>The AI Avatar Masterclass. <span class="g">Live, in one room.</span></h1>
+        <span class="seatpill"><span class="d"></span>The AI Implementation Masterclass</span>
+        <h1>Put AI to work in your business. <span class="g">In one session.</span></h1>
       </div>
       <figure class="herofig">
-        <img src="/v2/img/masterclass.jpg" width="1200" height="1280" alt="Maor leading the AI Avatar Masterclass, presenting the step-by-step system on stage" fetchpriority="high">
+        <img src="/v2/img/masterclass.jpg" width="1200" height="1280" alt="Maor leading the AI Implementation Masterclass, teaching business owners the step-by-step system" fetchpriority="high">
       </figure>
       <div class="hbot">
-        <p class="lead">Spend a few hours with Maor and walk out with your own AI avatar: choose your look, clone your voice, build your personality, and publish. Free to attend. Seats are limited and filling fast.</p>
+        <p class="lead">A few focused hours with Maor and you walk out AI-ready: a personalized roadmap for your business, the exact systems that save you time and cut costs, and your first AI setup started. No jargon, no overwhelm, just what actually applies to you.</p>
         <div class="herocta">
-          <a class="btn" href="#reserve">Reserve my seat →</a>
-          <span class="ctasub">Free · about a minute to reserve · we'll send you the venue and details</span>
+          <a class="btn" href="#reserve">Reserve my spot →</a>
+          <span class="ctasub">Free · seats limited · you leave with your roadmap</span>
         </div>
         <div class="statrow">
-          <div class="s"><b>7 cities</b><span>on the current tour</span></div>
+          <div class="s"><b>Your roadmap</b><span>personalized to your business</span></div>
+          <div class="s"><b>A few hours</b><span>from zero to AI-ready</span></div>
           <div class="s"><b>Free</b><span>to attend, seats limited</span></div>
-          <div class="s"><b>Walk out</b><span>with your avatar built</span></div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- PROMISE -->
+  <section class="fade">
+    <span class="mono">Why owners come</span>
+    <h2>You leave with more than notes.</h2>
+    <p class="lead">This isn't a talk you watch. It's a working session built around one thing: you understanding exactly how AI applies to your business, and leaving able to use it.</p>
+    <div class="promise">
+      <div class="p"><b>A roadmap you can use immediately</b><span>Walk out knowing exactly where AI pays off in your business, ranked by fastest return, not a generic checklist.</span></div>
+      <div class="p"><b>The AI foundation your business needs</b><span>Build the base in a few hours: the first systems for leads, follow-up, and content, set up the right way.</span></div>
+      <div class="p"><b>Real capability, not theory</b><span>Save time, increase productivity, and finally understand AI well enough to make confident decisions.</span></div>
     </div>
   </section>
 
   <!-- SCHEDULE -->
   <section class="fade" id="schedule">
-    <span class="mono">The tour · New cities added often</span>
-    <h2>Where we'll be next</h2>
-    <p class="lead">We're taking the masterclass on the road. Grab a seat where you are, or join the waitlist and we'll bring the next date to your city.</p>
+    <span class="mono">Upcoming sessions · New dates added often</span>
+    <h2>Coming to a city near you</h2>
+    <p class="lead">We're running sessions across the country and adding new dates all the time. Reserve your spot and we'll send you the exact date and venue for your area as soon as it's confirmed.</p>
     <div class="evgrid" id="evgrid">
       <div class="ev">
-        <div class="evtop"><div><div class="evdate">TONIGHT · TUE</div><div class="evcity">Riverside, CA</div><div class="evvenue">Downtown venue · doors 6:00pm</div></div><span class="seat full">Almost full</span></div>
-        <div class="evbar"><i style="width:94%"></i></div>
-        <div class="evmeta"><span class="left">Last few seats</span><a class="evbtn" href="#reserve" data-city="Riverside, CA">Reserve seat</a></div>
+        <div class="evtop"><div><div class="evdate">THIS WEEK</div><div class="evcity">Southern California</div><div class="evvenue">Riverside · Los Angeles · San Diego area</div></div><span class="seat fast">Filling up</span></div>
+        <div class="evmeta"><span class="left">Limited seats</span><a class="evbtn" href="#reserve" data-city="Southern California">Reserve spot</a></div>
       </div>
       <div class="ev">
-        <div class="evtop"><div><div class="evdate">TOMORROW · WED</div><div class="evcity">Los Angeles, CA</div><div class="evvenue">DTLA venue · doors 6:00pm</div></div><span class="seat fast">Filling fast</span></div>
-        <div class="evbar"><i style="width:78%"></i></div>
-        <div class="evmeta"><span class="left">Going quick</span><a class="evbtn" href="#reserve" data-city="Los Angeles, CA">Reserve seat</a></div>
-      </div>
-      <div class="ev">
-        <div class="evtop"><div><div class="evdate">THU · THIS WEEK</div><div class="evcity">San Diego, CA</div><div class="evvenue">Venue announced to registrants</div></div><span class="seat fast">Filling fast</span></div>
-        <div class="evbar"><i style="width:63%"></i></div>
-        <div class="evmeta"><span class="left">Half full</span><a class="evbtn" href="#reserve" data-city="San Diego, CA">Reserve seat</a></div>
-      </div>
-      <div class="ev">
-        <div class="evtop"><div><div class="evdate">NEXT WEEK</div><div class="evcity">Orlando, FL</div><div class="evvenue">Venue announced to registrants</div></div><span class="seat open">Open</span></div>
-        <div class="evbar"><i style="width:41%"></i></div>
-        <div class="evmeta"><span class="left">Seats available</span><a class="evbtn" href="#reserve" data-city="Orlando, FL">Reserve seat</a></div>
+        <div class="evtop"><div><div class="evdate">NEXT WEEK</div><div class="evcity">Florida</div><div class="evvenue">Dates being confirmed</div></div><span class="seat open">Open</span></div>
+        <div class="evmeta"><span class="left">Reserve to get details</span><a class="evbtn" href="#reserve" data-city="Florida">Reserve spot</a></div>
       </div>
       <div class="ev soon">
-        <div class="evtop"><div><div class="evdate">JUST ANNOUNCED</div><div class="evcity">Phoenix, AZ</div><div class="evvenue">Date being finalized</div></div><span class="seat wait">Waitlist</span></div>
-        <div class="evmeta"><span class="left">Get first access to seats</span><a class="evbtn" href="#reserve" data-city="Phoenix, AZ">Join waitlist</a></div>
+        <div class="evtop"><div><div class="evdate">COMING SOON</div><div class="evcity">More cities</div><div class="evvenue">New locations being added</div></div><span class="seat wait">Waitlist</span></div>
+        <div class="evmeta"><span class="left">Get first access</span><a class="evbtn" href="#reserve" data-city="Another city">Join waitlist</a></div>
       </div>
       <div class="ev soon">
-        <div class="evtop"><div><div class="evdate">JUST ANNOUNCED</div><div class="evcity">Dallas, TX</div><div class="evvenue">Date being finalized</div></div><span class="seat wait">Waitlist</span></div>
-        <div class="evmeta"><span class="left">Get first access to seats</span><a class="evbtn" href="#reserve" data-city="Dallas, TX">Join waitlist</a></div>
+        <div class="evtop"><div><div class="evdate">FROM ANYWHERE</div><div class="evcity">Online option</div><div class="evvenue">Join live from wherever you are</div></div><span class="seat wait">Notify me</span></div>
+        <div class="evmeta"><span class="left">Can't travel? No problem</span><a class="evbtn" href="#reserve" data-city="Online">Get details</a></div>
       </div>
     </div>
-    <p class="ctasub" style="text-align:center;margin-top:22px">Don't see your city? <a href="#reserve" style="color:var(--violet);font-weight:600">Join the waitlist</a> and we'll come to you.</p>
+    <p class="ctasub" style="text-align:center;margin-top:22px">Reserve now and we'll send you the exact date and venue for your city. <a href="#reserve" style="color:var(--violet);font-weight:600">Save your spot →</a></p>
   </section>
 
-  <!-- WHAT YOU'LL LEARN -->
+  <!-- WHAT YOU'LL WALK OUT WITH -->
   <section class="fade">
-    <span class="mono">In the room</span>
-    <h2>What you'll walk out with</h2>
-    <p class="lead">Not theory. A working avatar and the exact system to keep it running.</p>
+    <span class="mono">What you leave with</span>
+    <h2>From zero to AI-ready, in one room</h2>
+    <p class="lead">Every part of the session ends in something you keep and can use the next morning.</p>
     <div class="learn">
-      <div class="lcard"><span class="li"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 20c1-4 4-6 7-6s6 2 7 6"/></svg></span><b>Choose your look</b><p>Lock the on-camera version of you that represents your brand.</p></div>
-      <div class="lcard"><span class="li"><svg viewBox="0 0 24 24"><path d="M4 12h2M8 8v8M12 5v14M16 8v8M20 12h-2" stroke-linecap="round"/></svg></span><b>Clone your voice</b><p>Capture your voice so the avatar sounds exactly like you.</p></div>
-      <div class="lcard"><span class="li"><svg viewBox="0 0 24 24"><path d="M12 3l2.5 5 5.5.8-4 3.9.9 5.4L12 21l-4.9 2 .9-5.4-4-3.9 5.5-.8z"/></svg></span><b>Build your personality</b><p>Shape how it speaks, so every post sounds like you, not a bot.</p></div>
-      <div class="lcard"><span class="li"><svg viewBox="0 0 24 24"><path d="M5 3v18l7-5 7 5V3z"/></svg></span><b>Generate & publish</b><p>Create your first videos and post them before you leave.</p></div>
+      <div class="lcard"><span class="li"><svg viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"/></svg></span><b>Your AI roadmap</b><p>Where AI pays off in your business, ranked by fastest payback. Yours to keep.</p></div>
+      <div class="lcard"><span class="li"><svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/><circle cx="12" cy="12" r="4"/></svg></span><b>The first systems to build</b><p>Exactly which systems to set up first for leads, follow-up, and content.</p></div>
+      <div class="lcard"><span class="li"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><b>AI working, hands-on</b><p>See real tools running on real business tasks, so it finally clicks.</p></div>
+      <div class="lcard"><span class="li"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></span><b>Your foundation started</b><p>Leave having set up your first piece, including your own AI avatar if you want it.</p></div>
+    </div>
+  </section>
+
+  <!-- WHO -->
+  <section class="fade">
+    <span class="mono">Who it's for</span>
+    <h2>Built for owners, not engineers</h2>
+    <div class="who">
+      <div class="whocard"><b>You run a real business</b><p>Service, local, e-commerce, professional, it doesn't matter. If AI can save you time or win you customers, this is for you.</p></div>
+      <div class="whocard"><b>You're done guessing</b><p>You've heard AI matters but never had it explained in terms of your business. You want the plan, not more hype.</p></div>
+      <div class="whocard"><b>You have no tech background</b><p>None needed. We speak in outcomes, not code, and walk you through every step in the room.</p></div>
+      <div class="whocard"><b>You want it working, fast</b><p>You'd rather leave with a roadmap and a first system started than sit through months of trial and error.</p></div>
     </div>
   </section>
 
   <!-- RESERVE -->
   <section class="fade" id="reserve">
     <div class="reserve">
-      <span class="mono" style="color:#C9B6FF">Reserve your seat</span>
-      <h2>Save your spot. We'll send the details.</h2>
-      <p class="lead">Seats are free but limited. Reserve now and we'll text or email you the venue, time, and what to bring for your city.</p>
+      <span class="mono" style="color:#C9B6FF">Reserve your spot</span>
+      <h2>Save your seat. Leave AI-ready.</h2>
+      <p class="lead">Seats are free but limited, and the room is hands-on. Reserve now and we'll send the date, venue, and what to bring for your city.</p>
       <form class="form" id="evform" onsubmit="return sendReserve(event)">
         <input class="full" id="evname" name="name" placeholder="Your name" autocomplete="name" required>
         <input id="evemail" name="email" type="email" placeholder="Email" autocomplete="email" required>
         <input id="evphone" name="phone" type="tel" placeholder="Mobile (for the venue text)" autocomplete="tel">
         <select class="full" id="evcity" name="city" required>
-          <option value="" disabled selected>Which city do you want?</option>
-          <option>Riverside, CA (tonight)</option>
-          <option>Los Angeles, CA (tomorrow)</option>
-          <option>San Diego, CA (this week)</option>
-          <option>Orlando, FL (next week)</option>
-          <option>Phoenix, AZ (waitlist)</option>
-          <option>Dallas, TX (waitlist)</option>
+          <option value="" disabled selected>Where would you join?</option>
+          <option>Southern California (this week)</option>
+          <option>Florida (next week)</option>
           <option>Another city (waitlist)</option>
+          <option>Online (from anywhere)</option>
         </select>
-        <button class="btn block full" type="submit">Reserve my seat →</button>
+        <button class="btn block full" type="submit">Reserve my spot →</button>
       </form>
-      <p class="fine">Free to attend. No payment now. We'll only use your details to send you information about the masterclass and future dates. Unsubscribe anytime.</p>
-      <div class="done" id="evdone"><b>You're on the list.</b><p id="evdonemsg">We'll send the venue and details to your inbox shortly. Keep an eye out (check spam too).</p></div>
+      <p class="fine">Free to attend. No payment now. We'll only use your details to send you information about the masterclass, upcoming dates, and the online option if a date changes. Unsubscribe anytime.</p>
+      <div class="done" id="evdone"><b>You're in.</b><p id="evdonemsg">We'll send the date, venue, and details to your inbox shortly. Keep an eye out (check spam too).</p></div>
     </div>
   </section>
 
   <!-- FAQ -->
   <section class="fade">
-    <span class="mono">Before you come</span>
+    <span class="mono">Before you reserve</span>
     <h2>Quick questions</h2>
     <div class="faq">
-      <details><summary>Is it really free?</summary><p>Yes. The masterclass is free to attend. Seats are limited because the room is hands-on, so reserving early matters.</p></details>
-      <details><summary>Do I need any tech experience?</summary><p>None. Bring your phone and yourself. We walk you through every step and you leave with your avatar built.</p></details>
-      <details><summary>What do I need to bring?</summary><p>Just your phone and a few minutes of your voice. We handle the rest in the room. We'll send a short checklist when you reserve.</p></details>
-      <details><summary>My city isn't listed. Can I still come?</summary><p>Join the waitlist and pick "Another city." We add new dates often and prioritize the cities with the most people waiting.</p></details>
-      <details><summary>What happens after I reserve?</summary><p>You'll get a confirmation, then the venue, time, and details for your city by email or text. If a date moves, we'll tell you first.</p></details>
+      <details><summary>What exactly do I walk out with?</summary><p>A personalized AI roadmap for your business, a clear list of the first systems worth building, and your first piece set up in the room. You leave knowing what to do Monday morning, not just that AI is important.</p></details>
+      <details><summary>Is it really free?</summary><p>Yes. The masterclass is free to attend. Seats are limited because it's hands-on, so reserving early matters.</p></details>
+      <details><summary>Do I need any tech experience?</summary><p>None. We speak in outcomes, not code. Bring your phone and yourself, and we walk you through every step.</p></details>
+      <details><summary>My city isn't listed, or I can't make a date.</summary><p>Join the waitlist and pick "Another city." We add new dates often, prioritize the cities with the most people waiting, and can send you the online option.</p></details>
+      <details><summary>What happens after I reserve?</summary><p>You'll get a confirmation, then the date, venue, and a short checklist for your city by email or text. If anything changes, we'll tell you first and give you the online option.</p></details>
     </div>
   </section>
 
   <div class="foot">
-    <a href="/v2/">Home</a>·<a href="/v2/audit/">AI Implementation</a>·<a href="/v2/avatar/">AI Avatars</a>·<a href="/v2/masterclass/">Live Events</a>·<a href="/v2/about/">About</a>
-    <div style="margin-top:10px">UNVEILED · unveiled.pro · The AI Avatar Masterclass</div>
+    <a href="/v2/">Home</a>·<a href="/v2/audit/">AI Implementation</a>·<a href="/v2/avatar/">AI Avatars</a>·<a href="/v2/masterclass/">AI Masterclass</a>·<a href="/v2/about/">About</a>
+    <div style="margin-top:10px">UNVEILED · unveiled.pro · The AI Implementation Masterclass</div>
   </div>
 </div>
 <script>
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.1});
 document.querySelectorAll('.fade').forEach(el=>io.observe(el));
-// prefill city from card buttons
 document.querySelectorAll('.evbtn[data-city]').forEach(b=>b.addEventListener('click',()=>{
   const sel=document.getElementById('evcity');const c=b.getAttribute('data-city');
   for(const o of sel.options){if(o.text.startsWith(c)){o.selected=true;break;}}
@@ -273,7 +291,7 @@ async function sendReserve(e){
   e.preventDefault();const f=new FormData(e.target);
   const city=f.get("city")||"";
   const lead={contact_name:f.get("name"),email:f.get("email"),phone:f.get("phone")||null,
-    requirements:"Masterclass seat: "+city,source:"unveiled-masterclass-event",offer:"ai-avatar-masterclass",status:"MASTERCLASS NEW"};
+    requirements:"Masterclass seat: "+city,source:"unveiled-masterclass",offer:"ai-implementation-masterclass",status:"MASTERCLASS NEW"};
   try{
     const r=await fetch(`${SUPABASE_URL}/rest/v1/leads`,{method:"POST",
       headers:{"Content-Type":"application/json","apikey":SUPABASE_ANON_KEY,"Authorization":`Bearer ${SUPABASE_ANON_KEY}`,"Prefer":"return=minimal"},
@@ -281,7 +299,7 @@ async function sendReserve(e){
     if(!r.ok)throw new Error(r.status);
   }catch(err){/* still confirm to the user; lead retried server-side */}
   document.getElementById("evform").style.display="none";
-  document.getElementById("evdonemsg").textContent="We'll send the venue and details for "+city.replace(/ \(.*\)/,'')+" shortly. Keep an eye on your inbox (check spam too).";
+  document.getElementById("evdonemsg").textContent="We'll send the date, venue, and details for "+city.replace(/ \(.*\)/,'')+" shortly. Keep an eye on your inbox (check spam too).";
   document.getElementById("evdone").classList.add("show");
   return false;
 }
