@@ -100,10 +100,12 @@
   .sched{background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.28);border-radius:16px;padding:26px;margin-bottom:22px}
   .sched .sh{display:flex;align-items:center;gap:10px;color:#EDE6FF;font-weight:700;font-size:15px;margin-bottom:14px}
   .sched .sh svg{width:20px;height:20px;stroke:#B39DFF;fill:none;stroke-width:2}
-  .slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:10px}
-  .slot{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:10px;padding:11px 8px;text-align:center;color:#EDE6FF;font-size:13px;cursor:pointer}
-  .slot:hover,.slot.on{border-color:var(--violet);background:rgba(124,77,255,.18)}
-  .slot small{display:block;color:#9990BE;font-size:11px;margin-top:2px}
+  .dt{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:520px){.dt{grid-template-columns:1fr}}
+  .dt input,.dt select{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:14px 16px;color:#fff;font-size:15px;font-family:inherit}
+  .dt select option{color:#16130F}
+  .dt input::-webkit-calendar-picker-indicator{filter:invert(1);opacity:.6}
+  .dt :focus{outline:none;border-color:var(--violet)}
   .schednote{color:#8E85B4;font-size:12px;margin-top:12px}
   .form{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   .form .full{grid-column:1/-1}
@@ -191,7 +193,7 @@
         </ul>
         <div class="leave"><b>You leave with:</b> a prioritized roadmap of where AI pays off in your business, and what to do first.</div>
         <div class="foot">
-          <div class="price">Pricing shared at booking</div>
+          <div class="price"><b style="color:var(--text);font-size:22px">$250</b> · 60-minute session</div>
           <a class="btn soft block" href="#book" data-opt="AI Strategy Consultation">Book a strategy consultation →</a>
         </div>
       </div>
@@ -200,17 +202,17 @@
         <span class="tag">Consult with Moe</span>
         <h3>Direct access to Maor, one-on-one</h3>
         <div class="with">A premium private Zoom session with Maor</div>
-        <div class="desc">For owners who want to work directly with the experience behind UNVEILED: AI, automation, CRM, customer communication, content, and operations. Not a sales pitch, a working session.</div>
-        <div class="sub">Bring your questions, ideas, or challenges</div>
+        <div class="desc">A real working session, not a sales call. For owners who want to work directly with the experience behind UNVEILED: AI, automation, CRM, customer communication, content, operations, and how it all fits together.</div>
+        <div class="sub">Bring anything you need direction on</div>
         <ul>
-          <li><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg>Deciding between platforms or a second opinion on your AI strategy</li>
-          <li><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg>Designing internal systems and improving operations</li>
-          <li><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg>Customer communication, CRM, and content decisions</li>
-          <li><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg>Making better calls and avoiding expensive mistakes</li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg>Questions, problems, or a software idea you're weighing</li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg>CRM issues, automation plans, and content systems</li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg>Team communication and how to structure development</li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg>A second opinion on your AI strategy, or a decision between platforms</li>
         </ul>
-        <div class="leave"><b>You leave with:</b> a clear action plan you can start on immediately, straight from someone who's done it.</div>
+        <div class="leave"><b>You leave with:</b> a clear action plan you can start on immediately, straight from someone who's done it, and the expensive mistakes avoided.</div>
         <div class="foot">
-          <div class="price">Premium session · pricing shared at booking</div>
+          <div class="price"><b style="color:var(--text);font-size:22px">$750</b> · 60-minute private session</div>
           <a class="btn block" href="#book" data-opt="Consult with Moe">Book time with Moe →</a>
         </div>
       </div>
@@ -239,20 +241,21 @@
         <label id="lbl-strategy"><input type="radio" name="ctype" value="AI Strategy Consultation" checked><span><b>AI Strategy Consultation</b><span>With an implementation specialist</span></span></label>
         <label id="lbl-moe"><input type="radio" name="ctype" value="Consult with Moe"><span><b>Consult with Moe</b><span>Private one-on-one with Maor</span></span></label>
       </div>
-      <!-- Scheduler: connects to Zoom + calendar (Calendly/embed drops in here) -->
+      <!-- Request a time. Live Zoom + calendar scheduling connects here. -->
       <div class="sched">
-        <div class="sh"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Pick a time that works</div>
-        <div class="slots" id="slots">
-          <div class="slot">Mon<small>10:00a</small></div>
-          <div class="slot">Mon<small>2:00p</small></div>
-          <div class="slot">Tue<small>11:00a</small></div>
-          <div class="slot">Wed<small>9:30a</small></div>
-          <div class="slot">Wed<small>4:00p</small></div>
-          <div class="slot">Thu<small>1:00p</small></div>
-          <div class="slot">Fri<small>10:30a</small></div>
-          <div class="slot">Fri<small>3:00p</small></div>
+        <div class="sh"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>When works for you?</div>
+        <div class="dt">
+          <input type="date" id="cdate" name="date" aria-label="Preferred date">
+          <select id="ctime" name="time" aria-label="Preferred time">
+            <option value="" disabled selected>Preferred time</option>
+            <option>Morning (9am–12pm)</option>
+            <option>Afternoon (12–4pm)</option>
+            <option>Late afternoon (4–6pm)</option>
+            <option>Evening</option>
+            <option>I'm flexible</option>
+          </select>
         </div>
-        <div class="schednote">Times shown in your local timezone. Live scheduling connects to Zoom and our calendar; pick a slot and we confirm instantly.</div>
+        <div class="schednote">Tell us your preferred date and time and we'll confirm your slot with a Zoom link. Live calendar booking connects here shortly.</div>
       </div>
       <form class="form" id="cform" onsubmit="return sendConsult(event)">
         <input id="cname" name="name" placeholder="Your name" autocomplete="name" required>
@@ -314,19 +317,16 @@ document.querySelectorAll('[data-opt]').forEach(b=>b.addEventListener('click',()
   const v=b.getAttribute('data-opt');
   document.querySelectorAll('input[name="ctype"]').forEach(r=>{r.checked=(r.value===v);});
 }));
-// slot picker
-let chosenSlot="";
-document.querySelectorAll('#slots .slot').forEach(s=>s.addEventListener('click',()=>{
-  document.querySelectorAll('#slots .slot').forEach(x=>x.classList.remove('on'));
-  s.classList.add('on');chosenSlot=s.textContent.replace(/\s+/g,' ').trim();
-}));
 const SUPABASE_URL="https://eosvftmiwndmctrqprtz.supabase.co";
 const SUPABASE_ANON_KEY="sb_publishable_BYxqF1ViwTrfaI4RGhciVw_kgbt-pSA";
 async function sendConsult(e){
   e.preventDefault();const f=new FormData(e.target);
   const ctype=(document.querySelector('input[name="ctype"]:checked')||{}).value||"AI Strategy Consultation";
   const offer=ctype==="Consult with Moe"?"consult-with-moe":"ai-strategy-consultation";
-  const req=[ctype, chosenSlot?("Preferred: "+chosenSlot):"", f.get("about")||""].filter(Boolean).join(" · ");
+  const pdate=(document.getElementById("cdate")||{}).value||"";
+  const ptime=(document.getElementById("ctime")||{}).value||"";
+  const when=[pdate,ptime].filter(Boolean).join(" ");
+  const req=[ctype, when?("Preferred: "+when):"", f.get("about")||""].filter(Boolean).join(" · ");
   const lead={contact_name:f.get("name"),business_name:f.get("business")||null,email:f.get("email"),phone:f.get("phone")||null,
     requirements:req,source:"unveiled-consultation",offer:offer,status:"CONSULT NEW"};
   try{
@@ -338,7 +338,7 @@ async function sendConsult(e){
   document.getElementById("cform").style.display="none";
   document.querySelector(".sched").style.display="none";
   document.querySelector(".choose").style.display="none";
-  document.getElementById("cdonemsg").textContent="We'll confirm your "+ctype+(chosenSlot?(" for "+chosenSlot):"")+" and send your Zoom link and a short intake shortly. Check your inbox (and spam).";
+  document.getElementById("cdonemsg").textContent="We'll confirm your "+ctype+(when?(" for "+when):"")+" and send your Zoom link and a short intake shortly. Check your inbox (and spam).";
   document.getElementById("cdone").classList.add("show");
   return false;
 }

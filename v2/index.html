@@ -108,6 +108,16 @@
   .figvis{margin:40px 0 0;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:var(--paper)}
   .figvis img{display:block;width:100%;height:auto}
   .figcap{color:var(--faint);font-size:12.5px;text-align:center;margin-top:12px}
+  /* path strip */
+  .path{display:flex;align-items:stretch;gap:0;margin-top:40px;flex-wrap:wrap}
+  .pstep{flex:1;min-width:150px;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:22px 20px;text-decoration:none;color:inherit;transition:transform .15s}
+  .pstep:hover{transform:translateY(-3px)}
+  .pstep.hot{border:2px solid var(--violet);box-shadow:var(--shadow)}
+  .pstep .pn{font-family:'Space Mono',monospace;font-size:11px;color:var(--faint);letter-spacing:.08em}
+  .pstep b{display:block;font-size:16px;font-weight:700;margin:6px 0 4px}
+  .pstep span{color:var(--muted);font-size:12.5px;line-height:1.4;display:block}
+  .parrow{display:flex;align-items:center;color:var(--violet);font-size:20px;font-weight:700;padding:0 6px}
+  @media(max-width:820px){.path{flex-direction:column}.parrow{transform:rotate(90deg);padding:4px 0}}
   /* readable image + text split */
   .split{display:grid;grid-template-columns:1fr 1fr;gap:38px;align-items:center;margin-top:40px}
   @media(max-width:820px){.split{grid-template-columns:1fr;gap:22px}}
@@ -344,6 +354,22 @@
         <b>The Unveiled guarantee</b>
         <p>You see the plan and the price before you commit a dollar. If your roadmap doesn't show you a clear payoff, walk away and keep it. No calls chasing you, no obligation.</p>
       </div>
+    </div>
+  </section>
+
+  <!-- 7.5 THE PATH -->
+  <section class="fade">
+    <span class="mono">7.0 · Your path with us</span>
+    <h2>Start anywhere. It all connects.</h2>
+    <p class="lead">However you meet UNVEILED, there's a clear next step, all the way to AI running in your business.</p>
+    <div class="path">
+      <a class="pstep" href="/v2/avatar/"><span class="pn">01</span><b>Learn</b><span>Free guides &amp; the avatar system</span></a>
+      <span class="parrow">→</span>
+      <a class="pstep" href="/v2/masterclass/"><span class="pn">02</span><b>Masterclass</b><span>Leave with your roadmap</span></a>
+      <span class="parrow">→</span>
+      <a class="pstep hot" href="/v2/consult/"><span class="pn">03</span><b>Consult</b><span>One-on-one expert guidance</span></a>
+      <span class="parrow">→</span>
+      <a class="pstep" href="/v2/audit/"><span class="pn">04</span><b>Implement</b><span>We build &amp; run it for you</span></a>
     </div>
   </section>
 
