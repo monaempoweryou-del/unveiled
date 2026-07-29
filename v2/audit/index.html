@@ -633,5 +633,6 @@ body:JSON.stringify(lead)});if(!r.ok)throw new Error(r.status);}catch(err){mailF
 document.getElementById("ok").style.display="block";e.target.querySelector("button").disabled=true;return false;}
 function mailFallback(l){location.href=`mailto:monaempoweryou@gmail.com?subject=New lead: ${encodeURIComponent(l.contact_name||"")}&body=${encodeURIComponent(JSON.stringify(l,null,2))}`;}
 </script>
+<script>document.querySelectorAll(".figvis img,.exfig img").forEach(function(im){im.style.cursor="zoom-in";im.setAttribute("title","Tap to enlarge");im.addEventListener("click",function(){window.open(im.currentSrc||im.src,"_blank","noopener");});});</script>
 </body>
 </html>

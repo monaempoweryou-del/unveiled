@@ -306,5 +306,6 @@ async function sendLead(e){e.preventDefault();const f=new FormData(e.target);
     location.href=`mailto:monaempoweryou@gmail.com?subject=Avatar lead: ${encodeURIComponent(lead.contact_name||"")}&body=${encodeURIComponent(JSON.stringify(lead,null,2))}`;return false;}
   document.getElementById("ok").style.display="block";e.target.querySelector("button").disabled=true;return false;}
 </script>
+<script>document.querySelectorAll(".figvis img,.exfig img").forEach(function(im){im.style.cursor="zoom-in";im.setAttribute("title","Tap to enlarge");im.addEventListener("click",function(){window.open(im.currentSrc||im.src,"_blank","noopener");});});</script>
 </body>
 </html>

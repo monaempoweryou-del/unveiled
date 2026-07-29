@@ -1055,5 +1055,6 @@ s4hint:'רוצים תצוגה אישית עוד יותר? הוסיפו כמה ת
   }catch(e){}
 })();
 </script>
+<script>document.querySelectorAll(".figvis img,.exfig img").forEach(function(im){im.style.cursor="zoom-in";im.setAttribute("title","Tap to enlarge");im.addEventListener("click",function(){window.open(im.currentSrc||im.src,"_blank","noopener");});});</script>
 </body>
 </html>

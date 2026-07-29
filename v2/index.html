@@ -323,5 +323,6 @@
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
 document.querySelectorAll('.fade').forEach(el=>io.observe(el));
 </script>
+<script>document.querySelectorAll(".figvis img,.exfig img").forEach(function(im){im.style.cursor="zoom-in";im.setAttribute("title","Tap to enlarge");im.addEventListener("click",function(){window.open(im.currentSrc||im.src,"_blank","noopener");});});</script>
 </body>
 </html>
