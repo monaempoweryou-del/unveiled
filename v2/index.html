@@ -108,6 +108,34 @@
   .figvis{margin:40px 0 0;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:var(--paper)}
   .figvis img{display:block;width:100%;height:auto}
   .figcap{color:var(--faint);font-size:12.5px;text-align:center;margin-top:12px}
+  /* readable image + text split */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:38px;align-items:center;margin-top:40px}
+  @media(max-width:820px){.split{grid-template-columns:1fr;gap:22px}}
+  .split-media{margin:0}
+  .split-media img{width:100%;height:auto;border-radius:var(--r);border:1px solid var(--line);box-shadow:var(--shadow);display:block;cursor:zoom-in}
+  .ecolist{list-style:none;display:grid;gap:13px}
+  .ecolist li{font-size:15.5px;padding-left:24px;position:relative;line-height:1.5}
+  .ecolist li::before{content:"";position:absolute;left:0;top:8px;width:10px;height:10px;border-radius:50%;background:var(--grad)}
+  .ecolist li b{font-weight:700}
+  /* readable before/after */
+  .ba{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:center;margin-top:40px}
+  @media(max-width:760px){.ba{grid-template-columns:1fr;gap:14px}.baarrow{transform:rotate(90deg)}}
+  .bacol{border-radius:var(--r);padding:26px 26px}
+  .bacol.before{background:#F6F3EF;border:1px solid var(--line)}
+  .bacol.after{background:var(--ink);color:#EDE6FF}
+  .bah{margin-bottom:12px}
+  .bah b{font-size:20px;font-weight:700;display:block}
+  .bacol.after .bah b{color:#fff}
+  .bah span{font-size:13px;color:var(--muted)}
+  .bacol.after .bah span{color:#B7ADD6}
+  .barow{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:11px 0;border-top:1px solid var(--line)}
+  .bacol.after .barow{border-top:1px solid rgba(255,255,255,.12)}
+  .barow span{font-size:14px;color:var(--muted)}
+  .bacol.after .barow span{color:#C6BCE6}
+  .barow b{font-size:21px;font-weight:700;white-space:nowrap}
+  .barow em{font-style:normal;font-size:12px;font-weight:700;color:var(--violet);margin-left:7px}
+  .bacol.after .barow em{color:#B39DFF}
+  .baarrow{color:var(--violet);font-size:26px;font-weight:700;text-align:center}
   /* hero */
   .herogrid{display:grid;grid-template-columns:1.06fr .94fr;grid-template-areas:"top fig" "bot fig";column-gap:48px;align-items:center}
   .htop{grid-area:top}.hbot{grid-area:bot}
@@ -222,9 +250,21 @@
     <span class="mono">3.0 · Stop juggling tools</span>
     <h2>One system. <span class="g">Everything</span> you need.</h2>
     <p class="lead">We replace the chaos of disconnected tools with one integrated system that saves time, cuts costs, and gets results.</p>
-    <figure class="figvis">
-      <img src="/v2/img/eco-diagram.jpg" width="1280" height="806" alt="The UNVEILED ecosystem: your business at the center, connected to websites, content, CRM, automations, email, and reporting, all working as one system" loading="lazy">
-    </figure>
+    <div class="split">
+      <ul class="ecolist">
+        <li><b>Websites</b> that turn visitors into customers</li>
+        <li><b>Landing pages & forms</b> that capture every lead</li>
+        <li><b>CRM & pipeline</b> to track and close more deals</li>
+        <li><b>Email & SMS</b> that follow up automatically</li>
+        <li><b>Automations</b> that run the busywork in the background</li>
+        <li><b>Chat & AI agents</b> answering and booking 24/7</li>
+        <li><b>Content & social</b> that keep you visible</li>
+        <li><b>Analytics & reporting</b> so you see what's working</li>
+      </ul>
+      <figure class="split-media">
+        <img src="/v2/img/eco-diagram.jpg" width="1280" height="806" alt="The UNVEILED ecosystem: your business at the center, connected to websites, content, CRM, automations, email, and reporting, all working as one system" loading="lazy">
+      </figure>
+    </div>
   </section>
 
   <!-- 4.0 VIGNETTES -->
@@ -260,11 +300,26 @@
   <section class="fade" id="proof">
     <span class="mono">6.0 · Proof, not promises</span>
     <h2>Results first. Stories behind them.</h2>
-    <p class="lead">The same system, before and after. Scattered and manual on the left, one automated system on the right. This is the shift we implement.</p>
-    <figure class="figvis">
-      <img src="/v2/img/before-after.jpg" width="1200" height="497" alt="Before and after: a scattered, manual operation versus one automated system with faster response times, more leads, and higher revenue" loading="lazy">
-    </figure>
-    <p class="figcap">From scattered and manual to one connected system: the operational shift we build for owners.</p>
+    <p class="lead">The same business, before and after we implement one connected system. This is the shift we build for owners.</p>
+    <div class="ba">
+      <div class="bacol before">
+        <div class="bah"><b>Before</b><span>Scattered. Manual. Growth stalled.</span></div>
+        <div class="barow"><span>Lead response time</span><b>6 min</b></div>
+        <div class="barow"><span>New leads / month</span><b>18</b></div>
+        <div class="barow"><span>Calls missed / month</span><b>37</b></div>
+        <div class="barow"><span>Appointments / month</span><b>11</b></div>
+        <div class="barow"><span>Revenue / month</span><b>$18K</b></div>
+      </div>
+      <div class="baarrow">→</div>
+      <div class="bacol after">
+        <div class="bah"><b>After</b><span>Automated. Integrated. Profitable.</span></div>
+        <div class="barow"><span>Lead response time</span><b>90 sec <em>↑93%</em></b></div>
+        <div class="barow"><span>New leads / month</span><b>127 <em>↑606%</em></b></div>
+        <div class="barow"><span>Calls missed / month</span><b>2 <em>↓95%</em></b></div>
+        <div class="barow"><span>Appointments / month</span><b>51 <em>↑364%</em></b></div>
+        <div class="barow"><span>Revenue / month</span><b>$72K <em>↑300%</em></b></div>
+      </div>
+    </div>
   </section>
 
   <!-- 7.0 OFFER + PRICE ANCHOR -->
