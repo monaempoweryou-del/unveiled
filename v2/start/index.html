@@ -290,6 +290,12 @@
   .reassure.on b{display:block;font-size:15px;color:#136c37;margin-bottom:4px}
   .reassure.on span{display:block;font-size:13.5px;line-height:1.55;color:#3f5c4a}
   @keyframes rIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+  .exwrap{max-width:1120px;margin:22px auto 0;padding:0 24px}
+  .exwrap h3{font-size:clamp(20px,3vw,26px);font-weight:700;text-align:center;letter-spacing:-.01em;margin-bottom:6px}
+  .exwrap .exsub{text-align:center;color:var(--muted);font-size:14.5px;max-width:60ch;margin:0 auto 18px}
+  .exfig{border-radius:18px;overflow:hidden;border:1px solid var(--border);box-shadow:0 30px 70px -42px rgba(48,22,120,.42);background:#fff}
+  .exfig img{display:block;width:100%;height:auto}
+  @media(max-width:560px){.exwrap{padding:0 14px}}
   .proof{margin:26px 0 6px}
   .proof h3{font-size:14px;font-weight:700;letter-spacing:.02em;margin:0 0 4px;color:#1a1a1a}
   .proof p.psub{font-size:12.5px;color:#6b7280;margin:0 0 12px}
@@ -447,6 +453,15 @@
       </form>
     </div>
   </div>
+
+  <!-- design range band -->
+  <section class="exwrap">
+    <h3>The kind of sites we design</h3>
+    <p class="exsub">Every build is custom to your business. Here is the range and quality of design we work to, never a template.</p>
+    <figure class="exfig">
+      <img src="/v2/img/website-examples.jpg" width="1280" height="810" alt="Examples of custom website designs across industries: home services, wellness, construction, real estate, and coaching, each modern, mobile-optimized, and built to convert" loading="lazy">
+    </figure>
+  </section>
 
   <!-- confirmation -->
   <div id="done">

@@ -104,6 +104,10 @@
   .foot a{color:var(--muted);text-decoration:none;margin:0 8px}
   .fade{opacity:0;transform:translateY(22px);transition:opacity .45s ease-out,transform .45s ease-out}
   .fade.in{opacity:1;transform:none}
+  /* visual figures */
+  .figvis{margin:40px 0 0;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:var(--paper)}
+  .figvis img{display:block;width:100%;height:auto}
+  .figcap{color:var(--faint);font-size:12.5px;text-align:center;margin-top:12px}
   /* hero */
   .herogrid{display:grid;grid-template-columns:1.06fr .94fr;grid-template-areas:"top fig" "bot fig";column-gap:48px;align-items:center}
   .htop{grid-area:top}.hbot{grid-area:bot}
@@ -218,44 +222,9 @@
     <span class="mono">3.0 · Stop juggling tools</span>
     <h2>One system. <span class="g">Everything</span> you need.</h2>
     <p class="lead">We replace the chaos of disconnected tools with one integrated system that saves time, cuts costs, and gets results.</p>
-    <div class="eco">
-      <div class="ecocard old">
-        <div class="ecohd old"><span class="dot"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></span><h3>The old way</h3></div>
-        <div class="ecosub old">Too many tools. Too much chaos.</div>
-        <div class="cloud">
-          <span>Website builder</span><span>Landing pages</span><span>CRM</span><span>Email marketing</span><span>Scheduling</span><span>Forms</span><span>Live chat</span><span>Analytics</span><span>Automation</span><span>Social media</span><span>Content</span><span>Reporting</span>
-        </div>
-        <div class="you"><b>You</b><span>wasting time · switching tools · paying monthly</span></div>
-        <ul class="pains">
-          <li>Paying for a stack of separate subscriptions</li>
-          <li>Hours lost switching between disconnected tools</li>
-          <li>Leads and follow-ups fall through the cracks</li>
-          <li>No clear overview and no honest reporting</li>
-        </ul>
-      </div>
-      <div class="ecocard new">
-        <div class="ecohd new"><span class="dot"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><h3>The Unveiled way</h3></div>
-        <div class="ecosub new">One system. Total clarity. Better results.</div>
-        <div class="sphere"><span class="m">UNVEILED</span><span class="s">Your growth system</span></div>
-        <div class="caps">
-          <div class="cap"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg><div><b>Websites</b><p>High-converting sites that build trust.</p></div></div>
-          <div class="cap"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H4zM8 20h8M9 16v4M15 16v4"/></svg><div><b>Landing pages & forms</b><p>Capture more leads, cleanly.</p></div></div>
-          <div class="cap"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 19c.6-3 2.9-4.6 5.5-4.6s4.9 1.6 5.5 4.6M16 6a3 3 0 0 1 0 5.4"/></svg><div><b>CRM & pipeline</b><p>Track leads and close more deals.</p></div></div>
-          <div class="cap"><svg viewBox="0 0 24 24"><path d="M4 5h16v12H4zM4 6l8 6 8-6"/></svg><div><b>Email & SMS</b><p>Stay top of mind automatically.</p></div></div>
-          <div class="cap"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg><div><b>Automations</b><p>Workflows that run in the background.</p></div></div>
-          <div class="cap"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="12" rx="2"/><path d="M9 9h.01M15 9h.01M9 13c1 1 5 1 6 0"/></svg><div><b>Chat & AI agents</b><p>24/7 conversations that book calls.</p></div></div>
-          <div class="cap"><svg viewBox="0 0 24 24"><path d="M5 19V9M12 19V5M19 19v-7"/></svg><div><b>Analytics & reporting</b><p>Real numbers, smarter decisions.</p></div></div>
-          <div class="cap"><svg viewBox="0 0 24 24"><path d="M12 3l2.5 5 5.5.8-4 3.9.9 5.4L12 21l-4.9 2 .9-5.4-4-3.9 5.5-.8z"/></svg><div><b>Reputation & reviews</b><p>More 5-star reviews, more trust.</p></div></div>
-        </div>
-      </div>
-    </div>
-    <div class="adv">
-      <div class="advn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><b>Save time</b><p>Everything connected and automated.</p></div>
-      <div class="advn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.2c0-1.2 1.1-1.8 2.5-1.8s2.5.7 2.5 1.9-1 1.6-2.5 1.8-2.5.7-2.5 1.9 1.1 1.9 2.5 1.9 2.5-.7 2.5-1.8"/></svg><b>Lower costs</b><p>One investment, not many bills.</p></div>
-      <div class="advn"><svg viewBox="0 0 24 24"><path d="M5 15c-1 2-1 4-1 4s2 0 4-1M13 15l-4-4a10 10 0 0 1 10-10 10 10 0 0 1-10 10zM15 9a1.6 1.6 0 1 0 0-3 1.6 1.6 0 0 0 0 3z"/></svg><b>Works 24/7</b><p>Leads and content keep coming.</p></div>
-      <div class="advn"><svg viewBox="0 0 24 24"><path d="M4 18l5-5 3 3 8-8M15 8h5v5"/></svg><b>Better results</b><p>More sales, more time for what matters.</p></div>
-      <div class="advn"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg><b>Peace of mind</b><p>One dashboard. We handle the tech.</p></div>
-    </div>
+    <figure class="figvis">
+      <img src="/v2/img/eco-diagram.jpg" width="1280" height="806" alt="The UNVEILED ecosystem: your business at the center, connected to websites, content, CRM, automations, email, and reporting, all working as one system" loading="lazy">
+    </figure>
   </section>
 
   <!-- 4.0 VIGNETTES -->
@@ -291,17 +260,11 @@
   <section class="fade" id="proof">
     <span class="mono">6.0 · Proof, not promises</span>
     <h2>Results first. Stories behind them.</h2>
-    <p class="lead">We run everything we sell on our own company first. The avatar posting our content daily is the same system we build for clients.</p>
-    <div class="cases">
-      <div class="case"><div class="v">[Result]</div><div class="w">Case study 1: strongest quantified client outcome. Result as the headline, business name under it.</div><span class="chip">PENDING · HOME-CASE-1</span></div>
-      <div class="case"><div class="v">[Result]</div><div class="w">Case study 2: the "I was skeptical" conversion story with a number.</div><span class="chip">PENDING · HOME-CASE-2</span></div>
-      <div class="case"><div class="v">[Result]</div><div class="w">Case study 3: speed and time-to-live proof ("live in X days").</div><span class="chip">PENDING · HOME-CASE-3</span></div>
-    </div>
-    <div class="ph wide" data-brief="HOME-V4" style="margin-top:26px">
-      <span class="chip">IN PRODUCTION · HOME-V4</span>
-      <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-      <strong>Proof reel · 25s · real reveals, avatar demos, automations running</strong>
-    </div>
+    <p class="lead">The same system, before and after. Scattered and manual on the left, one automated system on the right. This is the shift we implement.</p>
+    <figure class="figvis">
+      <img src="/v2/img/before-after.jpg" width="1200" height="497" alt="Before and after: a scattered, manual operation versus one automated system with faster response times, more leads, and higher revenue" loading="lazy">
+    </figure>
+    <p class="figcap">Illustrative of the operational shift after correct implementation.</p>
   </section>
 
   <!-- 7.0 OFFER + PRICE ANCHOR -->
