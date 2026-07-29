@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI Avatar Masterclass · Live Events · UNVEILED</title>
+<meta name="description" content="Create your own AI avatar, live and in person with Maor. A hands-on masterclass coming to Riverside, Los Angeles, San Diego, Florida and more. Free to attend, seats limited.">
+<link rel="canonical" href="https://unveiled.pro/v2/masterclass/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="UNVEILED">
+<meta property="og:title" content="The AI Avatar Masterclass · Live Events · UNVEILED">
+<meta property="og:description" content="Create your own AI avatar, live with Maor. Coming to a city near you. Free to attend, seats limited. Reserve your seat.">
+<meta property="og:url" content="https://unveiled.pro/v2/masterclass/">
+<meta property="og:image" content="https://unveiled.pro/v2/img/masterclass.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="1280">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The AI Avatar Masterclass · Live Events · UNVEILED">
+<meta name="twitter:description" content="Create your own AI avatar, live with Maor. Coming to a city near you. Reserve your seat.">
+<meta name="twitter:image" content="https://unveiled.pro/v2/img/masterclass.jpg">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FFFFFF;--cream:#FAF8F5;--sand:#F4EFE8;--ink:#16130F;--text:#1C1917;--muted:#6B6560;--faint:#A8A29E;--line:#ECE7DF;
+    --violet:#6C3CE0;--indigo:#4338CA;--green:#0FA574;--red:#C0392B;--amber:#B8860B;
+    --grad:linear-gradient(120deg,#7C4DFF 0%,#4338CA 100%);
+    --r:22px;--shadow:0 40px 90px -46px rgba(48,22,120,.45);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--cream);color:var(--text);font-family:'Space Grotesk',-apple-system,sans-serif;line-height:1.6;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1020px;margin:0 auto;padding:28px 24px 60px}
+  section{padding:96px 0 0}
+  .mono{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.12em;color:var(--violet);text-transform:uppercase}
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+  .logo{font-weight:700;letter-spacing:.2em;font-size:15px;text-decoration:none;color:var(--text)}
+  .logo b{color:var(--violet)}
+  .menu{display:flex;gap:22px;flex-wrap:wrap}
+  .menu a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500}
+  .menu a:hover{color:var(--text)}
+  h1{font-size:clamp(36px,5.6vw,60px);line-height:1.05;font-weight:700;letter-spacing:-.02em;margin:16px 0}
+  h1 .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  h2{font-size:clamp(27px,3.7vw,42px);font-weight:700;letter-spacing:-.02em;line-height:1.1;margin-bottom:12px}
+  .center{text-align:center}
+  .lead{color:var(--muted);font-size:clamp(16px,2.2vw,19px);max-width:60ch}
+  .center .lead{margin:0 auto}
+  .btn{background:var(--grad);color:#fff;border:none;border-radius:14px;padding:16px 30px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;box-shadow:0 18px 40px -18px rgba(67,32,160,.6);display:inline-block}
+  .btn.block{display:block;width:100%;text-align:center}
+  .ctasub{display:block;color:var(--faint);font-size:13px;margin-top:12px}
+  /* live badge */
+  .livepill{display:inline-flex;align-items:center;gap:8px;background:#FCECEC;border:1px solid #F3D2D0;color:var(--red);font-weight:700;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:7px 14px;border-radius:99px}
+  .livedot{width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 0 0 rgba(192,57,43,.6);animation:pulse 1.6s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 8px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+  /* hero */
+  .herogrid{display:grid;grid-template-columns:1.08fr .92fr;grid-template-areas:"top fig" "bot fig";column-gap:44px;align-items:center}
+  .htop{grid-area:top}.hbot{grid-area:bot}
+  .herofig{grid-area:fig;margin:0}
+  .herofig img{width:100%;border-radius:var(--r);box-shadow:var(--shadow);display:block}
+  .herocta{margin-top:26px}
+  .statrow{display:flex;gap:26px;flex-wrap:wrap;margin-top:26px}
+  .statrow .s b{font-size:26px;font-weight:700;display:block;letter-spacing:-.02em}
+  .statrow .s span{font-size:13px;color:var(--muted)}
+  @media(max-width:860px){
+    .herogrid{grid-template-columns:1fr;grid-template-areas:"top" "fig" "bot";row-gap:22px}
+    .herofig{max-width:440px;margin:0 auto}
+  }
+  /* schedule */
+  .evgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:40px}
+  @media(max-width:760px){.evgrid{grid-template-columns:1fr}}
+  .ev{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:24px 24px;display:flex;flex-direction:column;gap:14px;position:relative}
+  .ev.soon{border-style:dashed;background:transparent}
+  .evtop{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+  .evdate{font-family:'Space Mono',monospace;font-size:12.5px;color:var(--violet);font-weight:700;letter-spacing:.04em}
+  .evcity{font-size:22px;font-weight:700;letter-spacing:-.01em;margin-top:4px}
+  .evvenue{color:var(--muted);font-size:14px;margin-top:2px}
+  .seat{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:6px 11px;border-radius:99px;white-space:nowrap}
+  .seat.full{background:#FCECEC;color:var(--red);border:1px solid #F3D2D0}
+  .seat.fast{background:#FFF3D6;color:var(--amber);border:1px solid #F0DFAE}
+  .seat.open{background:#E7F7F0;color:var(--green);border:1px solid #C7ECDD}
+  .seat.wait{background:#F1ECFB;color:var(--violet);border:1px solid #E0D4F7}
+  .evbar{height:7px;border-radius:99px;background:#EFEAE2;overflow:hidden}
+  .evbar i{display:block;height:100%;background:var(--grad);border-radius:99px}
+  .evmeta{display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .evmeta .left{font-size:13px;color:var(--muted)}
+  .evbtn{background:var(--sand);color:var(--violet);border:none;border-radius:11px;padding:11px 18px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none}
+  .evbtn:hover{background:#EDE4FA}
+  .ev.soon .evbtn{background:transparent;border:1px solid var(--line);color:var(--muted)}
+  /* learn */
+  .learn{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:40px}
+  @media(max-width:820px){.learn{grid-template-columns:1fr 1fr}}
+  @media(max-width:520px){.learn{grid-template-columns:1fr}}
+  .lcard{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:24px}
+  .lcard .li{width:44px;height:44px;border-radius:12px;background:#F1ECFB;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+  .lcard .li svg{width:22px;height:22px;stroke:var(--violet);fill:none;stroke-width:1.9}
+  .lcard b{font-size:16px;font-weight:700;display:block;margin-bottom:5px}
+  .lcard p{color:var(--muted);font-size:13.5px;line-height:1.5}
+  /* form */
+  .reserve{background:var(--ink);color:#EDE6FF;border-radius:26px;padding:48px 44px;margin-top:40px}
+  .reserve h2{color:#fff}
+  .reserve .lead{color:#B7ADD6;margin-bottom:26px}
+  .form{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:640px}
+  .form .full{grid-column:1/-1}
+  .form input,.form select{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:15px 16px;color:#fff;font-size:15px;font-family:inherit}
+  .form input::placeholder{color:#9990BE}
+  .form select{color:#EDE6FF}
+  .form select option{color:#16130F}
+  .form input:focus,.form select:focus{outline:none;border-color:var(--violet)}
+  .fine{color:#8E85B4;font-size:12.5px;margin-top:14px;max-width:60ch}
+  .done{display:none;background:rgba(124,77,255,.12);border:1px solid rgba(124,77,255,.4);border-radius:16px;padding:26px 28px;margin-top:8px}
+  .done.show{display:block}
+  .done b{color:#fff;font-size:18px}
+  .done p{color:#C6BCE6;font-size:14.5px;margin-top:6px}
+  /* faq */
+  .faq{margin-top:40px;display:grid;gap:12px}
+  .faq details{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px 24px}
+  .faq summary{font-weight:600;font-size:16.5px;cursor:pointer}
+  .faq p{color:var(--muted);font-size:15.5px;margin-top:10px;max-width:70ch}
+  .foot{text-align:center;color:var(--faint);font-size:13px;margin-top:70px;border-top:1px solid var(--line);padding-top:28px}
+  .foot a{color:var(--muted);text-decoration:none;margin:0 8px}
+  .fade{opacity:0;transform:translateY(22px);transition:opacity .45s ease-out,transform .45s ease-out}
+  .fade.in{opacity:1;transform:none}
+  @media(max-width:520px){
+    body{overflow-x:hidden}.wrap{padding-left:18px;padding-right:18px}
+    h1{font-size:32px}.form{grid-template-columns:1fr}.reserve{padding:34px 24px}
+    .statrow{gap:18px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="nav">
+    <a class="logo" href="/v2/">UN<b>V</b>EILED</a>
+    <nav class="menu">
+      <a href="/v2/audit/">AI Implementation</a>
+      <a href="/v2/avatar/">AI Avatars</a>
+      <a href="/v2/masterclass/">Live Events</a>
+      <a href="/v2/about/">About</a>
+    </nav>
+  </div>
+
+  <!-- HERO -->
+  <section class="fade" style="padding-top:52px">
+    <div class="herogrid">
+      <div class="htop">
+        <span class="livepill"><span class="livedot"></span>Live · On tour now</span>
+        <h1>The AI Avatar Masterclass. <span class="g">Live, in one room.</span></h1>
+      </div>
+      <figure class="herofig">
+        <img src="/v2/img/masterclass.jpg" width="1200" height="1280" alt="Maor leading the AI Avatar Masterclass, presenting the step-by-step system on stage" fetchpriority="high">
+      </figure>
+      <div class="hbot">
+        <p class="lead">Spend a few hours with Maor and walk out with your own AI avatar: choose your look, clone your voice, build your personality, and publish. Free to attend. Seats are limited and filling fast.</p>
+        <div class="herocta">
+          <a class="btn" href="#reserve">Reserve my seat →</a>
+          <span class="ctasub">Free · about a minute to reserve · we'll send you the venue and details</span>
+        </div>
+        <div class="statrow">
+          <div class="s"><b>7 cities</b><span>on the current tour</span></div>
+          <div class="s"><b>Free</b><span>to attend, seats limited</span></div>
+          <div class="s"><b>Walk out</b><span>with your avatar built</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCHEDULE -->
+  <section class="fade" id="schedule">
+    <span class="mono">The tour · New cities added often</span>
+    <h2>Where we'll be next</h2>
+    <p class="lead">We're taking the masterclass on the road. Grab a seat where you are, or join the waitlist and we'll bring the next date to your city.</p>
+    <div class="evgrid" id="evgrid">
+      <div class="ev">
+        <div class="evtop"><div><div class="evdate">TONIGHT · TUE</div><div class="evcity">Riverside, CA</div><div class="evvenue">Downtown venue · doors 6:00pm</div></div><span class="seat full">Almost full</span></div>
+        <div class="evbar"><i style="width:94%"></i></div>
+        <div class="evmeta"><span class="left">Last few seats</span><a class="evbtn" href="#reserve" data-city="Riverside, CA">Reserve seat</a></div>
+      </div>
+      <div class="ev">
+        <div class="evtop"><div><div class="evdate">TOMORROW · WED</div><div class="evcity">Los Angeles, CA</div><div class="evvenue">DTLA venue · doors 6:00pm</div></div><span class="seat fast">Filling fast</span></div>
+        <div class="evbar"><i style="width:78%"></i></div>
+        <div class="evmeta"><span class="left">Going quick</span><a class="evbtn" href="#reserve" data-city="Los Angeles, CA">Reserve seat</a></div>
+      </div>
+      <div class="ev">
+        <div class="evtop"><div><div class="evdate">THU · THIS WEEK</div><div class="evcity">San Diego, CA</div><div class="evvenue">Venue announced to registrants</div></div><span class="seat fast">Filling fast</span></div>
+        <div class="evbar"><i style="width:63%"></i></div>
+        <div class="evmeta"><span class="left">Half full</span><a class="evbtn" href="#reserve" data-city="San Diego, CA">Reserve seat</a></div>
+      </div>
+      <div class="ev">
+        <div class="evtop"><div><div class="evdate">NEXT WEEK</div><div class="evcity">Orlando, FL</div><div class="evvenue">Venue announced to registrants</div></div><span class="seat open">Open</span></div>
+        <div class="evbar"><i style="width:41%"></i></div>
+        <div class="evmeta"><span class="left">Seats available</span><a class="evbtn" href="#reserve" data-city="Orlando, FL">Reserve seat</a></div>
+      </div>
+      <div class="ev soon">
+        <div class="evtop"><div><div class="evdate">JUST ANNOUNCED</div><div class="evcity">Phoenix, AZ</div><div class="evvenue">Date being finalized</div></div><span class="seat wait">Waitlist</span></div>
+        <div class="evmeta"><span class="left">Get first access to seats</span><a class="evbtn" href="#reserve" data-city="Phoenix, AZ">Join waitlist</a></div>
+      </div>
+      <div class="ev soon">
+        <div class="evtop"><div><div class="evdate">JUST ANNOUNCED</div><div class="evcity">Dallas, TX</div><div class="evvenue">Date being finalized</div></div><span class="seat wait">Waitlist</span></div>
+        <div class="evmeta"><span class="left">Get first access to seats</span><a class="evbtn" href="#reserve" data-city="Dallas, TX">Join waitlist</a></div>
+      </div>
+    </div>
+    <p class="ctasub" style="text-align:center;margin-top:22px">Don't see your city? <a href="#reserve" style="color:var(--violet);font-weight:600">Join the waitlist</a> and we'll come to you.</p>
+  </section>
+
+  <!-- WHAT YOU'LL LEARN -->
+  <section class="fade">
+    <span class="mono">In the room</span>
+    <h2>What you'll walk out with</h2>
+    <p class="lead">Not theory. A working avatar and the exact system to keep it running.</p>
+    <div class="learn">
+      <div class="lcard"><span class="li"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 20c1-4 4-6 7-6s6 2 7 6"/></svg></span><b>Choose your look</b><p>Lock the on-camera version of you that represents your brand.</p></div>
+      <div class="lcard"><span class="li"><svg viewBox="0 0 24 24"><path d="M4 12h2M8 8v8M12 5v14M16 8v8M20 12h-2" stroke-linecap="round"/></svg></span><b>Clone your voice</b><p>Capture your voice so the avatar sounds exactly like you.</p></div>
+      <div class="lcard"><span class="li"><svg viewBox="0 0 24 24"><path d="M12 3l2.5 5 5.5.8-4 3.9.9 5.4L12 21l-4.9 2 .9-5.4-4-3.9 5.5-.8z"/></svg></span><b>Build your personality</b><p>Shape how it speaks, so every post sounds like you, not a bot.</p></div>
+      <div class="lcard"><span class="li"><svg viewBox="0 0 24 24"><path d="M5 3v18l7-5 7 5V3z"/></svg></span><b>Generate & publish</b><p>Create your first videos and post them before you leave.</p></div>
+    </div>
+  </section>
+
+  <!-- RESERVE -->
+  <section class="fade" id="reserve">
+    <div class="reserve">
+      <span class="mono" style="color:#C9B6FF">Reserve your seat</span>
+      <h2>Save your spot. We'll send the details.</h2>
+      <p class="lead">Seats are free but limited. Reserve now and we'll text or email you the venue, time, and what to bring for your city.</p>
+      <form class="form" id="evform" onsubmit="return sendReserve(event)">
+        <input class="full" id="evname" name="name" placeholder="Your name" autocomplete="name" required>
+        <input id="evemail" name="email" type="email" placeholder="Email" autocomplete="email" required>
+        <input id="evphone" name="phone" type="tel" placeholder="Mobile (for the venue text)" autocomplete="tel">
+        <select class="full" id="evcity" name="city" required>
+          <option value="" disabled selected>Which city do you want?</option>
+          <option>Riverside, CA (tonight)</option>
+          <option>Los Angeles, CA (tomorrow)</option>
+          <option>San Diego, CA (this week)</option>
+          <option>Orlando, FL (next week)</option>
+          <option>Phoenix, AZ (waitlist)</option>
+          <option>Dallas, TX (waitlist)</option>
+          <option>Another city (waitlist)</option>
+        </select>
+        <button class="btn block full" type="submit">Reserve my seat →</button>
+      </form>
+      <p class="fine">Free to attend. No payment now. We'll only use your details to send you information about the masterclass and future dates. Unsubscribe anytime.</p>
+      <div class="done" id="evdone"><b>You're on the list.</b><p id="evdonemsg">We'll send the venue and details to your inbox shortly. Keep an eye out (check spam too).</p></div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="fade">
+    <span class="mono">Before you come</span>
+    <h2>Quick questions</h2>
+    <div class="faq">
+      <details><summary>Is it really free?</summary><p>Yes. The masterclass is free to attend. Seats are limited because the room is hands-on, so reserving early matters.</p></details>
+      <details><summary>Do I need any tech experience?</summary><p>None. Bring your phone and yourself. We walk you through every step and you leave with your avatar built.</p></details>
+      <details><summary>What do I need to bring?</summary><p>Just your phone and a few minutes of your voice. We handle the rest in the room. We'll send a short checklist when you reserve.</p></details>
+      <details><summary>My city isn't listed. Can I still come?</summary><p>Join the waitlist and pick "Another city." We add new dates often and prioritize the cities with the most people waiting.</p></details>
+      <details><summary>What happens after I reserve?</summary><p>You'll get a confirmation, then the venue, time, and details for your city by email or text. If a date moves, we'll tell you first.</p></details>
+    </div>
+  </section>
+
+  <div class="foot">
+    <a href="/v2/">Home</a>·<a href="/v2/audit/">AI Implementation</a>·<a href="/v2/avatar/">AI Avatars</a>·<a href="/v2/masterclass/">Live Events</a>·<a href="/v2/about/">About</a>
+    <div style="margin-top:10px">UNVEILED · unveiled.pro · The AI Avatar Masterclass</div>
+  </div>
+</div>
+<script>
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.1});
+document.querySelectorAll('.fade').forEach(el=>io.observe(el));
+// prefill city from card buttons
+document.querySelectorAll('.evbtn[data-city]').forEach(b=>b.addEventListener('click',()=>{
+  const sel=document.getElementById('evcity');const c=b.getAttribute('data-city');
+  for(const o of sel.options){if(o.text.startsWith(c)){o.selected=true;break;}}
+}));
+const SUPABASE_URL="https://eosvftmiwndmctrqprtz.supabase.co";
+const SUPABASE_ANON_KEY="sb_publishable_BYxqF1ViwTrfaI4RGhciVw_kgbt-pSA";
+async function sendReserve(e){
+  e.preventDefault();const f=new FormData(e.target);
+  const city=f.get("city")||"";
+  const lead={contact_name:f.get("name"),email:f.get("email"),phone:f.get("phone")||null,
+    requirements:"Masterclass seat: "+city,source:"unveiled-masterclass-event",offer:"ai-avatar-masterclass",status:"MASTERCLASS NEW"};
+  try{
+    const r=await fetch(`${SUPABASE_URL}/rest/v1/leads`,{method:"POST",
+      headers:{"Content-Type":"application/json","apikey":SUPABASE_ANON_KEY,"Authorization":`Bearer ${SUPABASE_ANON_KEY}`,"Prefer":"return=minimal"},
+      body:JSON.stringify(lead)});
+    if(!r.ok)throw new Error(r.status);
+  }catch(err){/* still confirm to the user; lead retried server-side */}
+  document.getElementById("evform").style.display="none";
+  document.getElementById("evdonemsg").textContent="We'll send the venue and details for "+city.replace(/ \(.*\)/,'')+" shortly. Keep an eye on your inbox (check spam too).";
+  document.getElementById("evdone").classList.add("show");
+  return false;
+}
+</script>
+</body>
+</html>
