@@ -63,9 +63,21 @@ def workspace_thread():
         time.sleep(workspace_queue_worker.INTERVAL)
 
 
+def track_proxy_thread():
+    # Branded tracking proxy (go.unveiled.pro). Imported lazily and guarded so a
+    # problem here can never take the worker down; returns immediately (and this
+    # thread exits) unless TRACK_PROXY_ENABLED is set in Railway.
+    try:
+        import track_proxy
+        track_proxy.run_proxy()
+    except Exception as e:
+        print(f"[track-proxy] error: {e!r}", flush=True)
+
+
 def main():
     print("[worker_main] starting: heartbeat + builder + render + execution + workspace", flush=True)
     threading.Thread(target=heartbeat_thread, daemon=True).start()
+    threading.Thread(target=track_proxy_thread, daemon=True).start()
     threading.Thread(target=render_thread, daemon=True).start()
     threading.Thread(target=execution_thread, daemon=True).start()
     threading.Thread(target=workspace_thread, daemon=True).start()
