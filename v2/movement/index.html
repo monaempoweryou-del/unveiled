@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Human in the Loop · A movement for humanity's voice in the future of AI</title>
+<meta name="description" content="As AI reshapes the future, the people helping shape it deserve a meaningful voice in it. Not anti-AI, pro-human. Read the manifesto and add your voice.">
+<link rel="canonical" href="https://unveiled.pro/v2/movement/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Human in the Loop">
+<meta property="og:title" content="Human in the Loop · Humanity deserves a voice in the future it's helping build">
+<meta property="og:description" content="AI is being shaped by millions of us, every day. As it creates historic value, the people helping shape it deserve a seat at the table. Add your voice.">
+<meta property="og:url" content="https://unveiled.pro/v2/movement/">
+<meta property="og:image" content="https://unveiled.pro/v2/movement/og-movement.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Human in the Loop · Humanity deserves a voice in the future of AI">
+<meta name="twitter:description" content="Not anti-AI. Pro-human. If humanity is helping build the future of AI, humanity deserves a voice in it. Add yours.">
+<meta name="twitter:image" content="https://unveiled.pro/v2/movement/og-movement.jpg">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;450;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14161A;--night:#0E1013;--paper:#F6F3EC;--cream:#FBF9F4;--card:#FFFFFF;
+    --text:#1A1D22;--muted:#585C63;--faint:#9A9AA0;--line:#E5DFD3;--lined:#2A2D33;
+    --ember:#D97A2B;--ember-d:#B85F17;--signal:#2E6F9E;--good:#2E7D5B;
+    --serif:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,sans-serif;
+    --r:18px;--shadow:0 40px 90px -50px rgba(20,22,26,.5);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--text);font-family:var(--sans);line-height:1.62;font-size:16.5px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  .eyebrow{font-family:var(--sans);font-weight:600;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ember-d)}
+  h1,h2,h3{font-family:var(--serif);font-weight:500;letter-spacing:-.01em;line-height:1.08}
+  h1{font-size:clamp(40px,6.4vw,78px);font-weight:600}
+  h2{font-size:clamp(30px,4.4vw,50px)}
+  h3{font-size:clamp(21px,2.6vw,27px)}
+  p{max-width:66ch}
+  .lead{font-size:clamp(17px,2.1vw,21px);color:var(--muted);line-height:1.6}
+  a{color:inherit}
+  .btn{display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:#F6F3EC;border:none;border-radius:12px;padding:16px 28px;font-family:var(--sans);font-size:16px;font-weight:600;cursor:pointer;text-decoration:none;transition:transform .15s,background .15s}
+  .btn:hover{transform:translateY(-2px)}
+  .btn.ember{background:var(--ember);color:#fff}
+  .btn.ember:hover{background:var(--ember-d)}
+  .btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
+  .btn.block{display:flex;width:100%;justify-content:center}
+  /* nav */
+  .nav{position:sticky;top:0;z-index:50;background:rgba(246,243,236,.86);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .navin{max-width:1080px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--ink)}
+  .brand .mk{width:30px;height:30px;flex:none}
+  .brand b{font-family:var(--serif);font-weight:600;font-size:18px;letter-spacing:-.01em}
+  .brand .by{font-size:10.5px;color:var(--faint);letter-spacing:.04em;display:block;margin-top:-3px}
+  .navcta{display:flex;align-items:center;gap:14px}
+  .navlink{font-size:14px;font-weight:500;color:var(--muted);text-decoration:none}
+  @media(max-width:620px){.navlink{display:none}}
+  .btn.sm{padding:11px 18px;font-size:14px}
+  /* hero */
+  .hero{padding:clamp(56px,9vw,110px) 0 60px;text-align:center;position:relative;overflow:hidden}
+  .hero .glow{position:absolute;top:-20%;left:50%;transform:translateX(-50%);width:900px;height:600px;background:radial-gradient(ellipse at center,rgba(217,122,43,.14),transparent 60%);pointer-events:none}
+  .hero-in{position:relative}
+  .hero h1{max-width:16ch;margin:20px auto 0}
+  .hero .em{color:var(--ember-d);font-style:italic}
+  .hero .lead{max-width:60ch;margin:26px auto 0}
+  .hcta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px}
+  .counter{margin-top:30px;display:inline-flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:99px;padding:10px 20px}
+  .counter .dot{width:9px;height:9px;border-radius:50%;background:var(--good);box-shadow:0 0 0 0 rgba(46,125,91,.5);animation:pulse 1.8s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(46,125,91,.5)}70%{box-shadow:0 0 0 8px rgba(46,125,91,0)}100%{box-shadow:0 0 0 0 rgba(46,125,91,0)}}
+  .counter b{font-variant-numeric:tabular-nums;font-weight:700}
+  .counter span{color:var(--muted);font-size:14px}
+  /* episode video */
+  .epvid{max-width:900px;margin:52px auto 0;border-radius:var(--r);overflow:hidden;position:relative;aspect-ratio:16/9;background:linear-gradient(135deg,#1a1d22,#0E1013);border:1px solid var(--lined);box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#EDEAE2;text-align:center;padding:24px}
+  .epvid .play{width:70px;height:70px;border-radius:50%;background:var(--ember);display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+  .epvid .play svg{width:26px;height:26px;fill:#fff;margin-left:4px}
+  .epvid .tag{font-family:var(--sans);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:#C9A57E;font-weight:600}
+  .epvid strong{font-family:var(--serif);font-size:clamp(20px,3vw,26px);font-weight:500;margin-top:6px}
+  .epvid em{font-style:normal;color:#9A968C;font-size:14px;margin-top:8px}
+  /* section rhythm */
+  section{padding:clamp(64px,9vw,104px) 0}
+  .rule{height:1px;background:var(--line);max-width:1080px;margin:0 auto}
+  .center{text-align:center}
+  .kicker{max-width:60ch;margin:14px auto 0}
+  /* manifesto */
+  .manifesto{background:var(--ink);color:#EDEAE2}
+  .manifesto .eyebrow{color:#E0A96B}
+  .manifesto h2{color:#fff;max-width:22ch}
+  .mbody{max-width:60ch;margin:32px auto 0;font-family:var(--serif);font-size:clamp(20px,2.6vw,27px);line-height:1.5;font-weight:400;color:#EDEAE2}
+  .mbody p{max-width:none;margin-bottom:22px}
+  .mbody .big{font-size:clamp(24px,3.2vw,34px);color:#fff;font-weight:500}
+  .mbody .em{color:#E8A063;font-style:italic}
+  .manifesto .sign{margin-top:36px;text-align:center}
+  /* why grid */
+  .why{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:48px}
+  @media(max-width:820px){.why{grid-template-columns:1fr}}
+  .wc{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:30px 28px}
+  .wc .n{font-family:var(--serif);font-size:34px;color:var(--ember-d);font-weight:600}
+  .wc h3{font-size:20px;margin:8px 0 8px}
+  .wc p{color:var(--muted);font-size:15px}
+  /* how it learns — visual flow */
+  .flow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:16px;align-items:center;margin-top:48px}
+  @media(max-width:820px){.flow{grid-template-columns:1fr;gap:12px}.flow .ar{transform:rotate(90deg);justify-self:center}}
+  .fcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:26px 22px;text-align:center}
+  .fcard svg{width:34px;height:34px;stroke:var(--ember-d);fill:none;stroke-width:1.7;margin-bottom:12px}
+  .fcard b{display:block;font-size:16px;margin-bottom:5px}
+  .fcard p{color:var(--muted);font-size:13.5px;margin:0 auto}
+  .ar{color:var(--ember);font-size:22px;font-weight:700}
+  .note{color:var(--faint);font-size:13px;text-align:center;margin-top:22px;max-width:70ch;margin-left:auto;margin-right:auto}
+  /* the conversation */
+  .conv{background:var(--cream)}
+  .qs{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:44px}
+  @media(max-width:760px){.qs{grid-template-columns:1fr}}
+  .q{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--ember);border-radius:14px;padding:26px 28px}
+  .q b{font-family:var(--serif);font-size:22px;font-weight:500;display:block}
+  .q p{color:var(--muted);font-size:14.5px;margin-top:8px}
+  /* series */
+  .series{background:var(--night);color:#EDEAE2}
+  .series .eyebrow{color:#E0A96B}
+  .series h2{color:#fff}
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:44px}
+  @media(max-width:760px){.duo{grid-template-columns:1fr}}
+  .persona{border-radius:var(--r);padding:32px 30px;border:1px solid var(--lined)}
+  .persona.lawyer{background:#171B21}
+  .persona.human{background:#1C1712}
+  .persona .badge{font-family:var(--sans);font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;padding:6px 12px;border-radius:99px;display:inline-block}
+  .persona.lawyer .badge{background:rgba(46,111,158,.2);color:#7FB4DA;border:1px solid rgba(46,111,158,.4)}
+  .persona.human .badge{background:rgba(217,122,43,.18);color:#E8A063;border:1px solid rgba(217,122,43,.4)}
+  .persona h3{color:#fff;margin:16px 0 6px}
+  .persona .role{color:#9A968C;font-size:14px;margin-bottom:16px}
+  .persona ul{list-style:none;display:grid;gap:9px}
+  .persona li{display:flex;gap:10px;font-size:14.5px;color:#C7C3BA}
+  .persona li::before{content:"";width:6px;height:6px;border-radius:50%;margin-top:8px;flex:none}
+  .persona.lawyer li::before{background:#7FB4DA}
+  .persona.human li::before{background:#E8A063}
+  .vs{text-align:center;color:#9A968C;margin-top:26px;font-size:14.5px}
+  /* principles */
+  .principles{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;margin-top:44px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  @media(max-width:700px){.principles{grid-template-columns:1fr}}
+  .pr{background:var(--cream);padding:30px 30px}
+  .pr .pi{width:40px;height:40px;border-radius:10px;background:rgba(217,122,43,.12);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+  .pr .pi svg{width:20px;height:20px;stroke:var(--ember-d);fill:none;stroke-width:1.9}
+  .pr b{font-family:var(--serif);font-size:19px;font-weight:500;display:block;margin-bottom:6px}
+  .pr p{color:var(--muted);font-size:14.5px}
+  /* faq */
+  .faq{margin-top:40px;display:grid;gap:12px;max-width:820px;margin-left:auto;margin-right:auto}
+  .faq details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 26px}
+  .faq summary{font-family:var(--serif);font-weight:500;font-size:19px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"+";color:var(--ember-d);font-family:var(--sans);font-weight:400}
+  .faq details[open] summary::after{content:"–"}
+  .faq p{color:var(--muted);font-size:15.5px;margin-top:12px}
+  /* join */
+  .join{background:var(--ink);color:#EDEAE2}
+  .join .eyebrow{color:#E0A96B}
+  .join h2{color:#fff}
+  .joingrid{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:start;margin-top:40px}
+  @media(max-width:820px){.joingrid{grid-template-columns:1fr;gap:28px}}
+  .join .pts{list-style:none;display:grid;gap:16px;margin-top:6px}
+  .join .pts li{display:flex;gap:12px;color:#C7C3BA;font-size:15.5px}
+  .join .pts svg{width:20px;height:20px;stroke:var(--ember);fill:none;stroke-width:2;flex:none;margin-top:2px}
+  .jform{background:rgba(255,255,255,.04);border:1px solid var(--lined);border-radius:var(--r);padding:30px}
+  .jrow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:520px){.jrow{grid-template-columns:1fr}}
+  .jform input,.jform select,.jform textarea{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--lined);border-radius:11px;padding:14px 15px;color:#fff;font-family:var(--sans);font-size:15px;margin-top:12px}
+  .jform textarea{min-height:74px;resize:vertical}
+  .jform input::placeholder,.jform textarea::placeholder{color:#8B8880}
+  .jform select{color:#EDEAE2}.jform select option{color:#14161A}
+  .jform :focus{outline:none;border-color:var(--ember)}
+  .chk{display:flex;gap:10px;align-items:flex-start;margin-top:14px;color:#B9B5AC;font-size:13.5px}
+  .chk input{width:auto;margin-top:3px;accent-color:var(--ember)}
+  .jfine{color:#8B8880;font-size:12px;margin-top:14px}
+  .jdone{display:none;background:rgba(217,122,43,.12);border:1px solid rgba(217,122,43,.4);border-radius:14px;padding:26px;text-align:center}
+  .jdone.show{display:block}
+  .jdone b{color:#fff;font-family:var(--serif);font-size:22px}
+  .jdone p{color:#C7C3BA;font-size:14.5px;margin:8px auto 0}
+  /* support (disabled) */
+  .support{text-align:center}
+  .supbox{max-width:720px;margin:36px auto 0;background:var(--cream);border:1px dashed var(--line);border-radius:var(--r);padding:40px 34px;opacity:.9}
+  .supbox .soon{display:inline-block;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--muted);background:var(--paper);border:1px solid var(--line);border-radius:99px;padding:6px 14px;margin-bottom:16px}
+  .supbox .btn{opacity:.5;pointer-events:none;margin-top:18px}
+  /* timeline */
+  .tl{margin-top:48px;border-left:2px solid var(--line);max-width:760px}
+  .tli{position:relative;padding:0 0 34px 34px}
+  .tli::before{content:"";position:absolute;left:-8px;top:4px;width:14px;height:14px;border-radius:50%;background:var(--paper);border:2px solid var(--line)}
+  .tli.done::before{background:var(--ember);border-color:var(--ember)}
+  .tli.now::before{background:#fff;border-color:var(--ember);box-shadow:0 0 0 4px rgba(217,122,43,.18)}
+  .tli .st{font-family:var(--sans);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--faint)}
+  .tli.done .st{color:var(--ember-d)}.tli.now .st{color:var(--ember-d)}
+  .tli b{font-family:var(--serif);font-size:20px;font-weight:500;display:block;margin:3px 0 4px}
+  .tli p{color:var(--muted);font-size:14.5px}
+  /* press */
+  .press{background:var(--cream)}
+  .pressgrid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:40px}
+  @media(max-width:760px){.pressgrid{grid-template-columns:1fr}}
+  .pcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:30px}
+  .pcard b{font-family:var(--serif);font-size:20px;font-weight:500;display:block;margin-bottom:8px}
+  .pcard p{color:var(--muted);font-size:14.5px}
+  .pcard a{color:var(--ember-d);font-weight:600;text-decoration:none;font-size:14.5px;display:inline-block;margin-top:8px}
+  /* share */
+  .share{text-align:center}
+  .sharebtns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:28px}
+  .sb{display:inline-flex;align-items:center;gap:9px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 20px;font-size:14.5px;font-weight:600;color:var(--ink);cursor:pointer;text-decoration:none}
+  .sb:hover{border-color:var(--ink)}
+  .sb svg{width:18px;height:18px}
+  /* footer */
+  .foot{background:var(--ink);color:#9A968C;padding:56px 0 40px;text-align:center;font-size:13.5px}
+  .foot .fbrand{font-family:var(--serif);color:#EDEAE2;font-size:20px;font-weight:500}
+  .foot a{color:#C7C3BA;text-decoration:none;margin:0 9px}
+  .foot .fdis{max-width:70ch;margin:20px auto 0;color:#77746D;font-size:12px}
+  .fade{opacity:0;transform:translateY(24px);transition:opacity .6s ease-out,transform .6s ease-out}
+  .fade.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <div class="navin">
+    <a class="brand" href="/v2/movement/">
+      <svg class="mk" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="#14161A" stroke-width="2"/><circle cx="20" cy="20" r="6" fill="#D97A2B"/><path d="M20 2v8M20 30v8M2 20h8M30 20h8" stroke="#14161A" stroke-width="2" stroke-linecap="round"/></svg>
+      <span><b>Human in the Loop</b><span class="by">An initiative by UNVEILED</span></span>
+    </a>
+    <div class="navcta">
+      <a class="navlink" href="#manifesto">Manifesto</a>
+      <a class="navlink" href="#faq">FAQ</a>
+      <a class="btn ember sm" href="#join">Add your voice</a>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="glow"></div>
+  <div class="wrap hero-in fade">
+    <span class="eyebrow">A movement for humanity's voice in AI</span>
+    <h1>Humanity is helping build AI. Humanity deserves a <span class="em">voice</span> in it.</h1>
+    <p class="lead">We're not against AI. We build it every day. But as this technology reshapes the world, the people helping shape it, all of us, deserve a meaningful seat at the table.</p>
+    <div class="hcta">
+      <a class="btn ember" href="#join">Add your voice</a>
+      <a class="btn ghost" href="#manifesto">Read the manifesto</a>
+    </div>
+    <div class="counter"><span class="dot"></span><b id="count">—</b><span id="countlabel">founding supporters and counting</span></div>
+    <div class="epvid">
+      <span class="tag">Episode One · Coming soon</span>
+      <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      <strong>"Who gets a say in the future of AI?"</strong>
+      <em>The evidence, and the human question behind it.</em>
+    </div>
+  </div>
+</header>
+
+<!-- MANIFESTO -->
+<section class="manifesto" id="manifesto">
+  <div class="wrap fade">
+    <div class="center"><span class="eyebrow">The manifesto</span></div>
+    <div class="mbody">
+      <p class="big">Something extraordinary is happening. For the first time, humanity isn't just <span class="em">using</span> a new technology. We're helping shape it.</p>
+      <p>Every day, millions of people open an AI and ask, solve, build, write, create, learn, and teach. Most believe they're simply using a tool. But every interaction adds to something far larger, a collective effort, billions of hours, teaching these systems to think and work more like us.</p>
+      <p>And AI is creating extraordinary value. Industries are being remade. Historic companies are being born. This isn't something to fear. It's something to help shape.</p>
+      <p class="big">If humanity is helping build the future of AI, humanity deserves a meaningful voice in that future.</p>
+      <p>Not to slow progress. Not to stop it. To make sure it includes the people helping create it. We are not against AI, we build with it every day, and we believe in it. We simply believe the human contribution deserves recognition, representation, and a seat at the table as this technology remakes the world.</p>
+      <p class="big">If you believe humanity deserves a voice in the future it's helping create, <span class="em">add yours.</span></p>
+    </div>
+    <div class="sign"><a class="btn ember" href="#join">Add your voice</a></div>
+  </div>
+</section>
+
+<!-- WHY THIS MATTERS -->
+<section id="why">
+  <div class="wrap fade">
+    <div class="center"><span class="eyebrow">Why this matters</span><h2>A shift this big should include everyone in it.</h2><p class="lead kicker">Three simple truths sit underneath this whole conversation.</p></div>
+    <div class="why">
+      <div class="wc"><div class="n">01</div><h3>The scale is historic</h3><p>AI is moving faster than any technology before it, reshaping work, business, and daily life in years, not decades.</p></div>
+      <div class="wc"><div class="n">02</div><h3>It's built with all of us</h3><p>Human knowledge, language, and effort, shared across the internet and billions of interactions, are part of what makes it work.</p></div>
+      <div class="wc"><div class="n">03</div><h3>The value is enormous</h3><p>The wealth and power AI creates will be some of the largest in history. Who shapes it, and who shares in it, matters.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<!-- HOW AI LEARNS -->
+<section id="how">
+  <div class="wrap fade">
+    <div class="center"><span class="eyebrow">How AI learns from people</span><h2>Explained simply, and honestly.</h2><p class="lead kicker">No hype. Here's the accurate version of how human contribution flows into these systems.</p></div>
+    <div class="flow">
+      <div class="fcard"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H4z"/><path d="M8 20h8M12 16v4"/></svg><b>Human knowledge</b><p>Books, writing, code, art, and conversation created by people over decades.</p></div>
+      <div class="ar">→</div>
+      <div class="fcard"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2 2M16.4 16.4l2 2M18.4 5.6l-2 2M7.6 16.4l-2 2"/></svg><b>Learning &amp; feedback</b><p>Systems are trained on that knowledge, then refined by people who correct and guide them.</p></div>
+      <div class="ar">→</div>
+      <div class="fcard"><svg viewBox="0 0 24 24"><path d="M4 18l5-5 3 3 8-8M15 8h5v5"/></svg><b>Value at scale</b><p>The result is technology of enormous economic and social value, used by the world.</p></div>
+    </div>
+    <p class="note">We say this carefully: not every interaction trains a model, and many contributors are already paid. Our point isn't a bill, it's a principle. A technology built on humanity's collective knowledge should keep humanity in the conversation about its future.</p>
+  </div>
+</section>
+
+<!-- THE CONVERSATION -->
+<section class="conv" id="conversation">
+  <div class="wrap fade">
+    <div class="center"><span class="eyebrow">The conversation</span><h2>We're not here to end a debate. We're here to begin one.</h2><p class="lead kicker">Real questions worth sitting with, whatever your answer.</p></div>
+    <div class="qs">
+      <div class="q"><b>Who shapes the future of AI?</b><p>A handful of companies, or the wider society that lives with the results?</p></div>
+      <div class="q"><b>Who benefits from it?</b><p>As AI creates historic value, how widely should that value and opportunity reach?</p></div>
+      <div class="q"><b>What comes with this much power?</b><p>Unprecedented capability raises real questions of responsibility and transparency.</p></div>
+      <div class="q"><b>How should people participate?</b><p>What would a meaningful public voice in AI's direction actually look like?</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- THE SERIES -->
+<section class="series" id="series">
+  <div class="wrap fade">
+    <div class="center"><span class="eyebrow">The series</span><h2>Two perspectives. One conversation.</h2><p class="lead kicker" style="color:#B9B5AC">Every episode holds the evidence and the human question side by side, told through two versions of the same person.</p></div>
+    <div class="duo">
+      <div class="persona lawyer">
+        <span class="badge">The AI Lawyer</span>
+        <h3>The evidence</h3>
+        <div class="role">Studio. Measured. Precise.</div>
+        <ul><li>Presents research, facts, and context</li><li>Lays out how the technology and the economics actually work</li><li>Calm, rigorous, almost like expert testimony</li></ul>
+      </div>
+      <div class="persona human">
+        <span class="badge">Real Moe</span>
+        <h3>The human question</h3>
+        <div class="role">Outside. Handheld. Honest.</div>
+        <ul><li>Asks what the evidence actually means for people</li><li>Challenges assumptions and sits with the hard parts</li><li>Emotional, curious, human</li></ul>
+      </div>
+    </div>
+    <p class="vs">The lawyer presents. The human asks. You decide.</p>
+  </div>
+</section>
+
+<!-- PRINCIPLES -->
+<section id="principles">
+  <div class="wrap fade">
+    <div class="center"><span class="eyebrow">Our principles</span><h2>What we stand for, and what we'd hold ourselves to.</h2></div>
+    <div class="principles">
+      <div class="pr"><span class="pi"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span><b>We support innovation</b><p>AI is one of the most promising technologies in history. We want it to succeed, and to reach its potential.</p></div>
+      <div class="pr"><span class="pi"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></span><b>We believe in responsible AI</b><p>Progress and responsibility aren't opposites. The best future is built with both.</p></div>
+      <div class="pr"><span class="pi"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/></svg></span><b>We believe in transparency</b><p>People deserve to understand how these systems are built and how decisions about them are made.</p></div>
+      <div class="pr"><span class="pi"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M2.5 20c.6-3.5 3.2-5.5 6.5-5.5s5.9 2 6.5 5.5M17 6a3 3 0 0 1 0 6"/></svg></span><b>We believe participation matters</b><p>The public should have a real voice in a technology reshaping public life.</p></div>
+      <div class="pr"><span class="pi"><svg viewBox="0 0 24 24"><path d="M12 21C7 17 4 13.5 4 9a4 4 0 0 1 8-1 4 4 0 0 1 8 1c0 4.5-3 8-8 12z"/></svg></span><b>We believe progress should include people</b><p>The people helping create the future deserve to share in shaping it.</p></div>
+      <div class="pr"><span class="pi"><svg viewBox="0 0 24 24"><path d="M4 12h16M12 4v16" stroke-linecap="round"/><circle cx="12" cy="12" r="9"/></svg></span><b>We unite, we don't divide</b><p>This is a conversation for everyone, whatever their view. Disagreement, done respectfully, is welcome.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap fade">
+    <div class="center"><span class="eyebrow">Fair questions</span><h2>The questions people ask first.</h2></div>
+    <div class="faq">
+      <details><summary>Is this anti-AI?</summary><p>No, the opposite. We build and implement AI every day and believe it will improve life in countless ways. We just believe humanity should stay part of the conversation as it reshapes the world. Pro-human is not anti-AI.</p></details>
+      <details><summary>Is this a lawsuit?</summary><p>No. This is a public conversation and an advocacy initiative, not a legal claim. We're not asking anyone to sue anyone or promising anyone a payout. Our goal is awareness, participation, and a credible platform that could inform future public and policy discussion. If serious policy or legal ideas emerge later, they'll be pursued transparently and with proper counsel, never as a promise made here.</p></details>
+      <details><summary>Are you saying people are owed money?</summary><p>No. This isn't about back-pay or a check. It's about recognition, representation, and a seat at the table. The principle is simple: a technology built on humanity's collective knowledge should keep humanity in the conversation about its future.</p></details>
+      <details><summary>Why should I support this?</summary><p>Because decisions being made now, by a small number of players, will shape work, wealth, and daily life for everyone. Adding your voice helps show that ordinary people want to be part of that conversation, not just live with the outcome.</p></details>
+      <details><summary>Why now?</summary><p>Because the direction of AI is being set right now, while it's still early. The conversation about who shapes it, and who shares in it, is far easier to influence today than after the outcomes are locked in.</p></details>
+      <details><summary>What happens after I add my voice?</summary><p>You join a growing community of supporters. We'll keep you updated with the manifesto, new episodes, research we publish, and milestones as the movement grows. No spam, and you can leave anytime.</p></details>
+      <details><summary>Who's behind this?</summary><p>It's an initiative started by Maor and the team at UNVEILED, an AI-implementation company. We build AI for a living, which is exactly why we care how its future is shaped. We'll always be transparent about who we are and how this is run.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- JOIN -->
+<section class="join" id="join">
+  <div class="wrap fade">
+    <span class="eyebrow">Join the movement</span>
+    <h2>Add your voice.</h2>
+    <div class="joingrid">
+      <div>
+        <p class="lead" style="color:#C7C3BA">Adding your voice is free, and it counts. You're signing your name to a simple idea: that humanity deserves a say in the future it's helping build.</p>
+        <ul class="pts">
+          <li><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg><span>Sign your support for a human voice in AI</span></li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg><span>Get the manifesto, new episodes, and research</span></li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg><span>Volunteer your expertise as the movement grows</span></li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg><span>Help start one of the defining conversations of our time</span></li>
+        </ul>
+      </div>
+      <div>
+        <form class="jform" id="jform" onsubmit="return sign(event)">
+          <div class="jrow">
+            <input id="jfirst" name="first" placeholder="First name" autocomplete="given-name" required>
+            <input id="jlast" name="last" placeholder="Last name" autocomplete="family-name" required>
+          </div>
+          <input id="jemail" name="email" type="email" placeholder="Email" autocomplete="email" required>
+          <input id="jcountry" name="country" placeholder="Country" autocomplete="country-name">
+          <textarea id="jwhy" name="why" placeholder="Why does this matter to you? (optional)"></textarea>
+          <label class="chk"><input type="checkbox" id="jkeep" checked> Keep me updated with the manifesto, episodes, and milestones.</label>
+          <button class="btn ember block" type="submit" style="margin-top:16px">Add your voice →</button>
+          <p class="jfine">Free. We'll only use your details to keep you updated on the movement. No spam, unsubscribe anytime.</p>
+        </form>
+        <div class="jdone" id="jdone"><b>Your voice is in.</b><p>Thank you for standing up for a human seat at the table. Watch your inbox, and share this with someone who'd want their voice counted too.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FUTURE SUPPORT (disabled) -->
+<section class="support" id="support">
+  <div class="wrap fade">
+    <span class="eyebrow">Support the movement</span>
+    <h2>Community first. Always.</h2>
+    <p class="lead kicker">Adding your voice will always be free. Down the road, supporters will be able to help fund independent research, episodes, and advocacy, transparently, and never as the point.</p>
+    <div class="supbox">
+      <span class="soon">Coming soon</span>
+      <h3 style="font-family:var(--serif);font-weight:500">Back the work, when we're ready</h3>
+      <p style="color:var(--muted);font-size:15px;max-width:52ch;margin:10px auto 0">We're building the community before we ask anyone for anything. When financial support opens, it'll be optional, transparent, and clearly accounted for.</p>
+      <a class="btn ember" href="#join">Support coming soon</a>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<!-- TIMELINE -->
+<section id="roadmap">
+  <div class="wrap fade">
+    <div class="center"><span class="eyebrow">The roadmap</span><h2>A living movement.</h2><p class="lead kicker">Where we are, and where we're headed. This grows with the community.</p></div>
+    <div class="tl">
+      <div class="tli done"><div class="st">Done</div><b>The idea</b><p>Recognizing that people rally around ideas, not software, and that this conversation needs a home.</p></div>
+      <div class="tli now"><div class="st">Now</div><b>The manifesto &amp; founding supporters</b><p>Publishing the manifesto and gathering the first voices behind it.</p></div>
+      <div class="tli"><div class="st">Next</div><b>The series begins</b><p>Episode One launches, the AI Lawyer and Real Moe, and a recurring public conversation.</p></div>
+      <div class="tli"><div class="st">Milestone</div><b>10,000 voices</b><p>A community large enough to be taken seriously in the public conversation.</p></div>
+      <div class="tli"><div class="st">Building</div><b>Expert discussions &amp; research</b><p>Conversations with researchers, economists, and policy voices, published openly.</p></div>
+      <div class="tli"><div class="st">Ahead</div><b>A credible platform</b><p>A research library and a voice that can meaningfully inform the public conversation on AI.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRESS -->
+<section class="press" id="press">
+  <div class="wrap fade">
+    <div class="center"><span class="eyebrow">Press &amp; media</span><h2>For journalists and partners.</h2></div>
+    <div class="pressgrid">
+      <div class="pcard"><b>The mission, in one line</b><p>Human in the Loop is a public movement for a meaningful human voice in the future of AI. Not anti-AI, pro-human. Started by the team at UNVEILED, a company that builds and implements AI.</p></div>
+      <div class="pcard"><b>Media contact</b><p>For interviews, comment, or background, reach us directly.</p><a href="mailto:hello@unveiled.pro?subject=Press%20%E2%80%94%20Human%20in%20the%20Loop">hello@unveiled.pro →</a></div>
+      <div class="pcard"><b>Press kit</b><p>Logos, brand guidelines, founder bio, and approved imagery.</p><a href="#" onclick="return false" style="color:var(--faint)">Available on request (kit in progress)</a></div>
+      <div class="pcard"><b>Interviews &amp; talks</b><p>Maor is available to discuss AI, humanity, and the economics of the technology.</p><a href="mailto:hello@unveiled.pro?subject=Interview%20request%20%E2%80%94%20Human%20in%20the%20Loop">Request an interview →</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- SHARE -->
+<section class="share" id="share">
+  <div class="wrap fade">
+    <span class="eyebrow">Spread the word</span>
+    <h2>This only matters if it's shared.</h2>
+    <p class="lead kicker">If this resonated, send it to one person who'd want their voice counted too. That's how a conversation becomes a movement.</p>
+    <div class="sharebtns">
+      <a class="sb" id="sh-x" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.5 8.6L23 22h-6.8l-5.3-6.9L4.8 22H1.7l8-9.2L1 2h7l4.8 6.3L18.9 2zm-2.4 18h1.9L7.6 3.9H5.6L16.5 20z"/></svg>Share on X</a>
+      <a class="sb" id="sh-li" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 3H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zM8.3 18H5.7V9.7h2.6V18zM7 8.5A1.5 1.5 0 1 1 7 5.5a1.5 1.5 0 0 1 0 3zM18.3 18h-2.6v-4c0-1-.4-1.7-1.3-1.7-.7 0-1.1.5-1.3 1-.1.2-.1.5-.1.7V18H10.4V9.7H13v1.1c.3-.5 1-1.3 2.5-1.3 1.8 0 2.8 1.2 2.8 3.6V18z"/></svg>Share on LinkedIn</a>
+      <a class="sb" id="sh-fb" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.2c-1.2 0-1.6.8-1.6 1.5V12h2.7l-.4 2.9h-2.3v7A10 10 0 0 0 22 12z"/></svg>Share on Facebook</a>
+      <button class="sb" id="sh-copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copy link</button>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="fbrand">Human in the Loop</div>
+    <div style="margin:14px 0 6px"><a href="#manifesto">Manifesto</a>·<a href="#join">Add your voice</a>·<a href="#faq">FAQ</a>·<a href="#press">Press</a>·<a href="https://unveiled.pro/v2/">UNVEILED</a></div>
+    <div class="fdis">An initiative by UNVEILED. Human in the Loop is a public advocacy and awareness effort. It is not a legal action and does not offer financial returns or compensation. Nothing here is legal, financial, or investment advice.</div>
+  </div>
+</footer>
+
+<script>
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.fade').forEach(el=>io.observe(el));
+const SUPABASE_URL="https://eosvftmiwndmctrqprtz.supabase.co";
+const SUPABASE_ANON_KEY="sb_publishable_BYxqF1ViwTrfaI4RGhciVw_kgbt-pSA";
+const MSRC="human-in-the-loop-movement";
+// live supporter counter (real count from Supabase; honest founding framing)
+(async function(){
+  try{
+    const r=await fetch(`${SUPABASE_URL}/rest/v1/leads?source=eq.${MSRC}&select=id`,{headers:{"apikey":SUPABASE_ANON_KEY,"Authorization":`Bearer ${SUPABASE_ANON_KEY}`,"Prefer":"count=exact","Range":"0-0"}});
+    const cr=r.headers.get("content-range")||"";const total=parseInt((cr.split("/")[1]||"0"),10)||0;
+    const el=document.getElementById("count");let n=0;const step=Math.max(1,Math.ceil(total/40));
+    const t=setInterval(()=>{n+=step;if(n>=total){n=total;clearInterval(t)}el.textContent=total>0?n.toLocaleString():"Be the first";},20);
+    if(total===0){el.textContent="Be the first";document.getElementById("countlabel").textContent="to add your voice";}
+  }catch(e){document.getElementById("count").textContent="Be the first";document.getElementById("countlabel").textContent="to add your voice";}
+})();
+// share links
+const SHURL=encodeURIComponent("https://unveiled.pro/v2/movement/");
+const SHTXT=encodeURIComponent("Humanity is helping build AI. Humanity deserves a voice in it. Add yours:");
+document.getElementById("sh-x").href=`https://twitter.com/intent/tweet?url=${SHURL}&text=${SHTXT}`;
+document.getElementById("sh-li").href=`https://www.linkedin.com/sharing/share-offsite/?url=${SHURL}`;
+document.getElementById("sh-fb").href=`https://www.facebook.com/sharer/sharer.php?u=${SHURL}`;
+document.getElementById("sh-copy").addEventListener("click",function(){navigator.clipboard.writeText("https://unveiled.pro/v2/movement/");this.innerHTML=this.innerHTML.replace("Copy link","Copied ✓");});
+// sign
+async function sign(e){
+  e.preventDefault();const f=new FormData(e.target);
+  const lead={contact_name:((f.get("first")||"")+" "+(f.get("last")||"")).trim(),email:f.get("email"),
+    requirements:[(f.get("country")?"Country: "+f.get("country"):""),(f.get("why")?"Why: "+f.get("why"):""),(document.getElementById("jkeep").checked?"Updates: yes":"Updates: no")].filter(Boolean).join(" · "),
+    source:MSRC,offer:"human-in-the-loop",status:"MOVEMENT SUPPORTER"};
+  try{
+    const r=await fetch(`${SUPABASE_URL}/rest/v1/leads`,{method:"POST",headers:{"Content-Type":"application/json","apikey":SUPABASE_ANON_KEY,"Authorization":`Bearer ${SUPABASE_ANON_KEY}`,"Prefer":"return=minimal"},body:JSON.stringify(lead)});
+    if(!r.ok)throw new Error(r.status);
+  }catch(err){/* still confirm; retried server-side */}
+  document.getElementById("jform").style.display="none";
+  document.getElementById("jdone").classList.add("show");
+  return false;
+}
+</script>
+</body>
+</html>
