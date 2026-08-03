@@ -225,6 +225,50 @@
   .foot .fbrand{font-family:var(--serif);color:#EDEAE2;font-size:20px;font-weight:500}
   .foot a{color:#C7C3BA;text-decoration:none;margin:0 9px}
   .foot .fdis{max-width:70ch;margin:20px auto 0;color:#77746D;font-size:12px}
+  /* founding counter */
+  .founding{max-width:420px;margin:30px auto 0;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 22px;text-align:left}
+  .founding .ftop{display:flex;align-items:center;gap:9px;font-size:14px}
+  .founding .ftop b{font-weight:700}
+  .founding .ftop #fcount{margin-left:auto;font-variant-numeric:tabular-nums;font-weight:700;color:var(--ember-d)}
+  .fbar{height:9px;background:#EDE7DB;border-radius:99px;overflow:hidden;margin:12px 0 9px}
+  .fbar i{display:block;height:100%;background:linear-gradient(90deg,var(--ember),var(--ember-d));border-radius:99px;transition:width 1.2s ease-out;min-width:6px}
+  .founding .fnote{font-size:12.5px;color:var(--muted)}
+  /* social contract */
+  .contract{background:var(--night);color:#EDEAE2;padding:clamp(52px,7vw,80px) 0}
+  .escalate{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:900px;margin:0 auto}
+  @media(max-width:720px){.escalate{grid-template-columns:1fr;gap:12px}}
+  .es{border:1px solid var(--lined);border-radius:14px;padding:24px 24px}
+  .es b{font-family:var(--serif);font-size:24px;font-weight:600;color:#fff;display:block}
+  .es span{color:#9A968C;font-size:15px}
+  .es.hot{border-color:rgba(217,122,43,.5);background:rgba(217,122,43,.08)}
+  .es.hot b{color:#E8A063}
+  .bigline{font-family:var(--serif);font-size:clamp(24px,3.6vw,38px);font-weight:500;line-height:1.28;color:#fff;text-align:center;max-width:24ch;margin:38px auto 0}
+  .bigline .em{color:#E8A063;font-style:italic}
+  /* this affects you */
+  .you{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px}
+  @media(max-width:820px){.you{grid-template-columns:1fr 1fr}}
+  @media(max-width:520px){.you{grid-template-columns:1fr}}
+  .yc{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px 24px}
+  .yc svg{width:30px;height:30px;stroke:var(--ember-d);fill:none;stroke-width:1.7;margin-bottom:12px}
+  .yc b{font-family:var(--serif);font-size:20px;font-weight:500;display:block;margin-bottom:6px}
+  .yc p{color:var(--muted);font-size:14.5px}
+  /* professions */
+  .profs{background:var(--cream)}
+  .proflist{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:44px;max-width:860px;margin-left:auto;margin-right:auto}
+  .proflist span{background:var(--card);border:1px solid var(--line);border-radius:99px;padding:12px 22px;font-size:16px;font-weight:500;font-family:var(--serif)}
+  .proflist span:nth-child(3n){border-color:rgba(217,122,43,.4);color:var(--ember-d)}
+  /* why now */
+  .whynow{background:var(--ink);color:#EDEAE2}
+  .whynow .eyebrow{color:#E0A96B}.whynow h2{color:#fff}
+  .already{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:40px}
+  .al{background:rgba(255,255,255,.05);border:1px solid var(--lined);border-radius:99px;padding:12px 22px;font-size:16px;color:#EDEAE2;font-family:var(--serif)}
+  .urgency{font-family:var(--serif);font-size:clamp(21px,2.9vw,29px);font-weight:500;line-height:1.4;text-align:center;color:#fff;max-width:26ch;margin:44px auto 0;border-top:1px solid var(--lined);padding-top:36px}
+  /* closing */
+  .closing{background:var(--night);color:#EDEAE2;padding:clamp(70px,10vw,120px) 0}
+  .cl-lead{font-family:var(--serif);font-size:clamp(24px,3.4vw,36px);font-weight:500;color:#fff;max-width:none}
+  .cl-who{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:24px 0;font-family:var(--serif);font-size:clamp(20px,2.6vw,28px);color:#8B8880}
+  .cl-who .or{color:#E8A063}
+  .cl-big{font-family:var(--serif);font-size:clamp(26px,4vw,44px);font-weight:600;color:#fff;line-height:1.2;max-width:20ch;margin:0 auto 30px}
   .fade{opacity:0;transform:translateY(24px);transition:opacity .6s ease-out,transform .6s ease-out}
   .fade.in{opacity:1;transform:none}
 </style>
@@ -249,14 +293,18 @@
 <header class="hero">
   <div class="glow"></div>
   <div class="wrap hero-in fade">
-    <span class="eyebrow">A movement for humanity's voice in AI</span>
-    <h1>Humanity is helping build AI. Humanity deserves a <span class="em">voice</span> in it.</h1>
-    <p class="lead">We're not against AI. We build it every day. But as this technology reshapes the world, the people helping shape it, all of us, deserve a meaningful seat at the table.</p>
+    <span class="eyebrow">The next social contract</span>
+    <h1>We helped build AI. <span class="em">Now we help shape it.</span></h1>
+    <p class="lead">The biggest economic shift in history is already underway. The only question left is whether the people living through it, all of us, will have a voice in how it unfolds.</p>
     <div class="hcta">
       <a class="btn ember" href="#join">Add your voice</a>
       <a class="btn ghost" href="#manifesto">Read the manifesto</a>
     </div>
-    <div class="counter"><span class="dot"></span><b id="count">—</b><span id="countlabel">founding supporters and counting</span></div>
+    <div class="founding">
+      <div class="ftop"><span class="dot"></span><b>Founding Members</b><span id="fcount">— / 10,000</span></div>
+      <div class="fbar"><i id="fbar" style="width:0%"></i></div>
+      <span class="fnote" id="fnote">Be one of the first 10,000 to add your voice.</span>
+    </div>
     <div class="epvid">
       <span class="tag">Episode One · Coming soon</span>
       <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
@@ -265,6 +313,18 @@
     </div>
   </div>
 </header>
+
+<!-- SOCIAL CONTRACT -->
+<section class="contract" id="contract">
+  <div class="wrap fade">
+    <div class="escalate">
+      <div class="es"><b>The internet</b><span>changed information.</span></div>
+      <div class="es"><b>Social media</b><span>changed communication.</span></div>
+      <div class="es hot"><b>AI</b><span>is changing human value.</span></div>
+    </div>
+    <p class="bigline">Every generation rewrites its social contract when technology transforms society. <span class="em">This one is ours.</span></p>
+  </div>
+</section>
 
 <!-- MANIFESTO -->
 <section class="manifesto" id="manifesto">
@@ -307,15 +367,41 @@
   </div>
 </section>
 
-<!-- WHY THIS MATTERS -->
-<section id="why">
+<!-- THIS AFFECTS YOU -->
+<section id="you">
   <div class="wrap fade">
-    <div class="center"><span class="eyebrow">Why this matters</span><h2>A shift this big should include everyone in it.</h2><p class="lead kicker">Three simple truths sit underneath this whole conversation.</p></div>
-    <div class="why">
-      <div class="wc"><div class="n">01</div><h3>The scale is historic</h3><p>AI is moving faster than any technology before it, reshaping work, business, and daily life in years, not decades.</p></div>
-      <div class="wc"><div class="n">02</div><h3>It's built with all of us</h3><p>Human knowledge, language, and effort, shared across the internet and billions of interactions, are part of what makes it work.</p></div>
-      <div class="wc"><div class="n">03</div><h3>The value is enormous</h3><p>The wealth and power AI creates will be some of the largest in history. Who shapes it, and who shares in it, matters.</p></div>
+    <div class="center"><span class="eyebrow">Why this matters to you</span><h2>This isn't a story about technology. It's a story about your future.</h2></div>
+    <div class="you">
+      <div class="yc"><svg viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/></svg><b>Your career</b><p>What your job looks like, and whether it still exists, in five years.</p></div>
+      <div class="yc"><svg viewBox="0 0 24 24"><path d="M12 21C7 17 4 13.5 4 9a4 4 0 0 1 8-1 4 4 0 0 1 8 1c0 4.5-3 8-8 12z"/></svg><b>Your children</b><p>The economy and the world they'll grow up to work and live in.</p></div>
+      <div class="yc"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V8l7-4 7 4v13M9 21v-5h6v5"/></svg><b>Your business</b><p>Whether you ride this shift, or get run over by it.</p></div>
+      <div class="yc"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M20 20H2"/></svg><b>Your retirement</b><p>Where the value goes, and whether ordinary people share in it.</p></div>
+      <div class="yc"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M2 12h20M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg><b>Your industry</b><p>Which fields get reshaped first, and on whose terms.</p></div>
+      <div class="yc"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M2.5 20c.6-3.5 3.2-5.5 6.5-5.5s5.9 2 6.5 5.5M17 6a3 3 0 0 1 0 6"/></svg><b>Your profession</b><p>The skills that stay valuable, and the ones that don't.</p></div>
     </div>
+    <p class="lead center kicker" style="margin-top:40px">If this shift touches all of that, shouldn't you have a say in how it happens?</p>
+  </div>
+</section>
+
+<!-- PROFESSIONS -->
+<section class="profs" id="professions">
+  <div class="wrap fade">
+    <div class="center"><span class="eyebrow">Who does this affect?</span><h2>If AI changes your profession, when does it start?</h2></div>
+    <div class="proflist">
+      <span>Doctor</span><span>Lawyer</span><span>Accountant</span><span>Designer</span><span>Engineer</span><span>Teacher</span><span>Truck Driver</span><span>Restaurant Owner</span><span>Marketing Agency</span><span>Construction</span><span>Software Developer</span><span>Dentist</span><span>Electrician</span><span>Nurse</span><span>Realtor</span><span>Writer</span>
+    </div>
+    <p class="lead center kicker" style="margin-top:36px">Nobody knows exactly what changes first. <span style="color:var(--ink);font-weight:600">That's exactly why the conversation needs to begin today.</span></p>
+  </div>
+</section>
+
+<!-- WHY NOW -->
+<section class="whynow" id="whynow">
+  <div class="wrap fade">
+    <div class="center"><span class="eyebrow">Why now</span><h2>Not because AI is coming. Because AI is already here.</h2><p class="lead kicker" style="color:#B9B5AC">The transition didn't start in the future. It started already. People are:</p></div>
+    <div class="already">
+      <div class="al">using it</div><div class="al">teaching it</div><div class="al">depending on it</div><div class="al">replacing work with it</div><div class="al">building businesses with it</div>
+    </div>
+    <p class="urgency">Every month we wait, AI becomes more capable. Every month we wait, society has less influence over how this transition unfolds.</p>
   </div>
 </section>
 
@@ -460,12 +546,14 @@
   <div class="wrap fade">
     <div class="center"><span class="eyebrow">The roadmap</span><h2>A living movement.</h2><p class="lead kicker">Where we are, and where we're headed. This grows with the community.</p></div>
     <div class="tl">
-      <div class="tli done"><div class="st">Done</div><b>The idea</b><p>Recognizing that people rally around ideas, not software, and that this conversation needs a home.</p></div>
-      <div class="tli now"><div class="st">Now</div><b>The manifesto &amp; founding supporters</b><p>Publishing the manifesto and gathering the first voices behind it.</p></div>
-      <div class="tli"><div class="st">Next</div><b>The series begins</b><p>Episode One launches, the AI Lawyer and Real Moe, and a recurring public conversation.</p></div>
+      <div class="tli now"><div class="st">Now</div><b>The manifesto &amp; founding members</b><p>Publishing the manifesto and gathering the first voices behind it.</p></div>
+      <div class="tli"><div class="st">Milestone</div><b>1,000 founding members</b><p>The core. The people who were here at the very beginning.</p></div>
       <div class="tli"><div class="st">Milestone</div><b>10,000 voices</b><p>A community large enough to be taken seriously in the public conversation.</p></div>
-      <div class="tli"><div class="st">Building</div><b>Expert discussions &amp; research</b><p>Conversations with researchers, economists, and policy voices, published openly.</p></div>
-      <div class="tli"><div class="st">Ahead</div><b>A credible platform</b><p>A research library and a voice that can meaningfully inform the public conversation on AI.</p></div>
+      <div class="tli"><div class="st">Milestone</div><b>100,000 voices</b><p>A movement, not a moment, with real weight behind it.</p></div>
+      <div class="tli"><div class="st">Milestone</div><b>1 million voices</b><p>A public mandate impossible to ignore.</p></div>
+      <div class="tli"><div class="st">Ahead</div><b>A national research report</b><p>Independent research on AI, value, and the human contribution, published openly.</p></div>
+      <div class="tli"><div class="st">Ahead</div><b>A congressional hearing</b><p>Bringing the human question into the rooms where the rules get written.</p></div>
+      <div class="tli"><div class="st">The goal</div><b>An international coalition</b><p>A global conversation, because this future belongs to everyone.</p></div>
     </div>
   </div>
 </section>
@@ -498,6 +586,16 @@
   </div>
 </section>
 
+<!-- CLOSING -->
+<section class="closing">
+  <div class="wrap fade center">
+    <p class="cl-lead">The future of AI will be written by someone.</p>
+    <div class="cl-who"><span>Companies.</span><span>Governments.</span><span>Researchers.</span><span class="or">Or all of us.</span></div>
+    <p class="cl-big">We believe history works best when everyone has a voice.</p>
+    <a class="btn ember" href="#join" style="margin-top:8px">Join the conversation</a>
+  </div>
+</section>
+
 <footer class="foot">
   <div class="wrap">
     <div class="fbrand">Human in the Loop</div>
@@ -512,15 +610,19 @@ document.querySelectorAll('.fade').forEach(el=>io.observe(el));
 const SUPABASE_URL="https://eosvftmiwndmctrqprtz.supabase.co";
 const SUPABASE_ANON_KEY="sb_publishable_BYxqF1ViwTrfaI4RGhciVw_kgbt-pSA";
 const MSRC="human-in-the-loop-movement";
-// live supporter counter (real count from Supabase; honest founding framing)
+// Founding Members progress (real count from Supabase; honest founding framing)
 (async function(){
+  const GOAL=10000;
+  const fc=document.getElementById("fcount"),fb=document.getElementById("fbar"),fn=document.getElementById("fnote");
+  let total=0;
   try{
     const r=await fetch(`${SUPABASE_URL}/rest/v1/leads?source=eq.${MSRC}&select=id`,{headers:{"apikey":SUPABASE_ANON_KEY,"Authorization":`Bearer ${SUPABASE_ANON_KEY}`,"Prefer":"count=exact","Range":"0-0"}});
-    const cr=r.headers.get("content-range")||"";const total=parseInt((cr.split("/")[1]||"0"),10)||0;
-    const el=document.getElementById("count");let n=0;const step=Math.max(1,Math.ceil(total/40));
-    const t=setInterval(()=>{n+=step;if(n>=total){n=total;clearInterval(t)}el.textContent=total>0?n.toLocaleString():"Be the first";},20);
-    if(total===0){el.textContent="Be the first";document.getElementById("countlabel").textContent="to add your voice";}
-  }catch(e){document.getElementById("count").textContent="Be the first";document.getElementById("countlabel").textContent="to add your voice";}
+    const cr=r.headers.get("content-range")||"";total=parseInt((cr.split("/")[1]||"0"),10)||0;
+  }catch(e){}
+  if(fc)fc.textContent=total.toLocaleString()+" / "+GOAL.toLocaleString();
+  const pct=Math.min(100,total/GOAL*100);
+  if(fb)setTimeout(()=>{fb.style.width=(total>0?Math.max(pct,1.2):0)+"%";},250);
+  if(fn){if(total===0)fn.textContent="Be the very first to add your voice.";else if(total<1000)fn.textContent="Founding members, the first to stand up. Join them.";}
 })();
 // share links
 const SHURL=encodeURIComponent("https://unveiled.pro/v2/movement/");
