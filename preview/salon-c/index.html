@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Salon C | Hair · Skin · Tanning | Miranda, CA · Avenue of the Giants</title>
-<meta name="description" content="Southern Humboldt's only full-service Hair, Skin & Tanning destination, right on the Avenue of the Giants in Miranda, CA. Perfect 5.0★ rating. Book online today.">
+<title>Salon C | Hair · Skin · Nails · Tanning | Miranda, CA · Avenue of the Giants</title>
+<meta name="description" content="Southern Humboldt's only full-service Hair, Skin, Nails & Tanning destination, right on the Avenue of the Giants in Miranda, CA. Perfect 5.0★ rating. Book online today.">
 <meta name="theme-color" content="#2E3D32">
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="apple-touch-icon" href="assets/favicon.png">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="Salon C | Hair · Skin · Tanning | Miranda, CA">
-<meta property="og:description" content="Southern Humboldt's only full-service beauty destination. Hair, Skin & Tanning, right on the Avenue of the Giants. 5.0★ everywhere. Book now.">
+<meta property="og:title" content="Salon C | Hair · Skin · Nails · Tanning | Miranda, CA">
+<meta property="og:description" content="Southern Humboldt's only full-service beauty destination. Hair, Skin, Nails & Tanning, right on the Avenue of the Giants. 5.0★ everywhere. Book now.">
 <meta property="og:image" content="assets/hero.jpg">
 <meta name="twitter:card" content="summary_large_image">
 
@@ -24,7 +24,7 @@
   "@context": "https://schema.org",
   "@type": "BeautySalon",
   "name": "Salon C",
-  "description": "Full-service Hair, Skin & Tanning salon on the Avenue of the Giants in Miranda, CA. The only tanning in Southern Humboldt.",
+  "description": "Full-service Hair, Skin, Nails & Tanning salon on the Avenue of the Giants in Miranda, CA. The only tanning in Southern Humboldt.",
   "image": "assets/hero.jpg",
   "telephone": "+1-707-297-2019",
   "email": "salonc707@gmail.com",
@@ -172,7 +172,7 @@ header:not(.scrolled) .menu-toggle span{background:#fff}
 .trust-sep{width:1px;height:26px;background:rgba(247,241,232,.2);flex:none}
 
 /* Services */
-.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.services-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
 .service-card{background:#fff;border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-sm);border:1px solid rgba(58,46,39,.06);transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
 .service-card:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
 .service-img{height:220px;overflow:hidden}
@@ -185,6 +185,9 @@ header:not(.scrolled) .menu-toggle span{background:#fff}
 .service-list li{padding:5px 0;font-size:.95rem;color:var(--espresso-light);border-bottom:1px dashed rgba(58,46,39,.1);display:flex;justify-content:space-between;align-items:baseline}
 .service-list li:last-child{border-bottom:0}
 .service-tag{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;background:rgba(184,134,90,.15);color:var(--bronze-dark);padding:2px 8px;border-radius:999px;white-space:nowrap}
+.service-social{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:12px;font-size:.86rem;font-weight:700;color:var(--bronze-dark);transition:color .2s}
+.service-social svg{width:16px;height:16px;flex:none}
+.service-social:hover{color:var(--forest)}
 
 /* Why */
 .why{background:var(--forest);color:var(--cream);overflow:hidden}
@@ -206,6 +209,19 @@ header:not(.scrolled) .menu-toggle span{background:#fff}
 .gallery-item:hover{transform:scale(1.03)}
 .gallery-item img{width:100%;height:100%;object-fit:cover}
 .gallery-cta{text-align:center;margin-top:36px;display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
+.slideshow{position:relative;max-width:940px;margin:0 auto;border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-lg);aspect-ratio:16/10;background:var(--forest-dark)}
+.slide{position:absolute;inset:0;opacity:0;transition:opacity 1.1s var(--ease);will-change:opacity}
+.slide.active{opacity:1}
+.slide img{width:100%;height:100%;object-fit:cover}
+.slide-grad{position:absolute;inset:auto 0 0 0;height:120px;background:linear-gradient(to top,rgba(30,43,34,.5),transparent);z-index:2;pointer-events:none}
+.slide-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:46px;height:46px;border-radius:50%;border:0;background:rgba(30,43,34,.4);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .25s,transform .25s;backdrop-filter:blur(4px)}
+.slide-arrow:hover{background:rgba(30,43,34,.78);transform:translateY(-50%) scale(1.06)}
+.slide-arrow.prev{left:16px}.slide-arrow.next{right:16px}
+.slide-arrow svg{width:22px;height:22px}
+.slideshow-dots{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:9px;z-index:3}
+.slideshow-dots button{width:9px;height:9px;border-radius:50%;border:0;background:rgba(247,241,232,.55);cursor:pointer;padding:0;transition:background .25s,transform .25s}
+.slideshow-dots button.active{background:var(--cream);transform:scale(1.3)}
+@media(max-width:560px){.slide-arrow{width:38px;height:38px}.slideshow{aspect-ratio:4/3}}
 
 /* About */
 .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
@@ -290,7 +306,7 @@ footer{background:var(--espresso);color:var(--cream-2);padding:56px 0 32px}
 /* Responsive */
 @media(max-width:900px){
   section{padding:64px 0}
-  .services-grid{grid-template-columns:1fr}
+  .services-grid{grid-template-columns:repeat(2,1fr)}
   .about-grid,.visit-grid,.contact-wrap{grid-template-columns:1fr;gap:32px}
   .gallery-grid{grid-template-columns:repeat(2,1fr)}
   .foot-grid{grid-template-columns:1fr 1fr;gap:32px}
@@ -317,6 +333,7 @@ footer{background:var(--espresso);color:var(--cream-2);padding:56px 0 32px}
 }
 @media(max-width:480px){
   .wrap{padding:0 18px}
+  .services-grid{grid-template-columns:1fr}
   .hero-cta .btn{width:100%}
   section{padding:52px 0}
   .gallery-grid{gap:10px}
@@ -361,7 +378,7 @@ footer{background:var(--espresso);color:var(--cream-2);padding:56px 0 32px}
   <div class="wrap hero-inner">
     <div class="hero-text">
       <span class="hero-badge">★ 5.0 Rated · Miranda, CA</span>
-      <h1>Hair. Skin. <em>Tanning.</em><br>All right here.</h1>
+      <h1>Hair. Skin. Nails. <em>Tanning.</em><br>All right here.</h1>
       <p class="hero-sub">Everything you'd drive to Eureka for, right here on the Avenue of the Giants. The only full-service beauty destination in Southern Humboldt.</p>
       <div class="hero-cta">
         <a href="#book" class="btn btn-primary btn-lg">
@@ -397,7 +414,7 @@ footer{background:var(--espresso);color:var(--cream-2);padding:56px 0 32px}
       <div class="trust-sep"></div>
       <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span><strong>510+</strong> Facebook Followers</span></div>
       <div class="trust-sep"></div>
-      <div class="trust-item"><span>Hair · Skin · Tanning</span></div>
+      <div class="trust-item"><span>Hair · Skin · Nails · Tanning</span></div>
       <div class="trust-sep"></div>
       <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span>Online Booking</span></div>
     </div>
@@ -410,11 +427,11 @@ footer{background:var(--espresso);color:var(--cream-2);padding:56px 0 32px}
     <div class="section-head reveal">
       <span class="eyebrow">What We Do</span>
       <h2>One salon. Everything you need.</h2>
-      <p>Hair, skin, and tanning, all under one roof, right here on the Avenue. No more driving to Eureka.</p>
+      <p>Hair, skin, nails, and tanning, all under one roof, right here on the Avenue. No more driving to Eureka.</p>
     </div>
     <div class="services-grid">
       <div class="service-card reveal">
-        <div class="service-img"><img src="assets/gallery-hair-brunette.jpg" alt="Professional hair styling at Salon C" loading="lazy"></div>
+        <div class="service-img"><img src="assets/section-hair.jpg" alt="Professional hair styling at Salon C" loading="lazy"></div>
         <div class="service-body">
           <h3>Hair</h3>
           <p>Cuts, color, and everything in between. For everyone.</p>
@@ -427,23 +444,48 @@ footer{background:var(--espresso);color:var(--cream-2);padding:56px 0 32px}
             <li><span>Chemical Treatments</span></li>
           </ul>
           <a href="#book" class="btn btn-primary" style="width:100%">Book Hair</a>
+          <a href="https://www.instagram.com/salonc707" target="_blank" rel="noopener" class="service-social">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+            @salonc707
+          </a>
         </div>
       </div>
       <div class="service-card reveal">
-        <div class="service-img"><img src="assets/gallery-nails-green.jpg" alt="Nail art and skincare services at Salon C" loading="lazy"></div>
+        <div class="service-img"><img src="assets/section-skin.jpg" alt="Facials and skincare at Salon C" loading="lazy"></div>
         <div class="service-body">
-          <h3>Skin &amp; Nails</h3>
-          <p>Facials, skincare, and nail art to keep you glowing from head to fingertips.</p>
+          <h3>Skin</h3>
+          <p>Facials and skincare to keep your complexion glowing and refreshed.</p>
           <ul class="service-list">
-            <li><span>Facials &amp; Skincare</span></li>
-            <li><span>Nail Art &amp; Manicures</span></li>
+            <li><span>Facials</span></li>
+            <li><span>Skincare Treatments</span></li>
             <li><span>Eyelash Extensions</span><span class="service-tag">Coming Soon</span></li>
           </ul>
-          <a href="#book" class="btn btn-primary" style="width:100%">Book Now</a>
+          <a href="#book" class="btn btn-primary" style="width:100%">Book Skin</a>
+          <a href="https://www.instagram.com/soulfeaturesbeauty" target="_blank" rel="noopener" class="service-social">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+            @soulfeaturesbeauty
+          </a>
         </div>
       </div>
       <div class="service-card reveal">
-        <div class="service-img"><img src="assets/tanning-promo.jpg" alt="New tanning bulbs at Salon C, better glow, better results" loading="lazy"></div>
+        <div class="service-img"><img src="assets/gallery-nails-green.jpg" alt="Nail art and manicures at Salon C" loading="lazy"></div>
+        <div class="service-body">
+          <h3>Nails</h3>
+          <p>Nail art and manicures, from clean and classic to full custom sets.</p>
+          <ul class="service-list">
+            <li><span>Manicures</span></li>
+            <li><span>Nail Art</span></li>
+            <li><span>Custom Nail Sets</span></li>
+          </ul>
+          <a href="#book" class="btn btn-primary" style="width:100%">Book Nails</a>
+          <a href="https://www.instagram.com/lilybyrdbrand" target="_blank" rel="noopener" class="service-social">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+            @lilybyrdbrand
+          </a>
+        </div>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-img"><img src="assets/section-tanning.jpg" alt="New tanning bulbs at Salon C, better glow, better results" loading="lazy"></div>
         <div class="service-body">
           <span class="service-tag" style="margin-bottom:12px;display:inline-block;background:var(--bronze);color:#fff;font-size:.72rem;padding:4px 12px;">Only Tanning in SoHum</span>
           <h3>Tanning</h3>
@@ -452,6 +494,10 @@ footer{background:var(--espresso);color:var(--cream-2);padding:56px 0 32px}
             <li><span>Tanning Sessions</span></li>
           </ul>
           <a href="#book" class="btn btn-primary" style="width:100%">Book Tanning</a>
+          <a href="https://www.instagram.com/salonc707" target="_blank" rel="noopener" class="service-social">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+            @salonc707
+          </a>
         </div>
       </div>
     </div>
@@ -469,7 +515,7 @@ footer{background:var(--espresso);color:var(--cream-2);padding:56px 0 32px}
     <div class="why-grid">
       <div class="why-card reveal">
         <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
-        <h3>Only Hair + Skin + Tanning in SoHum</h3>
+        <h3>Only Hair + Skin + Nails + Tanning in SoHum</h3>
         <p>No other salon in Southern Humboldt offers all three under one roof. Not one.</p>
       </div>
       <div class="why-card reveal">
@@ -499,13 +545,17 @@ footer{background:var(--espresso);color:var(--cream-2);padding:56px 0 32px}
       <h2>Real results from real clients.</h2>
       <p>No stock photos. Just actual work from our chair to your feed.</p>
     </div>
-    <div class="gallery-grid">
-      <div class="gallery-item reveal"><img src="assets/gallery-hair-blonde.jpg" alt="Blonde balayage curls done at Salon C" loading="lazy"></div>
-      <div class="gallery-item reveal"><img src="assets/gallery-hair-brunette.jpg" alt="Sleek brunette blowout at Salon C" loading="lazy"></div>
-      <div class="gallery-item reveal"><img src="assets/gallery-nails-green.jpg" alt="Green daisy french tip nail art at Salon C" loading="lazy"></div>
-      <div class="gallery-item reveal"><img src="assets/gallery-hair-long.jpg" alt="Long hair color and styling at Salon C" loading="lazy"></div>
-      <div class="gallery-item reveal"><img src="assets/gallery-nails-pink.jpg" alt="Pink floral nail art at Salon C" loading="lazy"></div>
-      <div class="gallery-item reveal"><img src="assets/gallery-hair-boys.jpg" alt="Fresh boys haircut at Salon C" loading="lazy"></div>
+    <div class="slideshow reveal" id="slideshow" aria-roledescription="carousel" aria-label="Salon C client work">
+      <div class="slide active"><img src="assets/gallery-hair-blonde.jpg" alt="Blonde balayage curls done at Salon C"></div>
+      <div class="slide"><img src="assets/gallery-hair-brunette.jpg" alt="Sleek brunette blowout at Salon C" loading="lazy"></div>
+      <div class="slide"><img src="assets/gallery-nails-green.jpg" alt="Green daisy french tip nail art at Salon C" loading="lazy"></div>
+      <div class="slide"><img src="assets/gallery-hair-long.jpg" alt="Long hair color and styling at Salon C" loading="lazy"></div>
+      <div class="slide"><img src="assets/gallery-nails-pink.jpg" alt="Pink floral nail art at Salon C" loading="lazy"></div>
+      <div class="slide"><img src="assets/gallery-hair-boys.jpg" alt="Fresh boys haircut at Salon C" loading="lazy"></div>
+      <div class="slide-grad"></div>
+      <button class="slide-arrow prev" id="slidePrev" aria-label="Previous image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <button class="slide-arrow next" id="slideNext" aria-label="Next image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+      <div class="slideshow-dots" id="slideDots"></div>
     </div>
     <div class="gallery-cta reveal">
       <a href="https://www.instagram.com/salonc707" target="_blank" rel="noopener" class="btn btn-outline">
@@ -528,7 +578,7 @@ footer{background:var(--espresso);color:var(--cream-2);padding:56px 0 32px}
         <img src="assets/neon-logo-circle.png" alt="Salon C logo" style="width:72px;height:72px;border-radius:50%;margin-bottom:16px;box-shadow:0 4px 20px rgba(0,255,200,.2),0 2px 8px rgba(0,0,0,.2);">
         <span class="eyebrow">Our Story</span>
         <h2>Right here on the Avenue.</h2>
-        <p>Salon C started with a simple idea: why should Southern Humboldt have to drive 60 miles for a full-service salon? Hair, skin, tanning. All in one place, right on the Avenue of the Giants in Miranda.</p>
+        <p>Salon C started with a simple idea: why should Southern Humboldt have to drive 60 miles for a full-service salon? Hair, skin, nails, tanning. All in one place, right on the Avenue of the Giants in Miranda.</p>
         <p>We're small by design. When you walk in, we know your name. And by your second visit, we'll know your order. That's the beauty of being the neighborhood salon in a place where neighbors still matter.</p>
         <p>Whether you're a local who's been coming since day one or a traveler stopping through the redwoods, there's a chair with your name on it.</p>
         <p class="about-sign">Salon C, Miranda</p>
@@ -680,7 +730,7 @@ footer{background:var(--espresso);color:var(--cream-2);padding:56px 0 32px}
     <div class="foot-grid">
       <div class="foot-brand">
         <img src="assets/neon-logo-circle.png" alt="Salon C logo">
-        <p>Hair · Skin · Tanning. The only full-service beauty destination on the Avenue of the Giants. Miranda, CA.</p>
+        <p>Hair · Skin · Nails · Tanning. The only full-service beauty destination on the Avenue of the Giants. Miranda, CA.</p>
       </div>
       <div class="foot-col">
         <h4>Explore</h4>
@@ -715,7 +765,7 @@ footer{background:var(--espresso);color:var(--cream-2);padding:56px 0 32px}
       </div>
     </div>
     <div class="foot-bottom">
-      <span>&copy; <span id="year">2026</span> Salon C | Hair · Skin · Tanning · Miranda, CA</span>
+      <span>&copy; <span id="year">2026</span> Salon C | Hair · Skin · Nails · Tanning · Miranda, CA</span>
       <span>On the Avenue of the Giants</span>
     </div>
   </div>
@@ -751,6 +801,25 @@ footer{background:var(--espresso);color:var(--cream-2);padding:56px 0 32px}
     var io=new IntersectionObserver(function(entries){entries.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target)}})},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
     reveals.forEach(function(el){io.observe(el)});
   }else{reveals.forEach(function(el){el.classList.add('in')})}
+
+  var slideshow=document.getElementById('slideshow');
+  if(slideshow){
+    var slides=slideshow.querySelectorAll('.slide'),n=slides.length,dotsWrap=document.getElementById('slideDots'),idx=0,timer=null;
+    var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    for(var i=0;i<n;i++){(function(k){var b=document.createElement('button');b.setAttribute('aria-label','Show image '+(k+1));if(k===0)b.className='active';b.addEventListener('click',function(){go(k);restart()});dotsWrap.appendChild(b)})(i)}
+    var dots=dotsWrap.querySelectorAll('button');
+    function go(t){slides[idx].classList.remove('active');dots[idx].classList.remove('active');idx=(t+n)%n;slides[idx].classList.add('active');dots[idx].classList.add('active')}
+    function next(){go(idx+1)}function prev(){go(idx-1)}
+    function start(){if(!reduce){stop();timer=setInterval(next,4200)}}
+    function stop(){if(timer){clearInterval(timer);timer=null}}
+    function restart(){stop();start()}
+    document.getElementById('slideNext').addEventListener('click',function(){next();restart()});
+    document.getElementById('slidePrev').addEventListener('click',function(){prev();restart()});
+    slideshow.addEventListener('mouseenter',stop);
+    slideshow.addEventListener('mouseleave',start);
+    document.addEventListener('visibilitychange',function(){document.hidden?stop():start()});
+    start();
+  }
 
   document.getElementById('year').textContent=new Date().getFullYear();
 })();
