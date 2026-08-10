@@ -170,6 +170,7 @@ header:not(.scrolled) .menu-toggle span{background:#fff}
 .hero-proof-label{position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);background:var(--bronze);color:#fff;font-weight:800;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;padding:6px 16px;border-radius:999px;white-space:nowrap;box-shadow:var(--shadow)}
 .hero-logo-float{position:absolute;top:-40px;right:-30px;width:100px;height:100px;border-radius:50%;overflow:hidden;box-shadow:0 8px 30px rgba(0,255,200,.25),0 4px 16px rgba(0,0,0,.3);animation:floatProof 6s ease-in-out infinite;animation-delay:1.5s;z-index:4;border:3px solid rgba(0,255,200,.3)}
 .hero-logo-float img{width:100%;height:100%;object-fit:cover}
+.hero-photo-m{display:none}
 .hero-sub{color:rgba(247,241,232,.92);font-size:clamp(1.05rem,1.9vw,1.3rem);margin-top:20px;max-width:540px;text-shadow:0 1px 10px rgba(0,0,0,.4);font-weight:500;animation:fadeUp .8s var(--ease) .6s both}
 .hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:40px;animation:fadeUp .8s var(--ease) .8s both}
 .hero-trust{display:flex;align-items:center;gap:16px;margin-top:36px;flex-wrap:wrap;animation:fadeUp .8s var(--ease) 1s both}
@@ -338,11 +339,11 @@ footer{background:var(--espresso);color:var(--cream-2);padding:56px 0 32px}
   .nav-overlay{position:fixed;inset:0;background:rgba(46,61,50,.5);z-index:105;opacity:0;visibility:hidden;transition:.3s}
   .nav-overlay.show{opacity:1;visibility:visible}
   .hero{padding-top:100px;align-items:flex-start;min-height:auto;padding-bottom:52px}
-  .hero-inner{flex-direction:column;gap:30px}
-  .hero-proof{display:block;flex:none;width:100%;max-width:326px;margin:2px auto 0}
-  .hero-proof-img{width:100%;height:auto;aspect-ratio:1/1.2;transform:none;animation:none;border-width:5px;box-shadow:0 22px 50px rgba(0,0,0,.42)}
-  .hero-proof-img img{height:100%;object-position:center bottom;display:block}
-  .hero-logo-float{display:none}
+  .hero-inner{flex-direction:column}
+  .hero-proof{display:none}
+  .hero-photo-m{display:block;width:100%;margin:30px 0 6px;text-align:center}
+  .hero-photo-m img{width:100%;aspect-ratio:1/1.15;object-fit:cover;object-position:center bottom;border-radius:20px;border:5px solid rgba(247,241,232,.18);box-shadow:0 22px 50px rgba(0,0,0,.42);display:block}
+  .hero-photo-m figcaption{display:inline-block;margin-top:14px;background:var(--bronze);color:#fff;font-weight:800;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;padding:7px 18px;border-radius:999px;box-shadow:var(--shadow)}
   .float-cta{display:flex}
   .gallery-grid{grid-template-columns:repeat(2,1fr)}
   .foot-grid{grid-template-columns:1fr}
@@ -397,6 +398,10 @@ footer{background:var(--espresso);color:var(--cream-2);padding:56px 0 32px}
       <span class="hero-badge">★ 5.0 Rated · Miranda, CA</span>
       <h1>Hair. Skin. Nails. <em>Tanning.</em><br>All right here.</h1>
       <p class="hero-sub">Everything you'd drive to Eureka for, right here on the Avenue of the Giants. The only full-service beauty destination in Southern Humboldt.</p>
+      <figure class="hero-photo-m">
+        <img src="assets/gallery-hair-blonde.jpg" alt="Blonde balayage curls done at Salon C">
+        <figcaption>Real work. Real results.</figcaption>
+      </figure>
       <div class="hero-cta">
         <a href="https://app.squareup.com/appointments/book/52pirwoem0un4o/LP49QXBCBYC82/start" target="_blank" rel="noopener" class="btn btn-primary btn-lg">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
