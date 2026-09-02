@@ -486,11 +486,17 @@ async function start(){
   await V.warm();
   route();
 }
+let loginRole = 'owner';
+document.querySelectorAll('#role-pick .rb').forEach(b=> b.addEventListener('click', ()=>{
+  document.querySelectorAll('#role-pick .rb').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active'); loginRole = b.dataset.role;
+}));
 $('#login-btn').addEventListener('click', async ()=>{
   const b=$('#login-btn'); const err=$('#login-err');
   err.hidden=true; b.disabled=true; b.textContent='מתחבר…';
-  try{ await A.signIn($('#email').value.trim(), $('#pw').value); await start(); }
-  catch(e){ err.textContent=e.message; err.hidden=false; b.disabled=false; b.textContent='כניסה'; }
+  try{ await A.signInWithCode($('#pw').value, loginRole); await start(); }
+  catch(e){ err.textContent=e.message; err.hidden=false; b.disabled=false; b.textContent='כניסה';
+    $('#pw').value=''; $('#pw').focus(); }
 });
 $('#pw').addEventListener('keydown', e=>{ if(e.key==='Enter') $('#login-btn').click(); });
 if(A.isSignedIn()) start().catch(()=>{ A.signOut(); $('#login').hidden=false; $('#app').hidden=true; });

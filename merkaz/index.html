@@ -18,10 +18,14 @@
       <div class="gate-mark">מ</div>
       <h1>מרכז</h1>
       <p class="gate-sub">ניהול הזמנות, לקוחות ומלאי</p>
-      <div class="gate-field"><label for="email">דוא״ל</label>
-        <input id="email" type="email" inputmode="email" autocomplete="username" placeholder="owner@merkaz.app"></div>
-      <div class="gate-field" style="margin-block-start:0"><label for="pw">סיסמה</label>
-        <input id="pw" type="password" autocomplete="current-password"></div>
+      <div class="gate-field"><label for="pw">סיסמה</label>
+        <input id="pw" type="password" inputmode="numeric" autocomplete="current-password"
+               placeholder="הזינו סיסמה" autofocus></div>
+      <div class="gate-field" style="margin-block-start:0"><label>מי נכנס</label>
+        <div class="seg-big" id="role-pick">
+          <button type="button" class="rb active" data-role="owner">בעלים</button>
+          <button type="button" class="rb" data-role="dispatcher">מוקד</button>
+        </div></div>
       <button id="login-btn" class="btn btn-primary btn-lg btn-block">כניסה</button>
       <p id="login-err" class="gate-err" hidden></p>
     </div>

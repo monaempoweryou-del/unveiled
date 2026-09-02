@@ -12,6 +12,21 @@ export const isSignedIn = () => !!session?.access_token;
 function saveSession(s){ session = s; localStorage.setItem(SESS, JSON.stringify(s)); }
 export function signOut(){ session = null; localStorage.removeItem(SESS); }
 
+// Login is by passcode only. The passcode maps to a real Supabase account, so
+// row level security and per-user attribution keep working underneath.
+// NOTE: this file is served publicly, so the passcode is the whole protection.
+// Raise ACCESS_CODE (and the account passwords) before real customer data goes in.
+export const ACCESS_CODE = '2026';
+const ACCOUNTS = {
+  owner:      { email:'owner@merkaz.app', password:'7cw8f3pEHqUOG7' },
+  dispatcher: { email:'dispatcher@merkaz.app', password:'5L7SE7OZaW4rDb' },
+};
+export async function signInWithCode(code, role='owner'){
+  if(String(code).trim() !== ACCESS_CODE) throw new Error('קוד גישה שגוי');
+  const a = ACCOUNTS[role] || ACCOUNTS.owner;
+  return signIn(a.email, a.password);
+}
+
 export async function signIn(email, password){
   const r = await fetch(`${URL_}/auth/v1/token?grant_type=password`, {
     method:'POST', headers:{ apikey:ANON, 'Content-Type':'application/json' },
