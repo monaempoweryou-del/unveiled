@@ -1,697 +1,496 @@
-// app.js — shell, router, role gating, interaction handlers, demo simulator.
-import * as C from './core.js';
-import * as V from './screens.js';
-import { ACCESS_CODE, PRODUCTS, USERS, ROLE_HE, ROLE_DESC, PAY_METHOD_HE, FAIL_REASONS, WA_SCRIPTS } from './data.js';
-import { esc, n, ils, icon, pill, toast, modal, closeModal, notice, qtyField, wireQty, when } from './ui.js';
+// app.js — router, actions, and the interactive flows.
+import * as A from './api.js';
+import * as V from './views.js';
+import { parseOrder } from './parse.js';
+import { esc,n,ils,money,icon,pill,notice,toast,modal,closeModal,qtyField,wireQty,
+         spinner,downloadCSV,PAY_METHOD_HE,dateOnly,when } from './ui.js';
 
 const $ = s => document.querySelector(s);
-const drivers = () => USERS.filter(u=>u.role==='driver');
-const pName = id => C.product(id)?.he || id;
-const uName = id => C.user(id)?.name || '—';
+const ALIASES = { 'מספרים':['דוקטור'] };   // confirmed alias, editable in a later pass
 
-// who is acting, given the demo role
-function actor(){
-  const r = C.S.role;
-  if(r==='driver') return C.S.driverId || 'u_d1';
-  return { owner:'u_owner', store_manager:'u_manager', staff:'u_staff' }[r];
-}
-const can = (...roles) => roles.includes(C.S.role);
-
-// ---------------------------------------------------------------- navigation
 const NAV = [
-  { g:'ראשי', items:[
-    { to:'#/', label:'לוח בקרה', ic:'dashboard', roles:['owner','store_manager','staff'] },
-    { to:'#/', label:'המשלוחים שלי', ic:'truck', roles:['driver'] },
-  ]},
-  { g:'הזמנות', items:[
-    { to:'#/drafts', label:'טיוטות והזמנות חדשות', ic:'orders', roles:['owner','store_manager','staff'], badge:()=>C.pendingDrafts().length },
-    { to:'#/orders', label:'כל ההזמנות', ic:'orders', roles:['owner','store_manager','staff','driver'] },
-    { to:'#/assign', label:'שיבוץ נהגים', ic:'users', roles:['owner','store_manager'], badge:()=>C.S.orders.filter(o=>o.status==='awaiting_assignment').length },
-  ]},
-  { g:'משלוחים', items:[
-    { to:'#/deliveries', label:'משלוחים פעילים', ic:'truck', roles:['owner','store_manager','driver'] },
-    { to:'#/history', label:'הושלמו ונכשלו', ic:'history', roles:['owner','store_manager','driver'] },
-    { to:'#/returns', label:'החזרות', ic:'ret', roles:['owner','store_manager'] },
-  ]},
-  { g:'מלאי', items:[
-    { to:'#/inventory', label:'סקירת מלאי', ic:'box', roles:['owner','store_manager','staff'] },
-    { to:'#/inventory/warehouse', label:'מחסן ראשי', ic:'box', roles:['owner','store_manager','staff'] },
-    { to:'#/inventory/drivers', label:'מלאי נהגים', ic:'truck', roles:['owner','store_manager'] },
-    { to:'#/lowstock', label:'התראות מלאי נמוך', ic:'alert', roles:['owner','store_manager'] },
-  ]},
-  { g:'כספים', items:[
-    { to:'#/payments', label:'מעקב תשלומים', ic:'money', roles:['owner','store_manager'] },
-    { to:'#/sales', label:'דוחות מכירות', ic:'chart', roles:['owner','store_manager'] },
-  ]},
-  { g:'ניהול', items:[
-    { to:'#/exceptions', label:'חריגות ופערים', ic:'alert', roles:['owner','store_manager','staff'], badge:()=>C.openDiscrepancies().length },
-    { to:'#/users', label:'משתמשים ונהגים', ic:'users', roles:['owner','store_manager'] },
-    { to:'#/integrations', label:'אינטגרציות', ic:'plug', roles:['owner','store_manager'] },
-    { to:'#/audit', label:'יומן ביקורת', ic:'shield', roles:['owner'] },
-  ]},
+  { to:'#/',          label:'לוח בקרה',  ic:'dash' },
+  { to:'#/new',       label:'הזמנה חדשה', ic:'plus' },
+  { to:'#/orders',    label:'הזמנות',     ic:'orders' },
+  { to:'#/customers', label:'לקוחות',     ic:'users' },
+  { to:'#/inventory', label:'מלאי',       ic:'box' },
+  { to:'#/reports',   label:'דוחות',      ic:'chart' },
 ];
-const TABS = {
-  owner:        [['#/','לוח בקרה','dashboard'],['#/orders','הזמנות','orders'],['#/inventory','מלאי','box'],['#/sales','מכירות','chart'],['#/integrations','חיבורים','plug']],
-  store_manager:[['#/','לוח בקרה','dashboard'],['#/assign','שיבוץ','users'],['#/deliveries','משלוחים','truck'],['#/inventory','מלאי','box'],['#/exceptions','חריגות','alert']],
-  staff:        [['#/','לוח בקרה','dashboard'],['#/drafts','טיוטות','orders'],['#/orders','הזמנות','orders'],['#/inventory','מלאי','box']],
-  driver:       [['#/','שלי','truck'],['#/orders','הזמנות','orders'],['#/deliveries','פעילים','truck'],['#/history','היסטוריה','history']],
-};
+
+let state = { ordersFilter:'open', reportsPeriod:'30', newMode:'text', draft:null };
+window.__dailyDone = new Set();
 
 function renderNav(){
   const cur = location.hash || '#/';
-  $('#sidebar').innerHTML = NAV.map(g=>{
-    const items = g.items.filter(i=>i.roles.includes(C.S.role));
-    if(!items.length) return '';
-    return `<div class="nav-group"><div class="nav-title">${esc(g.g)}</div>${items.map(i=>{
-      const b = i.badge ? i.badge() : 0;
-      const active = cur===i.to || (i.to!=='#/' && cur.startsWith(i.to));
-      return `<button class="nav-item ${active?'active':''}" data-act="nav" data-to="${i.to}">
-        ${icon(i.ic,18)}<span>${esc(i.label)}</span>${b?`<span class="nav-badge ${i.to==='#/exceptions'?'':'soft'}">${b}</span>`:''}</button>`;
-    }).join('')}</div>`;
-  }).join('');
-  $('#tabbar').innerHTML = (TABS[C.S.role]||TABS.owner).map(([to,label,ic])=>{
-    const active = cur===to || (to!=='#/' && cur.startsWith(to));
-    return `<button class="tab ${active?'active':''}" data-act="nav" data-to="${to}">${icon(ic,20)}<span>${esc(label)}</span></button>`;
-  }).join('');
-  $('#role-label').textContent = C.S.role==='driver' ? uName(C.S.driverId||'u_d1') : ROLE_HE[C.S.role];
+  const act = t => cur===t || (t!=='#/' && cur.startsWith(t));
+  $('#sidebar').innerHTML = `<div class="nav-group">${NAV.map(i=>
+    `<button class="nav-item ${act(i.to)?'active':''}" data-act="nav" data-to="${i.to}">${icon(i.ic,18)}<span>${esc(i.label)}</span></button>`).join('')}
+    <button class="nav-item ${act('#/settings')?'active':''}" data-act="nav" data-to="#/settings">${icon('cog',18)}<span>הגדרות</span></button></div>`;
+  $('#tabbar').innerHTML = NAV.slice(0,5).map(i=>
+    `<button class="tab ${act(i.to)?'active':''}" data-act="nav" data-to="${i.to}">${icon(i.ic,20)}<span>${esc(i.label)}</span></button>`).join('');
 }
 
-// ---------------------------------------------------------------- router
-let filters = { orders:'all', history:'done', sales:'30' };
-
-function route(){
+async function route(){
   const h = location.hash || '#/';
-  const [, p1, p2, p3] = h.split('/');
-  const role = C.S.role;
-  let html;
-
-  const guard = (allowed, view) => allowed.includes(role) ? view() :
-    `<div class="card">${notice('אין לך הרשאה לצפות במסך הזה בתפקיד הנוכחי. החליפו תפקיד כדי לראות אותו.','warn')}</div>`;
-
-  switch(p1){
-    case '': case undefined:
-      html = role==='driver' ? V.driverHome() : V.dashboard(); break;
-    case 'orders':      html = V.orders(filters.orders); break;
-    case 'order':       html = V.orderDetail(p2); break;
-    case 'drafts':      html = guard(['owner','store_manager','staff'], V.drafts); break;
-    case 'draft':       html = guard(['owner','store_manager','staff'], ()=>V.draftReview(p2)); break;
-    case 'assign':      html = guard(['owner','store_manager'], V.assignment); break;
-    case 'deliveries':  html = V.deliveries(); break;
-    case 'history':     html = V.history(filters.history); break;
-    case 'returns':     html = guard(['owner','store_manager'], V.returns); break;
-    case 'inventory':
-      if(p2==='warehouse')   html = guard(['owner','store_manager','staff'], V.warehouse);
-      else if(p2==='drivers')html = guard(['owner','store_manager'], V.driversInventory);
-      else if(p2==='driver') html = V.driverInventory(p3);
-      else                   html = guard(['owner','store_manager','staff'], V.inventoryOverview);
-      break;
-    case 'product':     html = V.productDetail(p2); break;
-    case 'lowstock':    html = guard(['owner','store_manager'], V.lowStock); break;
-    case 'payments':    html = guard(['owner','store_manager'], V.payments); break;
-    case 'sales':       html = guard(['owner','store_manager'], ()=>V.sales(filters.sales)); break;
-    case 'exceptions':  html = guard(['owner','store_manager','staff'], V.exceptions); break;
-    case 'users':       html = guard(['owner','store_manager'], V.users); break;
-    case 'integrations':html = guard(['owner','store_manager'], V.integrations); break;
-    case 'audit':       html = guard(['owner'], V.audit); break;
-    default:            html = V.dashboard();
-  }
-  $('#view').innerHTML = html;
+  const [path, qs] = h.split('?');
+  const seg = path.split('/');
+  const q = new URLSearchParams(qs||'');
+  const view = $('#view');
+  view.innerHTML = spinner();
   renderNav();
-  window.scrollTo(0,0);
-  wirePage();
+  try{
+    let html;
+    switch(seg[1]){
+      case '': case undefined: html = await V.dashboard(); break;
+      case 'new':       html = V.newOrder(state.newMode); break;
+      case 'orders':    if(q.get('f')) state.ordersFilter = q.get('f');
+                        html = await V.ordersView(state.ordersFilter); break;
+      case 'order':     html = await V.orderDetail(seg[2]); break;
+      case 'daily':     html = await V.daily(); break;
+      case 'customers': html = await V.customersView(); break;
+      case 'customer':  html = await V.customerDetail(seg[2]); break;
+      case 'inventory':
+        html = seg[2]==='opening' ? await V.openingInventory()
+             : seg[2]==='moves'   ? await V.movesView()
+             : await V.inventory(); break;
+      case 'reports':   html = await V.reports(state.reportsPeriod); break;
+      case 'settings':  html = await V.settings(); break;
+      case 'activity':  html = await V.activityView(); break;
+      default:          html = await V.dashboard();
+    }
+    view.innerHTML = html;
+    window.scrollTo(0,0);
+    afterRender(seg);
+  }catch(e){
+    view.innerHTML = notice('אירעה שגיאה בטעינת המסך: '+esc(e.message),'danger');
+  }
   closeNav();
 }
 
-function wirePage(){
-  const t = $('#ls-toggle');
-  if(t) t.addEventListener('change', ()=>{
-    C.S.settings.lowStockEnabled = t.checked;
-    if(t.checked && !Object.keys(C.S.settings.thresholds).length)
-      toast('הופעל. הזינו ספים ושמרו.','');
-    C.save(); route();
+function afterRender(seg){
+  if(seg[1]==='new'){
+    if(state.newMode!=='text') mountManualForm();
+    wireRecorder(); wireShot();
+  }
+  if(seg[1]==='customers') wireCustomerSearch();
+  const d = $('#drv');
+  if(d) d.addEventListener('change', async ()=>{
+    const id = location.hash.split('/')[2];
+    await A.setDriver(id, d.value||null); toast('השליח עודכן','ok');
   });
-  const a = $('#alias-toggle');
-  if(a) a.addEventListener('change', ()=>{
-    C.S.settings.aliasConfirmed = a.checked; C.save();
-    toast(a.checked?'השם "דוקטור" מקושר כעת ל"מספרים"':'הקישור בוטל. השמות נפרדים.','ok');
-    route();
+}
+
+// ---------------------------------------------------------------- new order
+function mountManualForm(pre){
+  const host = $('#manual-form'); if(!host) return;
+  host.innerHTML = V.manualFormHtml(pre||state.draft||{});
+  wireLines(); wireCustomerPicker(); recalc();
+}
+function wireLines(){
+  document.querySelectorAll('.l-prod,.l-qty').forEach(el=>el.addEventListener('change', recalc));
+}
+function recalc(){
+  const t = collectItems().reduce((a,i)=>a+i.qty*i.unit_price,0);
+  const el = $('#tot'); if(el) el.innerHTML = `<span>סה״כ</span><b>${money(t)}</b>`;
+}
+function collectItems(){
+  return [...document.querySelectorAll('.line')].map(l=>{
+    const pid = l.querySelector('.l-prod').value;
+    const qty = +l.querySelector('.l-qty').value||0;
+    if(!pid || qty<=0) return null;
+    const p = V.cache.products.find(x=>x.id===pid);
+    return { product_id:pid, qty, unit_price:+(p?.price||0) };
+  }).filter(Boolean);
+}
+function wireCustomerPicker(){
+  const q = $('#cust-q'), hits = $('#cust-hits');
+  if(!q) return;
+  let t;
+  q.addEventListener('input', ()=>{
+    clearTimeout(t);
+    t = setTimeout(async ()=>{
+      const term = q.value.trim();
+      if(term.length < 1){ hits.innerHTML=''; return; }
+      const res = await A.searchCustomers(term);
+      hits.innerHTML = res.length ? res.map(c=>`<button class="hit" data-act="pick-cust" data-id="${c.customer_id}"
+        data-name="${esc(c.name)}" data-phone="${esc(c.phone||'')}" data-addr="${esc(c.address||'')}">
+        <b>${esc(c.name)}</b><span>${esc(c.phone||'')} · ${esc(c.address||'')} · ${c.last_order_at?dateOnly(c.last_order_at):'לקוח חדש'}</span></button>`).join('')
+        : `<div class="hit-none">לא נמצא לקוח קיים. ייווצר לקוח חדש.</div>`;
+    }, 140);
   });
+}
+function wireRecorder(){
+  const btn = $('#rec-btn'); if(!btn) return;
+  let rec, chunks=[];
+  btn.addEventListener('click', async ()=>{
+    if(rec && rec.state==='recording'){
+      rec.stop(); btn.innerHTML = icon('mic',18)+' התחלת הקלטה'; btn.classList.remove('btn-danger'); return;
+    }
+    try{
+      const stream = await navigator.mediaDevices.getUserMedia({ audio:true });
+      rec = new MediaRecorder(stream); chunks=[];
+      rec.ondataavailable = e => chunks.push(e.data);
+      rec.onstop = () => {
+        const blob = new Blob(chunks,{ type:'audio/webm' });
+        const el = $('#rec-play'); el.src = URL.createObjectURL(blob); el.style.display='block';
+        stream.getTracks().forEach(t=>t.stop());
+        toast('ההקלטה נשמרה. מלאו את הפרטים תוך כדי האזנה.','ok');
+      };
+      rec.start(); btn.innerHTML = icon('mic',18)+' עצירת הקלטה'; btn.classList.add('btn-danger');
+    }catch(e){ toast('אין גישה למיקרופון במכשיר הזה','err'); }
+  });
+}
+function wireShot(){
+  const f = $('#shot'); if(!f) return;
+  f.addEventListener('change', ()=>{
+    const file = f.files[0]; if(!file) return;
+    const img = $('#shot-prev'); img.src = URL.createObjectURL(file); img.style.display='block';
+    toast('התמונה נטענה. מלאו את הפרטים לפיה.','ok');
+  });
+}
+function wireCustomerSearch(){
+  const q = $('#cust-search'), out = $('#search-results'), list = $('#cust-list');
+  if(!q) return;
+  let t;
+  q.addEventListener('input', ()=>{
+    clearTimeout(t);
+    t = setTimeout(async ()=>{
+      const term = q.value.trim();
+      if(!term){ out.innerHTML=''; if(list) list.style.display=''; return; }
+      if(/^#?\d{3,}$/.test(term)){
+        const no = term.replace('#','');
+        const os = await A.orders(`&order_no=eq.${no}`);
+        out.innerHTML = os.length ? `<div class="card"><ul class="list">${os.map(V.orderRow).join('')}</ul></div>`
+          : `<div class="card">${notice('לא נמצאה הזמנה במספר הזה','warn')}</div>`;
+      } else {
+        const res = await A.searchCustomers(term);
+        out.innerHTML = res.length ? `<div class="card"><ul class="list">${res.map(V.customerRow).join('')}</ul></div>`
+          : `<div class="card">${notice('לא נמצאו תוצאות','warn')}</div>`;
+      }
+      if(list) list.style.display='none';
+    }, 140);
+  });
+}
+
+async function reviewAndOpen(){
+  const items = collectItems();
+  if(!items.length) return toast('הוסיפו לפחות פריט אחד','err');
+  const name = $('#cust-q')?.value.trim();
+  if(!name) return toast('בחרו או הזינו שם לקוח','err');
+  const phone = $('#f-phone')?.value.trim() || null;
+  const address = $('#f-addr')?.value.trim() || null;
+  const notesV = $('#f-notes')?.value.trim() || null;
+  const custId = $('#cust-id')?.value || null;
+  const total = items.reduce((a,i)=>a+i.qty*i.unit_price,0);
+  const missing = [];
+  if(!phone) missing.push('טלפון');
+  if(!address) missing.push('כתובת');
+
+  modal({ title:'בדיקה לפני פתיחה',
+    body:`${missing.length?notice('<b>חסר מידע:</b> '+esc(missing.join(' · '))+'. אפשר לפתוח בכל זאת ולהשלים אחר כך.','warn'):''}
+      <div style="margin-block:${missing.length?'14px':'0'} 12px">
+        <div class="rev"><span>לקוח</span><b>${esc(name)}</b></div>
+        <div class="rev"><span>טלפון</span><b>${esc(phone||'—')}</b></div>
+        <div class="rev"><span>כתובת</span><b>${esc(address||'—')}</b></div>
+        ${notesV?`<div class="rev"><span>הערות</span><b>${esc(notesV)}</b></div>`:''}
+      </div>
+      <div style="border-block-start:1px solid var(--line-2);padding-block-start:10px">
+      ${items.map(i=>`<div class="rev"><span>${esc(V.cache.products.find(p=>p.id===i.product_id)?.name_he)} × ${i.qty}</span><b>${money(i.qty*i.unit_price)}</b></div>`).join('')}
+      <div class="rev tot-row"><span>סה״כ</span><b>${money(total)}</b></div></div>`,
+    foot:`<button class="btn btn-primary" id="go">פתיחת הזמנה</button>
+          <button class="btn btn-ghost" data-close="1">חזרה לעריכה</button>`,
+    onMount:r=> r.querySelector('#go').addEventListener('click', async ()=>{
+      const btn = r.querySelector('#go'); btn.disabled = true; btn.textContent = 'שומר…';
+      try{
+        let cid = custId;
+        if(!cid){
+          if(phone){ const ex = await A.findByPhone(phone); if(ex) cid = ex.id; }
+          if(!cid) cid = (await A.upsertCustomer({ name, phone, address })).id;
+        }
+        const d = await A.createDraft({ customer_id:cid, items, address, notes:notesV,
+          source: state.newMode==='manual'?'manual':state.newMode, raw_input: state.draft?.raw || null });
+        const o = await A.openOrder(d.id);
+        closeModal(); state.draft=null;
+        toast('הזמנה #'+o.order_no+' נפתחה','ok');
+        location.hash = '#/order/'+o.id;
+      }catch(e){ btn.disabled=false; btn.textContent='פתיחת הזמנה'; toast(e.message,'err'); }
+    })});
+}
+
+// ---------------------------------------------------------------- quick update
+async function quickUpdate(id){
+  const o = await A.order(id);
+  const amt = +(o.final_amount ?? o.total ?? 0);
+  modal({ title:`עדכון מהיר · #${o.order_no}`,
+    body:`<div style="color:var(--muted);font-size:13.5px;margin-block-end:12px">${esc(o.customers?.name||'')} · ${esc(V.itemsText(o))}</div>
+      <div class="seg-big" id="oc">
+        <button class="ocb active" data-oc="delivered">נמסרה</button>
+        <button class="ocb" data-oc="cancelled">בוטלה</button>
+      </div>
+      <div id="deliv-fields">
+        <div class="field"><label>סכום סופי</label><input id="q-amt" type="number" inputmode="decimal" value="${Math.round(amt)}"></div>
+        <div class="field"><label>תשלום</label>
+          <div class="seg-big" id="pay">
+            <button class="pb active" data-pay="paid">שולם</button>
+            <button class="pb" data-pay="unpaid">לא שולם</button>
+          </div></div>
+        <div class="field" id="pm-wrap"><label>אמצעי תשלום</label>
+          <div class="seg-big" id="pm">${Object.entries(PAY_METHOD_HE).map(([k,v],i)=>
+            `<button class="mb ${i===0?'active':''}" data-pm="${k}">${esc(v)}</button>`).join('')}</div></div>
+      </div>
+      <div class="field" id="cancel-reason" style="display:none"><label>סיבת הביטול</label>
+        <input id="q-reason" type="text" placeholder="לא חובה"></div>
+      <div class="field"><label>הערה</label><input id="q-note" type="text" placeholder="לא חובה"></div>`,
+    foot:`<button class="btn btn-primary" id="save">שמירה</button>
+          <button class="btn btn-ghost" data-close="1">ביטול</button>`,
+    onMount:r=>{
+      let outcome='delivered', pay='paid', method='cash';
+      r.querySelectorAll('.ocb').forEach(b=>b.addEventListener('click',()=>{
+        r.querySelectorAll('.ocb').forEach(x=>x.classList.remove('active')); b.classList.add('active');
+        outcome=b.dataset.oc;
+        r.querySelector('#deliv-fields').style.display = outcome==='delivered'?'':'none';
+        r.querySelector('#cancel-reason').style.display = outcome==='cancelled'?'':'none';
+      }));
+      r.querySelectorAll('.pb').forEach(b=>b.addEventListener('click',()=>{
+        r.querySelectorAll('.pb').forEach(x=>x.classList.remove('active')); b.classList.add('active');
+        pay=b.dataset.pay; r.querySelector('#pm-wrap').style.display = pay==='paid'?'':'none';
+      }));
+      r.querySelectorAll('.mb').forEach(b=>b.addEventListener('click',()=>{
+        r.querySelectorAll('.mb').forEach(x=>x.classList.remove('active')); b.classList.add('active'); method=b.dataset.pm;
+      }));
+      r.querySelector('#save').addEventListener('click', async ()=>{
+        const btn=r.querySelector('#save'); btn.disabled=true; btn.textContent='שומר…';
+        try{
+          if(outcome==='cancelled'){ await A.cancelOrder(id, r.querySelector('#q-reason').value.trim()); }
+          else {
+            await A.deliverOrder(id, { final_amount:+r.querySelector('#q-amt').value||0,
+              payment_status:pay, payment_method: pay==='paid'?method:null,
+              note: r.querySelector('#q-note').value.trim()||null });
+          }
+          window.__dailyDone.add(id);
+          closeModal(); toast(outcome==='cancelled'?'ההזמנה בוטלה':'ההזמנה עודכנה','ok');
+          route();
+        }catch(e){ btn.disabled=false; btn.textContent='שמירה'; toast(e.message,'err'); }
+      });
+    }});
 }
 
 // ---------------------------------------------------------------- actions
 const H = {
   nav: el => { location.hash = el.dataset.to; },
-  'filter-orders': el => { filters.orders = el.dataset.v; route(); },
-  'filter-history':el => { filters.history= el.dataset.v; route(); },
-  'filter-sales':  el => { filters.sales  = el.dataset.v; route(); },
-
-  'confirm-order': el => doConfirm(el.dataset.id),
-  'cancel-order':  el => askCancel(el.dataset.id),
-  claim:           el => doClaim(el.dataset.id),
-  assign:          el => askAssign(el.dataset.id),
-  handoff:         el => askHandoff(el.dataset.id),
-  outcome:         el => askOutcome(el.dataset.id),
-  pay:             el => askPay(el.dataset.id),
-  return:          el => askReturn(el.dataset.id),
-  'resolve-dx':    el => askResolve(el.dataset.id),
-  adjust:          el => askAdjust(el.dataset.id),
-
-  'promote-draft': el => promoteDraft(el.dataset.id),
-  'edit-draft':    el => editDraft(el.dataset.id),
-  'ask-draft':     el => { toast('נשלחה בקשת הבהרה ללקוח (הדגמה)','ok'); },
-  'discard-draft': el => { C.discardDraft(el.dataset.id, actor()); toast('הטיוטה בוטלה'); location.hash='#/drafts'; },
-
-  'save-thresholds': () => {
-    document.querySelectorAll('[data-th]').forEach(i=>{
-      const v = i.value.trim();
-      if(v==='') delete C.S.settings.thresholds[i.dataset.th];
-      else C.S.settings.thresholds[i.dataset.th] = +v;
-    });
-    C.save(); toast('הספים נשמרו','ok'); route();
+  'filter-orders': el => { state.ordersFilter = el.dataset.v; route(); },
+  'filter-reports': el => { state.reportsPeriod = el.dataset.v; route(); },
+  'new-mode': el => { state.newMode = el.dataset.v; state.draft=null; route(); },
+  'add-line': () => { const box=$('#lines'); const i=box.children.length;
+    box.insertAdjacentHTML('beforeend', V.lineHtml({},i)); wireLines(); },
+  'del-line': el => { const l=el.closest('.line'); if($('#lines').children.length>1) l.remove(); else {
+      l.querySelector('.l-prod').value=''; l.querySelector('.l-qty').value=1; } recalc(); },
+  'pick-cust': el => {
+    $('#cust-id').value = el.dataset.id;
+    $('#cust-q').value = el.dataset.name;
+    if(!$('#f-phone').value) $('#f-phone').value = el.dataset.phone;
+    if(!$('#f-addr').value)  $('#f-addr').value  = el.dataset.addr;
+    $('#cust-hits').innerHTML='';
+    $('#cust-chosen').innerHTML = `לקוח קיים נמצא: <b>${esc(el.dataset.name)}</b>`;
   },
-  'wa-info': () => modal({ title:'מה נדרש כדי לחבר את WhatsApp', body:`
-    ${notice('החיבור מתבצע דרך הממשק הרשמי של Meta בלבד. אין שימוש בכלים לא רשמיים או באוטומציה של הדפדפן.','brand','shield')}
-    <ol style="margin:16px 0 0;padding-inline-start:20px;line-height:2;font-size:14.5px">
-      <li>חשבון עסקי ב-Meta Business על שם הלקוח</li>
-      <li>אימות העסק מול Meta</li>
-      <li>מספר הטלפון העסקי שישמש את המערכת</li>
-      <li>הרשאת גישה עבורנו כמפתחים</li>
-      <li>החלטה עסקית: העברת המספר הקיים, מספר חדש, או עבודה דרך ספק רשמי</li>
-    </ol>
-    <div style="margin-block-start:16px">${notice('החלטה חשובה: מספר שעובר לממשק הרשמי אינו ניתן יותר לשימוש באפליקציית וואטסאפ הרגילה בטלפון.','warn')}</div>`,
-    foot:`<button class="btn btn-ghost" data-close="1">סגירה</button>` }),
-  'tg-info': () => modal({ title:'מה נדרש כדי לחבר את Telegram', body:`
-    <ol style="margin:0;padding-inline-start:20px;line-height:2;font-size:14.5px">
-      <li>יצירת בוט דרך BotFather</li>
-      <li>הוספת הבוט כמנהל לקבוצת התפעול הפרטית</li>
-      <li>רשימת הנהגים וחשבונות הטלגרם שלהם</li>
-      <li>אישור אילו קבוצות מורשות לפעול מול המערכת</li>
-    </ol>
-    <div style="margin-block-start:16px">${notice('הבוט מקבל הרשאה לקבוצה אחת מוגדרת בלבד. משתמש שאינו מזוהה במערכת לא יוכל לבצע פעולות.','brand','shield')}</div>`,
-    foot:`<button class="btn btn-ghost" data-close="1">סגירה</button>` }),
+  review: () => reviewAndOpen(),
+  quick: el => quickUpdate(el.dataset.id),
+  'open-order': async el => { try{ const o = await A.openOrder(el.dataset.id);
+      toast('הזמנה #'+o.order_no+' נפתחה','ok'); route(); }catch(e){ toast(e.message,'err'); } },
+  'cancel-order': el => askCancel(el.dataset.id),
+  'edit-order': el => toast('לעריכה מלאה: בטלו ופתחו מחדש. עריכת פריטים תתווסף בשלב הבא.',''),
+  signout: () => { A.signOut(); location.reload(); },
 
-  'sim-wa':  el => { const d = C.createDraftFromScript(+el.dataset.i); toast('התקבלה שיחה חדשה בוואטסאפ','ok'); location.hash='#/draft/'+d.id; closeSim(); },
-  'sim-reset': () => modal({ title:'איפוס הדגמה', body:`<p style="font-size:14.5px;line-height:1.7">
-      הפעולה תחזיר את ההדגמה למצב ההתחלתי: מלאי הפתיחה המאושר, הזמנות הדוגמה והטיוטות הממתינות.
-      כל השינויים שביצעתם במהלך ההדגמה יימחקו.</p>`,
-    foot:`<button class="btn btn-danger" data-act="sim-reset-go">איפוס ההדגמה</button>
-          <button class="btn btn-ghost" data-close="1">ביטול</button>` }),
-  'sim-reset-go': () => { C.resetDemo(); closeModal(); closeSim(); location.hash='#/'; route(); toast('ההדגמה אופסה','ok'); },
-  'sim-next': () => { runNextStep(); },
+  'parse-text': () => {
+    const raw = $('#raw').value.trim();
+    if(!raw) return toast('הדביקו טקסט של הזמנה','err');
+    const r = parseOrder(raw, V.cache.products, ALIASES);
+    state.draft = { ...r, customer_id:null, items:r.items, raw };
+    $('#raw').closest('.card-body').innerHTML =
+      (r.uncertain.length?notice('<b>לא זוהה בוודאות:</b> '+esc(r.uncertain.join(' · '))+'. השלימו למטה.','warn'):
+        notice('כל הפרטים זוהו. בדקו ואשרו.','brand','check'))
+      + `<pre class="raw" style="margin-block:12px">${esc(raw)}</pre><div id="manual-form"></div>`;
+    mountManualForm(state.draft);
+    if(state.draft.phone) $('#f-phone').value = state.draft.phone;
+    if(state.draft.address) $('#f-addr').value = state.draft.address;
+    if(state.draft.notes) $('#f-notes').value = state.draft.notes;
+  },
+
+  'share-driver': async el => {
+    const o = await A.order(el.dataset.id);
+    if(!o.driver_id) return toast('בחרו שליח תחילה','err');
+    const msg = V.driverMessage(o);
+    const d = V.cache.drivers.find(x=>x.id===o.driver_id);
+    try{
+      if(navigator.share){ await navigator.share({ text: msg }); }
+      else { await navigator.clipboard.writeText(msg);
+        toast('ההודעה הועתקה. הדביקו אצל '+(d?.name||'השליח'),'ok'); }
+    }catch(e){ /* user dismissed the share sheet */ }
+  },
+  'copy-msg': async el => {
+    const o = await A.order(el.dataset.id);
+    await navigator.clipboard.writeText(V.driverMessage(o)); toast('ההודעה הועתקה','ok');
+  },
+  'nav-map': async el => {
+    const o = await A.order(el.dataset.id);
+    const a = o.address || o.customers?.address;
+    if(!a) return toast('אין כתובת להזמנה','err');
+    window.open('https://waze.com/ul?q='+encodeURIComponent(a), '_blank');
+  },
+  'call-cust': async el => {
+    const o = await A.order(el.dataset.id);
+    const p = o.customers?.phone;
+    if(!p) return toast('אין טלפון ללקוח','err');
+    location.href = 'tel:'+p.replace(/[^\d+]/g,'');
+  },
+
+  'save-opening': async () => {
+    const rows = [...document.querySelectorAll('.op-qty')].map(i=>({ product_id:i.dataset.pid, qty:i.value.trim() }));
+    const filled = rows.filter(r=>r.qty!=='');
+    if(!filled.length) return toast('הזינו לפחות כמות אחת','err');
+    try{ await A.openingInventory(filled); toast(filled.length+' שורות נשמרו','ok'); location.hash='#/inventory'; }
+    catch(e){ toast(e.message,'err'); }
+  },
+  adjust: el => askAdjust(el.dataset.id),
+  'new-customer': () => editCustomer(null),
+  'edit-customer': el => editCustomer(el.dataset.id),
+  'new-driver': () => editDriver(null),
+  'edit-driver': el => editDriver(el.dataset.id),
+  'new-product': () => editProduct(null),
+  'edit-product': el => editProduct(el.dataset.id),
+
+  'csv-orders': () => {
+    const rows = [['מספר','תאריך','לקוח','טלפון','כתובת','סטטוס','תשלום','אמצעי','סכום','פריטים']];
+    (window.__rep?.all||[]).forEach(o=>rows.push([o.order_no||'', (o.delivered_at||o.created_at||'').slice(0,10),
+      o.customers?.name||'', o.customers?.phone||'', o.address||'', ({draft:'טיוטה',open:'פתוחה',delivered:'נמסרה',cancelled:'בוטלה'})[o.status],
+      o.status==='delivered'?(o.payment_status==='paid'?'שולם':'לא שולם'):'', PAY_METHOD_HE[o.payment_method]||'',
+      (o.final_amount??o.total??0), V.itemsText(o)]));
+    downloadCSV('merkaz-orders.csv', rows);
+  },
+  'csv-products': () => {
+    const rows=[['מוצר','יחידות','הכנסה']];
+    Object.entries(window.__rep?.byProduct||{}).forEach(([k,v])=>rows.push([k,v.qty,v.rev]));
+    downloadCSV('merkaz-sales-by-product.csv', rows);
+  },
+  'csv-customers': async () => {
+    const cs = await A.customers();
+    const rows=[['לקוח','טלפון','כתובת','הזמנות','סך מכירות','חוב פתוח','הזמנה אחרונה']];
+    cs.forEach(c=>rows.push([c.name,c.phone||'',c.address||'',c.completed_orders||0,c.total_sales||0,c.unpaid_balance||0,(c.last_order_at||'').slice(0,10)]));
+    downloadCSV('merkaz-customers.csv', rows);
+  },
+  'csv-stock': async () => {
+    const st = await A.stock();
+    const rows=[['מוצר','פיזי','משוריין','זמין','נמכר']];
+    st.forEach(s=>rows.push([s.name_he,s.physical,s.reserved,s.available,s.sold]));
+    downloadCSV('merkaz-stock.csv', rows);
+  },
+  'csv-moves': async () => {
+    const ms = await A.movements(1000);
+    const rows=[['תאריך','תנועה','מוצר','פיזי','משוריין','הזמנה','סיבה']];
+    ms.forEach(m=>rows.push([m.created_at, m.kind, m.products?.name_he||'', m.physical_delta, m.reserved_delta,
+      m.orders?.order_no||'', m.reason||'']));
+    downloadCSV('merkaz-inventory-movements.csv', rows);
+  },
 };
 
+function askCancel(id){
+  modal({ title:'ביטול הזמנה',
+    body:`<div class="field"><label>סיבה</label><input id="r" type="text" placeholder="לא חובה"></div>
+      ${notice('אם ההזמנה פתוחה, השריון ישוחרר והמלאי יחזור להיות זמין. ההזמנה נשמרת בהיסטוריה.','info')}`,
+    foot:`<button class="btn btn-danger" id="go">ביטול ההזמנה</button><button class="btn btn-ghost" data-close="1">חזרה</button>`,
+    onMount:r=>r.querySelector('#go').addEventListener('click',async()=>{
+      try{ await A.cancelOrder(id, r.querySelector('#r').value.trim()); closeModal(); toast('ההזמנה בוטלה','ok'); route(); }
+      catch(e){ toast(e.message,'err'); } })});
+}
+function askAdjust(pid){
+  const s = V.cache.stock.find(x=>x.product_id===pid) || {};
+  modal({ title:'תיקון מלאי · '+(s.name_he||''),
+    body:`${notice('תיקון נרשם כתנועה חדשה עם שמכם והסיבה. הרישום הקודם נשמר.','warn')}
+      <div class="field" style="margin-block-start:14px"><label>כמות פיזית נוכחית</label>
+        <div style="font-size:22px;font-weight:700">${s.physical ?? 0}</div></div>
+      <div class="field"><label>שינוי (מספר חיובי מוסיף, שלילי מפחית)</label>
+        <input id="delta" type="number" placeholder="לדוגמה: -3"></div>
+      <div class="field"><label>סיבה (חובה)</label><input id="why" type="text" placeholder="ספירה מחדש, פגום, חסר…"></div>`,
+    foot:`<button class="btn btn-primary" id="go">רישום התיקון</button><button class="btn btn-ghost" data-close="1">ביטול</button>`,
+    onMount:r=>r.querySelector('#go').addEventListener('click',async()=>{
+      const d=+r.querySelector('#delta').value||0, w=r.querySelector('#why').value.trim();
+      if(!d) return toast('הזינו שינוי','err');
+      if(!w) return toast('חובה לציין סיבה','err');
+      try{ await A.adjustStock(pid,d,w); closeModal(); toast('התיקון נרשם','ok'); route(); }
+      catch(e){ toast(e.message,'err'); } })});
+}
+async function editCustomer(id){
+  const c = id ? await A.customer(id) : {};
+  modal({ title: id?'עריכת לקוח':'לקוח חדש',
+    body:['name:שם','phone:טלפון','phone_alt:טלפון נוסף','address:כתובת','instructions:הוראות מסירה','notes:הערות']
+      .map(f=>{const [k,l]=f.split(':');return `<div class="field"><label>${l}</label><input id="c-${k}" type="text" value="${esc(c[k]||'')}"></div>`;}).join(''),
+    foot:`<button class="btn btn-primary" id="go">שמירה</button><button class="btn btn-ghost" data-close="1">ביטול</button>`,
+    onMount:r=>r.querySelector('#go').addEventListener('click',async()=>{
+      const v = k => r.querySelector('#c-'+k).value.trim()||null;
+      if(!v('name')) return toast('שם חובה','err');
+      try{ await A.upsertCustomer({ ...(id?{id}:{}) , name:v('name'), phone:v('phone'), phone_alt:v('phone_alt'),
+        address:v('address'), instructions:v('instructions'), notes:v('notes') });
+        closeModal(); toast('נשמר','ok'); route(); }catch(e){ toast(e.message,'err'); } })});
+}
+async function editDriver(id){
+  const d = id ? (await A.allDrivers()).find(x=>x.id===id) : { method:'whatsapp', active:true };
+  modal({ title: id?'עריכת שליח':'שליח חדש',
+    body:`<div class="field"><label>שם</label><input id="d-name" type="text" value="${esc(d.name||'')}"></div>
+      <div class="field"><label>טלפון</label><input id="d-phone" type="tel" value="${esc(d.phone||'')}"></div>
+      <div class="field"><label>אמצעי מועדף</label><select id="d-m">
+        ${[['whatsapp','וואטסאפ'],['telegram','טלגרם'],['sms','SMS']].map(([k,l])=>`<option value="${k}" ${d.method===k?'selected':''}>${l}</option>`).join('')}
+      </select></div>
+      <label style="display:flex;gap:9px;align-items:center;font-size:14.5px"><input id="d-act" type="checkbox" ${d.active!==false?'checked':''} style="width:19px;height:19px"> פעיל</label>`,
+    foot:`<button class="btn btn-primary" id="go">שמירה</button><button class="btn btn-ghost" data-close="1">ביטול</button>`,
+    onMount:r=>r.querySelector('#go').addEventListener('click',async()=>{
+      const name=r.querySelector('#d-name').value.trim(), phone=r.querySelector('#d-phone').value.trim();
+      if(!name||!phone) return toast('שם וטלפון חובה','err');
+      try{ await A.saveDriver({ ...(id?{id}:{}) , name, phone, method:r.querySelector('#d-m').value, active:r.querySelector('#d-act').checked });
+        closeModal(); toast('נשמר','ok'); route(); }catch(e){ toast(e.message,'err'); } })});
+}
+async function editProduct(id){
+  const p = id ? V.cache.products.find(x=>x.id===id) : {};
+  modal({ title: id?'עריכת מוצר':'מוצר חדש',
+    body:`<div class="field"><label>שם</label><input id="p-name" type="text" value="${esc(p.name_he||'')}"></div>
+      <div class="field"><label>מחיר ליחידה</label><input id="p-price" type="number" value="${p.price||0}"></div>
+      <div class="field"><label>סף התראת מלאי נמוך</label><input id="p-th" type="number" value="${p.low_stock_threshold??''}" placeholder="לא הוגדר"></div>`,
+    foot:`<button class="btn btn-primary" id="go">שמירה</button><button class="btn btn-ghost" data-close="1">ביטול</button>`,
+    onMount:r=>r.querySelector('#go').addEventListener('click',async()=>{
+      const name=r.querySelector('#p-name').value.trim();
+      if(!name) return toast('שם חובה','err');
+      const th=r.querySelector('#p-th').value.trim();
+      try{ await A.saveProduct({ ...(id?{id}:{}) , name_he:name, price:+r.querySelector('#p-price').value||0,
+        low_stock_threshold: th===''?null:+th });
+        await V.warm(); closeModal(); toast('נשמר','ok'); route(); }catch(e){ toast(e.message,'err'); } })});
+}
+
 document.addEventListener('click', e=>{
-  const el = e.target.closest('[data-act]');
-  if(!el) return;
-  const fn = H[el.dataset.act];
-  if(!fn) return;
+  const el = e.target.closest('[data-act]'); if(!el) return;
+  const fn = H[el.dataset.act]; if(!fn) return;
   e.preventDefault();
-  try{ fn(el); }catch(err){ toast(friendly(err.message),'err'); }
+  Promise.resolve(fn(el)).catch(err=>toast(err.message||'הפעולה נכשלה','err'));
 });
 
-function friendly(msg){
-  if(msg.startsWith('MERKAZ_INSUFFICIENT_STOCK')){
-    const [,p,av] = msg.split(':');
-    return `אין מספיק מלאי זמין: ${p} (זמין ${av})`;
-  }
-  return {
-    MERKAZ_ALREADY_ASSIGNED:'המשלוח כבר נלקח על ידי נהג אחר',
-    MERKAZ_INVALID_TRANSITION:'לא ניתן לבצע את הפעולה מהסטטוס הנוכחי',
-    MERKAZ_REASON_REQUIRED:'חובה לציין סיבה',
-    MERKAZ_NO_DRIVER:'לא שובץ נהג להזמנה',
-    MERKAZ_NOT_FOUND:'ההזמנה לא נמצאה',
-  }[msg] || 'הפעולה נכשלה';
-}
-
-// ---------------------------------------------------------------- flows
-function doConfirm(id){
-  const o = C.order(id);
-  const short = o.lines.filter(l=>C.whAvailable(l.product) < l.qty);
-  modal({
-    title:'אישור הזמנה '+o.no,
-    body: (short.length ? notice(`<b>אין מספיק מלאי זמין:</b> ${short.map(l=>`${pName(l.product)} (דרוש ${l.qty}, זמין ${C.whAvailable(l.product)})`).join(' · ')}`,'danger')
-      : notice('לאחר האישור המערכת תשריין את הכמויות במחסן. הסחורה לא תהיה זמינה ללקוח אחר.','brand','shield')) +
-      `<div style="margin-block-start:14px">${o.lines.map(l=>
-        `<div style="display:flex;justify-content:space-between;padding:9px 0;border-block-end:1px solid var(--line-2)">
-          <span>${esc(pName(l.product))}</span>
-          <span><b>${l.qty}</b> <span style="color:var(--muted);font-size:13px">· זמין ${C.whAvailable(l.product)}</span></span></div>`).join('')}
-      <div style="display:flex;justify-content:space-between;padding-block-start:12px;font-size:16px">
-        <b>סה״כ</b><b>${ils(o.total)}</b></div></div>`,
-    foot: short.length
-      ? `<button class="btn btn-ghost" data-close="1">סגירה</button>`
-      : `<button class="btn btn-primary" id="go">אישור ושריון מלאי</button>
-         <button class="btn btn-ghost" data-close="1">ביטול</button>`,
-    onMount: r => { const b = r.querySelector('#go'); if(b) b.addEventListener('click', ()=>{
-      try{ C.confirmOrder(id, actor()); closeModal(); toast('ההזמנה אושרה והמלאי שוריין','ok'); route(); }
-      catch(err){ toast(friendly(err.message),'err'); }
-    }); }
-  });
-}
-
-function askCancel(id){
-  const o = C.order(id);
-  modal({ title:'ביטול הזמנה '+o.no,
-    body:`<div class="field"><label>סיבת הביטול</label>
-      <input id="rsn" type="text" placeholder="לדוגמה: הלקוח ביטל"></div>
-      ${notice('אם המלאי כבר שוריין, השריון יבוטל והסחורה תחזור להיות זמינה.','info')}`,
-    foot:`<button class="btn btn-danger" id="go">ביטול ההזמנה</button>
-          <button class="btn btn-ghost" data-close="1">חזרה</button>`,
-    onMount:r=> r.querySelector('#go').addEventListener('click',()=>{
-      C.cancelOrder(id, actor(), r.querySelector('#rsn').value.trim()||'ללא סיבה');
-      closeModal(); toast('ההזמנה בוטלה'); route();
-    })});
-}
-
-function doClaim(id){
-  const me = C.S.role==='driver' ? (C.S.driverId||'u_d1') : 'u_d1';
-  try{
-    C.assignDriver(id, me, me, 'telegram');
-    toast('המשלוח שובץ אליך','ok'); route();
-  }catch(err){ toast(friendly(err.message),'err'); }
-}
-
-function askAssign(id){
-  const o = C.order(id);
-  modal({ title:'שיבוץ נהג · '+o.no,
-    body:`${notice('רק נהג אחד יכול להחזיק שיבוץ פעיל להזמנה.','brand','shield')}
-      <div style="margin-block-start:14px">${drivers().map(d=>{
-        const units = PRODUCTS.reduce((a,p)=>a+C.driverHolds(d.id,p.id),0);
-        const act = C.S.orders.filter(x=>x.driver===d.id && ['assigned','out_for_delivery'].includes(x.status)).length;
-        return `<button class="row" style="border:1px solid var(--line);border-radius:12px;margin-block-end:8px" data-drv="${d.id}">
-          <div class="row-main"><div class="row-title">${esc(d.name)}</div>
-          <div class="row-sub">${esc(d.vehicle)} · ${act} משלוחים פעילים · ${units} יח׳ ברכב</div></div>
-          ${o.driver===d.id?pill('משובץ','brand'):''}</button>`;
-      }).join('')}</div>`,
-    foot:`<button class="btn btn-ghost" data-close="1">ביטול</button>`,
-    onMount:r=> r.querySelectorAll('[data-drv]').forEach(b=> b.addEventListener('click',()=>{
-      const d = b.dataset.drv;
-      try{
-        if(o.driver && o.driver!==d) C.reassignDriver(id, d, actor(), 'שיבוץ מחדש על ידי מנהל');
-        else C.assignDriver(id, d, actor(), 'dashboard');
-        closeModal(); toast('שובץ: '+uName(d),'ok'); route();
-      }catch(err){ toast(friendly(err.message),'err'); }
-    }))});
-}
-
-function askHandoff(id){
-  const o = C.order(id);
-  modal({ title:'מסירה לנהג · '+o.no,
-    body:`${notice('נדרש אישור משני הצדדים. אם הספירה של הנהג שונה מספירת המחסן, לא תבוצע תנועת מלאי ותיפתח חריגה.','brand','shield')}
-      <div style="margin-block-start:14px">${o.lines.map(l=>`
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 0;border-block-end:1px solid var(--line-2)">
-          <div><div style="font-weight:500">${esc(pName(l.product))}</div>
-            <div style="font-size:12.5px;color:var(--muted)">המחסן מוסר ${l.qty}</div></div>
-          ${qtyField('hq_'+l.product, l.qty, l.qty)}</div>`).join('')}</div>`,
-    foot:`<button class="btn btn-primary" id="go">אישור מסירה</button>
-          <button class="btn btn-ghost" data-close="1">ביטול</button>`,
-    onMount:r=>{ wireQty(r);
-      r.querySelector('#go').addEventListener('click',()=>{
-        const counts = {}; o.lines.forEach(l=> counts[l.product] = +r.querySelector('#hq_'+l.product).value||0);
-        const res = C.handoff(id, actor(), counts);
-        closeModal();
-        if(res.ok){ toast('המלאי הועבר לנהג','ok'); }
-        else toast('נמצא פער בספירה. נפתחה חריגה ולא בוצעה תנועת מלאי.','err');
-        route();
-      }); }});
-}
-
-function askOutcome(id){
-  const o = C.order(id);
-  modal({ title:'תוצאת המשלוח · '+o.no,
-    body:`<div style="display:grid;gap:9px">
-      <button class="btn btn-ok btn-lg" data-oc="paid">נמסר ושולם</button>
-      <button class="btn btn-primary btn-lg" data-oc="unpaid">נמסר · תשלום פתוח</button>
-      <button class="btn btn-ghost btn-lg" data-oc="partial">נמסר חלקית</button>
-      <button class="btn btn-danger btn-lg" data-oc="failed">המשלוח נכשל</button>
-      <button class="btn btn-ghost btn-lg" data-oc="cancelled">הלקוח ביטל</button>
-    </div>
-    ${notice('משלוח שנכשל אינו נרשם כמכירה. סטטוס התשלום נשמר בנפרד מסטטוס המסירה.','info')}`,
-    foot:`<button class="btn btn-ghost" data-close="1">חזרה</button>`,
-    onMount:r=> r.querySelectorAll('[data-oc]').forEach(b=> b.addEventListener('click',()=>{
-      const oc = b.dataset.oc;
-      if(oc==='partial') return partialModal(id);
-      if(oc==='failed'||oc==='cancelled') return failModal(id, oc);
-      C.completeDelivery(id, actor(), 'delivered');
-      if(oc==='paid') C.recordPayment(id, C.deliveredTotal(C.order(id)), o.payMethod||'cash', actor(), null, 'pay:'+id+':settle');
-      closeModal(); toast(oc==='paid'?'נמסר ושולם':'נמסר. התשלום נשאר פתוח.','ok'); route();
-    }))});
-}
-
-function partialModal(id){
-  const o = C.order(id);
-  modal({ title:'מסירה חלקית · '+o.no,
-    body:`${notice('הזינו את הכמות שנמסרה בפועל לכל פריט. הסכום יחושב מחדש לפי מה שנמסר, והיתרה תישאר באחריות הנהג.','warn')}
-      <div style="margin-block-start:14px">${o.lines.map(l=>`
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 0;border-block-end:1px solid var(--line-2)">
-          <div><div style="font-weight:500">${esc(pName(l.product))}</div>
-            <div style="font-size:12.5px;color:var(--muted)">הוזמן ${l.qty}</div></div>
-          ${qtyField('pq_'+l.product, l.qty, l.qty)}</div>`).join('')}</div>`,
-    foot:`<button class="btn btn-primary" id="go">אישור מסירה חלקית</button>
-          <button class="btn btn-ghost" data-close="1">ביטול</button>`,
-    onMount:r=>{ wireQty(r);
-      r.querySelector('#go').addEventListener('click',()=>{
-        const m={}; o.lines.forEach(l=> m[l.product] = +r.querySelector('#pq_'+l.product).value||0);
-        C.completeDelivery(id, actor(), 'partial', m, 'מסירה חלקית');
-        closeModal(); toast('נרשמה מסירה חלקית','ok'); route();
-      }); }});
-}
-
-function failModal(id, kind){
-  modal({ title: kind==='failed'?'משלוח נכשל':'הלקוח ביטל',
-    body:`${notice('חובה לציין סיבה. <b>לא תירשם מכירה</b> והסחורה נשארת רשומה על הנהג עד להחזרה.','danger')}
-      <div class="field" style="margin-block-start:14px"><label>סיבה</label>
-        <select id="rsn">${FAIL_REASONS.map(x=>`<option>${esc(x)}</option>`).join('')}<option value="">אחר…</option></select></div>
-      <div class="field"><label>הערה חופשית</label><input id="note" type="text" placeholder="לא חובה"></div>`,
-    foot:`<button class="btn btn-danger" id="go">רישום התוצאה</button>
-          <button class="btn btn-ghost" data-close="1">ביטול</button>`,
-    onMount:r=> r.querySelector('#go').addEventListener('click',()=>{
-      const reason = (r.querySelector('#rsn').value || r.querySelector('#note').value || 'ללא סיבה').trim();
-      const note = r.querySelector('#note').value.trim();
-      C.completeDelivery(id, actor(), kind==='failed'?'failed':'cancelled_by_customer', null, note?reason+' · '+note:reason);
-      closeModal(); toast('התוצאה נרשמה. לא נרשמה מכירה.','err'); route();
-    })});
-}
-
-function askPay(id){
-  const o = C.order(id);
-  const idem = 'pay:'+id+':'+Date.now()+':'+Math.random().toString(36).slice(2,8);
-  modal({ title:'רישום תשלום · '+o.no,
-    body:`<div class="field"><label>סכום</label>
-        <input id="amt" type="number" value="${Math.round(o.due||0)}" min="0"></div>
-      <div class="field"><label>אמצעי תשלום</label><select id="mth">
-        ${Object.entries(PAY_METHOD_HE).map(([k,v])=>`<option value="${k}" ${o.payMethod===k?'selected':''}>${esc(v)}</option>`).join('')}
-      </select></div>
-      ${notice(`יתרה לתשלום: <b>${new Intl.NumberFormat('he-IL',{style:'currency',currency:'ILS',maximumFractionDigits:0}).format(o.due||0)}</b>. תשלום חלקי אפשרי ויעודכן בהתאם.`,'info')}`,
-    foot:`<button class="btn btn-primary" id="go">רישום התשלום</button>
-          <button class="btn btn-ghost" data-close="1">ביטול</button>`,
-    onMount:r=> r.querySelector('#go').addEventListener('click',()=>{
-      const amt = +r.querySelector('#amt').value||0;
-      if(amt<=0) return toast('יש להזין סכום','err');
-      C.recordPayment(id, amt, r.querySelector('#mth').value, actor(), null, idem);
-      closeModal(); toast('התשלום נרשם','ok'); route();
-    })});
-}
-
-function askReturn(id){
-  const o = C.order(id);
-  const lines = o.lines.map(l=>({ l, held: C.driverHolds(o.driver, l.product) })).filter(x=>x.held>0);
-  if(!lines.length){ toast('אין סחורה שממתינה להחזרה בהזמנה זו','err'); return; }
-  modal({ title:'קליטת החזרה · '+o.no,
-    body:`${notice('הנהג מוסר, המחסן סופר. פער בין הספירות ייפתח כחריגה שדורשת החלטת מנהל.','brand','shield')}
-      <div style="margin-block-start:14px">${lines.map(({l,held})=>`
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 0;border-block-end:1px solid var(--line-2)">
-          <div><div style="font-weight:500">${esc(pName(l.product))}</div>
-            <div style="font-size:12.5px;color:var(--muted)">אצל הנהג ${held}</div></div>
-          ${qtyField('rq_'+l.product, held, held)}</div>`).join('')}</div>`,
-    foot:`<button class="btn btn-primary" id="go">קליטת ההחזרה</button>
-          <button class="btn btn-ghost" data-close="1">ביטול</button>`,
-    onMount:r=>{ wireQty(r);
-      r.querySelector('#go').addEventListener('click',()=>{
-        const counts={}; lines.forEach(({l})=> counts[l.product] = +r.querySelector('#rq_'+l.product).value||0);
-        C.returnToWarehouse(id, actor(), counts);
-        closeModal(); toast('ההחזרה נקלטה למחסן','ok'); route();
-      }); }});
-}
-
-function askResolve(id){
-  const d = C.S.discrepancies.find(x=>x.id===id);
-  const diff = d.actual - d.expected;
-  modal({ title:'טיפול בפער',
-    body:`<div style="font-size:14.5px;line-height:1.9;margin-block-end:14px">
-        <div><b>מוצר:</b> ${esc(pName(d.product))}</div>
-        <div><b>צפוי:</b> ${d.expected} · <b>נספר:</b> ${d.actual} · <b>הפרש:</b> ${diff>0?'+':''}${diff}</div>
-        <div><b>הזמנה:</b> ${esc(C.order(d.order)?.no||'—')}</div></div>
-      <div class="field"><label>החלטה</label><select id="mode">
-        <option value="apply">לקבל את הספירה בפועל ולתקן את המלאי</option>
-        <option value="note">לסגור ללא שינוי מלאי (הסבר בלבד)</option>
-      </select></div>
-      <div class="field"><label>סיבה מתועדת (חובה)</label>
-        <input id="note" type="text" placeholder="לדוגמה: נספר מחדש, נמצאה יחידה חסרה"></div>
-      ${notice('כל תיקון נרשם כתנועת מלאי חדשה. הרישום המקורי נשמר ואינו נמחק.','info')}`,
-    foot:`<button class="btn btn-primary" id="go">סגירת הפער</button>
-          <button class="btn btn-ghost" data-close="1">ביטול</button>`,
-    onMount:r=> r.querySelector('#go').addEventListener('click',()=>{
-      const note = r.querySelector('#note').value.trim();
-      if(!note) return toast('חובה לתעד סיבה','err');
-      C.resolveDiscrepancy(id, actor(), note, r.querySelector('#mode').value==='apply');
-      closeModal(); toast('הפער נסגר','ok'); route();
-    })});
-}
-
-function askAdjust(pid){
-  const p = C.product(pid);
-  modal({ title:'תיקון מלאי · '+p.he,
-    body:`${notice('תיקון ידני יוצר תנועת מלאי חדשה עם שם המשתמש והסיבה. אין מחיקה של רישומים קיימים.','warn')}
-      <div class="field" style="margin-block-start:14px"><label>זמין כעת במחסן</label>
-        <div style="font-size:22px;font-weight:700">${C.whAvailable(pid)}</div></div>
-      <div class="field"><label>סוג התיקון</label><select id="kind">
-        <option value="adj+">הוספת יחידות (נמצאה סחורה)</option>
-        <option value="adj-">הפחתת יחידות (התאמה)</option>
-        <option value="damaged">רישום כפגום</option>
-        <option value="expired">רישום כפג תוקף</option>
-        <option value="missing">רישום כחסר</option>
-      </select></div>
-      <div class="field"><label>כמות</label>${qtyField('aq', 1, 9999)}</div>
-      <div class="field"><label>סיבה (חובה)</label><input id="rsn" type="text" placeholder="תיעוד הסיבה"></div>`,
-    foot:`<button class="btn btn-primary" id="go">רישום התיקון</button>
-          <button class="btn btn-ghost" data-close="1">ביטול</button>`,
-    onMount:r=>{ wireQty(r);
-      r.querySelector('#go').addEventListener('click',()=>{
-        const q = +r.querySelector('#aq').value||0;
-        const rsn = r.querySelector('#rsn').value.trim();
-        const kind = r.querySelector('#kind').value;
-        if(q<=0) return toast('יש להזין כמות','err');
-        if(!rsn) return toast('חובה לתעד סיבה','err');
-        try{
-          if(kind==='adj+') C.adjustInventory(pid, C.LOC.WH, q, rsn, actor());
-          else if(kind==='adj-') C.adjustInventory(pid, C.LOC.WH, -q, rsn, actor());
-          else C.writeOff(pid, C.LOC.WH, q, kind, rsn, actor());
-          closeModal(); toast('התיקון נרשם','ok'); route();
-        }catch(err){ toast('לא ניתן לרשום תיקון שיוביל למלאי שלילי','err'); }
-      }); }});
-}
-
-// ---------------------------------------------------------------- drafts
-function promoteDraft(id){
-  const d = C.S.drafts.find(x=>x.id===id);
-  if(d.alias && !C.S.settings.aliasConfirmed) return aliasModal(d);
-  if(!d.address) return editDraft(id, 'חסרה כתובת למשלוח. השלימו אותה לפני האישור.');
-  const o = C.createOrder({ customerId:d.customer, lines:d.lines.map(l=>[l.product,l.qty]),
-    address:d.address, when:d.when, payMethod:d.payMethod||'cash', actor:actor(), draftId:d.id });
-  try{
-    C.confirmOrder(o.id, actor());
-    toast('ההזמנה אושרה והמלאי שוריין','ok');
-    location.hash = '#/order/'+o.id;
-  }catch(err){
-    toast(friendly(err.message),'err');
-    C.S.orders = C.S.orders.filter(x=>x.id!==o.id); C.save(); route();
-  }
-}
-
-function aliasModal(d){
-  modal({ title:'זיהוי מוצר לא ודאי',
-    body:`${notice('הלקוח כתב <b>דוקטור</b>. ייתכן שזהו שם נוסף למוצר <b>מספרים</b>, אך הקשר לא אושר על ידכם. המערכת לא תמזג את השמות לבד. בחרו מה לעשות:','warn')}
-      <div style="display:grid;gap:9px;margin-block-start:16px">
-        <button class="btn btn-primary btn-lg" data-pick="scissors">זה המוצר "מספרים" · המשך עם ההזמנה</button>
-        <button class="btn btn-ghost btn-lg" data-pick="confirm">אשר קבוע: "דוקטור" = "מספרים"</button>
-        <button class="btn btn-ghost btn-lg" data-pick="ask">בקש הבהרה מהלקוח</button>
-      </div>`,
-    foot:`<button class="btn btn-ghost" data-close="1">חזרה</button>`,
-    onMount:r=> r.querySelectorAll('[data-pick]').forEach(b=> b.addEventListener('click',()=>{
-      const p = b.dataset.pick;
-      if(p==='ask'){ closeModal(); toast('נשלחה בקשת הבהרה ללקוח (הדגמה)','ok'); return; }
-      if(p==='confirm'){ C.S.settings.aliasConfirmed = true; C.save(); toast('הקישור אושר לצמיתות','ok'); }
-      d.alias = false; C.save(); closeModal(); promoteDraft(d.id);
-    }))});
-}
-
-function editDraft(id, warn){
-  const d = C.S.drafts.find(x=>x.id===id);
-  const c = C.customer(d.customer);
-  modal({ title:'עריכת הזמנה',
-    body:`${warn?notice(esc(warn),'warn'):''}
-      <div style="margin-block:${warn?'14px':'0'} 14px">${d.lines.map(l=>`
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 0;border-block-end:1px solid var(--line-2)">
-          <div style="font-weight:500">${esc(pName(l.product))}</div>
-          ${qtyField('eq_'+l.product, l.qty, 999)}</div>`).join('')}</div>
-      <div class="field"><label>כתובת למשלוח</label>
-        <input id="addr" type="text" value="${esc(d.address||'')}" placeholder="${esc(c.address)}"></div>
-      <div class="field"><label>מועד מבוקש</label>
-        <input id="whn" type="text" value="${esc(d.when||'')}" placeholder="לדוגמה: היום אחר הצהריים"></div>
-      <div class="field"><label>אמצעי תשלום</label><select id="pm">
-        ${Object.entries(PAY_METHOD_HE).map(([k,v])=>`<option value="${k}" ${d.payMethod===k?'selected':''}>${esc(v)}</option>`).join('')}
-      </select></div>`,
-    foot:`<button class="btn btn-primary" id="go">שמירה</button>
-          <button class="btn btn-ghost" data-close="1">ביטול</button>`,
-    onMount:r=>{ wireQty(r);
-      r.querySelector('#go').addEventListener('click',()=>{
-        d.lines.forEach(l=> l.qty = Math.max(1, +r.querySelector('#eq_'+l.product).value||1));
-        d.address = r.querySelector('#addr').value.trim() || c.address;
-        d.when = r.querySelector('#whn').value.trim() || d.when;
-        d.payMethod = r.querySelector('#pm').value;
-        d.uncertain = d.uncertain.filter(u=>u!=='delivery_address'&&u!=='payment_method');
-        C.save(); closeModal(); toast('הטיוטה עודכנה','ok'); route();
-      }); }});
-}
-
-// ---------------------------------------------------------------- simulator
-function openSim(){
-  const p = $('#simpanel');
-  const pending = C.pendingDrafts().length;
-  const queue = C.S.orders.filter(o=>o.status==='awaiting_assignment');
-  const assigned = C.S.orders.filter(o=>o.status==='assigned');
-  const out = C.S.orders.filter(o=>o.status==='out_for_delivery');
-
-  const step = (i,title,sub,state) =>
-    `<div class="step ${state}"><div class="step-n">${state==='done'?'✓':i}</div>
-      <div class="step-main"><div class="step-title">${esc(title)}</div><div class="step-sub">${esc(sub)}</div></div></div>`;
-
-  p.innerHTML = `
-    <div class="sim-head">
-      <h2>סימולטור הדגמה</h2>
-      <button class="icon-btn" id="sim-close" aria-label="סגירה">${icon('x',20)}</button>
-    </div>
-
-    <div class="sim-sec">
-      <h3>מסלול ההדגמה המלא</h3>
-      ${step(1,'שיחת וואטסאפ נכנסת','לקוח כותב הזמנה', pending?'done':'next')}
-      ${step(2,'טיוטה לאישור עובד','המערכת מחלצת פרטים', pending?'next':'')}
-      ${step(3,'אישור ושריון מלאי','המלאי נשמר להזמנה', queue.length?'done':'')}
-      ${step(4,'פרסום בטלגרם ושיבוץ נהג','נהג מקבל את המשלוח', assigned.length||out.length?'done':queue.length?'next':'')}
-      ${step(5,'מסירה לנהג','המלאי עובר מהמחסן לרכב', out.length?'done':assigned.length?'next':'')}
-      ${step(6,'תוצאת המשלוח','נמסר, נכשל, חלקי או הוחזר', out.length?'next':'')}
-      <button class="btn btn-primary btn-block" data-act="sim-next" style="margin-block-start:14px">
-        ${icon('check',18)} הרצת השלב הבא</button>
-    </div>
-
-    <div class="sim-sec">
-      <h3>וואטסאפ · הודעה נכנסת</h3>
-      <p style="font-size:13px;color:var(--muted);margin-block-end:11px">
-        בחרו תרחיש שיחה. המערכת תיצור טיוטה בדיוק כפי שתעשה עם החיבור האמיתי.</p>
-      ${WA_SCRIPTS.map((s,i)=>{
-        const c = C.customer(s.customer);
-        return `<button class="btn btn-ghost btn-block" style="justify-content:flex-start;margin-block-end:7px;text-align:start"
-          data-act="sim-wa" data-i="${i}">
-          <span style="flex:1">${esc(c.name)} · ${esc(s.extract.lines.map(([p,q])=>pName(p)+' ×'+q).join(', '))}</span>
-          ${s.extract.confidence<0.8?pill('לא ודאי','warn'):''}</button>`;
-      }).join('')}
-    </div>
-
-    <div class="sim-sec">
-      <h3>טלגרם · תצוגת כרטיס הזמנה</h3>
-      ${queue.length||assigned.length||out.length ? tgCard(queue[0]||assigned[0]||out[0]) :
-        `<p style="font-size:13px;color:var(--muted)">אין הזמנה פעילה להצגה. אשרו טיוטה כדי לראות את הכרטיס.</p>`}
-    </div>
-
-    <div class="sim-sec">
-      <h3>איפוס</h3>
-      <p style="font-size:13px;color:var(--muted);margin-block-end:11px">
-        החזרת ההדגמה למצב ההתחלתי, כולל מלאי הפתיחה המאושר.</p>
-      <button class="btn btn-danger btn-block" data-act="sim-reset">${icon('history',18)} איפוס הדגמה</button>
-    </div>
-
-    <div class="sim-sec" style="border-block-end:none">
-      <h3>סטטוס חיבורים</h3>
-      <div style="display:flex;gap:9px;flex-wrap:wrap">
-        <span>WhatsApp Business</span>${pill('ממתין לחיבור','warn')}
-      </div>
-      <div style="display:flex;gap:9px;flex-wrap:wrap;margin-block-start:9px">
-        <span>Telegram</span>${pill('ממתין לחיבור','warn')}
-      </div>
-    </div>`;
-  p.hidden = false;
-  $('#scrim').hidden = false;
-  $('#sim-close').addEventListener('click', closeSim);
-  document.body.style.overflow='hidden';
-}
-function closeSim(){ $('#simpanel').hidden = true; $('#scrim').hidden = true; document.body.style.overflow=''; }
-
-function tgCard(o){
-  if(!o) return '';
-  const c = C.customer(o.customer);
-  return `<div class="tg"><div class="tg-card">
-    <div style="font-weight:600;margin-block-end:7px">🆕 הזמנה חדשה · ${esc(o.no)}</div>
-    <div>לקוח: ${esc(c.name)}</div>
-    <div>כתובת: ${esc(o.address||'—')}</div>
-    <div style="margin-block-start:7px">${o.lines.map(l=>`${esc(pName(l.product))} × ${l.qty}`).join('<br>')}</div>
-    <div style="margin-block-start:7px;font-weight:600">סה״כ: ${new Intl.NumberFormat('he-IL',{style:'currency',currency:'ILS',maximumFractionDigits:0}).format(o.total)}</div>
-    <div class="tg-btns">
-      <button class="tg-btn">קבלת משלוח</button><button class="tg-btn">צפייה בהזמנה</button>
-      <button class="tg-btn">דחיית משלוח</button><button class="tg-btn">דיווח על בעיה</button>
-    </div>
-    <div style="font-size:11px;opacity:.6;margin-block-start:9px">תצוגה בלבד. הבוט אינו מחובר.</div>
-  </div></div>`;
-}
-
-function runNextStep(){
-  const drafts = C.pendingDrafts();
-  const queue = C.S.orders.filter(o=>o.status==='awaiting_assignment');
-  const assigned = C.S.orders.filter(o=>o.status==='assigned');
-  const out = C.S.orders.filter(o=>o.status==='out_for_delivery');
-  closeSim();
-  if(!drafts.length && !queue.length && !assigned.length && !out.length){
-    const d = C.createDraftFromScript(0); toast('התקבלה שיחה חדשה','ok'); location.hash='#/draft/'+d.id; return;
-  }
-  if(drafts.length){ toast('טיוטה ממתינה לאישור','ok'); location.hash='#/draft/'+drafts[0].id; return; }
-  if(queue.length){ location.hash='#/order/'+queue[0].id; setTimeout(()=>askAssign(queue[0].id),350); return; }
-  if(assigned.length){ location.hash='#/order/'+assigned[0].id; setTimeout(()=>askHandoff(assigned[0].id),350); return; }
-  if(out.length){ location.hash='#/order/'+out[0].id; setTimeout(()=>askOutcome(out[0].id),350); return; }
-}
-
-// ---------------------------------------------------------------- role switch
-function openRoles(){
-  modal({ title:'תצוגת תפקיד',
-    body:`${notice('מחליף התפקידים מיועד להדגמה בלבד. בגרסת הייצור התפקיד נקבע לפי המשתמש המחובר וההרשאות נאכפות בשרת.','info')}
-      <div style="display:grid;gap:9px;margin-block-start:16px">
-      ${['owner','store_manager','staff'].map(r=>`
-        <button class="row" style="border:1px solid ${C.S.role===r?'var(--brand)':'var(--line)'};border-radius:12px" data-role="${r}">
-          <div class="row-main"><div class="row-title">${esc(ROLE_HE[r])}</div>
-          <div class="row-sub">${esc(ROLE_DESC[r])}</div></div>
-          ${C.S.role===r?pill('נבחר','brand'):''}</button>`).join('')}
-      <div style="font-size:12px;color:var(--faint);margin-block-start:6px">נהגים</div>
-      ${drivers().map(d=>`
-        <button class="row" style="border:1px solid ${C.S.role==='driver'&&C.S.driverId===d.id?'var(--brand)':'var(--line)'};border-radius:12px" data-role="driver" data-drv="${d.id}">
-          <div class="row-main"><div class="row-title">${esc(d.name)}</div>
-          <div class="row-sub">${esc(d.vehicle)} · רואה רק את המשלוחים והמלאי שלו</div></div>
-          ${C.S.role==='driver'&&C.S.driverId===d.id?pill('נבחר','brand'):''}</button>`).join('')}
-      </div>`,
-    foot:`<button class="btn btn-ghost" data-close="1">סגירה</button>`,
-    onMount:r=> r.querySelectorAll('[data-role]').forEach(b=> b.addEventListener('click',()=>{
-      C.S.role = b.dataset.role;
-      if(b.dataset.drv) C.S.driverId = b.dataset.drv;
-      C.save(); closeModal(); location.hash='#/'; route();
-      toast('תצוגה: '+(C.S.role==='driver'?uName(C.S.driverId):ROLE_HE[C.S.role]),'ok');
-    }))});
-}
-
-// ---------------------------------------------------------------- nav toggles
-const openNav  = () => { $('#sidebar').classList.add('open'); $('#scrim').hidden=false; };
-const closeNav = () => { $('#sidebar').classList.remove('open'); if($('#simpanel').hidden) $('#scrim').hidden=true; };
+const openNav = ()=>{ $('#sidebar').classList.add('open'); $('#scrim').hidden=false; };
+const closeNav= ()=>{ $('#sidebar').classList.remove('open'); $('#scrim').hidden=true; };
+$('#menu-btn').addEventListener('click', ()=> $('#sidebar').classList.contains('open')?closeNav():openNav());
+$('#scrim').addEventListener('click', closeNav);
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeModal(); closeNav(); } });
+window.addEventListener('hashchange', route);
 
 // ---------------------------------------------------------------- boot
-function start(){
-  $('#gate').hidden = true;
-  $('#app').hidden = false;
-  C.boot();
-  if(!C.S.driverId) C.S.driverId = 'u_d1';
-  renderNav();
+async function start(){
+  $('#login').hidden = true; $('#app').hidden = false;
+  const u = A.me();
+  $('#who').textContent = u ? `${u.name} · ${u.role==='owner'?'בעלים':'מוקד'}` : '';
+  await V.warm();
   route();
 }
-
-window.addEventListener('hashchange', route);
-$('#menu-btn').addEventListener('click', ()=> $('#sidebar').classList.contains('open') ? closeNav() : openNav());
-$('#scrim').addEventListener('click', ()=>{ closeNav(); closeSim(); });
-$('#role-btn').addEventListener('click', openRoles);
-$('#sim-btn').addEventListener('click', openSim);
-document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeModal(); closeNav(); closeSim(); } });
-
-function tryEnter(){
-  const v = $('#code').value.trim();
-  if(v === ACCESS_CODE){ sessionStorage.setItem('merkaz.ok','1'); start(); }
-  else { $('#gate-err').hidden = false; $('#code').value=''; $('#code').focus(); }
-}
-$('#gate-btn').addEventListener('click', tryEnter);
-$('#code').addEventListener('keydown', e=>{ if(e.key==='Enter') tryEnter(); });
-
-if(sessionStorage.getItem('merkaz.ok')==='1') start();
-else $('#code').focus();
+$('#login-btn').addEventListener('click', async ()=>{
+  const b=$('#login-btn'); const err=$('#login-err');
+  err.hidden=true; b.disabled=true; b.textContent='מתחבר…';
+  try{ await A.signIn($('#email').value.trim(), $('#pw').value); await start(); }
+  catch(e){ err.textContent=e.message; err.hidden=false; b.disabled=false; b.textContent='כניסה'; }
+});
+$('#pw').addEventListener('keydown', e=>{ if(e.key==='Enter') $('#login-btn').click(); });
+if(A.isSignedIn()) start().catch(()=>{ A.signOut(); $('#login').hidden=false; $('#app').hidden=true; });
