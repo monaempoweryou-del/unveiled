@@ -82,9 +82,51 @@ export const customers  = (q='') => get(`customer_stats?select=*${q}&order=name`
 export const customer   = id => get(`customers?id=eq.${id}&select=*`).then(r=>r[0]);
 export const customerStats = id => get(`customer_stats?customer_id=eq.${id}&select=*`).then(r=>r[0]);
 export const movements  = (limit=200) =>
-  get(`inventory_movements?select=*,products(name_he),orders(order_no)&order=created_at.desc&limit=${limit}`);
+  get(`inventory_movements?select=*,products(name_he),orders(order_no),locations(name_he)&order=created_at.desc&limit=${limit}`);
 export const activity   = (limit=150) =>
   get(`activity_log?select=*,app_users(name)&order=created_at.desc&limit=${limit}`);
+
+// ---------------------------------------------------------------- locations
+// Every inventory movement happens somewhere: the warehouse, or a driver's
+// vehicle. The location list is tiny and changes only when a driver is added,
+// so it is cached for the session and invalidated on write.
+let _locs = null;
+async function locs(force){
+  if(force) _locs = null;
+  if(!_locs) _locs = await get('locations?select=*&order=kind,name_he');
+  return _locs;
+}
+export const locations = () => locs();
+export async function warehouseId(){
+  const w = (await locs()).find(l=>l.kind==='warehouse');
+  if(!w) throw new Error('לא הוגדר מחסן במערכת');
+  return w.id;
+}
+export async function vehicleId(driver_id){
+  if(!driver_id) throw new Error('לא נבחר שליח');
+  let v = (await locs()).find(l=>l.kind==='vehicle' && l.driver_id===driver_id);
+  if(!v) v = (await locs(true)).find(l=>l.kind==='vehicle' && l.driver_id===driver_id);
+  if(!v) throw new Error('לא הוגדר רכב לשליח הזה');
+  return v.id;
+}
+export const stockByLocation = () => get('stock_by_location?select=*&order=name_he');
+export const driverHoldings  = () => get('driver_holdings?select=*&order=driver_name,name_he');
+
+// Where an order's goods physically are right now, derived from the ledger and
+// never stored. Returns the vehicle location holding them, or null when the
+// goods are still in the warehouse.
+export async function orderHolding(order_id){
+  const ms = await get(`inventory_movements?order_id=eq.${order_id}` +
+    `&kind=in.(handoff_out,handoff_in)&select=location_id,physical_delta,locations(name_he,kind,driver_id)`);
+  if(!ms.length) return null;
+  const net = {};
+  for(const m of ms){
+    const k = m.location_id;
+    net[k] = net[k] || { location_id:k, physical:0, loc:m.locations };
+    net[k].physical += m.physical_delta;
+  }
+  return Object.values(net).find(x=>x.loc?.kind==='vehicle' && x.physical > 0) || null;
+}
 
 const ORDER_SEL = '*,customers(name,phone,address),drivers(name,phone,method),order_items(*,products(name_he,price))';
 export const orders   = (filter='') => get(`orders?select=${ORDER_SEL}${filter}&order=created_at.desc`);
@@ -134,7 +176,8 @@ export async function openOrder(id){
   try { no = await rest('rpc/next_order_no', { method:'POST', body:'{}' }); }
   catch(e){ no = await nextOrderNoFallback(); }
   if(typeof no !== 'number') no = await nextOrderNoFallback();
-  const moves = o.order_items.map(it=>({ product_id: it.product_id, kind:'reserve',
+  const wh = await warehouseId();
+  const moves = o.order_items.map(it=>({ product_id: it.product_id, kind:'reserve', location_id: wh,
     physical_delta:0, reserved_delta: it.qty, order_id:o.id, user_id: myId(), reason:'שריון בפתיחת הזמנה' }));
   if(moves.length) await post('inventory_movements', moves);
   const r = await patch(`orders?id=eq.${id}`, { status:'open', order_no: no,
@@ -147,10 +190,54 @@ async function nextOrderNoFallback(){
   return (r[0]?.order_no || 1000) + 1;
 }
 
+// A handoff is two rows per line that sum to zero, so total stock never changes,
+// only where it sits. Nothing is ever deleted or overwritten. The reservation
+// travels with the goods so the warehouse figure stops counting what has left.
+export async function handoffToDriver(id, driver_id){
+  const o = await order(id);
+  if(o.status !== 'open') throw new Error('רק הזמנה פתוחה ניתן להעביר לשליח');
+  if(await orderHolding(id)) throw new Error('ההזמנה כבר נמצאת אצל שליח');
+  const drv = driver_id || o.driver_id;
+  const [wh, veh] = [await warehouseId(), await vehicleId(drv)];
+  const moves = [];
+  for(const it of o.order_items){
+    moves.push({ product_id: it.product_id, kind:'handoff_out', location_id: wh,
+      physical_delta: -it.qty, reserved_delta: -it.qty, order_id:o.id, user_id: myId(), reason:'העברה לשליח' });
+    moves.push({ product_id: it.product_id, kind:'handoff_in', location_id: veh,
+      physical_delta: it.qty, reserved_delta: it.qty, order_id:o.id, user_id: myId(), reason:'קליטה ברכב' });
+  }
+  if(!moves.length) throw new Error('אין פריטים בהזמנה');
+  if(drv !== o.driver_id) await patch(`orders?id=eq.${id}`, { driver_id: drv, updated_by: myId() });
+  await post('inventory_movements', moves);
+  await log('order', id, 'handoff', null, { driver_id: drv, lines: o.order_items.length });
+}
+
+// Goods came back undelivered. The same two rows with the locations swapped,
+// never a delete.
+export async function returnFromDriver(id, reason='החזרה למחסן'){
+  const o = await order(id);
+  const held = await orderHolding(id);
+  if(!held) throw new Error('ההזמנה אינה אצל שליח');
+  const wh = await warehouseId();
+  const moves = [];
+  for(const it of o.order_items){
+    moves.push({ product_id: it.product_id, kind:'handoff_out', location_id: held.location_id,
+      physical_delta: -it.qty, reserved_delta: -it.qty, order_id:o.id, user_id: myId(), reason });
+    moves.push({ product_id: it.product_id, kind:'handoff_in', location_id: wh,
+      physical_delta: it.qty, reserved_delta: it.qty, order_id:o.id, user_id: myId(), reason });
+  }
+  if(moves.length) await post('inventory_movements', moves);
+  await log('order', id, 'handoff_return', { location_id: held.location_id }, { location_id: wh, reason });
+}
+
 export async function deliverOrder(id, { final_amount, payment_status, payment_method, note }){
   const o = await order(id);
   if(o.status !== 'open') throw new Error('רק הזמנה פתוחה ניתן לסמן כנמסרה');
-  const moves = o.order_items.map(it=>({ product_id: it.product_id, kind:'sale',
+  // Deduct from wherever the goods actually are: the driver's vehicle after a
+  // handoff, the warehouse for a counter sale.
+  const held = await orderHolding(id);
+  const loc = held ? held.location_id : await warehouseId();
+  const moves = o.order_items.map(it=>({ product_id: it.product_id, kind:'sale', location_id: loc,
     physical_delta: -it.qty, reserved_delta: -it.qty, order_id:o.id, user_id: myId(), reason:'מסירה ללקוח' }));
   if(moves.length) await post('inventory_movements', moves);
   const r = await patch(`orders?id=eq.${id}`, { status:'delivered',

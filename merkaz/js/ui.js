@@ -46,8 +46,10 @@ export const pill = (t,tone='muted')=>`<span class="pill pill-${tone}">${esc(t)}
 export const STATUS_HE={draft:'טיוטה',open:'פתוחה',delivered:'נמסרה',cancelled:'בוטלה'};
 export const STATUS_TONE={draft:'muted',open:'info',delivered:'ok',cancelled:'muted'};
 export const statusPill = s=>pill(STATUS_HE[s]||s, STATUS_TONE[s]||'muted');
-export const payPill = p=>pill(p==='paid'?'שולם':'לא שולם', p==='paid'?'ok':'danger');
-export const PAY_METHOD_HE={cash:'מזומן',transfer:'העברה',card:'אשראי',other:'אחר'};
+export const payPill = p=>pill(p==='paid'?'שולם לפי דיווח':'לא שולם', p==='paid'?'ok':'danger');
+// The only accepted methods. Merkaz records what the Owner enters; it never
+// connects to a bank, wallet or card processor and never verifies a payment.
+export const PAY_METHOD_HE={cash:'מזומן',bit:'ביט',crypto:'קריפטו',other:'אחר'};
 
 export const card=(inner,cls='')=>`<div class="card ${cls}">${inner}</div>`;
 export const cardHead=(t,sub='',right='')=>`<div class="card-head"><h2>${esc(t)}</h2>${right}${sub?`<div class="sub">${esc(sub)}</div>`:''}</div>`;

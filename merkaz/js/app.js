@@ -2,6 +2,7 @@
 import * as A from './api.js';
 import * as V from './views.js';
 import { parseOrder } from './parse.js';
+import { wireCharts } from './charts.js';
 import { esc,n,ils,money,icon,pill,notice,toast,modal,closeModal,qtyField,wireQty,
          spinner,downloadCSV,PAY_METHOD_HE,dateOnly,when } from './ui.js';
 
@@ -17,7 +18,8 @@ const NAV = [
   { to:'#/reports',   label:'דוחות',      ic:'chart' },
 ];
 
-let state = { ordersFilter:'open', reportsPeriod:'30', newMode:'text', draft:null };
+let state = { ordersFilter:'open', reportsPeriod:'today', repFrom:null, repTo:null,
+              newMode:'text', draft:null };
 window.__dailyDone = new Set();
 
 function renderNav(){
@@ -53,7 +55,7 @@ async function route(){
         html = seg[2]==='opening' ? await V.openingInventory()
              : seg[2]==='moves'   ? await V.movesView()
              : await V.inventory(); break;
-      case 'reports':   html = await V.reports(state.reportsPeriod); break;
+      case 'reports':   html = await V.reports(state.reportsPeriod, state.repFrom, state.repTo); break;
       case 'settings':  html = await V.settings(); break;
       case 'activity':  html = await V.activityView(); break;
       default:          html = await V.dashboard();
@@ -68,10 +70,8 @@ async function route(){
 }
 
 function afterRender(seg){
-  if(seg[1]==='new'){
-    if(state.newMode!=='text') mountManualForm();
-    wireRecorder(); wireShot();
-  }
+  if(seg[1]==='new' && state.newMode !== 'text') mountManualForm();
+  if(seg[1]==='reports') wireCharts(document);
   if(seg[1]==='customers') wireCustomerSearch();
   const d = $('#drv');
   if(d) d.addEventListener('change', async ()=>{
@@ -87,7 +87,16 @@ function mountManualForm(pre){
   wireLines(); wireCustomerPicker(); recalc();
 }
 function wireLines(){
-  document.querySelectorAll('.l-prod,.l-qty').forEach(el=>el.addEventListener('change', recalc));
+  document.querySelectorAll('.l-prod').forEach(sel=> sel.addEventListener('change', ()=>{
+    // choosing a product fills in its catalog price, which stays editable
+    const priceEl = sel.closest('.line').querySelector('.l-price');
+    const listed = sel.selectedOptions[0]?.dataset.price;
+    if(priceEl && listed != null && listed !== '') priceEl.value = listed;
+    recalc();
+  }));
+  document.querySelectorAll('.l-qty,.l-price').forEach(el=>{
+    el.addEventListener('change', recalc); el.addEventListener('input', recalc);
+  });
 }
 function recalc(){
   const t = collectItems().reduce((a,i)=>a+i.qty*i.unit_price,0);
@@ -98,8 +107,11 @@ function collectItems(){
     const pid = l.querySelector('.l-prod').value;
     const qty = +l.querySelector('.l-qty').value||0;
     if(!pid || qty<=0) return null;
-    const p = V.cache.products.find(x=>x.id===pid);
-    return { product_id:pid, qty, unit_price:+(p?.price||0) };
+    const priceEl = l.querySelector('.l-price');
+    const typed = priceEl && priceEl.value !== '' ? +priceEl.value : null;
+    const listed = +(V.cache.products.find(x=>x.id===pid)?.price || 0);
+    // the agreed price wins; the catalog price is only the starting suggestion
+    return { product_id:pid, qty, unit_price: typed != null && typed >= 0 ? typed : listed };
   }).filter(Boolean);
 }
 function wireCustomerPicker(){
@@ -117,35 +129,6 @@ function wireCustomerPicker(){
         <b>${esc(c.name)}</b><span>${esc(c.phone||'')} · ${esc(c.address||'')} · ${c.last_order_at?dateOnly(c.last_order_at):'לקוח חדש'}</span></button>`).join('')
         : `<div class="hit-none">לא נמצא לקוח קיים. ייווצר לקוח חדש.</div>`;
     }, 140);
-  });
-}
-function wireRecorder(){
-  const btn = $('#rec-btn'); if(!btn) return;
-  let rec, chunks=[];
-  btn.addEventListener('click', async ()=>{
-    if(rec && rec.state==='recording'){
-      rec.stop(); btn.innerHTML = icon('mic',18)+' התחלת הקלטה'; btn.classList.remove('btn-danger'); return;
-    }
-    try{
-      const stream = await navigator.mediaDevices.getUserMedia({ audio:true });
-      rec = new MediaRecorder(stream); chunks=[];
-      rec.ondataavailable = e => chunks.push(e.data);
-      rec.onstop = () => {
-        const blob = new Blob(chunks,{ type:'audio/webm' });
-        const el = $('#rec-play'); el.src = URL.createObjectURL(blob); el.style.display='block';
-        stream.getTracks().forEach(t=>t.stop());
-        toast('ההקלטה נשמרה. מלאו את הפרטים תוך כדי האזנה.','ok');
-      };
-      rec.start(); btn.innerHTML = icon('mic',18)+' עצירת הקלטה'; btn.classList.add('btn-danger');
-    }catch(e){ toast('אין גישה למיקרופון במכשיר הזה','err'); }
-  });
-}
-function wireShot(){
-  const f = $('#shot'); if(!f) return;
-  f.addEventListener('change', ()=>{
-    const file = f.files[0]; if(!file) return;
-    const img = $('#shot-prev'); img.src = URL.createObjectURL(file); img.style.display='block';
-    toast('התמונה נטענה. מלאו את הפרטים לפיה.','ok');
   });
 }
 function wireCustomerSearch(){
@@ -234,9 +217,11 @@ async function quickUpdate(id){
             <button class="pb active" data-pay="paid">שולם</button>
             <button class="pb" data-pay="unpaid">לא שולם</button>
           </div></div>
-        <div class="field" id="pm-wrap"><label>אמצעי תשלום</label>
+        <div class="field" id="pm-wrap"><label>אמצעי תשלום שהוזן</label>
           <div class="seg-big" id="pm">${Object.entries(PAY_METHOD_HE).map(([k,v],i)=>
-            `<button class="mb ${i===0?'active':''}" data-pm="${k}">${esc(v)}</button>`).join('')}</div></div>
+            `<button class="mb ${i===0?'active':''}" data-pm="${k}">${esc(v)}</button>`).join('')}</div>
+          <div class="hint">נרשם לפי דיווחכם בלבד. המערכת אינה מתחברת לבנק, לביט או לארנק ואינה מאמתת קבלת תשלום.</div>
+        </div>
       </div>
       <div class="field" id="cancel-reason" style="display:none"><label>סיבת הביטול</label>
         <input id="q-reason" type="text" placeholder="לא חובה"></div>
@@ -279,7 +264,21 @@ async function quickUpdate(id){
 const H = {
   nav: el => { location.hash = el.dataset.to; },
   'filter-orders': el => { state.ordersFilter = el.dataset.v; route(); },
-  'filter-reports': el => { state.reportsPeriod = el.dataset.v; route(); },
+  'filter-reports': el => {
+    state.reportsPeriod = el.dataset.v;
+    if(el.dataset.v === 'custom' && !state.repFrom){
+      const d = new Date(); d.setDate(d.getDate()-6);
+      state.repFrom = d.toISOString().slice(0,10);
+      state.repTo = new Date().toISOString().slice(0,10);
+    }
+    route();
+  },
+  'apply-range': () => {
+    state.repFrom = $('#rf')?.value || state.repFrom;
+    state.repTo   = $('#rt')?.value || state.repTo;
+    state.reportsPeriod = 'custom';
+    route();
+  },
   'new-mode': el => { state.newMode = el.dataset.v; state.draft=null; route(); },
   'add-line': () => { const box=$('#lines'); const i=box.children.length;
     box.insertAdjacentHTML('beforeend', V.lineHtml({},i)); wireLines(); },

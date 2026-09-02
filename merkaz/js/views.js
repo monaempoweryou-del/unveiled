@@ -2,6 +2,7 @@
 import * as A from './api.js';
 import { esc,n,ils,money,bidi,when,dateOnly,icon,pill,statusPill,payPill,STATUS_HE,PAY_METHOD_HE,
          card,cardHead,pageHead,backLink,empty,notice,dl,bar,chips,stat,row,tbl } from './ui.js';
+import { incomeBars, donut, hBars, PAY_COLORS } from './charts.js';
 
 const t0 = () => { const d=new Date(); d.setHours(0,0,0,0); return d.toISOString(); };
 export const cache = { products:[], stock:[], drivers:[] };
@@ -59,26 +60,12 @@ export async function dashboard(){
 
 // ------------------------------------------------------------------ new order
 export function newOrder(mode='text'){
-  const tabs = [{v:'text',l:'טקסט',i:'text'},{v:'voice',l:'הקלטה',i:'mic'},
-                {v:'photo',l:'צילום מסך',i:'cam'},{v:'manual',l:'טופס',i:'orders'}];
+  const tabs = [{v:'text',l:'טקסט'},{v:'manual',l:'טופס'}];
   let body = '';
   if(mode==='text') body = `
     <div class="field"><label>הדביקו או הקלידו את ההזמנה כפי שהתקבלה</label>
       <textarea id="raw" rows="7" placeholder="לדוגמה:&#10;יעל שטרן&#10;4 מספרים ו־2 סוס&#10;כתובת: הרצל 12 תל אביב&#10;052-3310984"></textarea></div>
     <button class="btn btn-primary btn-lg btn-block" data-act="parse-text">${icon('check',18)} קריאת ההזמנה</button>`;
-  if(mode==='voice') body = `
-    ${notice('ההקלטה נשמרת ומוצגת לצד הטופס כדי שתוכלו למלא תוך כדי האזנה. תמלול אוטומטי יתווסף כשמפתח ה-AI יחובר.','info')}
-    <div style="display:flex;gap:9px;margin-block:14px">
-      <button class="btn btn-primary btn-lg" style="flex:1" id="rec-btn" data-act="rec-toggle">${icon('mic',18)} התחלת הקלטה</button>
-    </div>
-    <audio id="rec-play" controls style="width:100%;display:none;margin-block-end:14px"></audio>
-    <div id="manual-form"></div>`;
-  if(mode==='photo') body = `
-    ${notice('התמונה נשמרת ומוצגת לצד הטופס כדי שתוכלו למלא תוך כדי צפייה. קריאה אוטומטית מהתמונה תתווסף כשמפתח ה-AI יחובר.','info')}
-    <div class="field" style="margin-block-start:14px"><label>צילום מסך של ההזמנה</label>
-      <input id="shot" type="file" accept="image/*" capture="environment"></div>
-    <img id="shot-prev" style="max-width:100%;border-radius:12px;display:none;margin-block-end:14px">
-    <div id="manual-form"></div>`;
   if(mode==='manual') body = `<div id="manual-form"></div>`;
   return `${pageHead('הזמנה חדשה','בחרו איך נוח לכם להזין')}
     ${chips(tabs.map(t=>({v:t.v,l:t.l})), mode, 'new-mode')}
@@ -97,18 +84,22 @@ export function manualFormHtml(pre={}){
     <div class="field"><label>טלפון</label><input id="f-phone" type="tel" value="${esc(pre.phone||'')}"></div>
     <div class="field"><label>כתובת</label><input id="f-addr" type="text" value="${esc(pre.address||'')}"></div>
   </div>
-  <div class="field"><label>פריטים</label><div id="lines">${
+  <div class="field"><label>פריטים</label>
+    <div class="line-head"><span>מוצר</span><span>כמות</span><span>מחיר ליחידה</span><span></span></div>
+    <div id="lines">${
     (items.length?items:[{product_id:'',qty:1}]).map((it,i)=>lineHtml(it,i)).join('')}</div>
     <button class="btn btn-ghost btn-sm" data-act="add-line" style="margin-block-start:8px">${icon('plus',16)} הוספת פריט</button></div>
   <div class="field"><label>הערות והוראות מסירה</label><input id="f-notes" type="text" value="${esc(pre.notes||'')}"></div>
   <div class="tot" id="tot"></div>
-  <button class="btn btn-primary btn-lg btn-block" data-act="review" style="margin-block-start:12px">${icon('check',18)} בדיקה ופתיחת הזמנה</button>`;
+  <button class="btn btn-primary btn-lg btn-block" data-act="review" style="margin-block-start:12px">${icon('check',18)} יצירת הזמנה</button>`;
 }
 export function lineHtml(it={},i=0){
+  const price = it.unit_price ?? (cache.products.find(p=>p.id===it.product_id)?.price ?? '');
   return `<div class="line" data-line="${i}">
     <select class="l-prod">${['<option value="">בחרו מוצר</option>'].concat(
-      cache.products.map(p=>`<option value="${p.id}" ${it.product_id===p.id?'selected':''}>${esc(p.name_he)}</option>`)).join('')}</select>
+      cache.products.map(p=>`<option value="${p.id}" data-price="${p.price}" ${it.product_id===p.id?'selected':''}>${esc(p.name_he)}</option>`)).join('')}</select>
     <input class="l-qty" type="number" min="1" value="${it.qty||1}">
+    <input class="l-price" type="number" min="0" step="0.5" value="${price}" placeholder="מחיר">
     <button class="icon-btn" data-act="del-line" data-i="${i}" aria-label="הסרה">${icon('x',18)}</button></div>`;
 }
 
@@ -302,57 +293,118 @@ export async function movesView(){
 }
 
 // ------------------------------------------------------------------ reports
-export async function reports(period='30'){
-  const from = period==='today'? t0() : new Date(Date.now()-(+period)*864e5).toISOString();
-  const all = await A.orders('');
-  const inRange = o => (o.delivered_at||o.created_at) >= from;
-  const delivered = all.filter(o=>o.status==='delivered' && inRange(o));
-  const revenue = delivered.reduce((a,o)=>a+amountOf(o),0);
-  const paid = delivered.filter(o=>o.payment_status==='paid').reduce((a,o)=>a+amountOf(o),0);
-  const unpaid = revenue - paid;
+// Everything here reflects what the Owner entered. Merkaz does not connect to any
+// payment service and never verifies that money moved.
+function rangeOf(period, customFrom, customTo){
+  const now = new Date();
+  if(period==='today') return { from:t0(), to:null, label:'היום' };
+  if(period==='week'){ const d=new Date(); d.setDate(d.getDate()-6); d.setHours(0,0,0,0);
+    return { from:d.toISOString(), to:null, label:'השבוע' }; }
+  if(period==='month'){ const d=new Date(); d.setDate(d.getDate()-29); d.setHours(0,0,0,0);
+    return { from:d.toISOString(), to:null, label:'החודש' }; }
+  if(period==='custom' && customFrom){
+    const f=new Date(customFrom); f.setHours(0,0,0,0);
+    const t=customTo?new Date(customTo):new Date(); t.setHours(23,59,59,999);
+    return { from:f.toISOString(), to:t.toISOString(), label:'טווח מותאם' };
+  }
+  return { from:t0(), to:null, label:'היום' };
+}
 
+export async function reports(period='today', customFrom=null, customTo=null){
+  const R = rangeOf(period, customFrom, customTo);
+  const all = await A.orders('');
+  const st  = await A.stock(); cache.stock = st;
+
+  const inRange = ts => ts && ts >= R.from && (!R.to || ts <= R.to);
+  const delivered = all.filter(o=>o.status==='delivered' && inRange(o.delivered_at));
+  const cancelled = all.filter(o=>o.status==='cancelled' && inRange(o.updated_at));
+  const openNow   = all.filter(o=>o.status==='open');
+
+  const income  = delivered.reduce((a,o)=>a+amountOf(o),0);
+  const paidSum = delivered.filter(o=>o.payment_status==='paid').reduce((a,o)=>a+amountOf(o),0);
+  const unpaidSum = income - paidSum;
+  const unpaidCount = delivered.filter(o=>o.payment_status==='unpaid').length;
+  const avg = delivered.length ? income/delivered.length : 0;
+  const unitsSold = delivered.reduce((a,o)=>a+(o.order_items||[]).reduce((b,i)=>b+i.qty,0),0);
+
+  // income by day
+  const byDay = {};
+  delivered.forEach(o=>{ const k=(o.delivered_at||'').slice(0,10); byDay[k]=(byDay[k]||0)+amountOf(o); });
+  const dayRows = Object.entries(byDay).sort((a,b)=>a[0].localeCompare(b[0])).map(([k,v])=>({
+    label: dateOnly(k), short: new Date(k).toLocaleDateString('he-IL',{day:'numeric',month:'numeric'}), value:v }));
+
+  // payment method: paid orders by the method entered, plus everything still unpaid
+  const METHODS = ['cash','bit','crypto','other'];
+  const byMethod = Object.fromEntries(METHODS.map(m=>[m,0]));
+  delivered.filter(o=>o.payment_status==='paid').forEach(o=>{
+    const m = METHODS.includes(o.payment_method) ? o.payment_method : 'other';
+    byMethod[m] += amountOf(o);
+  });
+  const slices = METHODS.map(m=>({ label:PAY_METHOD_HE[m], value:byMethod[m], color:PAY_COLORS[m] }))
+    .concat([{ label:'לא שולם', value:unpaidSum, color:PAY_COLORS.unpaid }]);
+
+  // products sold
   const byProduct = {};
   delivered.forEach(o=>(o.order_items||[]).forEach(i=>{
     const k=i.products?.name_he||pName(i.product_id);
     (byProduct[k] ||= {qty:0,rev:0}); byProduct[k].qty+=i.qty; byProduct[k].rev+=i.qty*i.unit_price; }));
-  const byCustomer = {};
-  delivered.forEach(o=>{ const k=o.customers?.name||'—'; (byCustomer[k] ||= 0); byCustomer[k]+=amountOf(o); });
-  const byMethod = {};
-  delivered.filter(o=>o.payment_status==='paid').forEach(o=>{
-    const k=PAY_METHOD_HE[o.payment_method]||'אחר'; (byMethod[k] ||= 0); byMethod[k]+=amountOf(o); });
-  const byDate = {};
-  delivered.forEach(o=>{ const k=(o.delivered_at||'').slice(0,10); (byDate[k] ||= 0); byDate[k]+=amountOf(o); });
-  window.__rep = { delivered, byProduct, byCustomer, byMethod, byDate, all };
+  const prodRows = Object.entries(byProduct).sort((a,b)=>b[1].qty-a[1].qty)
+    .map(([k,v])=>({ label:k, value:v.qty, sub:`הכנסה מדווחת ${money(v.rev)}` }));
 
-  const maxRev = Math.max(1,...Object.values(byProduct).map(v=>v.rev));
-  return `${pageHead('דוחות','רק הזמנות שנמסרו נספרות כמכירה')}
-  ${chips([{v:'today',l:'היום'},{v:'7',l:'7 ימים'},{v:'30',l:'30 יום'},{v:'90',l:'90 יום'},{v:'3650',l:'הכול'}],period,'filter-reports')}
-  <div class="grid grid-3" style="margin-block-end:14px">
-    ${stat({label:'מכירות',value:ils(revenue),meta:`${delivered.length} הזמנות`,tone:'ok'})}
-    ${stat({label:'נגבה',value:ils(paid),tone:'ok'})}
-    ${stat({label:'חוב פתוח',value:ils(unpaid),tone:unpaid?'danger':'ok'})}
+  const low = st.filter(s=>s.low_stock_threshold!=null && s.available<=s.low_stock_threshold);
+  window.__rep = { all, delivered, byProduct, byMethod, byDay, range:R };
+
+  return `${pageHead('דוחות','לפי מה שהוזן במערכת. אין חיבור לאמצעי תשלום ואין אימות של קבלת כסף.')}
+
+  <div class="rng">
+    ${[['today','היום'],['week','השבוע'],['month','החודש'],['custom','טווח מותאם']].map(([v,l])=>
+      `<button class="rng-b ${period===v?'active':''}" data-act="filter-reports" data-v="${v}">${l}</button>`).join('')}
   </div>
-  <div class="page-actions" style="margin-block-end:14px">
+  ${period==='custom'?`<div class="rng-custom">
+    <label>מתאריך<input type="date" id="rf" value="${customFrom||''}"></label>
+    <label>עד<input type="date" id="rt" value="${customTo||''}"></label>
+    <button class="btn btn-primary btn-sm" data-act="apply-range">הצגה</button></div>`:''}
+
+  <div class="grid grid-2" style="margin-block-end:12px">
+    ${stat({label:'הכנסה מדווחת',value:ils(income),meta:R.label,tone:'ok'})}
+    ${stat({label:'הזמנות שהושלמו',value:n(delivered.length),meta:`${unitsSold} יחידות`,tone:'info'})}
+  </div>
+  <div class="grid grid-2" style="margin-block-end:12px">
+    ${stat({label:'שולם לפי דיווח',value:ils(paidSum),tone:'ok'})}
+    ${stat({label:'טרם שולם',value:ils(unpaidSum),meta:`${unpaidCount} הזמנות`,tone:unpaidSum?'danger':'ok'})}
+  </div>
+  <div class="grid grid-2" style="margin-block-end:14px">
+    ${stat({label:'ממוצע להזמנה',value:ils(avg)})}
+    ${stat({label:'יחידות שנמכרו',value:n(unitsSold)})}
+  </div>
+
+  ${card(cardHead('הכנסה מדווחת לאורך זמן','לפי יום המסירה') + `<div class="card-body">${incomeBars(dayRows)}</div>`)}
+
+  ${card(cardHead('פילוח לפי אמצעי תשלום שהוזן','הסכומים הם מה שדווח, לא אישור מהבנק')
+    + `<div class="card-body">${donut(slices)}</div>`)}
+
+  ${card(cardHead('סיכום הזמנות') + `<div class="card-body"><div class="grid grid-2">
+      ${stat({label:'פתוחות',value:n(openNow.length),tone:'info',to:'#/orders?f=open'})}
+      ${stat({label:'נמסרו',value:n(delivered.length),tone:'ok',to:'#/orders?f=delivered'})}
+      ${stat({label:'בוטלו',value:n(cancelled.length),to:'#/orders?f=cancelled'})}
+      ${stat({label:'לא שולמו',value:n(unpaidCount),tone:unpaidCount?'danger':'',to:'#/orders?f=unpaid'})}
+    </div></div>`)}
+
+  ${card(cardHead('מוצרים שנמכרו','כמויות שנמסרו בתקופה') + `<div class="card-body">${hBars(prodRows)}</div>`)}
+
+  ${card(cardHead('מצב מלאי','נכון לעכשיו, לא תלוי בטווח התאריכים') + `<div class="card-body">
+    ${low.length?notice(`<b>${low.length} מוצרים מתחת לסף:</b> ${esc(low.map(l=>l.name_he).join(', '))}`,'warn'):''}
+    ${hBars(st.map(s=>({ label:s.name_he, value:s.available,
+        sub:`פיזי ${s.physical} · משוריין ${s.reserved}`,
+        color:(s.low_stock_threshold!=null && s.available<=s.low_stock_threshold)?'#B45309':undefined })),{unit:'זמין'})}
+  </div>`)}
+
+  ${card(cardHead('ייצוא','אופציונלי. הדוח המלא מוצג כאן במסך.') + `<div class="card-foot">
     <button class="btn btn-ghost btn-sm" data-act="csv-orders">${icon('down',16)} הזמנות</button>
-    <button class="btn btn-ghost btn-sm" data-act="csv-products">${icon('down',16)} לפי מוצר</button>
-    <button class="btn btn-ghost btn-sm" data-act="csv-customers">${icon('down',16)} יתרות לקוחות</button>
+    <button class="btn btn-ghost btn-sm" data-act="csv-products">${icon('down',16)} מוצרים</button>
+    <button class="btn btn-ghost btn-sm" data-act="csv-customers">${icon('down',16)} לקוחות</button>
     <button class="btn btn-ghost btn-sm" data-act="csv-stock">${icon('down',16)} מלאי</button>
-  </div>
-  ${card(cardHead('מכירות לפי מוצר') + (Object.keys(byProduct).length?`<ul class="list">${
-    Object.entries(byProduct).sort((a,b)=>b[1].rev-a[1].rev).map(([k,v])=>`<div class="row"><div class="row-main">
-      <div class="row-title">${esc(k)}</div><div class="row-sub">${v.qty} יחידות</div>${bar(v.rev/maxRev*100)}</div>
-      <div class="row-end"><span class="row-value">${ils(v.rev)}</span></div></div>`).join('')}</ul>`:empty('אין מכירות בתקופה','','chart')))}
-  ${card(cardHead('מכירות לפי תאריך') + (Object.keys(byDate).length?`<ul class="list">${
-    Object.entries(byDate).sort((a,b)=>b[0].localeCompare(a[0])).slice(0,14).map(([k,v])=>row({
-      title:dateOnly(k), end:`<span class="row-value">${ils(v)}</span>`, chev:false })).join('')}</ul>`:empty('אין נתונים')))}
-  <div class="grid grid-2">
-    ${card(cardHead('לפי לקוח')+`<div class="card-body">${Object.keys(byCustomer).length
-      ?dl(Object.entries(byCustomer).sort((a,b)=>b[1]-a[1]).slice(0,10).map(([k,v])=>[k,ils(v)]))
-      :'<span style="color:var(--muted);font-size:13.5px">אין נתונים</span>'}</div>`)}
-    ${card(cardHead('אמצעי תשלום')+`<div class="card-body">${Object.keys(byMethod).length
-      ?dl(Object.entries(byMethod).map(([k,v])=>[k,ils(v)]))
-      :'<span style="color:var(--muted);font-size:13.5px">אין נתונים</span>'}</div>`)}
-  </div>`;
+  </div>`)}`;
 }
 
 // ------------------------------------------------------------------ settings
