@@ -2,7 +2,7 @@
 import * as A from './api.js';
 import { esc,n,ils,money,bidi,when,dateOnly,icon,pill,statusPill,payPill,STATUS_HE,PAY_METHOD_HE,
          card,cardHead,pageHead,backLink,empty,notice,dl,bar,chips,stat,row,tbl } from './ui.js';
-import { incomeBars, donut, hBars, PAY_COLORS } from './charts.js';
+import { incomeBars, donut, hBars, PAY_COLORS, PAY_RING } from './charts.js';
 
 const t0 = () => { const d=new Date(); d.setHours(0,0,0,0); return d.toISOString(); };
 export const cache = { products:[], stock:[], drivers:[] };
@@ -90,6 +90,12 @@ export function manualFormHtml(pre={}){
     (items.length?items:[{product_id:'',qty:1}]).map((it,i)=>lineHtml(it,i)).join('')}</div>
     <button class="btn btn-ghost btn-sm" data-act="add-line" style="margin-block-start:8px">${icon('plus',16)} הוספת פריט</button></div>
   <div class="field"><label>הערות והוראות מסירה</label><input id="f-notes" type="text" value="${esc(pre.notes||'')}"></div>
+  <div class="field"><label>אמצעי תשלום צפוי</label>
+    <select id="f-pm">
+      <option value="">לא נקבע עדיין</option>
+      ${Object.entries(PAY_METHOD_HE).map(([k,v])=>`<option value="${k}" ${pre.payment_method===k?'selected':''}>${esc(v)}</option>`).join('')}
+    </select>
+    <div class="hint">רק לתיעוד. התשלום עצמו נרשם כשההזמנה מסומנת כנמסרה.</div></div>
   <div class="tot" id="tot"></div>
   <button class="btn btn-primary btn-lg btn-block" data-act="review" style="margin-block-start:12px">${icon('check',18)} יצירת הזמנה</button>`;
 }
@@ -179,7 +185,9 @@ export function driverMessage(o){
     '',
     ...(o.order_items||[]).map(i=>`${i.products?.name_he||pName(i.product_id)} × ${i.qty}`),
     '',
-    o.payment_status!=='paid' ? `לגבייה: ${money(amountOf(o))}` : 'שולם מראש',
+    o.payment_status!=='paid'
+      ? `לגבייה: ${money(amountOf(o))}${o.payment_method ? ' · ' + (PAY_METHOD_HE[o.payment_method]||'') : ''}`
+      : 'שולם מראש',
     o.instructions?`הוראות: ${o.instructions}`:'',
     o.notes?`הערות: ${o.notes}`:'',
   ];
@@ -334,14 +342,15 @@ export async function reports(period='today', customFrom=null, customTo=null){
     label: dateOnly(k), short: new Date(k).toLocaleDateString('he-IL',{day:'numeric',month:'numeric'}), value:v }));
 
   // payment method: paid orders by the method entered, plus everything still unpaid
-  const METHODS = ['cash','bit','crypto','other'];
+  const METHODS = Object.keys(PAY_METHOD_HE);
   const byMethod = Object.fromEntries(METHODS.map(m=>[m,0]));
   delivered.filter(o=>o.payment_status==='paid').forEach(o=>{
     const m = METHODS.includes(o.payment_method) ? o.payment_method : 'other';
     byMethod[m] += amountOf(o);
   });
-  const slices = METHODS.map(m=>({ label:PAY_METHOD_HE[m], value:byMethod[m], color:PAY_COLORS[m] }))
-    .concat([{ label:'לא שולם', value:unpaidSum, color:PAY_COLORS.unpaid }]);
+  const slices = PAY_RING.map(k => k==='unpaid'
+    ? { label:'לא שולם', value:unpaidSum, color:PAY_COLORS.unpaid }
+    : { label:PAY_METHOD_HE[k], value:byMethod[k], color:PAY_COLORS[k] });
 
   // products sold
   const byProduct = {};

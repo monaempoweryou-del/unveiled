@@ -6,8 +6,12 @@ import { esc, money, n } from './ui.js';
 // Validated for colour-vision deficiency; every segment is also directly labelled,
 // so identity never depends on colour alone.
 export const PAY_COLORS = {
-  cash:'#067A4E', bit:'#1D4ED8', crypto:'#B45309', other:'#7C3AED', unpaid:'#B3261E',
+  cash:'#067A4E', bit:'#1D4ED8', paybox:'#C2410C', card:'#7C3AED', crypto:'#0D9488',
+  unpaid:'#B3261E', other:'#4338CA',
 };
+// Ring order for the donut. Chosen so no two neighbours (including the wrap from
+// the last slice back to the first) fall in the colour-blind confusion band.
+export const PAY_RING = ['cash','bit','paybox','card','crypto','unpaid','other'];
 const INK='#0B1220', MUTED='#64748B', GRID='#E3E8EF', BRAND='#0E5F66';
 
 const fmtShort = v => v>=1000 ? (v/1000).toFixed(v>=10000?0:1).replace('.0','')+'K' : String(Math.round(v));

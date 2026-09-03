@@ -163,6 +163,7 @@ async function reviewAndOpen(){
   const phone = $('#f-phone')?.value.trim() || null;
   const address = $('#f-addr')?.value.trim() || null;
   const notesV = $('#f-notes')?.value.trim() || null;
+  const pm = $('#f-pm')?.value || null;
   const custId = $('#cust-id')?.value || null;
   const total = items.reduce((a,i)=>a+i.qty*i.unit_price,0);
   const missing = [];
@@ -176,6 +177,7 @@ async function reviewAndOpen(){
         <div class="rev"><span>טלפון</span><b>${esc(phone||'—')}</b></div>
         <div class="rev"><span>כתובת</span><b>${esc(address||'—')}</b></div>
         ${notesV?`<div class="rev"><span>הערות</span><b>${esc(notesV)}</b></div>`:''}
+        ${pm?`<div class="rev"><span>אמצעי תשלום צפוי</span><b>${esc(PAY_METHOD_HE[pm]||pm)}</b></div>`:''}
       </div>
       <div style="border-block-start:1px solid var(--line-2);padding-block-start:10px">
       ${items.map(i=>`<div class="rev"><span>${esc(V.cache.products.find(p=>p.id===i.product_id)?.name_he)} × ${i.qty}</span><b>${money(i.qty*i.unit_price)}</b></div>`).join('')}
@@ -190,7 +192,7 @@ async function reviewAndOpen(){
           if(phone){ const ex = await A.findByPhone(phone); if(ex) cid = ex.id; }
           if(!cid) cid = (await A.upsertCustomer({ name, phone, address })).id;
         }
-        const d = await A.createDraft({ customer_id:cid, items, address, notes:notesV,
+        const d = await A.createDraft({ customer_id:cid, items, address, notes:notesV, payment_method: pm,
           source: state.newMode==='manual'?'manual':state.newMode, raw_input: state.draft?.raw || null });
         const o = await A.openOrder(d.id);
         closeModal(); state.draft=null;
@@ -219,7 +221,7 @@ async function quickUpdate(id){
           </div></div>
         <div class="field" id="pm-wrap"><label>אמצעי תשלום שהוזן</label>
           <div class="seg-big" id="pm">${Object.entries(PAY_METHOD_HE).map(([k,v],i)=>
-            `<button class="mb ${i===0?'active':''}" data-pm="${k}">${esc(v)}</button>`).join('')}</div>
+            `<button class="mb ${(o.payment_method ? k===o.payment_method : i===0)?'active':''}" data-pm="${k}">${esc(v)}</button>`).join('')}</div>
           <div class="hint">נרשם לפי דיווחכם בלבד. המערכת אינה מתחברת לבנק, לביט או לארנק ואינה מאמתת קבלת תשלום.</div>
         </div>
       </div>
@@ -229,7 +231,7 @@ async function quickUpdate(id){
     foot:`<button class="btn btn-primary" id="save">שמירה</button>
           <button class="btn btn-ghost" data-close="1">ביטול</button>`,
     onMount:r=>{
-      let outcome='delivered', pay='paid', method='cash';
+      let outcome='delivered', pay='paid', method = o.payment_method || 'cash';
       r.querySelectorAll('.ocb').forEach(b=>b.addEventListener('click',()=>{
         r.querySelectorAll('.ocb').forEach(x=>x.classList.remove('active')); b.classList.add('active');
         outcome=b.dataset.oc;

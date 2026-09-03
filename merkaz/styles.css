@@ -338,7 +338,8 @@ pre.raw{white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--
 .seg-big button{padding:13px 10px;border-radius:var(--r-sm);border:1px solid var(--line);
   background:var(--surface);font-size:15px;font-weight:500;color:var(--ink-2);min-height:50px}
 .seg-big button.active{background:var(--brand);color:#fff;border-color:var(--brand)}
-#pm.seg-big{grid-auto-flow:row;grid-template-columns:1fr 1fr}
+#pm.seg-big{grid-auto-flow:row;grid-template-columns:1fr 1fr 1fr}
+#pm.seg-big button{padding:11px 6px;font-size:14px}
 .prog{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
   padding:14px 16px;margin-block-end:14px;box-shadow:var(--sh-1);font-size:14.5px}
 .searchbar{display:flex;align-items:center;gap:9px;background:var(--surface);border:1px solid var(--line);

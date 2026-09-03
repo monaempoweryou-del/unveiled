@@ -49,7 +49,7 @@ export const statusPill = s=>pill(STATUS_HE[s]||s, STATUS_TONE[s]||'muted');
 export const payPill = p=>pill(p==='paid'?'שולם לפי דיווח':'לא שולם', p==='paid'?'ok':'danger');
 // The only accepted methods. Merkaz records what the Owner enters; it never
 // connects to a bank, wallet or card processor and never verifies a payment.
-export const PAY_METHOD_HE={cash:'מזומן',bit:'ביט',crypto:'קריפטו',other:'אחר'};
+export const PAY_METHOD_HE={cash:'מזומן',bit:'ביט',paybox:'פייבוקס',card:'אשראי',crypto:'קריפטו',other:'אחר'};
 
 export const card=(inner,cls='')=>`<div class="card ${cls}">${inner}</div>`;
 export const cardHead=(t,sub='',right='')=>`<div class="card-head"><h2>${esc(t)}</h2>${right}${sub?`<div class="sub">${esc(sub)}</div>`:''}</div>`;

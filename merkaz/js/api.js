@@ -114,10 +114,13 @@ export async function upsertCustomer(c){
 }
 
 // ---------------------------------------------------------------- orders
-export async function createDraft({ customer_id, items, address, instructions, notes, source, raw_input, attachment_url }){
+export async function createDraft({ customer_id, items, address, instructions, notes, source, raw_input, attachment_url, payment_method }){
   const total = items.reduce((a,i)=>a + i.qty*i.unit_price, 0);
+  // payment_method here is the expected method noted at order time. It is a note
+  // only; the order stays unpaid until the Owner records the delivery.
   const o = (await post('orders', { customer_id, address, instructions, notes,
     source: source||'manual', raw_input: raw_input||null, attachment_url: attachment_url||null,
+    payment_method: payment_method||null,
     total, status:'draft', created_by: myId(), updated_by: myId() }))[0];
   if(items.length) await post('order_items', items.map(i=>({ order_id:o.id, product_id:i.product_id, qty:i.qty, unit_price:i.unit_price })));
   await log('order', o.id, 'draft_created', null, { total, items: items.length });
