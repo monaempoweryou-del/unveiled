@@ -3,6 +3,7 @@ import * as A from './api.js';
 import { esc,n,ils,money,bidi,when,dateOnly,icon,pill,statusPill,payPill,STATUS_HE,PAY_METHOD_HE,
          card,cardHead,pageHead,backLink,empty,notice,dl,bar,chips,stat,row,tbl } from './ui.js';
 import { incomeBars, donut, hBars, PAY_COLORS, PAY_RING } from './charts.js';
+import { reconcileDrivers, DRIVER_FEE } from './recon.js';
 
 const t0 = () => { const d=new Date(); d.setHours(0,0,0,0); return d.toISOString(); };
 export const cache = { products:[], stock:[], drivers:[] };
@@ -318,10 +319,59 @@ function rangeOf(period, customFrom, customTo){
   return { from:t0(), to:null, label:'היום' };
 }
 
+// ---- התחשבנות נהגים: display only. Never touches revenue, payment method, or totals.
+function rcLine(label, val, cls=''){ return `<div class="rc-line ${cls}"><span>${label}</span><b class="cur">${val}</b></div>`; }
+function driverReconHtml(all, R, drivers){
+  const rc = reconcileDrivers(all, { from:R.from, to:R.to, drivers });
+  const head = cardHead('התחשבנות נהגים', `₪${DRIVER_FEE} לכל משלוח שנמסר, מקוזז מהמזומן שהנהג גבה. יתרה שלא כוסתה עוברת ליום הבא. תצוגה בלבד.`);
+  if(!rc.drivers.length) return card(head + `<div class="card-body" style="color:var(--muted)">אין נהגים עדיין.</div>`);
+  const cards = rc.drivers.map(d=>{
+    const days = d.days.map(x=>`<div class="rc-day">
+      <div class="rc-day-h"><span>${dateOnly(x.date)}</span><span class="cur">${x.delivered} משלוחים</span></div>
+      <div class="rc-day-g">
+        <span>שכר היום</span><b class="cur">${ils(x.earned)}</b>
+        <span>יתרת פתיחה</span><b class="cur">${ils(x.opening)}</b>
+        <span>מזומן שהתקבל</span><b class="cur">${ils(x.cash)}</b>
+        <span>הנהג מקזז</span><b class="cur">${ils(x.kept)}</b>
+        <span>להעביר לבעלים</span><b class="cur">${ils(x.toOwner)}</b>
+        <span>יתרה לנהג בסוף היום</span><b class="cur">${ils(x.closing)}</b>
+      </div></div>`).join('');
+    return `<div class="rc ${d.status}">
+      <div class="rc-head"><h3>${esc(d.name)}</h3>${d.status==='owed'?pill('החברה חייבת','warn'):d.status==='transfer'?pill('יש להעביר','ok'):pill('מאוזן','')}</div>
+      <div class="rc-lines">
+        ${rcLine('משלוחים', n(d.delivered))}
+        ${rcLine('שכר עבור התקופה', ils(d.pay))}
+        ${rcLine('יתרת פתיחה', ils(d.opening))}
+        ${rcLine('סה״כ מגיע לנהג', ils(d.totalDue))}
+        ${rcLine('מזומן שהתקבל', ils(d.cash))}
+        ${rcLine('הנהג מקזז', ils(d.kept))}
+        ${d.owed>0 && d.toOwner>0 ? rcLine('להעביר לבעלים', ils(d.toOwner)) : ''}
+        ${d.status==='owed' ? rcLine('החברה חייבת לנהג', ils(d.owed), 'final owed')
+          : rcLine('להעביר לבעלים', ils(d.toOwner), 'final '+d.status)}
+      </div>
+      ${d.days.length?`<details><summary>פירוט יומי (${d.days.length} ימים)</summary>${days}</details>`:''}
+    </div>`;
+  }).join('');
+  const c = rc.combined;
+  const combined = rc.drivers.length>1 ? `<div class="rc" style="margin-block-start:12px">
+    <div class="rc-head"><h3>כל הנהגים יחד</h3></div>
+    <div class="rc-lines">
+      ${rcLine('משלוחים', n(c.delivered))}
+      ${rcLine('שכר כולל', ils(c.pay))}
+      ${rcLine('מזומן שהתקבל', ils(c.cash))}
+      ${rcLine('להעביר לבעלים', ils(c.toOwner))}
+      ${rcLine('החברה חייבת לנהגים', ils(c.owed))}
+    </div>
+    <div class="card-foot" style="color:var(--muted);font-size:12.5px">היתרות נשארות נפרדות לכל נהג ואינן מתקזזות זו בזו.</div>
+  </div>` : '';
+  return card(head + `<div class="card-body">${cards}${combined}</div>`);
+}
+
 export async function reports(period='today', customFrom=null, customTo=null){
   const R = rangeOf(period, customFrom, customTo);
   const all = await A.orders('');
   const st  = await A.stock(); cache.stock = st;
+  const drivers = await A.drivers();
 
   const inRange = ts => ts && ts >= R.from && (!R.to || ts <= R.to);
   const delivered = all.filter(o=>o.status==='delivered' && inRange(o.delivered_at));
@@ -408,6 +458,8 @@ export async function reports(period='today', customFrom=null, customTo=null){
         color:(s.low_stock_threshold!=null && s.available<=s.low_stock_threshold)?'#B45309':undefined })),{unit:'זמין'})}
   </div>`)}
 
+  ${driverReconHtml(all, R, drivers)}
+
   ${card(cardHead('ייצוא','אופציונלי. הדוח המלא מוצג כאן במסך.') + `<div class="card-foot">
     <button class="btn btn-ghost btn-sm" data-act="csv-orders">${icon('down',16)} הזמנות</button>
     <button class="btn btn-ghost btn-sm" data-act="csv-products">${icon('down',16)} מוצרים</button>
@@ -418,7 +470,7 @@ export async function reports(period='today', customFrom=null, customTo=null){
 
 // ------------------------------------------------------------------ settings
 export async function settings(){
-  const [ds, ps] = await Promise.all([A.allDrivers(), A.products()]);
+  const [ds, ps, ar] = await Promise.all([A.allDrivers(), A.products(), A.archives().catch(()=>[])]);
   cache.drivers = ds.filter(d=>d.active); cache.products = ps;
   const u = A.me();
   return `${pageHead('הגדרות')}
@@ -436,7 +488,20 @@ export async function settings(){
   ${card(cardHead('משתמש מחובר')+`<div class="card-body">${dl([
     ['שם', esc(u?.name||'—')], ['תפקיד', u?.role==='owner'?'בעלים':'מוקד'],
   ])}<button class="btn btn-ghost btn-block" data-act="signout" style="margin-block-start:12px">${icon('out',16)} יציאה</button></div>`)}
-  ${card(cardHead('יומן פעילות')+`<div class="card-body"><button class="btn btn-ghost btn-block" data-act="nav" data-to="#/activity">צפייה ביומן</button></div>`)}`;
+  ${card(cardHead('יומן פעילות')+`<div class="card-body"><button class="btn btn-ghost btn-block" data-act="nav" data-to="#/activity">צפייה ביומן</button></div>`)}
+
+  ${card(cardHead('תיקון הזמנה שהושלמה','עריכה או מחיקה של הזמנה שכבר נמסרה או בוטלה. כל שינוי נרשם ביומן.')+`<div class="card-body">
+    <div class="fixrow"><input type="tel" id="fix-no" inputmode="numeric" placeholder="מספר הזמנה, למשל 1001">
+    <button class="btn btn-primary" data-act="find-done-order">${icon('search',16)} חיפוש</button></div>
+  </div>`)}
+
+  ${card(cardHead('איפוס מערכת','שומר את כל הנתונים עד עכשיו בארכיון, ואז מתחיל מחדש: אפס מלאי, אפס הזמנות. לקוחות, שליחים ומוצרים נשארים. דורש סיסמה.')+`<div class="card-body">
+    <button class="btn btn-danger btn-block" data-act="reset-system">${icon('alert',16)} איפוס מערכת</button>
+    ${ar.length?`<div class="arch-title">ארכיונים שנשמרו</div><ul class="list">${ar.map(a=>row({
+      title:esc(a.label||'איפוס')+' · '+when(a.created_at),
+      sub:`${n(a.counts?.orders||0)} הזמנות · ${n(a.counts?.inventory_movements||0)} תנועות מלאי · ${n(a.counts?.customers||0)} לקוחות`,
+      end:`<button class="btn btn-sm btn-ghost" data-act="download-archive" data-id="${a.id}">${icon('down',16)} הורדה</button>`, chev:false })).join('')}</ul>`:''}
+  </div>`)}`;
 }
 
 export async function activityView(){

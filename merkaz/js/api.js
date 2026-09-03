@@ -225,3 +225,25 @@ export async function saveProduct(p){
   if(p.id){ const r = await patch(`products?id=eq.${p.id}`, p); await log('product', p.id,'update',null,r[0]); return r[0]; }
   const r = await post('products', p); await log('product', r[0].id,'create',null,r[0]); return r[0];
 }
+
+// ---- settings tools: re-verify the access code, fix or remove a completed order, full reset with archive
+export async function verifyCode(code){
+  const role = me()?.role === 'dispatcher' ? 'dispatcher' : 'owner';
+  await exchangeCode(code, role);          // server-side check; the returned session is discarded
+  return true;
+}
+export const findByOrderNo = no => get(`orders?order_no=eq.${encodeURIComponent(no)}&select=*,customers(name,phone,address),drivers(name),order_items(*,products(name_he))`).then(r=>r[0]||null);
+export async function deleteOrder(id, reason){
+  const before = await order(id);
+  await rest(`inventory_movements?order_id=eq.${id}`, { method:'DELETE', prefer:'return=minimal' });
+  await rest(`order_items?order_id=eq.${id}`,        { method:'DELETE', prefer:'return=minimal' });
+  await rest(`orders?id=eq.${id}`,                   { method:'DELETE', prefer:'return=minimal' });
+  await log('order', id, 'delete', before, { reason });
+  return before;
+}
+export const archives    = () => get('archives?select=id,created_at,label,counts&order=created_at.desc');
+export const archiveData = id => get(`archives?id=eq.${id}&select=*`).then(r=>r[0]||null);
+export async function resetSystem(label){
+  const r = await rest('rpc/reset_system', { method:'POST', body: JSON.stringify({ p_label: label || null }) });
+  return r;
+}

@@ -4,7 +4,7 @@ import * as V from './views.js';
 import { parseOrder } from './parse.js';
 import { wireCharts } from './charts.js';
 import { esc,n,ils,money,icon,pill,notice,toast,modal,closeModal,qtyField,wireQty,
-         spinner,downloadCSV,PAY_METHOD_HE,dateOnly,when } from './ui.js';
+         spinner,downloadCSV,PAY_METHOD_HE,dateOnly,when, downloadText } from './ui.js';
 
 const $ = s => document.querySelector(s);
 const ALIASES = { 'מספרים':['דוקטור'] };   // confirmed alias, editable in a later pass
@@ -360,6 +360,20 @@ const H = {
   'new-product': () => editProduct(null),
   'edit-product': el => editProduct(el.dataset.id),
 
+  // ---- settings tools
+  'find-done-order': async () => {
+    const no = ($('#fix-no').value||'').trim(); if(!no) return toast('הזינו מספר הזמנה','err');
+    const o = await A.findByOrderNo(no); if(!o) return toast(`הזמנה #${no} לא נמצאה`,'err');
+    if(o.status==='open' || o.status==='draft'){ location.hash = `#/order/${o.id}`; return toast('ההזמנה עדיין פתוחה. עורכים אותה ממסך ההזמנה.','info'); }
+    fixOrder(o);
+  },
+  'reset-system': () => resetSystemFlow(),
+  'download-archive': async el => {
+    const a = await A.archiveData(el.dataset.id); if(!a) return toast('הארכיון לא נמצא','err');
+    downloadText(`merkaz-archive-${(a.created_at||'').slice(0,10)}.json`, JSON.stringify(a, null, 2));
+    toast('הארכיון הורד','ok');
+  },
+
   'csv-orders': () => {
     const rows = [['מספר','תאריך','לקוח','טלפון','כתובת','סטטוס','תשלום','אמצעי','סכום','פריטים']];
     (window.__rep?.all||[]).forEach(o=>rows.push([o.order_no||'', (o.delivered_at||o.created_at||'').slice(0,10),
@@ -433,6 +447,64 @@ async function editCustomer(id){
         address:v('address'), instructions:v('instructions'), notes:v('notes') });
         closeModal(); toast('נשמר','ok'); route(); }catch(e){ toast(e.message,'err'); } })});
 }
+// ---- fix or remove an order that was already delivered or cancelled (Settings)
+function localDT(ts){ if(!ts) return ''; const d=new Date(ts); const z=n=>String(n).padStart(2,'0');
+  return `${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())}T${z(d.getHours())}:${z(d.getMinutes())}`; }
+function fixOrder(o){
+  const drivers = V.cache.drivers || [];
+  modal({ title:`תיקון הזמנה #${o.order_no}`,
+    body:`${notice(`${esc(o.customers?.name||'')} · ${esc(V.itemsText(o))}<br>סטטוס: ${({delivered:'נמסרה',cancelled:'בוטלה'})[o.status]||o.status}. כל שינוי נרשם ביומן הפעילות.`,'info')}
+      <div class="field"><label>סכום סופי (₪)</label><input id="x-amt" type="number" inputmode="decimal" value="${o.final_amount??o.total??0}"></div>
+      <div class="field"><label>תשלום לפי דיווח</label><select id="x-ps">
+        <option value="paid" ${o.payment_status==='paid'?'selected':''}>שולם</option>
+        <option value="unpaid" ${o.payment_status!=='paid'?'selected':''}>לא שולם</option></select></div>
+      <div class="field"><label>אמצעי תשלום שהוזן</label><select id="x-pm">
+        ${Object.entries(PAY_METHOD_HE).map(([k,l])=>`<option value="${k}" ${o.payment_method===k?'selected':''}>${l}</option>`).join('')}</select></div>
+      <div class="field"><label>שליח</label><select id="x-drv"><option value="">ללא שליח</option>
+        ${drivers.map(d=>`<option value="${d.id}" ${o.driver_id===d.id?'selected':''}>${esc(d.name)}</option>`).join('')}</select></div>
+      ${o.status==='delivered'?`<div class="field"><label>מועד מסירה</label><input id="x-at" type="datetime-local" value="${localDT(o.delivered_at)}"></div>`:''}
+      <div class="field"><label>הערות</label><input id="x-notes" type="text" value="${esc(o.notes||'')}"></div>`,
+    foot:`<button class="btn btn-primary" id="go">שמירה</button><button class="btn btn-danger" id="del">מחיקת ההזמנה</button><button class="btn btn-ghost" data-close="1">ביטול</button>`,
+    onMount:r=>{
+      r.querySelector('#go').addEventListener('click', async()=>{
+        const ps = r.querySelector('#x-ps').value;
+        const fields = { final_amount:+r.querySelector('#x-amt').value||0, payment_status:ps,
+          payment_method: ps==='paid' ? r.querySelector('#x-pm').value : null,
+          driver_id: r.querySelector('#x-drv').value||null, notes: r.querySelector('#x-notes').value.trim()||null };
+        const at = r.querySelector('#x-at'); if(at && at.value) fields.delivered_at = new Date(at.value).toISOString();
+        try{ await A.updateOrderFields(o.id, fields); closeModal(); toast(`הזמנה #${o.order_no} עודכנה`,'ok'); route(); }
+        catch(e){ toast(e.message,'err'); }
+      });
+      r.querySelector('#del').addEventListener('click', ()=>{
+        modal({ title:`מחיקת הזמנה #${o.order_no}`,
+          body:`<div class="reset-warn">ההזמנה תימחק לצמיתות. תנועות המלאי שלה יבוטלו והמלאי יחזור למצבו הקודם. הפעולה נרשמת ביומן.</div>`,
+          foot:`<button class="btn btn-danger" id="go">מחיקה</button><button class="btn btn-ghost" data-close="1">ביטול</button>`,
+          onMount:r2=>r2.querySelector('#go').addEventListener('click', async()=>{
+            try{ await A.deleteOrder(o.id, 'נמחקה מהגדרות'); closeModal(); toast(`הזמנה #${o.order_no} נמחקה`,'ok'); route(); }
+            catch(e){ toast(e.message,'err'); } }) });
+      });
+    }});
+}
+
+// ---- full reset: archive everything, then zero inventory and zero orders. Password required.
+function resetSystemFlow(){
+  modal({ title:'איפוס מערכת',
+    body:`<div class="reset-warn"><b>הפעולה בלתי הפיכה.</b> כל ההזמנות, תנועות המלאי ויומן הפעילות עד עכשיו יישמרו בארכיון שניתן להוריד, ואז המערכת תתחיל מחדש: אפס מלאי, אפס הזמנות. לקוחות, שליחים ומוצרים נשארים.</div>
+      <div class="field"><label>שם לארכיון (לא חובה)</label><input id="rs-label" type="text" placeholder="למשל: סוף עונה"></div>
+      <div class="field"><label>סיסמה לאישור</label><input id="rs-pw" type="password" inputmode="numeric" autocomplete="off"></div>`,
+    foot:`<button class="btn btn-danger" id="go">איפוס עכשיו</button><button class="btn btn-ghost" data-close="1">ביטול</button>`,
+    onMount:r=>r.querySelector('#go').addEventListener('click', async()=>{
+      const pw = r.querySelector('#rs-pw').value.trim(); if(!pw) return toast('הזינו סיסמה','err');
+      const go = r.querySelector('#go'); go.disabled = true;
+      try{ await A.verifyCode(pw); }catch{ go.disabled=false; return toast('סיסמה שגויה','err'); }
+      try{
+        const res = await A.resetSystem(r.querySelector('#rs-label').value.trim());
+        closeModal(); toast(`המערכת אופסה. נשמר ארכיון עם ${res?.counts?.orders??0} הזמנות.`,'ok');
+        location.hash = '#/'; route();
+      }catch(e){ go.disabled=false; toast(e.message,'err'); }
+    })});
+}
+
 async function editDriver(id){
   const d = id ? (await A.allDrivers()).find(x=>x.id===id) : { method:'whatsapp', active:true };
   modal({ title: id?'עריכת שליח':'שליח חדש',
