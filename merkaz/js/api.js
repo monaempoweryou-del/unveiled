@@ -14,30 +14,25 @@ export function signOut(){ session = null; localStorage.removeItem(SESS); }
 
 // Login is by passcode only. The passcode maps to a real Supabase account, so
 // row level security and per-user attribution keep working underneath.
-// NOTE: this file is served publicly, so the passcode is the whole protection.
-// Raise ACCESS_CODE (and the account passwords) before real customer data goes in.
-export const ACCESS_CODE = '2026';
-const ACCOUNTS = {
-  owner:      { email:'owner@merkaz.app', password:'7cw8f3pEHqUOG7' },
-  dispatcher: { email:'dispatcher@merkaz.app', password:'5L7SE7OZaW4rDb' },
-};
-export async function signInWithCode(code, role='owner'){
-  if(String(code).trim() !== ACCESS_CODE) throw new Error('קוד גישה שגוי');
-  const a = ACCOUNTS[role] || ACCOUNTS.owner;
-  return signIn(a.email, a.password);
+// This file is served publicly, so it holds no code and no account password:
+// the merkaz-auth Edge Function checks the code against a server-side secret,
+// signs in with credentials only it can read, and hands back the session.
+async function exchangeCode(code, role){
+  const r = await fetch(`${URL_}/functions/v1/merkaz-auth`, {
+    method:'POST', headers:{ 'Content-Type':'application/json' },
+    body: JSON.stringify({ code: String(code).trim(), role }) });
+  const d = await r.json().catch(()=>({}));
+  if(!r.ok) throw new Error(d.message || 'התחברות נכשלה');
+  return d;
 }
-
-export async function signIn(email, password){
-  const r = await fetch(`${URL_}/auth/v1/token?grant_type=password`, {
-    method:'POST', headers:{ apikey:ANON, 'Content-Type':'application/json' },
-    body: JSON.stringify({ email, password }) });
-  const d = await r.json();
-  if(!r.ok) throw new Error(d.error_description || d.msg || 'התחברות נכשלה');
+export async function signInWithCode(code, role='owner'){
+  const d = await exchangeCode(code, role === 'dispatcher' ? 'dispatcher' : 'owner');
   saveSession({ access_token:d.access_token, refresh_token:d.refresh_token, user:d.user });
   const me = await rest(`app_users?id=eq.${d.user.id}&select=*`);
   saveSession({ ...session, profile: me[0] || null });
   return session;
 }
+
 async function refresh(){
   if(!session?.refresh_token) throw new Error('NO_SESSION');
   const r = await fetch(`${URL_}/auth/v1/token?grant_type=refresh_token`, {
